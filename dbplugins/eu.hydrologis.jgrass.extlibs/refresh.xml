@@ -56,6 +56,9 @@
 			<dependency groupId="jfreechart" artifactId="jfreechart-swt" version="1.0.13" />
 			<dependency groupId="jfreechart" artifactId="swtgraphics2d" version="1.0.13" />
 
+            <dependency groupId="dom4j" artifactId="dom4j" version="1.6.1" />
+
+
 		</artifact:dependencies>
 
 	</target>
@@ -136,6 +139,8 @@
 			<rsel:name name="*jfreechart*.jar" />
 			<rsel:name name="*jcommon*.jar" />
 			<rsel:name name="*swtgraphics2d*.jar" />
+
+			<rsel:name name="*dom4j*.jar" />
 		</copyFromPath>
 	</target>
 
