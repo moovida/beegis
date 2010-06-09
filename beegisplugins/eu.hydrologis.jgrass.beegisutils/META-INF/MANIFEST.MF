@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Beegisutils
+Bundle-SymbolicName: eu.hydrologis.jgrass.beegisutils;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin
+Bundle-Vendor: HydroloGIS s.r.l.
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ net.refractions.udig.libs;bundle-version="1.2.0",
+ net.refractions.udig.project,
+ net.refractions.udig.mapgraphic;bundle-version="1.2.0",
+ eu.hydrologis.jgrass.embeddeddb;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Export-Package: eu.hydrologis.jgrass.beegisutils,
+ eu.hydrologis.jgrass.beegisutils.database,
+ eu.hydrologis.jgrass.beegisutils.database.annotatedclasses,
+ eu.hydrologis.jgrass.beegisutils.jgrassported,
+ eu.hydrologis.jgrass.beegisutils.utils,
+ schema.gpx_1_1

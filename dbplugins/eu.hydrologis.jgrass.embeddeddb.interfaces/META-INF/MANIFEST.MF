@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Interfaces Plug-in
+Bundle-SymbolicName: eu.hydrologis.jgrass.embeddeddb.interfaces;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: HydroloGIS s.r.l.
+Export-Package: eu.hydrologis.jgrass.embeddeddb.earlystartup,
+ eu.hydrologis.jgrass.embeddeddb.interfaces
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ eu.hydrologis.jgrass.extlibs;bundle-version="1.0.0"

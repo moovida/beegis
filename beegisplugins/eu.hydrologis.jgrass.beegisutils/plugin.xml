@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="eu.hydrologis.jgrass.annotatedclasses">
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.AnnotationsTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesDrawareaTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTextareaTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesMediaboxTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesMediaboxBlobsTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GpsLogTable">
+      </annotatedclass>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="eu.hydrologis.jgrass.beegisutils.database.BeegisTablesUpdater">
+      </startup>
+   </extension>
+
+</plugin>

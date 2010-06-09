@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="eu.hydrologis.jgrass.embeddeddb.preferences.DbPreferencePage"
+            id="embedded.ui.preferences.DbPreferencePage"
+            name="Embedded Database Server">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="eu.hydrologis.jgrass.embeddeddb.preferences.DbPreferencesInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="eu.hydrologis.jgrass.embeddeddb.view.DatabaseView"
+            icon="icons/db.gif"
+            id="eu.hydrologis.jgrass.embeddeddb.dbview"
+            name="Embedded Database View">
+      </view>
+   </extension>
+
+</plugin>
