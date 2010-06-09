@@ -134,8 +134,8 @@ public class GpsActivator extends AbstractUIPlugin {
         final String stopBitString = prefs.getString(PreferenceConstants.STOPBIT);
         final String parityBitString = prefs.getString(PreferenceConstants.PARITYBIT);
         final boolean testmodeString = prefs.getBoolean(PreferenceConstants.TESTMODE);
-        gpsImpl = new NmeaGpsImpl(portString, waitString, baudRateString, dataBitString,
-                stopBitString, parityBitString, testmodeString);
+        gpsImpl = new NmeaGpsImpl(portString, waitString, baudRateString, dataBitString, stopBitString, parityBitString,
+                testmodeString);
         if (!gpsImpl.startGps()) {
             return false;
         }
@@ -162,8 +162,7 @@ public class GpsActivator extends AbstractUIPlugin {
             gpsImpl.doLogging(true);
             try {
                 // try to open the Gps view
-                IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                        .getActivePage();
+                IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 activeGpsView = activePage.showView(GpsView.ID);
             } catch (Exception e) {
             }
@@ -178,8 +177,7 @@ public class GpsActivator extends AbstractUIPlugin {
             gpsImpl.doLogging(false);
             try {
                 // try to hide the gps view
-                IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                        .getActivePage();
+                IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 if (activeGpsView != null)
                     activePage.hideView(activeGpsView);
             } catch (Exception e) {
@@ -236,7 +234,7 @@ public class GpsActivator extends AbstractUIPlugin {
     public GpsPoint getNextGpsPoint() throws Exception {
         IMap activeMap = ApplicationGIS.getActiveMap();
         CoordinateReferenceSystem mapCrs = activeMap.getViewportModel().getCRS();
-        GpsPoint returnGpsPoint = gpsImpl.getCurrentGpsPoint(null, mapCrs);
+        GpsPoint returnGpsPoint = gpsImpl.getCurrentGpsPoint(mapCrs);
         return returnGpsPoint;
     }
 
@@ -289,20 +287,17 @@ public class GpsActivator extends AbstractUIPlugin {
     }
 
     public AutomaticAddPoint getAutomaticAddPointAction() {
-        AutomaticAddPoint automaticAction = (AutomaticAddPoint) GpsActivator.getDefault()
-                .getAction(AutomaticAddPoint.ID);
+        AutomaticAddPoint automaticAction = (AutomaticAddPoint) GpsActivator.getDefault().getAction(AutomaticAddPoint.ID);
         return automaticAction;
 
     }
     public GeonoteAdd getGeonoteAddAction() {
-        GeonoteAdd geonoteAddAction = (GeonoteAdd) GpsActivator.getDefault().getAction(
-                GeonoteAdd.ID);
+        GeonoteAdd geonoteAddAction = (GeonoteAdd) GpsActivator.getDefault().getAction(GeonoteAdd.ID);
         return geonoteAddAction;
     }
 
     public ManualAddPoint getManualAddPointAction() {
-        ManualAddPoint manualAddAction = (ManualAddPoint) GpsActivator.getDefault().getAction(
-                ManualAddPoint.ID);
+        ManualAddPoint manualAddAction = (ManualAddPoint) GpsActivator.getDefault().getAction(ManualAddPoint.ID);
         return manualAddAction;
     }
 
@@ -312,8 +307,7 @@ public class GpsActivator extends AbstractUIPlugin {
     }
 
     public ToggleLoggingGps getToggleLoggingAction() {
-        ToggleLoggingGps toggleAction = (ToggleLoggingGps) GpsActivator.getDefault().getAction(
-                ToggleLoggingGps.ID);
+        ToggleLoggingGps toggleAction = (ToggleLoggingGps) GpsActivator.getDefault().getAction(ToggleLoggingGps.ID);
         return toggleAction;
     }
 

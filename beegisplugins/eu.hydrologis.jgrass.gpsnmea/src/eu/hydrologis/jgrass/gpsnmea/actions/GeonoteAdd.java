@@ -33,6 +33,8 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.joda.time.DateTime;
 
+import com.vividsolutions.jts.geom.Coordinate;
+
 import eu.hydrologis.jgrass.geonotes.GeonoteConstants;
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
@@ -54,8 +56,7 @@ public class GeonoteAdd extends Action implements IWorkbenchWindowActionDelegate
     private IWorkbenchWindow window;
 
     public GeonoteAdd() {
-        setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(GpsActivator.PLUGIN_ID,
-                "icons/geonote.png"));
+        setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(GpsActivator.PLUGIN_ID, "icons/geonote.png"));
         setText("Add geonote");
         setToolTipText("Add geonote from gps point");
         setId(ID);
@@ -85,9 +86,9 @@ public class GeonoteAdd extends Action implements IWorkbenchWindowActionDelegate
                 IMap activeMap = ApplicationGIS.getActiveMap();
                 String mapName = activeMap.getName();
                 String crsWkt = activeMap.getViewportModel().getCRS().toWKT();
-                GeonotesHandler geonotesHandler = new GeonotesHandler(nextGpsPoint.longitude,
-                        nextGpsPoint.latitude, mapName + " - " + projectName, null,
-                        GeonoteConstants.GPS, new DateTime(), crsWkt, null, null, null, null);
+                Coordinate reprojected = nextGpsPoint.reproject(null);
+                GeonotesHandler geonotesHandler = new GeonotesHandler(reprojected.x, reprojected.y,
+                        mapName + " - " + projectName, null, GeonoteConstants.GPS, new DateTime(), crsWkt, null, null, null, null);
 
                 GeonotesPlugin.getDefault().getGeonotesLayer();
 
@@ -101,8 +102,7 @@ public class GeonoteAdd extends Action implements IWorkbenchWindowActionDelegate
 
             } catch (Exception e) {
                 String message = "An error occurred while adding the geonote.";
-                ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                        GeonotesPlugin.PLUGIN_ID, e);
+                ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
                 e.printStackTrace();
             }
         }

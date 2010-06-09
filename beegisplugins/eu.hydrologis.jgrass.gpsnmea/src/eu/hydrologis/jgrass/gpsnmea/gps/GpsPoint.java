@@ -20,7 +20,13 @@ package eu.hydrologis.jgrass.gpsnmea.gps;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.GeodeticCalculator;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.joda.time.DateTime;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
@@ -36,6 +42,8 @@ public class GpsPoint {
     public static final String GPRMC = "$GPRMC";
     public final static String strLatitude = "Northing";
     public final static String strLongitude = "Easting";
+    public final static String strLat = "Lat";
+    public final static String strLon = "Lon";
     public final static String strSpeed = "Speed";
     public final static String strAltitude = "Altitude above msl";
     public final static String strQuality = "quality";
@@ -62,6 +70,8 @@ public class GpsPoint {
     public String ellipsoidVsMslUnit = "M";
     public boolean isValid = false;
 
+    private Coordinate reprojected = null;
+
     /**
      * @return a table array representation useful for tableviewers.
      */
@@ -70,34 +80,59 @@ public class GpsPoint {
         if (!isValid) {
             arrayList.add(new String[]{strValidity1, strValidity2});
         }
-        arrayList.add(new String[]{strLatitude, String.valueOf(latitude)});
-        arrayList.add(new String[]{strLongitude, String.valueOf(longitude)});
+        if (reprojected != null) {
+            arrayList.add(new String[]{strLatitude, String.valueOf(reprojected.y)});
+            arrayList.add(new String[]{strLongitude, String.valueOf(reprojected.x)});
+        }
+        arrayList.add(new String[]{strLat, String.valueOf(latitude)});
+        arrayList.add(new String[]{strLon, String.valueOf(longitude)});
         arrayList.add(new String[]{strSpeed, String.valueOf(speed)});
         arrayList.add(new String[]{strAltitude, String.valueOf(altitude) + altitudeUnit});
         arrayList.add(new String[]{strQuality, String.valueOf(quality)});
         arrayList.add(new String[]{strSat, String.valueOf(sat)});
         arrayList.add(new String[]{strHdop, String.valueOf(hdop)});
         arrayList.add(new String[]{strMsl, String.valueOf(ellipsoidVsMsl) + ellipsoidVsMslUnit});
-        arrayList.add(new String[]{strUtctime,
-                utcDateTime.toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMMSS)});
+        arrayList.add(new String[]{strUtctime, utcDateTime.toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMMSS)});
         arrayList.add(new String[]{strMag_var, String.valueOf(mag_var)});
         arrayList.add(new String[]{strAngle, String.valueOf(angle)});
         return (String[][]) arrayList.toArray(new String[arrayList.size()][2]);
     }
 
     /**
-     * Measures if this point is al least at a given distance from another one.
+     * Measures if this point is at least at a given distance from another one.
      * 
      * @param point the other point.
      * @param distance the distance to use as threshold.
-     * @return 
+     * @return true if the current distance is bigger than the supplied threshold.
      */
     public boolean isAtLeastAtDistanceOf( GpsPoint point, double distance ) {
-        Coordinate thisPoint = new Coordinate(longitude, latitude);
-        Coordinate otherPoint = new Coordinate(point.longitude, point.latitude);
-
-        double realDistance = thisPoint.distance(otherPoint);
+        GeodeticCalculator calc = new GeodeticCalculator(DefaultGeographicCRS.WGS84);
+        calc.setStartingGeographicPoint(longitude, latitude);
+        calc.setDestinationGeographicPoint(point.longitude, point.latitude);
+        
+        double realDistance = calc.getOrthodromicDistance();
         return realDistance >= distance;
+    }
+
+    /**
+     * Reprojects the current point to a new {@link CoordinateReferenceSystem crs}.
+     * 
+     * <b>Warning: the reprojection can be done only once. After that always the same coordinate is returned.</b>
+     * 
+     * @param crs the crs to which to reproject to.
+     * @return the reprojected coordinate.
+     * @throws Exception
+     */
+    public Coordinate reproject( CoordinateReferenceSystem crs ) throws Exception {
+        if (reprojected == null) {
+            if (crs == null) {
+                throw new NullPointerException();
+            }
+            MathTransform mathTransform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, crs, true);
+            Coordinate original = new Coordinate(longitude, latitude);
+            reprojected = JTS.transform(original, null, mathTransform);
+        }
+        return reprojected;
     }
 
 }

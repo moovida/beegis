@@ -23,6 +23,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import gnu.io.CommPortIdentifier;
@@ -74,7 +75,7 @@ public abstract class AbstractGps extends Observable {
      * @param doLog
      *                true to start logging, false to stop
      */
-    public abstract void doLogging(boolean doLog);
+    public abstract void doLogging( boolean doLog );
 
     /**
      * @return the state of the gps, true = connected
@@ -87,16 +88,14 @@ public abstract class AbstractGps extends Observable {
     public abstract boolean isGpsLogging();
 
     /**
-     * @param gpsCrs
-     *                the gps crs, if null, EPSG:4326 is assumed
+     * This assumes that the gps internal system is always {@link DefaultGeographicCRS#WGS84}.
+     * 
      * @param destinationCrs
      *                the crs to convert to, if null, no conversion is done
      * @return the gpsPoint object
      * @throws Exception 
      */
-    public abstract GpsPoint getCurrentGpsPoint(
-            CoordinateReferenceSystem gpsCrs,
-            CoordinateReferenceSystem destinationCrs) throws Exception;
+    public abstract GpsPoint getCurrentGpsPoint( CoordinateReferenceSystem destinationCrs ) throws Exception;
 
     /**
      * @return a String representing the current representative Gps data
@@ -111,17 +110,16 @@ public abstract class AbstractGps extends Observable {
      */
     public static synchronized String[][] checkGpsPorts() {
         try {
-            Enumeration<?> ports = CommPortIdentifier.getPortIdentifiers();
+            Enumeration< ? > ports = CommPortIdentifier.getPortIdentifiers();
             if (ports == null) {
-                return new String[][] { { "" }, { "" } };
+                return new String[][]{{""}, {""}};
             }
 
             ArrayList<String> portsList = new ArrayList<String>();
 
-            while (ports.hasMoreElements()) {
+            while( ports.hasMoreElements() ) {
 
-                CommPortIdentifier portIdentifier = ((CommPortIdentifier) ports
-                        .nextElement());
+                CommPortIdentifier portIdentifier = ((CommPortIdentifier) ports.nextElement());
                 // take only serial ports
                 if (portIdentifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                     portsList.add(portIdentifier.getName());
@@ -131,7 +129,7 @@ public abstract class AbstractGps extends Observable {
             }
 
             String[][] choiseStrings = new String[portsList.size()][2];
-            for (int i = 0; i < portsList.size(); i++) {
+            for( int i = 0; i < portsList.size(); i++ ) {
                 choiseStrings[i][0] = portsList.get(i);
                 choiseStrings[i][1] = portsList.get(i);
             }
@@ -139,7 +137,7 @@ public abstract class AbstractGps extends Observable {
             return choiseStrings;
         } catch (Exception e) {
             e.printStackTrace();
-            return new String[][] { { "" }, { "" } };
+            return new String[][]{{""}, {""}};
         }
     }
 

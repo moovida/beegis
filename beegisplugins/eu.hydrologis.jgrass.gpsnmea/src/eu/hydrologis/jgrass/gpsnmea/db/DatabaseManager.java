@@ -57,7 +57,7 @@ public class DatabaseManager {
      * @throws Exception
      */
     public synchronized void insertGpsPoint( GpsPoint gpsPoint ) throws Exception {
-        if (gpsPoint.utcDateTime == null || gpsPoint.longitude <= 0.0 || gpsPoint.latitude <= 0.0) {
+        if (gpsPoint.utcDateTime == null || gpsPoint.longitude == 0.0 || gpsPoint.latitude == 0.0) {
             return;
         }
 

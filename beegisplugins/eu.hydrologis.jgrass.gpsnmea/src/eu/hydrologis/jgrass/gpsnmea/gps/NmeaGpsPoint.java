@@ -69,18 +69,16 @@ import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class NmeaGpsPoint extends GpsPoint {
-    private static DateTimeFormatter nmeaDateFormatter = DateTimeFormat
-            .forPattern("ddMMyyHHmmss.SSS"); //$NON-NLS-1$
+    private static DateTimeFormatter nmeaDateFormatter = DateTimeFormat.forPattern("ddMMyyHHmmss.SSS"); //$NON-NLS-1$
 
     public NmeaGpsPoint() {
     }
 
-    public NmeaGpsPoint( double latitude, double longitude, double altitude ) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.altitude = altitude;
-
-    }
+    // public NmeaGpsPoint( double latitude, double longitude, double altitude ) {
+    // this.originalLatitude = latitude;
+    // this.originalLongitude = longitude;
+    // this.altitude = altitude;
+    // }
 
     public NmeaGpsPoint( NmeaGpsPoint gpsPoint ) {
         this.latitude = gpsPoint.latitude;
@@ -161,19 +159,17 @@ public class NmeaGpsPoint extends GpsPoint {
 
     }
 
-
     @SuppressWarnings("nls")
     public String toString() {
         final String TAB = "/";
 
         String retValue = "";
 
-        retValue = "GpsPoint ( " + "latitude = " + this.latitude + TAB + "longitude = "
-                + this.longitude + TAB + "speed = " + this.speed + TAB + "altitude = "
-                + this.altitude + TAB + "quality = " + this.quality + TAB + "sat = " + this.sat
-                + TAB + "hdop = " + this.hdop + TAB + "msl = " + this.ellipsoidVsMsl + TAB
-                + "utctime = " + this.utcDateTime.toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMMSS)
-                + TAB + "mag_var = " + this.mag_var + TAB + "angle = " + this.angle + TAB + " )";
+        retValue = "GpsPoint ( " + "latitude = " + this.latitude + TAB + "longitude = " + this.longitude + TAB
+                + "speed = " + this.speed + TAB + "altitude = " + this.altitude + TAB + "quality = " + this.quality + TAB
+                + "sat = " + this.sat + TAB + "hdop = " + this.hdop + TAB + "msl = " + this.ellipsoidVsMsl + TAB + "utctime = "
+                + this.utcDateTime.toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMMSS) + TAB + "mag_var = "
+                + this.mag_var + TAB + "angle = " + this.angle + TAB + " )";
 
         return retValue;
     }

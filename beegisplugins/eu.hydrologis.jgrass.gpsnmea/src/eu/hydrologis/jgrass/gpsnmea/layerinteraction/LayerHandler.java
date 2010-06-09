@@ -112,21 +112,18 @@ public class LayerHandler {
              * feature has to be created and the attributes for that feature
              * have to be asked to the user.
              */
-            FeatureSource<SimpleFeatureType, SimpleFeature> source = layer.getResource(
-                    FeatureSource.class, new NullProgressMonitor());
+            FeatureSource<SimpleFeatureType, SimpleFeature> source = layer.getResource(FeatureSource.class,
+                    new NullProgressMonitor());
             if (source == null) {
-                throw new IllegalArgumentException(
-                        "This layer is not supported, only feature layers are supported.");
+                throw new IllegalArgumentException("This layer is not supported, only feature layers are supported.");
             }
             // get the featurecollection from the layer, even if empty
-            FeatureCollection<SimpleFeatureType, SimpleFeature> selectedFeatureCollection = source
-                    .getFeatures();
+            FeatureCollection<SimpleFeatureType, SimpleFeature> selectedFeatureCollection = source.getFeatures();
             SimpleFeatureType schema = selectedFeatureCollection.getSchema();
             // find the geometry type
             String geometryType = getGeometryType(schema);
             if (geometryType == null) {
-                throw new IllegalArgumentException(
-                        "This layer is not supported, only feature layers are supported.");
+                throw new IllegalArgumentException("This layer is not supported, only feature layers are supported.");
             }
 
             /*
@@ -140,8 +137,7 @@ public class LayerHandler {
                  * find last feature of the layer, which will be the one we will
                  * work on
                  */
-                FeatureIterator<SimpleFeature> featureIterator = selectedFeatureCollection
-                        .features();
+                FeatureIterator<SimpleFeature> featureIterator = selectedFeatureCollection.features();
                 while( featureIterator.hasNext() ) {
                     featureToUse = featureIterator.next();
                 }
@@ -212,18 +208,15 @@ public class LayerHandler {
      * @param geometryType
      * @throws IllegalAttributeException
      */
-    private void addPoint( ILayer layer, GpsPoint gpsPoint, SimpleFeature feature,
-            String geometryType ) throws Exception {
+    private void addPoint( ILayer layer, GpsPoint gpsPoint, SimpleFeature feature, String geometryType ) throws Exception {
         // for points simply add the point to the layer
-        Point gpsPointGeometry = gFac.createPoint(new Coordinate(gpsPoint.longitude,
-                gpsPoint.latitude));
+        Point gpsPointGeometry = gFac.createPoint(gpsPoint.reproject(null));
         if (geometryType.matches(MULTIPOINT)) {
             feature.setDefaultGeometry(gFac.createMultiPoint(new Point[]{gpsPointGeometry}));
         } else {
             feature.setDefaultGeometry(gpsPointGeometry);
         }
-        UndoableMapCommand createAddFeatureCommand = EditCommandFactory.getInstance()
-                .createAddFeatureCommand(feature, layer);
+        UndoableMapCommand createAddFeatureCommand = EditCommandFactory.getInstance().createAddFeatureCommand(feature, layer);
         layer.getMap().sendCommandASync(createAddFeatureCommand);
     }
 
@@ -234,8 +227,7 @@ public class LayerHandler {
      * @param geometryType
      * @throws IllegalAttributeException
      */
-    private void addLine( ILayer layer, GpsPoint gpsPoint, SimpleFeature feature,
-            String geometryType ) throws Exception {
+    private void addLine( ILayer layer, GpsPoint gpsPoint, SimpleFeature feature, String geometryType ) throws Exception {
         /*
          * in the case of lines, the geometry has to be extended if we are
          * continuing from a current line, if instead we have a different
@@ -247,8 +239,7 @@ public class LayerHandler {
 
             UndoableMapCommand[] cmds = new UndoableMapCommand[2];
             cmds[0] = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
-            cmds[1] = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer,
-                    geometry);
+            cmds[1] = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer, geometry);
 
             map.sendCommandASync(cmds[0]);
             map.sendCommandASync(cmds[1]);
@@ -260,13 +251,12 @@ public class LayerHandler {
              * the new feature created. This can be tested by simply asking for
              * the geometry, which in the first case is null.
              */
-            Coordinate gpsCoordinate = new Coordinate(gpsPoint.longitude, gpsPoint.latitude);
-            Coordinate gpsCoordinateDelta = new Coordinate(gpsPoint.longitude, gpsPoint.latitude);
+            Coordinate gpsCoordinate = new Coordinate(gpsPoint.reproject(null));
+            Coordinate gpsCoordinateDelta = new Coordinate(gpsPoint.reproject(null));
             Geometry geometry = (Geometry) feature.getDefaultGeometry();
             if (geometry == null) {
                 // create a new geometry for the feature
-                LineString lString = gFac.createLineString(new Coordinate[]{gpsCoordinate,
-                        gpsCoordinateDelta});
+                LineString lString = gFac.createLineString(new Coordinate[]{gpsCoordinate, gpsCoordinateDelta});
                 if (geometryType.matches(MULTILINE)) {
                     geometry = gFac.createMultiLineString(new LineString[]{lString});
                 } else {
@@ -275,37 +265,30 @@ public class LayerHandler {
                 feature.setDefaultGeometry(geometry);
                 // draw the add vertex position
                 java.awt.Point p = map.getViewportModel().worldToPixel(gpsCoordinate);
-                UndoableMapCommand createStartAnimationCommand = DrawCommandFactory.getInstance()
-                        .createStartAnimationCommand(
-                                map.getRenderManager().getMapDisplay(),
-                                Collections.singletonList((IAnimation) new AddVertexAnimation(p.x,
-                                        p.y)));
+                UndoableMapCommand createStartAnimationCommand = DrawCommandFactory.getInstance().createStartAnimationCommand(
+                        map.getRenderManager().getMapDisplay(),
+                        Collections.singletonList((IAnimation) new AddVertexAnimation(p.x, p.y)));
                 map.sendCommandASync(createStartAnimationCommand);
                 // add the feature to the layer
-                UndoableMapCommand createAddFeatureCommand = EditCommandFactory.getInstance()
-                        .createAddFeatureCommand(feature, layer);
+                UndoableMapCommand createAddFeatureCommand = EditCommandFactory.getInstance().createAddFeatureCommand(feature,
+                        layer);
                 map.sendCommandSync(createAddFeatureCommand);
                 // and put it inside the map
-                SimpleFeature newFeatureAdded = ((AddFeatureCommand) createAddFeatureCommand)
-                        .getNewFeature();
+                SimpleFeature newFeatureAdded = ((AddFeatureCommand) createAddFeatureCommand).getNewFeature();
                 layerLastFeatureMap.put(layer, newFeatureAdded);
 
             } else {
                 // draw the add vertex position
                 java.awt.Point p = map.getViewportModel().worldToPixel(gpsCoordinate);
-                UndoableMapCommand createStartAnimationCommand = DrawCommandFactory.getInstance()
-                        .createStartAnimationCommand(
-                                map.getRenderManager().getMapDisplay(),
-                                Collections.singletonList((IAnimation) new AddVertexAnimation(p.x,
-                                        p.y)));
+                UndoableMapCommand createStartAnimationCommand = DrawCommandFactory.getInstance().createStartAnimationCommand(
+                        map.getRenderManager().getMapDisplay(),
+                        Collections.singletonList((IAnimation) new AddVertexAnimation(p.x, p.y)));
                 map.sendCommandASync(createStartAnimationCommand);
                 // add to the new created
                 geometry = addPointToLineFeature(gpsPoint, feature, geometryType);
-                UndoableMapCommand cmd = EditCommandFactory.getInstance()
-                        .createSetEditFeatureCommand(feature, layer);
+                UndoableMapCommand cmd = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
                 map.sendCommandASync(cmd);
-                cmd = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer,
-                        geometry);
+                cmd = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer, geometry);
                 map.sendCommandASync(cmd);
             }
         }
@@ -318,8 +301,7 @@ public class LayerHandler {
      * @param geometryType
      * @throws IllegalAttributeException
      */
-    private void addPolygon( ILayer layer, GpsPoint gpsPoint, SimpleFeature feature,
-            String geometryType ) throws Exception {
+    private void addPolygon( ILayer layer, GpsPoint gpsPoint, SimpleFeature feature, String geometryType ) throws Exception {
         /*
          * in the case of lines, the geometry has to be extended if we are
          * continuing from a current line, if instead we have a different
@@ -331,8 +313,7 @@ public class LayerHandler {
 
             UndoableMapCommand[] cmds = new UndoableMapCommand[2];
             cmds[0] = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
-            cmds[1] = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer,
-                    geometry);
+            cmds[1] = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer, geometry);
 
             map.sendCommandASync(cmds[0]);
             map.sendCommandASync(cmds[1]);
@@ -345,16 +326,14 @@ public class LayerHandler {
              * the new feature created. This can be tested by simply asking for
              * the geometry, which in the first case is null.
              */
-            Coordinate gpsCoordinate = new Coordinate(gpsPoint.longitude, gpsPoint.latitude);
+            Coordinate gpsCoordinate = new Coordinate(gpsPoint.reproject(null));
             Geometry geometry = (Geometry) feature.getDefaultGeometry();
             if (geometry == null) {
                 // create a new geometry for the feature
-                Coordinate gpsCoordinateDelta = new Coordinate(gpsPoint.longitude,
-                        gpsPoint.latitude);
-                Coordinate gpsCoordinateDelta2 = new Coordinate(gpsPoint.longitude,
-                        gpsPoint.latitude);
-                LinearRing linearRing = gFac.createLinearRing(new Coordinate[]{gpsCoordinate,
-                        gpsCoordinateDelta, gpsCoordinateDelta2, gpsCoordinate});
+                Coordinate gpsCoordinateDelta = new Coordinate(gpsPoint.reproject(null));
+                Coordinate gpsCoordinateDelta2 = new Coordinate(gpsPoint.reproject(null));
+                LinearRing linearRing = gFac.createLinearRing(new Coordinate[]{gpsCoordinate, gpsCoordinateDelta,
+                        gpsCoordinateDelta2, gpsCoordinate});
                 Polygon polygon = gFac.createPolygon(linearRing, null);
                 if (geometryType.matches(MULTIPOLYGON)) {
                     geometry = gFac.createMultiPolygon(new Polygon[]{polygon});
@@ -364,36 +343,29 @@ public class LayerHandler {
                 feature.setDefaultGeometry(geometry);
                 // draw the add vertex position
                 java.awt.Point p = map.getViewportModel().worldToPixel(gpsCoordinate);
-                UndoableMapCommand createStartAnimationCommand = DrawCommandFactory.getInstance()
-                        .createStartAnimationCommand(
-                                map.getRenderManager().getMapDisplay(),
-                                Collections.singletonList((IAnimation) new AddVertexAnimation(p.x,
-                                        p.y)));
+                UndoableMapCommand createStartAnimationCommand = DrawCommandFactory.getInstance().createStartAnimationCommand(
+                        map.getRenderManager().getMapDisplay(),
+                        Collections.singletonList((IAnimation) new AddVertexAnimation(p.x, p.y)));
                 map.sendCommandASync(createStartAnimationCommand);
                 // add the feature to the layer
-                UndoableMapCommand createAddFeatureCommand = EditCommandFactory.getInstance()
-                        .createAddFeatureCommand(feature, layer);
+                UndoableMapCommand createAddFeatureCommand = EditCommandFactory.getInstance().createAddFeatureCommand(feature,
+                        layer);
                 map.sendCommandSync(createAddFeatureCommand);
                 // and put it inside the map
-                SimpleFeature newFeatureAdded = ((AddFeatureCommand) createAddFeatureCommand)
-                        .getNewFeature();
+                SimpleFeature newFeatureAdded = ((AddFeatureCommand) createAddFeatureCommand).getNewFeature();
                 layerLastFeatureMap.put(layer, newFeatureAdded);
             } else {
                 // draw the add vertex position
                 java.awt.Point p = map.getViewportModel().worldToPixel(gpsCoordinate);
-                UndoableMapCommand createStartAnimationCommand = DrawCommandFactory.getInstance()
-                        .createStartAnimationCommand(
-                                map.getRenderManager().getMapDisplay(),
-                                Collections.singletonList((IAnimation) new AddVertexAnimation(p.x,
-                                        p.y)));
+                UndoableMapCommand createStartAnimationCommand = DrawCommandFactory.getInstance().createStartAnimationCommand(
+                        map.getRenderManager().getMapDisplay(),
+                        Collections.singletonList((IAnimation) new AddVertexAnimation(p.x, p.y)));
                 map.sendCommandASync(createStartAnimationCommand);
                 // add to the new created
                 geometry = addPointToPolygonFeature(gpsPoint, feature, geometryType);
-                UndoableMapCommand cmd = EditCommandFactory.getInstance()
-                        .createSetEditFeatureCommand(feature, layer);
+                UndoableMapCommand cmd = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
                 map.sendCommandASync(cmd);
-                cmd = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer,
-                        geometry);
+                cmd = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer, geometry);
                 map.sendCommandASync(cmd);
             }
 
@@ -405,21 +377,20 @@ public class LayerHandler {
      * @param feature
      * @param geometryType
      * @return a new geometry containing the added coordinate
+     * @throws Exception 
      */
-    private Geometry addPointToLineFeature( GpsPoint gpsPoint, SimpleFeature feature,
-            String geometryType ) {
+    private Geometry addPointToLineFeature( GpsPoint gpsPoint, SimpleFeature feature, String geometryType ) throws Exception {
         Geometry geometry = (Geometry) feature.getDefaultGeometry();
         Coordinate[] coordinates = geometry.getCoordinates();
 
         Coordinate[] newCoordinates = null;
         if (coordinates[0].equals(coordinates[1])) {
-            coordinates[1] = new Coordinate(gpsPoint.longitude, gpsPoint.latitude);
+            coordinates[1] = new Coordinate(gpsPoint.reproject(null));
             newCoordinates = coordinates;
         } else {
             newCoordinates = new Coordinate[coordinates.length + 1];
             System.arraycopy(coordinates, 0, newCoordinates, 0, coordinates.length);
-            newCoordinates[newCoordinates.length - 1] = new Coordinate(gpsPoint.longitude,
-                    gpsPoint.latitude);
+            newCoordinates[newCoordinates.length - 1] = new Coordinate(gpsPoint.reproject(null));
         }
         LineString lString = gFac.createLineString(newCoordinates);
         if (geometryType.matches(MULTILINE)) {
@@ -435,25 +406,24 @@ public class LayerHandler {
      * @param feature
      * @param geometryType
      * @return
+     * @throws Exception 
      */
-    private Geometry addPointToPolygonFeature( GpsPoint gpsPoint, SimpleFeature feature,
-            String geometryType ) {
+    private Geometry addPointToPolygonFeature( GpsPoint gpsPoint, SimpleFeature feature, String geometryType ) throws Exception {
         Geometry geometry = (Geometry) feature.getDefaultGeometry();
         Coordinate[] coordinates = geometry.getCoordinates();
         Coordinate[] newCoordinates = null;
         if (coordinates[0].equals(coordinates[1])) {
-            coordinates[1] = new Coordinate(gpsPoint.longitude, gpsPoint.latitude);
-            coordinates[2] = new Coordinate(gpsPoint.longitude, gpsPoint.latitude);
+            coordinates[1] = new Coordinate(gpsPoint.reproject(null));
+            coordinates[2] = new Coordinate(gpsPoint.reproject(null));
             newCoordinates = coordinates;
         } else if (coordinates[0].equals(coordinates[2])) {
-            coordinates[2] = new Coordinate(gpsPoint.longitude, gpsPoint.latitude);
+            coordinates[2] = new Coordinate(gpsPoint.reproject(null));
             newCoordinates = coordinates;
         } else {
             newCoordinates = new Coordinate[coordinates.length + 1];
             System.arraycopy(coordinates, 0, newCoordinates, 0, coordinates.length);
             newCoordinates[newCoordinates.length - 1] = newCoordinates[newCoordinates.length - 2];
-            newCoordinates[newCoordinates.length - 2] = new Coordinate(gpsPoint.longitude,
-                    gpsPoint.latitude);
+            newCoordinates[newCoordinates.length - 2] = new Coordinate(gpsPoint.reproject(null));
         }
         LinearRing linearRing = gFac.createLinearRing(newCoordinates);
         Polygon polygon = gFac.createPolygon(linearRing, null);

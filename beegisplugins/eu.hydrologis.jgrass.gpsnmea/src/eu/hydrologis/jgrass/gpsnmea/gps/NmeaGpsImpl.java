@@ -31,19 +31,8 @@ import net.refractions.udig.ui.ExceptionDetailsDialog;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
-import org.geotools.geometry.jts.JTS;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 import eu.hydrologis.jgrass.gpsnmea.GpsActivator;
@@ -108,8 +97,8 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
      * @param isTestmode
      *            test mode for the case no real gps is attached
      */
-    public NmeaGpsImpl( String portString, String waitString, String baudRateString,
-            String dataBitString, String stopBitString, String parityBitString, boolean isTestmode ) {
+    public NmeaGpsImpl( String portString, String waitString, String baudRateString, String dataBitString, String stopBitString,
+            String parityBitString, boolean isTestmode ) {
         this.portString = portString;
 
         this.waitString = (waitString == null ? MAXWAIT_DEF : waitString);
@@ -134,9 +123,8 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
             try {
                 CommPortIdentifier portID = CommPortIdentifier.getPortIdentifier(portString);
                 port = (SerialPort) portID.open("JGrass", Integer.parseInt(waitString)); //$NON-NLS-1$
-                port.setSerialPortParams(Integer.parseInt(baudRateString), Integer
-                        .parseInt(dataBitString), Integer.parseInt(stopBitString), Integer
-                        .parseInt(parityBitString));
+                port.setSerialPortParams(Integer.parseInt(baudRateString), Integer.parseInt(dataBitString), Integer
+                        .parseInt(stopBitString), Integer.parseInt(parityBitString));
                 port.addEventListener(this);
                 port.notifyOnDataAvailable(true);
 
@@ -148,9 +136,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
 
             } catch (Exception e) {
                 errorMessage(e);
-                GpsActivator
-                        .log(
-                                "GpsActivator problem: eu.hydrologis.jgrass.gpsnmea.gps#NmeaGpsImpl#startGps", e); //$NON-NLS-1$
+                GpsActivator.log("GpsActivator problem: eu.hydrologis.jgrass.gpsnmea.gps#NmeaGpsImpl#startGps", e); //$NON-NLS-1$
                 e.printStackTrace();
                 gpsIsConnected = false;
                 return false;
@@ -178,9 +164,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
             gpsIsConnected = false;
             return true;
         } catch (Exception e) {
-            GpsActivator
-                    .log(
-                            "GpsActivator problem: eu.hydrologis.jgrass.gpsnmea.gps#NmeaGpsImpl#stopGps", e); //$NON-NLS-1$
+            GpsActivator.log("GpsActivator problem: eu.hydrologis.jgrass.gpsnmea.gps#NmeaGpsImpl#stopGps", e); //$NON-NLS-1$
             e.printStackTrace();
             gpsIsConnected = true;
             return false;
@@ -214,8 +198,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
         }
     }
 
-    public synchronized NmeaGpsPoint getCurrentGpsPoint( CoordinateReferenceSystem gpsCrs,
-            CoordinateReferenceSystem destinationCrs ) throws Exception {
+    public synchronized NmeaGpsPoint getCurrentGpsPoint( CoordinateReferenceSystem destinationCrs ) throws Exception {
 
         NmeaGpsPoint currentGpsPoint = null;
         if (!isTestmode) {
@@ -239,20 +222,9 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
         GpsActivator.getDefault().getDatabaseManager().insertGpsPoint(currentGpsPoint);
         // reproject it
         if (destinationCrs != null) {
-            if (gpsCrs == null)
-                gpsCrs = DefaultGeographicCRS.WGS84;
-            MathTransform mathTransform = CRS.findMathTransform(gpsCrs, destinationCrs, true);
-            com.vividsolutions.jts.geom.Point gpsPoint = factory.createPoint(new Coordinate(
-                    currentGpsPoint.longitude, currentGpsPoint.latitude));
-
-            Geometry reprojectedGpsPoint = JTS.transform(gpsPoint, mathTransform);
-
             NmeaGpsPoint clonedGpsPoint = new NmeaGpsPoint(currentGpsPoint);
-            Coordinate coordinate = reprojectedGpsPoint.getCoordinate();
-            clonedGpsPoint.longitude = coordinate.x;
-            clonedGpsPoint.latitude = coordinate.y;
+            clonedGpsPoint.reproject(destinationCrs);
             return clonedGpsPoint;
-
         }
 
         return currentGpsPoint;
@@ -296,8 +268,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
                     // if a line couldn't be read, ignore the event
                     break;
                 } catch (Exception e) {
-                    System.out.println("GPS DATAENEVENT READ EVENT NOT ENDED SUCCESSFULL: "
-                            + e.getLocalizedMessage());
+                    System.out.println("GPS DATAENEVENT READ EVENT NOT ENDED SUCCESSFULL: " + e.getLocalizedMessage());
                     break;
                 }
             }
@@ -320,14 +291,13 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
         mapCrs = activeMap.getViewportModel().getCRS();
         GpsPoint returnGpsPoint = null;
         try {
-            returnGpsPoint = getCurrentGpsPoint(null, mapCrs);
+            returnGpsPoint = getCurrentGpsPoint(mapCrs);
             if (returnGpsPoint == null)
                 return;
         } catch (Exception e) {
             e.printStackTrace();
             String message = "An error occurred while retriving the GPS position.";
-            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID,
-                    e);
+            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e);
             return;
         }
         for( Observer observer : observers ) {
@@ -342,14 +312,13 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
             mapCrs = activeMap.getViewportModel().getCRS();
             NmeaGpsPoint returnGpsPoint = null;
             try {
-                returnGpsPoint = getCurrentGpsPoint(null, mapCrs);
+                returnGpsPoint = getCurrentGpsPoint(mapCrs);
                 if (returnGpsPoint == null)
                     return;
             } catch (Exception e) {
                 e.printStackTrace();
                 String message = "An error occurred while retriving the GPS position.";
-                ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                        GpsActivator.PLUGIN_ID, e);
+                ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e);
                 return;
             }
 
@@ -397,7 +366,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
         }
 
         for( int i = 0; i < 20; i++ ) {
-            System.out.println(gps.getCurrentGpsPoint(null, null).toString());
+            System.out.println(gps.getCurrentGpsPoint(null).toString());
             Thread.sleep(2000);
         }
 

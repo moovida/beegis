@@ -46,18 +46,21 @@ public class GpsArtist {
         if (!GpsActivator.getDefault().isGpsLogging()) {
             return;
         }
-        // to draw we need the screen coordinates
-        final IMap activeMap = ApplicationGIS.getActiveMap();
-        Point p = activeMap.getViewportModel().worldToPixel(
-                new Coordinate(gpsPoint.longitude, gpsPoint.latitude));
-        if (gpsPositionDrawCommand != null) {
-            gpsPositionDrawCommand.setValid(false);
+        try {
+            // to draw we need the screen coordinates
+            final IMap activeMap = ApplicationGIS.getActiveMap();
+            Point p = activeMap.getViewportModel().worldToPixel(gpsPoint.reproject(null));
+            if (gpsPositionDrawCommand != null) {
+                gpsPositionDrawCommand.setValid(false);
+            }
+            gpsPositionDrawCommand = new GpsPositionDrawCommand(p, gpsPoint.angle, GpsActivator
+                    .getDefault().isInAutomaticMode());
+            gpsPositionDrawCommand.setValid(true);
+            IToolContext toolContext = ApplicationGIS.createContext(activeMap);
+            toolContext.sendASyncCommand(gpsPositionDrawCommand);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        gpsPositionDrawCommand = new GpsPositionDrawCommand(p, gpsPoint.angle, GpsActivator
-                .getDefault().isInAutomaticMode());
-        gpsPositionDrawCommand.setValid(true);
-        IToolContext toolContext = ApplicationGIS.createContext(activeMap);
-        toolContext.sendASyncCommand(gpsPositionDrawCommand);
     }
 
     public void clear() {

@@ -32,6 +32,7 @@ import org.eclipse.ui.IActionDelegate2;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
 import eu.hydrologis.jgrass.gpsnmea.GpsActivator;
@@ -85,47 +86,46 @@ public class ZoomToGps extends Action implements IWorkbenchWindowActionDelegate,
                             nextGpsPoint = GpsActivator.getDefault().getNextGpsPoint();
                             if (nextGpsPoint == null)
                                 continue;
+                            Coordinate reprojected = nextGpsPoint.reproject(null);
+                            double longitude = reprojected.x;
+                            double latitude = reprojected.y;
+
+                            final IMap map = ApplicationGIS.getActiveMap();
+                            IViewportModel viewportModel = map.getViewportModel();
+                            Envelope bbox = viewportModel.getBounds();
+
+                            /*
+                             * make the zoom start if we are reaching 10% from the
+                             * border
+                             */
+                            double width = bbox.getWidth();
+                            double height = bbox.getHeight();
+                            double insetX = width * BORDERPERCENT / 2.0;
+                            double insetY = height * BORDERPERCENT / 2.0;
+
+                            double x1 = bbox.getMinX() + insetX;
+                            double x2 = bbox.getMaxX() - insetX;
+                            double y1 = bbox.getMinY() + insetY;
+                            double y2 = bbox.getMaxY() - insetY;
+                            Envelope newEnv = new Envelope(x1, x2, y1, y2);
+
+                            if (!newEnv.contains(longitude, latitude)) {
+
+                                Envelope bounds = new Envelope();
+                                bounds.setToNull();
+                                bounds.init(longitude - bbox.getWidth() / 2.0, longitude + bbox.getWidth() / 2.0, latitude
+                                        - bbox.getHeight() / 2.0, latitude + bbox.getHeight() / 2.0);
+
+                                if (!bounds.isNull()) {
+                                    map.sendCommandASync(NavigationCommandFactory.getInstance().createSetViewportBBoxCommand(
+                                            bounds));
+                                }
+                            }
                         } catch (Exception e1) {
                             e1.printStackTrace();
                             String message = "An error occurred while retriving the GPS position.";
-                            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                                    GpsActivator.PLUGIN_ID, e1);
+                            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e1);
                             break;
-                        }
-                        double longitude = nextGpsPoint.longitude;
-                        double latitude = nextGpsPoint.latitude;
-
-                        final IMap map = ApplicationGIS.getActiveMap();
-                        IViewportModel viewportModel = map.getViewportModel();
-                        Envelope bbox = viewportModel.getBounds();
-
-                        /*
-                         * make the zoom start if we are reaching 10% from the
-                         * border
-                         */
-                        double width = bbox.getWidth();
-                        double height = bbox.getHeight();
-                        double insetX = width * BORDERPERCENT / 2.0;
-                        double insetY = height * BORDERPERCENT / 2.0;
-                        
-                        double x1 = bbox.getMinX() + insetX;
-                        double x2 = bbox.getMaxX() - insetX;
-                        double y1 = bbox.getMinY() + insetY;
-                        double y2 = bbox.getMaxY() - insetY;
-                        Envelope newEnv = new Envelope(x1, x2, y1, y2);
-                        
-                        if (!newEnv.contains(longitude, latitude)) {
-
-                            Envelope bounds = new Envelope();
-                            bounds.setToNull();
-                            bounds.init(longitude - bbox.getWidth() / 2.0, longitude
-                                    + bbox.getWidth() / 2.0, latitude - bbox.getHeight() / 2.0,
-                                    latitude + bbox.getHeight() / 2.0);
-
-                            if (!bounds.isNull()) {
-                                map.sendCommandASync(NavigationCommandFactory.getInstance()
-                                        .createSetViewportBBoxCommand(bounds));
-                            }
                         }
                         try {
                             Thread.sleep(2000);
