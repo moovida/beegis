@@ -52,6 +52,10 @@ public class DatabasePlugin extends AbstractUIPlugin {
     }
 
     public IDatabaseConnection getActiveDatabaseConnection() {
+        if (activeDatabaseConnection == null) {
+            // TODO setup a database connection
+        }
+        
         return activeDatabaseConnection;
     }
 
