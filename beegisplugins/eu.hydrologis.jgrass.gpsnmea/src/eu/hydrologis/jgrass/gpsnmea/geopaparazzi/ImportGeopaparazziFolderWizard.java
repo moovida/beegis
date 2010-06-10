@@ -80,7 +80,7 @@ import com.vividsolutions.jts.geom.Point;
 
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GpsLogTable;
 import eu.hydrologis.jgrass.beegisutils.jgrassported.FeatureUtilities;
-import eu.hydrologis.jgrass.embeddeddb.EmbeddedDbPlugin;
+import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
 import eu.hydrologis.jgrass.geonotes.GeonoteConstants.NOTIFICATION;
@@ -268,7 +268,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         Transaction transaction = null;
         LinkedHashMap<String, List<GpsPoint>> logsMap = new LinkedHashMap<String, List<GpsPoint>>();
         try {
-            SessionFactory sessionFactory = EmbeddedDbPlugin.getDefault().getSessionFactory();
+            SessionFactory sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             for( File file : listLogFiles ) {

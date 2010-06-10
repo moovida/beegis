@@ -49,7 +49,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GpsLogTable;
-import eu.hydrologis.jgrass.embeddeddb.EmbeddedDbPlugin;
+import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.gpsnmea.GpsActivator;
 
 /**
@@ -146,8 +146,7 @@ public class ArcpadImportWizard extends Wizard implements INewWizard {
                         return;
                     }
 
-                    SessionFactory sessionFactory = EmbeddedDbPlugin.getDefault()
-                            .getSessionFactory();
+                    SessionFactory sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
                     Session session = sessionFactory.openSession();
                     Transaction transaction = session.beginTransaction();
                     while( r.hasNext() ) {

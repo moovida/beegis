@@ -31,7 +31,7 @@ import org.joda.time.DateTime;
 
 import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GpsLogTable;
-import eu.hydrologis.jgrass.embeddeddb.EmbeddedDbPlugin;
+import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.gpsnmea.gps.GpsPoint;
 import eu.hydrologis.jgrass.gpsnmea.gps.NmeaGpsPoint;
 
@@ -61,7 +61,7 @@ public class DatabaseManager {
             return;
         }
 
-        SessionFactory sessionFactory = EmbeddedDbPlugin.getDefault().getSessionFactory();
+        SessionFactory sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
@@ -98,8 +98,8 @@ public class DatabaseManager {
             to = defaultTo;
         }
 
-        SessionFactory hibernateSessionFactory = EmbeddedDbPlugin.getDefault().getSessionFactory();
-        Session session = hibernateSessionFactory.openSession();
+        SessionFactory sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
+        Session session = sessionFactory.openSession();
         List<GpsPoint> pointsList = new ArrayList<GpsPoint>();
         try {
             Criteria criteria = session.createCriteria(GpsLogTable.class);

@@ -17,23 +17,13 @@
  */
 package eu.hydrologis.jgrass.gpsnmea;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.net.URL;
-import java.sql.BatchUpdateException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Observer;
 
 import net.refractions.udig.project.IMap;
 import net.refractions.udig.project.ui.ApplicationGIS;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -44,7 +34,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.osgi.framework.BundleContext;
 
-import eu.hydrologis.jgrass.embeddeddb.EmbeddedDbPlugin;
 import eu.hydrologis.jgrass.gpsnmea.actions.AutomaticAddPoint;
 import eu.hydrologis.jgrass.gpsnmea.actions.GeonoteAdd;
 import eu.hydrologis.jgrass.gpsnmea.actions.ManualAddPoint;
