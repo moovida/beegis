@@ -42,7 +42,6 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 import net.refractions.udig.mapgraphic.MapGraphic;
 import net.refractions.udig.project.ui.ApplicationGIS;
@@ -85,7 +84,7 @@ import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTable;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTextareaTable;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GpsLogTable;
 import eu.hydrologis.jgrass.beegisutils.jgrassported.DressedStroke;
-import eu.hydrologis.jgrass.embeddeddb.EmbeddedDbPlugin;
+import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.geonotes.GeonoteConstants.NOTIFICATION;
 
 /**
@@ -130,7 +129,7 @@ public class GeonotesHandler {
 
     static {
         try {
-            sessionFactory = EmbeddedDbPlugin.getDefault().getSessionFactory();
+            sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
         } catch (Exception e) {
             String message = "An error occurred while connecting to the database";
             ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,

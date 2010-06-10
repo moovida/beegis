@@ -11,8 +11,8 @@ Require-Bundle: org.eclipse.ui,
  net.refractions.udig.project,
  net.refractions.udig.project.ui,
  net.refractions.udig.mapgraphic,
- eu.hydrologis.jgrass.beegisutils;bundle-version="1.0.0",
- eu.hydrologis.jgrass.embeddeddb
+ eu.hydrologis.jgrass.database;bundle-version="1.0.0",
+ eu.hydrologis.jgrass.beegisutils;bundle-version="1.0.0"
 Eclipse-LazyStart: true
 Export-Package: eu.hydrologis.jgrass.geonotes,
  eu.hydrologis.jgrass.geonotes.fieldbook

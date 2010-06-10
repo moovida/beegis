@@ -30,15 +30,11 @@ import net.refractions.udig.project.ui.tool.ModalTool;
 import net.refractions.udig.ui.ExceptionDetailsDialog;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 import org.joda.time.DateTime;
@@ -52,10 +48,10 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTable;
-import eu.hydrologis.jgrass.embeddeddb.EmbeddedDbPlugin;
+import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
-import eu.hydrologis.jgrass.geonotes.GeonotesUI;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
+import eu.hydrologis.jgrass.geonotes.GeonotesUI;
 import eu.hydrologis.jgrass.geonotes.GeonoteConstants.NOTIFICATION;
 import eu.hydrologis.jgrass.geonotes.fieldbook.FieldbookView;
 
@@ -90,7 +86,7 @@ public class GeoNoteTool extends AbstractModalTool implements ModalTool {
         super(MOUSE | MOTION);
 
         try {
-            sessionFactory = EmbeddedDbPlugin.getDefault().getSessionFactory();
+            sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
         } catch (Exception e) {
             String message = "An error occurred while connecting to the database";
             ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,

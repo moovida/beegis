@@ -18,7 +18,6 @@
 package eu.hydrologis.jgrass.geonotes.tools;
 
 import java.awt.Rectangle;
-import java.sql.Connection;
 
 import net.refractions.udig.project.IBlackboard;
 import net.refractions.udig.project.ILayer;
@@ -31,8 +30,6 @@ import net.refractions.udig.project.ui.tool.ModalTool;
 import net.refractions.udig.ui.ExceptionDetailsDialog;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -42,7 +39,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
-import eu.hydrologis.jgrass.embeddeddb.EmbeddedDbPlugin;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
 import eu.hydrologis.jgrass.geonotes.fieldbook.FieldbookView;
 
@@ -125,8 +121,7 @@ public class GeoNoteSelectionTool extends AbstractModalTool implements ModalTool
                 Coordinate startCoordinate = context.pixelToWorld(startX, startY);
                 Coordinate endCoordinate = context.pixelToWorld(endX, endY);
 
-                selectionBox = new ReferencedEnvelope(new Envelope(startCoordinate, endCoordinate),
-                        mapCrs);
+                selectionBox = new ReferencedEnvelope(new Envelope(startCoordinate, endCoordinate), mapCrs);
             }
             blackboard = map.getBlackboard();
             blackboard.put(SELECTIONID, new ReferencedEnvelope[]{selectionBox});
@@ -136,8 +131,7 @@ public class GeoNoteSelectionTool extends AbstractModalTool implements ModalTool
 
         } catch (Throwable e1) {
             String message = "An error occurred on Geonotes selection.";
-            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                    GeonotesPlugin.PLUGIN_ID, e1);
+            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e1);
         } finally {
             draw.setValid(false);
             context.getViewportPane().repaint();
@@ -149,8 +143,7 @@ public class GeoNoteSelectionTool extends AbstractModalTool implements ModalTool
     }
 
     public void setActive( boolean active ) {
-        IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                .getActivePage();
+        IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         if (active) {
             geonotesLayer = GeonotesPlugin.getDefault().getGeonotesLayer();
             try {
@@ -161,10 +154,9 @@ public class GeoNoteSelectionTool extends AbstractModalTool implements ModalTool
         } else {
             IMap map = ApplicationGIS.getActiveMap();
             IBlackboard blackboard = map.getBlackboard();
-            selectionBox = new ReferencedEnvelope(new Envelope(new Coordinate(0, 0),
-                    new Coordinate(0.00001, 0.00001)), map.getViewportModel().getCRS());
-            blackboard
-                    .put(GeoNoteSelectionTool.SELECTIONID, new ReferencedEnvelope[]{selectionBox});
+            selectionBox = new ReferencedEnvelope(new Envelope(new Coordinate(0, 0), new Coordinate(0.00001, 0.00001)), map
+                    .getViewportModel().getCRS());
+            blackboard.put(GeoNoteSelectionTool.SELECTIONID, new ReferencedEnvelope[]{selectionBox});
         }
         // else {
         // if (fieldbookView != null)
