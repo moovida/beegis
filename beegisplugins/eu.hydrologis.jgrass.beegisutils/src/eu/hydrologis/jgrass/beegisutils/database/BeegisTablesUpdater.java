@@ -19,8 +19,12 @@ package eu.hydrologis.jgrass.beegisutils.database;
 
 import javax.persistence.Table;
 
+import net.refractions.udig.ui.ExceptionDetailsDialog;
+
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.ui.IStartup;
 
+import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.AnnotationsTable;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesDrawareaTable;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesMediaboxBlobsTable;
@@ -28,7 +32,8 @@ import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesMediab
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTable;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTextareaTable;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GpsLogTable;
-import eu.hydrologis.jgrass.embeddeddb.EmbeddedDbPlugin;
+import eu.hydrologis.jgrass.database.DatabasePlugin;
+import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
 
 /**
  * Creates the tables if they do not exist.
@@ -43,30 +48,32 @@ public class BeegisTablesUpdater implements IStartup {
         // get the table names
         String annotationsName = AnnotationsTable.class.getAnnotation(Table.class).name();
         String geonotesName = GeonotesTable.class.getAnnotation(Table.class).name();
-        String geonotesdrawrareaName = GeonotesDrawareaTable.class.getAnnotation(Table.class)
-                .name();
+        String geonotesdrawrareaName = GeonotesDrawareaTable.class.getAnnotation(Table.class).name();
         String geonotesTextareaName = GeonotesTextareaTable.class.getAnnotation(Table.class).name();
         String geonotesMediaboxName = GeonotesMediaboxTable.class.getAnnotation(Table.class).name();
-        String geonotesMediaboxBlobsName = GeonotesMediaboxBlobsTable.class.getAnnotation(Table.class)
-                .name();
+        String geonotesMediaboxBlobsName = GeonotesMediaboxBlobsTable.class.getAnnotation(Table.class).name();
         String gpslogName = GpsLogTable.class.getAnnotation(Table.class).name();
 
         // EmbeddedDbPlugin.getDefault().createHibernateSchema(false);
 
         // check if tables exist
         try {
-            if (!EmbeddedDbPlugin.getDefault().checkTables(annotationsName, geonotesName,
-                    geonotesdrawrareaName, geonotesTextareaName, geonotesMediaboxName,
-                    geonotesMediaboxBlobsName, gpslogName)) {
-                EmbeddedDbPlugin.getDefault().createSchema(true);
+            IDatabaseConnection databaseConnection = DatabasePlugin.getDefault().getActiveDatabaseConnection();
+            if (databaseConnection == null) {
+                throw new RuntimeException();
+            }
+            if (!databaseConnection.checkTables(annotationsName, geonotesName, geonotesdrawrareaName, geonotesTextareaName,
+                    geonotesMediaboxName, geonotesMediaboxBlobsName, gpslogName)) {
+                databaseConnection.createSchemas(true);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            String message = "An error occurred while connecting to the database";
+            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, BeegisUtilsPlugin.PLUGIN_ID, e);
         }
 
     }
-    
-    public synchronized static void checkSchema(){
+
+    public synchronized static void checkSchema() {
         new BeegisTablesUpdater().earlyStartup();
     }
 }

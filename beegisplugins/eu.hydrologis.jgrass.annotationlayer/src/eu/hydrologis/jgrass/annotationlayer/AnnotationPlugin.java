@@ -18,6 +18,7 @@
 package eu.hydrologis.jgrass.annotationlayer;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
 import org.osgi.framework.BundleContext;
@@ -33,7 +33,8 @@ import org.osgi.framework.BundleContext;
 import eu.hydrologis.jgrass.beegisutils.database.BeegisTablesUpdater;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.AnnotationsTable;
 import eu.hydrologis.jgrass.beegisutils.jgrassported.DressedWorldStroke;
-import eu.hydrologis.jgrass.embeddeddb.EmbeddedDbPlugin;
+import eu.hydrologis.jgrass.database.DatabasePlugin;
+import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
 import eu.hydrologis.jgrass.database.earlystartup.AnnotatedClassesCollector;
 
 /**
@@ -100,9 +101,12 @@ public class AnnotationPlugin extends AbstractUIPlugin {
      * @throws Exception 
      */
     public void saveAnnotations() throws Exception {
-        SessionFactory hibernateSessionFactory = EmbeddedDbPlugin.getDefault()
-                .getSessionFactory();
-        Session session = hibernateSessionFactory.openSession();
+
+        IDatabaseConnection databaseConnection = DatabasePlugin.getDefault().getActiveDatabaseConnection();
+        if (databaseConnection == null) {
+            throw new IOException("Database not connected");
+        }
+        Session session = databaseConnection.openSession();
         Transaction transaction = session.beginTransaction();
 
         AnnotationsTable annotations = new AnnotationsTable();
@@ -164,8 +168,7 @@ public class AnnotationPlugin extends AbstractUIPlugin {
     }
 
     public Color getCurrentStrokeColor() {
-        Color c = new Color(currentStrokeColor[0], currentStrokeColor[1], currentStrokeColor[2],
-                currentStrokeColor[3]);
+        Color c = new Color(currentStrokeColor[0], currentStrokeColor[1], currentStrokeColor[2], currentStrokeColor[3]);
         return c;
     }
 
@@ -188,11 +191,13 @@ public class AnnotationPlugin extends AbstractUIPlugin {
     @SuppressWarnings("unchecked")
     private List<DressedWorldStroke> getDrawLines() throws Exception {
         List<DressedWorldStroke> lines = null;
-        SessionFactory hibernateSessionFactory = EmbeddedDbPlugin.getDefault()
-                .getSessionFactory();
-        Session session = hibernateSessionFactory.openSession();
+        IDatabaseConnection databaseConnection = DatabasePlugin.getDefault().getActiveDatabaseConnection();
+        if (databaseConnection == null) {
+            throw new IOException("Database not connected");
+        }
+        Session session = databaseConnection.openSession();
         try {
-            
+
             Criteria criteria = session.createCriteria(AnnotationsTable.class);
             List<AnnotationsTable> annotationsList = criteria.list();
 
