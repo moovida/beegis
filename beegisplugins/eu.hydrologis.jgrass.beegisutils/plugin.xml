@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="eu.hydrologis.jgrass.annotatedclasses">
+         point="eu.hydrologis.jgrass.database.annotatedclasses">
       <annotatedclass
             annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.AnnotationsTable">
       </annotatedclass>

@@ -35,8 +35,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.osgi.framework.BundleContext;
 
-import eu.hydrologis.jgrass.embeddeddb.interfaces.IDatabaseFactoryProvider;
-import eu.hydrologis.jgrass.embeddeddb.interfaces.IDbPlugin;
+import eu.hydrologis.jgrass.database.interfaces.IDatabaseFactoryProvider;
+import eu.hydrologis.jgrass.database.interfaces.IDbPlugin;
 import eu.hydrologis.jgrass.embeddeddb.preferences.DbParams;
 
 /**

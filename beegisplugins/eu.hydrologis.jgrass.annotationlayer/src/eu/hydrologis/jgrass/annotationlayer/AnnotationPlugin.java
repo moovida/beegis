@@ -34,7 +34,7 @@ import eu.hydrologis.jgrass.beegisutils.database.BeegisTablesUpdater;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.AnnotationsTable;
 import eu.hydrologis.jgrass.beegisutils.jgrassported.DressedWorldStroke;
 import eu.hydrologis.jgrass.embeddeddb.EmbeddedDbPlugin;
-import eu.hydrologis.jgrass.embeddeddb.earlystartup.AnnotatedClassesCollector;
+import eu.hydrologis.jgrass.database.earlystartup.AnnotatedClassesCollector;
 
 /**
  * The activator class controls the plug-in life cycle

@@ -37,9 +37,9 @@ import org.hibernate.classic.Session;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
-import eu.hydrologis.jgrass.embeddeddb.earlystartup.AnnotatedClassesCollector;
-import eu.hydrologis.jgrass.embeddeddb.interfaces.IDbPlugin;
-import eu.hydrologis.jgrass.embeddeddb.interfaces.Utils;
+import eu.hydrologis.jgrass.database.earlystartup.AnnotatedClassesCollector;
+import eu.hydrologis.jgrass.database.interfaces.IDbPlugin;
+import eu.hydrologis.jgrass.database.interfaces.Utils;
 
 /**
  * The class that deals with everything related to postgres connections.
