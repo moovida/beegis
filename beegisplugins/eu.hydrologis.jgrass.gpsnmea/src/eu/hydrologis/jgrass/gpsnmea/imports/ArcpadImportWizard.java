@@ -146,8 +146,7 @@ public class ArcpadImportWizard extends Wizard implements INewWizard {
                         return;
                     }
 
-                    SessionFactory sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
-                    Session session = sessionFactory.openSession();
+                    Session session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
                     Transaction transaction = session.beginTransaction();
                     while( r.hasNext() ) {
                         Object[] fields = new Object[numFields];

@@ -77,22 +77,11 @@ public class GeoNoteTool extends AbstractModalTool implements ModalTool {
 
     private ReferencedEnvelope selectionBox;
 
-    private SessionFactory sessionFactory;
-
     /**
      * Creates an Geonotes {@link ModalTool tool}.
      */
     public GeoNoteTool() {
         super(MOUSE | MOTION);
-
-        try {
-            sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
-        } catch (Exception e) {
-            String message = "An error occurred while connecting to the database";
-            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                    GeonotesPlugin.PLUGIN_ID, e);
-            e.printStackTrace();
-        }
     }
 
     public void mousePressed( MapMouseEvent e ) {
@@ -127,8 +116,7 @@ public class GeoNoteTool extends AbstractModalTool implements ModalTool {
         int endX = e.x;
         int endY = e.y;
 
-        final CoordinateReferenceSystem mapCrs = ApplicationGIS.getActiveMap().getViewportModel()
-                .getCRS();
+        final CoordinateReferenceSystem mapCrs = ApplicationGIS.getActiveMap().getViewportModel().getCRS();
 
         if (endX == startX && endY == startY) {
             selectionBox = context.getBoundingBox(e.getPoint(), 5);
@@ -136,8 +124,7 @@ public class GeoNoteTool extends AbstractModalTool implements ModalTool {
             Coordinate startCoordinate = context.pixelToWorld(startX, startY);
             Coordinate endCoordinate = context.pixelToWorld(endX, endY);
 
-            selectionBox = new ReferencedEnvelope(new Envelope(startCoordinate, endCoordinate),
-                    mapCrs);
+            selectionBox = new ReferencedEnvelope(new Envelope(startCoordinate, endCoordinate), mapCrs);
         }
 
         final Display display = Display.getDefault();
@@ -152,7 +139,7 @@ public class GeoNoteTool extends AbstractModalTool implements ModalTool {
                 Session session = null;
                 GeonotesHandler geonotesHandler = null;
                 try {
-                    session = sessionFactory.openSession();
+                    session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
                     Criteria criteria = session.createCriteria(GeonotesTable.class);
                     List<GeonotesTable> geonotesDbList = criteria.list();
                     for( GeonotesTable dbGeonote : geonotesDbList ) {
@@ -182,15 +169,13 @@ public class GeoNoteTool extends AbstractModalTool implements ModalTool {
                         // create a new note
                         point = context.pixelToWorld(e.x, e.y);
 
-                        geonotesHandler = new GeonotesHandler(point.x, point.y, mapName + " - "
-                                + projectName, null, null, new DateTime(), mapCrs.toWKT(), null,
-                                null, null, null);
+                        geonotesHandler = new GeonotesHandler(point.x, point.y, mapName + " - " + projectName, null, null,
+                                new DateTime(), mapCrs.toWKT(), null, null, null, null);
 
                         GeonotesUI geonoteUI = new GeonotesUI(geonotesHandler);
                         geonoteUI.openInShell(null);
 
-                        FieldbookView fieldBookView = GeonotesPlugin.getDefault()
-                                .getFieldbookView();
+                        FieldbookView fieldBookView = GeonotesPlugin.getDefault().getFieldbookView();
                         if (fieldBookView != null) {
                             geonotesHandler.addObserver(fieldBookView);
                         }
@@ -204,17 +189,15 @@ public class GeoNoteTool extends AbstractModalTool implements ModalTool {
                             } else {
                                 point = context.pixelToWorld(e.x, e.y);
 
-                                geonotesHandler = new GeonotesHandler(point.x, point.y, mapName
-                                        + " - " + projectName, null, null, new DateTime(), mapCrs
-                                        .toWKT(), null, null, null, null);
+                                geonotesHandler = new GeonotesHandler(point.x, point.y, mapName + " - " + projectName, null,
+                                        null, new DateTime(), mapCrs.toWKT(), null, null, null, null);
 
                             }
 
                             GeonotesUI geonoteUI = new GeonotesUI(geonotesHandler);
                             geonoteUI.openInShell(null);
 
-                            FieldbookView fieldBookView = GeonotesPlugin.getDefault()
-                                    .getFieldbookView();
+                            FieldbookView fieldBookView = GeonotesPlugin.getDefault().getFieldbookView();
                             if (fieldBookView != null) {
                                 geonotesHandler.addObserver(fieldBookView);
                             }
@@ -223,15 +206,13 @@ public class GeoNoteTool extends AbstractModalTool implements ModalTool {
 
                 } catch (Exception e) {
                     String message = "An error occurred while opening the geonote.";
-                    ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                            GeonotesPlugin.PLUGIN_ID, e);
+                    ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
                 } finally {
                     session.close();
                     draw.setValid(false);
                     ILayer geonotesLayer = GeonotesPlugin.getDefault().getGeonotesLayer();
-                    geonotesLayer.refresh(geonotesHandler
-                            .getBoundsAsReferenceEnvelope(ApplicationGIS.getActiveMap()
-                                    .getViewportModel().getCRS()));
+                    geonotesLayer.refresh(geonotesHandler.getBoundsAsReferenceEnvelope(ApplicationGIS.getActiveMap()
+                            .getViewportModel().getCRS()));
                 }
             }
 

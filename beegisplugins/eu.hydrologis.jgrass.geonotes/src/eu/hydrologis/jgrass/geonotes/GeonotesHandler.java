@@ -62,9 +62,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
 import org.hibernate.criterion.Restrictions;
@@ -120,7 +118,6 @@ public class GeonotesHandler {
     private List<GeonotesObserver> observers = new ArrayList<GeonotesObserver>();
 
     private Long id;
-    private SessionFactory sessionFactory;
     private GeonotesTable geonoteTable;
     private GeonotesTextareaTable geonotesTextareaTable;
     private GeonotesDrawareaTable geonotesDrawareaTable;
@@ -129,17 +126,15 @@ public class GeonotesHandler {
 
     private GeometryFactory gF = new GeometryFactory();
 
-    private SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            try {
-                sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
-            } catch (Exception e) {
-                String message = "An error occurred while connecting to the database";
-                ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
-                e.printStackTrace();
-            }
+    private Session openSession() {
+        try {
+            return DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
+        } catch (Exception e) {
+            String message = "An error occurred while connecting to the database";
+            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
+            e.printStackTrace();
         }
-        return sessionFactory;
+        return null;
     }
 
     /**
@@ -198,7 +193,7 @@ public class GeonotesHandler {
                     + ":255";
         }
 
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         try {
             Transaction transaction = session.beginTransaction();
             geonoteTable = new GeonotesTable();
@@ -231,7 +226,7 @@ public class GeonotesHandler {
      * @throws Exception
      */
     public GeonotesHandler( Long id ) throws Exception {
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         try {
             Criteria criteria = session.createCriteria(GeonotesTable.class);
             criteria.add(Restrictions.eq(GEONOTESTABLE_ID_FIELD, id));
@@ -358,7 +353,7 @@ public class GeonotesHandler {
         if (geonotesTextareaTable != null) {
             return geonotesTextareaTable;
         }
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         try {
             Criteria criteria = session.createCriteria(GeonotesTextareaTable.class);
             criteria.add(Restrictions.eq(GEONOTESTABLE_EXTERNAL_KEY_ID, geonoteTable));
@@ -382,7 +377,7 @@ public class GeonotesHandler {
         if (geonotesDrawareaTable != null) {
             return geonotesDrawareaTable;
         }
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         try {
             Criteria criteria = session.createCriteria(GeonotesDrawareaTable.class);
             criteria.add(Restrictions.eq(GEONOTESTABLE_EXTERNAL_KEY_ID, geonoteTable));
@@ -406,7 +401,7 @@ public class GeonotesHandler {
      * @throws Exception
      */
     public List<GeonotesMediaboxTable> getGeonotesMediaboxTables( String mediaName ) throws Exception {
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         try {
             Criteria criteria = session.createCriteria(GeonotesMediaboxTable.class);
             criteria.add(Restrictions.eq(GEONOTESTABLE_EXTERNAL_KEY_ID, geonoteTable));
@@ -426,7 +421,7 @@ public class GeonotesHandler {
      * @return the {@link GeonotesMediaboxBlobsTable} for the supplied {@link GeonotesMediaboxTable}.
      */
     public GeonotesMediaboxBlobsTable getGeonotesMediaboxBlobsTable( GeonotesMediaboxTable geonotesMediaboxTable ) {
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         try {
             Criteria criteria = session.createCriteria(GeonotesMediaboxBlobsTable.class);
             criteria.add(Restrictions.eq(GEONOTESMEDIA_EXTERNAL_KEY_ID, geonotesMediaboxTable));
@@ -450,7 +445,7 @@ public class GeonotesHandler {
      * </p>
      */
     public void persistNote() {
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         try {
             Transaction transaction = session.beginTransaction();
             session.saveOrUpdate(geonoteTable);
@@ -472,7 +467,7 @@ public class GeonotesHandler {
             deleteMedia(mediaName);
         }
 
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         try {
             // start batch delete
             Transaction transaction = session.beginTransaction();
@@ -518,7 +513,7 @@ public class GeonotesHandler {
         }
         textareaTable.setText(text);
 
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         try {
             Transaction transaction = session.beginTransaction();
             session.saveOrUpdate(textareaTable);
@@ -542,7 +537,7 @@ public class GeonotesHandler {
         }
 
         GeonotesDrawareaTable drawareaTable = getGeonotesDrawareaTable();
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         try {
             Transaction transaction = session.beginTransaction();
             if (drawareaTable == null) {
@@ -573,7 +568,7 @@ public class GeonotesHandler {
             return;
         }
 
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         Transaction transaction = session.beginTransaction();
         try {
             // create mediabox
@@ -615,7 +610,7 @@ public class GeonotesHandler {
      * @throws Exception
      */
     public void deleteMedia( String mediaName ) throws Exception {
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         try {
             Transaction transaction = session.beginTransaction();
             Criteria criteria = session.createCriteria(GeonotesMediaboxTable.class);
@@ -660,7 +655,7 @@ public class GeonotesHandler {
         GeonotesMediaboxBlobsTable mediaboxBlobsTable = getGeonotesMediaboxBlobsTable(mediaboxTables.get(0));
         mediaboxBlobsTable.setDrawings(drawings);
 
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         try {
             Transaction transaction = session.beginTransaction();
             session.saveOrUpdate(mediaboxBlobsTable);
@@ -1010,7 +1005,7 @@ public class GeonotesHandler {
     public static List<GeonotesHandler> getGeonotesHandlers() {
         Session session = null;
         try {
-            session = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory().openSession();
+            session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
             List<GeonotesHandler> geonotesHandlers = new ArrayList<GeonotesHandler>();
             Criteria criteria = session.createCriteria(GeonotesTable.class);
             List<GeonotesTable> resultsList = criteria.list();
@@ -1035,7 +1030,7 @@ public class GeonotesHandler {
     public static List<GeonotesTable> getGeonotesTables() throws Exception {
         Session session = null;
         try {
-            session = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory().openSession();
+            session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
             Criteria criteria = session.createCriteria(GeonotesTable.class);
             List<GeonotesTable> resultsList = criteria.list();
             return resultsList;
@@ -1058,7 +1053,7 @@ public class GeonotesHandler {
 
         Session session = null;
         try {
-            session = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory().openSession();
+            session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
             Criteria criteria = session.createCriteria(GpsLogTable.class);
             String utcTimeStr = "utcTime";
             criteria.add(between(utcTimeStr, from, to));

@@ -19,6 +19,8 @@
 package eu.hydrologis.jgrass.database.core;
 
 import java.util.Properties;
+import java.util.Set;
+import java.util.Map.Entry;
 
 /**
  * Database connection properties.
@@ -40,6 +42,9 @@ public class DatabaseConnectionProperties extends Properties {
 
     public static final String SHOW_SQL = "SHOW_SQL";
     public static final String FORMAT_SQL = "FORMAT_SQL";
+    
+    public DatabaseConnectionProperties() {
+    }
 
     /**
      * Wrapps a {@link Properties} object into a {@link DatabaseConnectionProperties}.
@@ -47,7 +52,10 @@ public class DatabaseConnectionProperties extends Properties {
      * @param properties the properties object.
      */
     public DatabaseConnectionProperties( Properties properties ) {
-        super(properties);
+        Set<Entry<Object, Object>> entries = properties.entrySet();
+        for( Entry<Object, Object> entry : entries ) {
+            put(entry.getKey(), entry.getValue());
+        }
     }
 
     public String getTitle() {
@@ -90,5 +98,34 @@ public class DatabaseConnectionProperties extends Properties {
         String doLog = getProperty(SHOW_SQL);
         return Boolean.parseBoolean(doLog);
     }
+
+    @Override
+    public synchronized String toString() {
+        StringBuilder sB = new StringBuilder();
+        Set<Entry<Object, Object>> entries = entrySet();
+        for( Entry<Object, Object> entry : entries ) {
+            sB.append(entry.getKey().toString());
+            sB.append("=");
+            sB.append(entry.getValue().toString());
+            sB.append("\n");
+        }
+        return sB.toString();
+    }
+
+    /**
+     * Populates the properties from a text of properties.
+     * 
+     * @param propertiesString
+     */
+    public void fromString( String propertiesString ) {
+        String[] linesSplit = propertiesString.split("\n|\r");
+        for( String line : linesSplit ) {
+            if (line.contains("=")) {
+                String[] split = line.trim().split("=");
+                put(split[0], split[1]);
+            }
+        }
+    }
+
 
 }

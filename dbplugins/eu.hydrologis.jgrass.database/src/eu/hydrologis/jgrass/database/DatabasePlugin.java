@@ -1,5 +1,9 @@
 package eu.hydrologis.jgrass.database;
 
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IPreferencesService;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -67,6 +71,10 @@ public class DatabasePlugin extends AbstractUIPlugin {
     public synchronized IDatabaseConnection getActiveDatabaseConnection() throws Exception {
         if (activeDatabaseConnection == null) {
             // TODO setup a database connection
+            IPreferencesService preferencesService = Platform.getPreferencesService();
+            IEclipsePreferences instanceNode = new InstanceScope().getNode("com.example.myplugin");
+            
+            
         }
 
         if (activeDatabaseConnection == null) {
@@ -76,12 +84,18 @@ public class DatabasePlugin extends AbstractUIPlugin {
     }
 
     /**
+     * Disconnects the active database connection.
      * 
-     * 
-     * @throws Exception
+     * @return true if the database was disconnected properly.
      */
-    public void disconnectActiveDatabaseConnection() throws Exception {
-        activeDatabaseConnection.closeSessionFactory();
+    public boolean disconnectActiveDatabaseConnection() {
+        try {
+            activeDatabaseConnection.closeSessionFactory();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public void setActiveDatabaseConnection( IDatabaseConnection databaseConnection ) throws Exception {

@@ -44,10 +44,8 @@ public class DatabaseManager {
     private static DateTime defaultFrom = null;
     private static DateTime defaultTo = null;
     static {
-        defaultFrom = BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM
-                .parseDateTime("1970-01-01 00:00"); //$NON-NLS-1$
-        defaultTo = BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM
-                .parseDateTime("3000-01-01 00:00"); //$NON-NLS-1$
+        defaultFrom = BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM.parseDateTime("1970-01-01 00:00"); //$NON-NLS-1$
+        defaultTo = BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM.parseDateTime("3000-01-01 00:00"); //$NON-NLS-1$
     }
 
     /**
@@ -61,8 +59,7 @@ public class DatabaseManager {
             return;
         }
 
-        SessionFactory sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
-        Session session = sessionFactory.openSession();
+        Session session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
         Transaction transaction = session.beginTransaction();
 
         GpsLogTable gpsLog = new GpsLogTable();
@@ -88,8 +85,7 @@ public class DatabaseManager {
      * @return the list of points.
      * @throws Exception
      */
-    public List<GpsPoint> getGpsPointBetweenTimeStamp( DateTime from, DateTime to )
-            throws Exception {
+    public List<GpsPoint> getGpsPointBetweenTimeStamp( DateTime from, DateTime to ) throws Exception {
 
         if (from == null) {
             from = defaultFrom;
@@ -98,8 +94,7 @@ public class DatabaseManager {
             to = defaultTo;
         }
 
-        SessionFactory sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
-        Session session = sessionFactory.openSession();
+        Session session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
         List<GpsPoint> pointsList = new ArrayList<GpsPoint>();
         try {
             Criteria criteria = session.createCriteria(GpsLogTable.class);

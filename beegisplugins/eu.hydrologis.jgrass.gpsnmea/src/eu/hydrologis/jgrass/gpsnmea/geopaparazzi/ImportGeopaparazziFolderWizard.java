@@ -268,8 +268,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         Transaction transaction = null;
         LinkedHashMap<String, List<GpsPoint>> logsMap = new LinkedHashMap<String, List<GpsPoint>>();
         try {
-            SessionFactory sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
-            session = sessionFactory.openSession();
+            session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
             transaction = session.beginTransaction();
             for( File file : listLogFiles ) {
 
