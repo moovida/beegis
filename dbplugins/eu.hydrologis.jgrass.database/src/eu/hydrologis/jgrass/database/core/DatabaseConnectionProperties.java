@@ -30,6 +30,10 @@ import java.util.Map.Entry;
 public class DatabaseConnectionProperties extends Properties {
     private static final long serialVersionUID = 1L;
 
+    public static final String DATABASES_XML = "DATABASES";
+    public static final String DATABASE_XML = "DATABASE";
+
+    public static final String ISACTIVE = "ISACTIVE";
     public static final String TITLE = "TITLE";
     public static final String DESCRIPTION = "DESCRIPTION";
     public static final String DRIVER = "DRIVER";
@@ -40,9 +44,11 @@ public class DatabaseConnectionProperties extends Properties {
     public static final String HOST = "HOST";
     public static final String PATH = "PATH";
 
+    public static String[] POSSIBLETAGS = {ISACTIVE, TITLE, DESCRIPTION, DRIVER, DATABASE, PORT, USER, PASS, HOST, PATH};
+
     public static final String SHOW_SQL = "SHOW_SQL";
     public static final String FORMAT_SQL = "FORMAT_SQL";
-    
+
     public DatabaseConnectionProperties() {
     }
 
@@ -126,6 +132,5 @@ public class DatabaseConnectionProperties extends Properties {
             }
         }
     }
-
 
 }
