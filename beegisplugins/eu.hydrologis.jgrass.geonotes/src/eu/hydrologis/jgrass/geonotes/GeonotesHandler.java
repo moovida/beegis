@@ -41,6 +41,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.refractions.udig.mapgraphic.MapGraphic;
@@ -61,6 +62,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -116,9 +118,9 @@ public class GeonotesHandler {
     private static final String GEONOTESTABLE_EXTERNAL_KEY_ID = "geonotesId";
 
     private List<GeonotesObserver> observers = new ArrayList<GeonotesObserver>();
-    
+
     private Long id;
-    private static SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
     private GeonotesTable geonoteTable;
     private GeonotesTextareaTable geonotesTextareaTable;
     private GeonotesDrawareaTable geonotesDrawareaTable;
@@ -127,15 +129,17 @@ public class GeonotesHandler {
 
     private GeometryFactory gF = new GeometryFactory();
 
-    static {
-        try {
-            sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
-        } catch (Exception e) {
-            String message = "An error occurred while connecting to the database";
-            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                    GeonotesPlugin.PLUGIN_ID, e);
-            e.printStackTrace();
+    private SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            try {
+                sessionFactory = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory();
+            } catch (Exception e) {
+                String message = "An error occurred while connecting to the database";
+                ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
+                e.printStackTrace();
+            }
         }
+        return sessionFactory;
     }
 
     /**
@@ -159,31 +163,25 @@ public class GeonotesHandler {
      * @param height a height for the geonote or <code>null</code>.
      * @throws Exception
      */
-    public GeonotesHandler( Double east, Double north, String title, String info, Integer type,
-            DateTime creationTime, String crsWkt, Double azimut, String color, Integer width,
-            Integer height ) throws Exception {
+    public GeonotesHandler( Double east, Double north, String title, String info, Integer type, DateTime creationTime,
+            String crsWkt, Double azimut, String color, Integer width, Integer height ) throws Exception {
         if (east == null) {
-            throw new IllegalArgumentException(
-                    "The east coordinate is a mandatory parameter to create a geonote.");
+            throw new IllegalArgumentException("The east coordinate is a mandatory parameter to create a geonote.");
         }
         if (north == null) {
-            throw new IllegalArgumentException(
-                    "The west coordinate is a mandatory parameter to create a geonote.");
+            throw new IllegalArgumentException("The west coordinate is a mandatory parameter to create a geonote.");
         }
         if (creationTime == null) {
-            throw new IllegalArgumentException(
-                    "The creationtime is a mandatory parameter to create a geonote.");
+            throw new IllegalArgumentException("The creationtime is a mandatory parameter to create a geonote.");
         }
         if (crsWkt == null) {
-            throw new IllegalArgumentException(
-                    "The crsWkt is a mandatory parameter to create a geonote.");
+            throw new IllegalArgumentException("The crsWkt is a mandatory parameter to create a geonote.");
         }
         if (title == null) {
             title = DEFAULT_GEONOTE_TITLE;
         }
         if (info == null) {
-            String dateString = creationTime
-                    .toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM);
+            String dateString = creationTime.toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM);
             info = "Date:" + dateString + "\nN:" + north + "\nE:" + east;
         }
         if (type == null) {
@@ -196,11 +194,11 @@ public class GeonotesHandler {
             height = DEFAULT_GEONOTE_HEIGHT;
         }
         if (color == null) {
-            color = DEFAULTBACKGROUNDCOLORS[0][0] + ":" + DEFAULTBACKGROUNDCOLORS[0][1] + ":"
-                    + DEFAULTBACKGROUNDCOLORS[0][2] + ":255";
+            color = DEFAULTBACKGROUNDCOLORS[0][0] + ":" + DEFAULTBACKGROUNDCOLORS[0][1] + ":" + DEFAULTBACKGROUNDCOLORS[0][2]
+                    + ":255";
         }
 
-        Session session = sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         try {
             Transaction transaction = session.beginTransaction();
             geonoteTable = new GeonotesTable();
@@ -233,7 +231,7 @@ public class GeonotesHandler {
      * @throws Exception
      */
     public GeonotesHandler( Long id ) throws Exception {
-        Session session = sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         try {
             Criteria criteria = session.createCriteria(GeonotesTable.class);
             criteria.add(Restrictions.eq(GEONOTESTABLE_ID_FIELD, id));
@@ -327,8 +325,8 @@ public class GeonotesHandler {
     public Color getColor( Display display ) {
         if (color == null) {
             String[] colorSplit = geonoteTable.getColor().split(":");
-            int[] colorRGB = new int[]{Integer.parseInt(colorSplit[0]),
-                    Integer.parseInt(colorSplit[1]), Integer.parseInt(colorSplit[2])};
+            int[] colorRGB = new int[]{Integer.parseInt(colorSplit[0]), Integer.parseInt(colorSplit[1]),
+                    Integer.parseInt(colorSplit[2])};
             color = new Color(display, colorRGB[0], colorRGB[1], colorRGB[2]);
         }
         return color;
@@ -344,8 +342,8 @@ public class GeonotesHandler {
         }
         geonoteTable.setColor(colorString);
         String[] colorSplit = colorString.split(":");
-        int[] colorRGB = new int[]{Integer.parseInt(colorSplit[0]),
-                Integer.parseInt(colorSplit[1]), Integer.parseInt(colorSplit[2])};
+        int[] colorRGB = new int[]{Integer.parseInt(colorSplit[0]), Integer.parseInt(colorSplit[1]),
+                Integer.parseInt(colorSplit[2])};
         color = new Color(display, colorRGB[0], colorRGB[1], colorRGB[2]);
 
         notifyObservers(NOTIFICATION.STYLECHANGED);
@@ -360,7 +358,7 @@ public class GeonotesHandler {
         if (geonotesTextareaTable != null) {
             return geonotesTextareaTable;
         }
-        Session session = sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         try {
             Criteria criteria = session.createCriteria(GeonotesTextareaTable.class);
             criteria.add(Restrictions.eq(GEONOTESTABLE_EXTERNAL_KEY_ID, geonoteTable));
@@ -384,7 +382,7 @@ public class GeonotesHandler {
         if (geonotesDrawareaTable != null) {
             return geonotesDrawareaTable;
         }
-        Session session = sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         try {
             Criteria criteria = session.createCriteria(GeonotesDrawareaTable.class);
             criteria.add(Restrictions.eq(GEONOTESTABLE_EXTERNAL_KEY_ID, geonoteTable));
@@ -407,9 +405,8 @@ public class GeonotesHandler {
      * @return the {@link GeonotesMediaboxTable}s for this geonote.
      * @throws Exception
      */
-    public List<GeonotesMediaboxTable> getGeonotesMediaboxTables( String mediaName )
-            throws Exception {
-        Session session = sessionFactory.openSession();
+    public List<GeonotesMediaboxTable> getGeonotesMediaboxTables( String mediaName ) throws Exception {
+        Session session = getSessionFactory().openSession();
         try {
             Criteria criteria = session.createCriteria(GeonotesMediaboxTable.class);
             criteria.add(Restrictions.eq(GEONOTESTABLE_EXTERNAL_KEY_ID, geonoteTable));
@@ -428,9 +425,8 @@ public class GeonotesHandler {
      * 
      * @return the {@link GeonotesMediaboxBlobsTable} for the supplied {@link GeonotesMediaboxTable}.
      */
-    public GeonotesMediaboxBlobsTable getGeonotesMediaboxBlobsTable(
-            GeonotesMediaboxTable geonotesMediaboxTable ) {
-        Session session = sessionFactory.openSession();
+    public GeonotesMediaboxBlobsTable getGeonotesMediaboxBlobsTable( GeonotesMediaboxTable geonotesMediaboxTable ) {
+        Session session = getSessionFactory().openSession();
         try {
             Criteria criteria = session.createCriteria(GeonotesMediaboxBlobsTable.class);
             criteria.add(Restrictions.eq(GEONOTESMEDIA_EXTERNAL_KEY_ID, geonotesMediaboxTable));
@@ -454,7 +450,7 @@ public class GeonotesHandler {
      * </p>
      */
     public void persistNote() {
-        Session session = sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         try {
             Transaction transaction = session.beginTransaction();
             session.saveOrUpdate(geonoteTable);
@@ -476,7 +472,7 @@ public class GeonotesHandler {
             deleteMedia(mediaName);
         }
 
-        Session session = sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         try {
             // start batch delete
             Transaction transaction = session.beginTransaction();
@@ -492,8 +488,7 @@ public class GeonotesHandler {
             query.executeUpdate();
 
             // remove the geonote itself
-            query = session.createQuery("delete " + GeonoteConstants.GEONOTESTABLE_NAME
-                    + " g where g.id = :geonotesId");
+            query = session.createQuery("delete " + GeonoteConstants.GEONOTESTABLE_NAME + " g where g.id = :geonotesId");
             query.setLong(GEONOTESTABLE_EXTERNAL_KEY_ID, id);
             query.executeUpdate();
 
@@ -523,7 +518,7 @@ public class GeonotesHandler {
         }
         textareaTable.setText(text);
 
-        Session session = sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         try {
             Transaction transaction = session.beginTransaction();
             session.saveOrUpdate(textareaTable);
@@ -547,7 +542,7 @@ public class GeonotesHandler {
         }
 
         GeonotesDrawareaTable drawareaTable = getGeonotesDrawareaTable();
-        Session session = sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         try {
             Transaction transaction = session.beginTransaction();
             if (drawareaTable == null) {
@@ -578,7 +573,7 @@ public class GeonotesHandler {
             return;
         }
 
-        Session session = sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         try {
             // create mediabox
@@ -620,7 +615,7 @@ public class GeonotesHandler {
      * @throws Exception
      */
     public void deleteMedia( String mediaName ) throws Exception {
-        Session session = sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         try {
             Transaction transaction = session.beginTransaction();
             Criteria criteria = session.createCriteria(GeonotesMediaboxTable.class);
@@ -633,8 +628,7 @@ public class GeonotesHandler {
             session.delete(mediabox);
 
             // delete blob
-            Query query = session.createQuery("delete "
-                    + GeonoteConstants.MEDIABOXBLOBSTABLE_CLASSNAME
+            Query query = session.createQuery("delete " + GeonoteConstants.MEDIABOXBLOBSTABLE_CLASSNAME
                     + " gb where gb.mediaboxId = :mediaboxId");
             query.setLong(GEONOTESMEDIA_EXTERNAL_KEY_ID, mediaboxId);
             query.executeUpdate();
@@ -653,23 +647,20 @@ public class GeonotesHandler {
      *              to refer to an existing media. 
      * @throws Exception
      */
-    public void setMediaDrawings( ArrayList<DressedStroke> drawings, String mediaName )
-            throws Exception {
+    public void setMediaDrawings( ArrayList<DressedStroke> drawings, String mediaName ) throws Exception {
         if (drawings == null || mediaName == null) {
             throw new IllegalArgumentException("drawings/mediaName can't be null.");
         }
 
         List<GeonotesMediaboxTable> mediaboxTables = getGeonotesMediaboxTables(mediaName);
         if (mediaboxTables == null || mediaboxTables.size() == 0) {
-            throw new IllegalArgumentException("Couldn't retrieve any mediabox for the name: "
-                    + mediaName);
+            throw new IllegalArgumentException("Couldn't retrieve any mediabox for the name: " + mediaName);
         }
 
-        GeonotesMediaboxBlobsTable mediaboxBlobsTable = getGeonotesMediaboxBlobsTable(mediaboxTables
-                .get(0));
+        GeonotesMediaboxBlobsTable mediaboxBlobsTable = getGeonotesMediaboxBlobsTable(mediaboxTables.get(0));
         mediaboxBlobsTable.setDrawings(drawings);
 
-        Session session = sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         try {
             Transaction transaction = session.beginTransaction();
             session.saveOrUpdate(mediaboxBlobsTable);
@@ -691,8 +682,7 @@ public class GeonotesHandler {
      *                      the drawings are not considered.
      * @return the {@link File} to the extracted media.
      */
-    public File extractMediaToPath( File folder, String mediaName, List<DressedStroke> drawingList )
-            throws Exception {
+    public File extractMediaToPath( File folder, String mediaName, List<DressedStroke> drawingList ) throws Exception {
         if (folder == null) {
             // extract to tmp
             String tmpDirPath = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
@@ -700,8 +690,7 @@ public class GeonotesHandler {
         }
         File file = new File(folder, mediaName);
         List<GeonotesMediaboxTable> mediaboxTables = getGeonotesMediaboxTables(mediaName);
-        GeonotesMediaboxBlobsTable mediaboxBlobsTable = getGeonotesMediaboxBlobsTable(mediaboxTables
-                .get(0));
+        GeonotesMediaboxBlobsTable mediaboxBlobsTable = getGeonotesMediaboxBlobsTable(mediaboxTables.get(0));
         mediaboxBlobsTable.getFromMediaboxToFile(file);
         List<DressedStroke> drawings = mediaboxBlobsTable.getDrawings();
         drawingList.addAll(drawings);
@@ -727,8 +716,7 @@ public class GeonotesHandler {
                 // transform coordinates before check
                 MathTransform transform = CRS.findMathTransform(noteCrs, destinationCrs, true);
                 // jts geometry
-                com.vividsolutions.jts.geom.Point pt = gF.createPoint(new Coordinate(position.x,
-                        position.y));
+                com.vividsolutions.jts.geom.Point pt = gF.createPoint(new Coordinate(position.x, position.y));
                 Geometry targetGeometry = JTS.transform(pt, transform);
                 reprojectedCoordinate = targetGeometry.getCoordinate();
             } catch (Exception e) {
@@ -743,12 +731,9 @@ public class GeonotesHandler {
 
         double deltaX = pixelWidth * (double) PINIMAGE_WIDTH;
         double deltaY = pixelHeight * (double) PINIMAGE_HEIGHT;
-        Coordinate lowerLeft = new Coordinate(reprojectedCoordinate.x - deltaX,
-                reprojectedCoordinate.y - deltaY);
-        Coordinate upperRight = new Coordinate(reprojectedCoordinate.x + deltaX,
-                reprojectedCoordinate.y + deltaY);
-        ReferencedEnvelope refEnvelope = new ReferencedEnvelope(
-                new Envelope(lowerLeft, upperRight), destinationCrs);
+        Coordinate lowerLeft = new Coordinate(reprojectedCoordinate.x - deltaX, reprojectedCoordinate.y - deltaY);
+        Coordinate upperRight = new Coordinate(reprojectedCoordinate.x + deltaX, reprojectedCoordinate.y + deltaY);
+        ReferencedEnvelope refEnvelope = new ReferencedEnvelope(new Envelope(lowerLeft, upperRight), destinationCrs);
 
         return refEnvelope;
     }
@@ -764,8 +749,7 @@ public class GeonotesHandler {
 
         IRunnableWithProgress operation = new IRunnableWithProgress(){
 
-            public void run( IProgressMonitor pm ) throws InvocationTargetException,
-                    InterruptedException {
+            public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
 
                 try {
                     pm.beginTask("Dump geonote to disk.", 2);
@@ -779,14 +763,12 @@ public class GeonotesHandler {
                     title = title.replace(' ', '_');
                     File mainDir = new File(folderFile.getAbsolutePath() + File.separator + title);
                     if (!mainDir.exists() && !mainDir.mkdir()) {
-                        throw new InterruptedException("Coudn't create folder: "
-                                + mainDir.getAbsolutePath());
+                        throw new InterruptedException("Coudn't create folder: " + mainDir.getAbsolutePath());
                     }
 
                     // dump info text
                     try {
-                        File textFile = new File(mainDir.getAbsolutePath() + File.separator
-                                + "geonote_info.txt");
+                        File textFile = new File(mainDir.getAbsolutePath() + File.separator + "geonote_info.txt");
                         BufferedWriter bW = new BufferedWriter(new FileWriter(textFile));
 
                         StringBuilder msgBuilder = new StringBuilder();
@@ -806,18 +788,15 @@ public class GeonotesHandler {
                         msgBuilder.append("\n\n");
                         msgBuilder.append("Creation date: ");
                         DateTime creationDateTime = geonoteTable.getCreationDateTime();
-                        msgBuilder.append(creationDateTime
-                                .toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM));
+                        msgBuilder.append(creationDateTime.toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM));
                         msgBuilder.append("\n\n");
                         msgBuilder.append("Position: ");
-                        Coordinate position = new Coordinate(geonoteTable.getEast(), geonoteTable
-                                .getNorth());
+                        Coordinate position = new Coordinate(geonoteTable.getEast(), geonoteTable.getNorth());
                         msgBuilder.append(position.x);
                         msgBuilder.append(" / ");
                         msgBuilder.append(position.y);
                         msgBuilder.append("\n\n");
-                        msgBuilder
-                                .append("Geonote Spatial Reference System (ESRI prj file format):\n");
+                        msgBuilder.append("Geonote Spatial Reference System (ESRI prj file format):\n");
                         String crsWkt = geonoteTable.getCrsWkt();
                         msgBuilder.append(crsWkt);
                         msgBuilder.append("\n\n");
@@ -826,14 +805,12 @@ public class GeonotesHandler {
                         pm.worked(1);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        GeonotesPlugin.log(
-                                "GeonotesPlugin problem: eu.hydrologis.jgrass.geonotes##run", e); //$NON-NLS-1$
+                        GeonotesPlugin.log("GeonotesPlugin problem: eu.hydrologis.jgrass.geonotes##run", e); //$NON-NLS-1$
                     }
 
                     // dump text
                     try {
-                        File textFile = new File(mainDir.getAbsolutePath() + File.separator
-                                + "geonote_textbox.txt");
+                        File textFile = new File(mainDir.getAbsolutePath() + File.separator + "geonote_textbox.txt");
                         BufferedWriter bW = new BufferedWriter(new FileWriter(textFile));
                         String text = getGeonotesTextareaTable().getText();
                         if (text != null) {
@@ -845,14 +822,12 @@ public class GeonotesHandler {
                         pm.worked(1);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        GeonotesPlugin.log(
-                                "GeonotesPlugin problem: eu.hydrologis.jgrass.geonotes##run", e); //$NON-NLS-1$
+                        GeonotesPlugin.log("GeonotesPlugin problem: eu.hydrologis.jgrass.geonotes##run", e); //$NON-NLS-1$
                     }
 
                     try {
                         // dump image
-                        File imageFile = new File(mainDir.getAbsolutePath() + File.separator
-                                + "geonote_paintbox.png");
+                        File imageFile = new File(mainDir.getAbsolutePath() + File.separator + "geonote_paintbox.png");
                         if (drawAreaImage != null) {
                             OutputStream out = new FileOutputStream(imageFile);
                             ImageLoader imageLoader = new ImageLoader();
@@ -864,17 +839,14 @@ public class GeonotesHandler {
                         pm.worked(1);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        GeonotesPlugin.log(
-                                "GeonotesPlugin problem: eu.hydrologis.jgrass.geonotes##run", e); //$NON-NLS-1$
+                        GeonotesPlugin.log("GeonotesPlugin problem: eu.hydrologis.jgrass.geonotes##run", e); //$NON-NLS-1$
                     }
                     pm.done();
 
                     // dump media box
-                    File mediaDir = new File(mainDir.getAbsolutePath() + File.separator
-                            + "geonote_mediabox");
+                    File mediaDir = new File(mainDir.getAbsolutePath() + File.separator + "geonote_mediabox");
                     if (!mediaDir.exists() && !mediaDir.mkdir()) {
-                        throw new InterruptedException("Coudn't create folder: "
-                                + mediaDir.getAbsolutePath());
+                        throw new InterruptedException("Coudn't create folder: " + mediaDir.getAbsolutePath());
                     }
 
                     List<GeonotesMediaboxTable> mediaboxTables = getGeonotesMediaboxTables(null);
@@ -890,8 +862,7 @@ public class GeonotesHandler {
                     }
                     pm.done();
                 } catch (Exception e) {
-                    GeonotesPlugin.log(
-                            "GeonotesPlugin problem: eu.hydrologis.jgrass.geonotes##run", e); //$NON-NLS-1$
+                    GeonotesPlugin.log("GeonotesPlugin problem: eu.hydrologis.jgrass.geonotes##run", e); //$NON-NLS-1$
                     e.printStackTrace();
                     throw new InterruptedException(e.getLocalizedMessage());
                 }
@@ -940,8 +911,7 @@ public class GeonotesHandler {
 
         IRunnableWithProgress operation = new IRunnableWithProgress(){
 
-            public void run( IProgressMonitor pm ) throws InvocationTargetException,
-                    InterruptedException {
+            public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
 
                 try {
 
@@ -963,8 +933,7 @@ public class GeonotesHandler {
                         }
                     }
                     List<DressedStroke> drawing = getGeonotesDrawareaTable().getDrawings();
-                    DressedStroke[] drawingArray = (DressedStroke[]) drawing
-                            .toArray(new DressedStroke[drawing.size()]);
+                    DressedStroke[] drawingArray = (DressedStroke[]) drawing.toArray(new DressedStroke[drawing.size()]);
 
                     // the geonote
                     File dumpFile = new File(folderFile, GEONOTE_BIN_PROPERTIES);
@@ -1009,8 +978,7 @@ public class GeonotesHandler {
                                 if (drawingList.size() > 0) {
                                     DressedStroke[] drawingsArray = (DressedStroke[]) drawingList
                                             .toArray(new DressedStroke[drawingList.size()]);
-                                    File drawingFile = new File(mediaFolder, mediaName
-                                            + DRAWING_EXTENTION);
+                                    File drawingFile = new File(mediaFolder, mediaName + DRAWING_EXTENTION);
                                     FileOutputStream foStream = new FileOutputStream(drawingFile);
                                     ObjectOutputStream outStream = new ObjectOutputStream(foStream);
                                     outStream.writeObject(drawingsArray);
@@ -1023,9 +991,7 @@ public class GeonotesHandler {
                         pm.done();
                     }
                 } catch (Exception e) {
-                    GeonotesPlugin
-                            .log(
-                                    "GeonotesPlugin problem: eu.hydrologis.jgrass.geonotes##dumpBinaryNote", e); //$NON-NLS-1$
+                    GeonotesPlugin.log("GeonotesPlugin problem: eu.hydrologis.jgrass.geonotes##dumpBinaryNote", e); //$NON-NLS-1$
                     e.printStackTrace();
                     throw new InterruptedException(e.getLocalizedMessage());
                 }
@@ -1042,8 +1008,9 @@ public class GeonotesHandler {
      * @return all the {@link GeonotesTable}s wrapped in {@link GeonotesHandler}s.
      */
     public static List<GeonotesHandler> getGeonotesHandlers() {
-        Session session = sessionFactory.openSession();
+        Session session = null;
         try {
+            session = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory().openSession();
             List<GeonotesHandler> geonotesHandlers = new ArrayList<GeonotesHandler>();
             Criteria criteria = session.createCriteria(GeonotesTable.class);
             List<GeonotesTable> resultsList = criteria.list();
@@ -1051,6 +1018,11 @@ public class GeonotesHandler {
                 geonotesHandlers.add(new GeonotesHandler(resultsList.get(i)));
             }
             return geonotesHandlers;
+        } catch (Exception e) {
+            String message = "An error occurred while connecting to the database";
+            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
+            e.printStackTrace();
+            return Collections.EMPTY_LIST;
         } finally {
             session.close();
         }
@@ -1058,10 +1030,12 @@ public class GeonotesHandler {
 
     /**
      * @return all the {@link GeonotesTable}s.
+     * @throws Exception 
      */
-    public static List<GeonotesTable> getGeonotesTables() {
-        Session session = sessionFactory.openSession();
+    public static List<GeonotesTable> getGeonotesTables() throws Exception {
+        Session session = null;
         try {
+            session = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory().openSession();
             Criteria criteria = session.createCriteria(GeonotesTable.class);
             List<GeonotesTable> resultsList = criteria.list();
             return resultsList;
@@ -1082,8 +1056,9 @@ public class GeonotesHandler {
         DateTime from = dateTime.minusMinutes(30);
         DateTime to = dateTime.plusMinutes(30);
 
-        Session session = sessionFactory.openSession();
+        Session session = null;
         try {
+            session = DatabasePlugin.getDefault().getActiveDatabaseConnection().getSessionFactory().openSession();
             Criteria criteria = session.createCriteria(GpsLogTable.class);
             String utcTimeStr = "utcTime";
             criteria.add(between(utcTimeStr, from, to));
@@ -1119,20 +1094,19 @@ public class GeonotesHandler {
         }
         return null;
     }
-    
-    
-    public void addObserver(GeonotesObserver observer){
+
+    public void addObserver( GeonotesObserver observer ) {
         if (!observers.contains(observer)) {
             observers.add(observer);
         }
     }
-    
-    public void removeObserver(GeonotesObserver observer){
+
+    public void removeObserver( GeonotesObserver observer ) {
         if (observers.contains(observer)) {
             observers.remove(observer);
         }
     }
-    
+
     public void notifyObservers( Object arg ) {
         for( GeonotesObserver observer : observers ) {
             observer.updateFromGeonotes(this, arg);

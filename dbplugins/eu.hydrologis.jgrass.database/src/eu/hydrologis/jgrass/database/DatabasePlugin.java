@@ -51,14 +51,35 @@ public class DatabasePlugin extends AbstractUIPlugin {
         return plugin;
     }
 
-    public IDatabaseConnection getActiveDatabaseConnection() {
+    /**
+     * Returns the active database connection. 
+     * 
+     * <p>
+     * If no database connection is active, this triggers the create database connection wizard.
+     * If the preferences have no database connection info to connect to, create a default one.
+     * </p> 
+     * <p>
+     * <b>This assures to return a database connection or else to throw an Exception.</b>
+     * </p>
+     * 
+     * @return the {@link IDatabaseConnection database connection}.
+     */
+    public synchronized IDatabaseConnection getActiveDatabaseConnection() throws Exception {
         if (activeDatabaseConnection == null) {
             // TODO setup a database connection
         }
-        
+
+        if (activeDatabaseConnection == null) {
+            throw new RuntimeException("Unable to create a database connection");
+        }
         return activeDatabaseConnection;
     }
 
+    /**
+     * 
+     * 
+     * @throws Exception
+     */
     public void disconnectActiveDatabaseConnection() throws Exception {
         activeDatabaseConnection.closeSessionFactory();
     }
