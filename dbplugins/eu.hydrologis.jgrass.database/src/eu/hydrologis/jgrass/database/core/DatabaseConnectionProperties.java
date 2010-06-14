@@ -142,4 +142,35 @@ public class DatabaseConnectionProperties extends Properties {
         }
     }
 
+    @Override
+    public synchronized boolean equals( Object o ) {
+        if (o instanceof DatabaseConnectionProperties) {
+            DatabaseConnectionProperties other = (DatabaseConnectionProperties) o;
+            String equalsStringThis = getEqualsString(this);
+            String equalsStringOther = getEqualsString(other);
+            return equalsStringThis == equalsStringOther;
+        } else
+            return false;
+    }
+
+    private String getEqualsString( DatabaseConnectionProperties prop ) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(prop.getTitle());
+        sb.append(prop.getDescription());
+        sb.append(prop.getDatabaseDriver());
+        sb.append(prop.getDatabaseName());
+        sb.append(prop.getUser());
+        sb.append(prop.getPort());
+        return sb.toString();
+    }
+
+    @Override
+    public synchronized int hashCode() {
+        String equalsStringThis = getEqualsString(this);
+        int result = 17;
+        result = result * equalsStringThis.length();
+        result = result * equalsStringThis.indexOf(' ');
+        return result;
+    }
+
 }
