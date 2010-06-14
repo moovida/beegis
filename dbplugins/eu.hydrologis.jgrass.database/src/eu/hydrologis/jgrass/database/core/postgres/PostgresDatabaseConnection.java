@@ -42,6 +42,7 @@ import eu.hydrologis.jgrass.database.interfaces.Utils;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class PostgresDatabaseConnection implements IDatabaseConnection {
+    public static final String DRIVER = "org.postgresql.Driver";
     private String user;
     private String passwd;
     private String databaseHost;
@@ -91,7 +92,7 @@ public class PostgresDatabaseConnection implements IDatabaseConnection {
     public AnnotationConfiguration getAnnotationConfiguration() throws Exception {
         if (annotationConfiguration == null) {
             Properties dbProps = new Properties();
-            dbProps.put(Environment.DRIVER, "org.postgresql.Driver");
+            dbProps.put(Environment.DRIVER, DRIVER);
             dbProps.put(Environment.URL, connectionString);
             dbProps.put(Environment.USER, user);
             dbProps.put(Environment.PASS, passwd);

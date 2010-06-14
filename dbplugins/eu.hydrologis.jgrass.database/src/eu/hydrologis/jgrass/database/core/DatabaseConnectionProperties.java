@@ -85,7 +85,11 @@ public class DatabaseConnectionProperties extends Properties {
     }
 
     public String getPassword() {
-        return getProperty(PASS);
+        String password = getProperty(PASS);
+        if (password == null) {
+            password = "";
+        }
+        return password;
     }
 
     public String getPath() {
@@ -103,6 +107,11 @@ public class DatabaseConnectionProperties extends Properties {
     public boolean doLogSql() {
         String doLog = getProperty(SHOW_SQL);
         return Boolean.parseBoolean(doLog);
+    }
+
+    public boolean isActive() {
+        String isActive = getProperty(ISACTIVE);
+        return Boolean.parseBoolean(isActive);
     }
 
     @Override

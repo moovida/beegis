@@ -39,6 +39,8 @@ public interface IDatabaseConnection {
     /**
      * Getter for the {@link SessionFactory}.
      * 
+     * <p><b>Note that this will also create the connection to the database.</b></p>
+     * 
      * @return the current session factory.
      * @throws Exception
      */

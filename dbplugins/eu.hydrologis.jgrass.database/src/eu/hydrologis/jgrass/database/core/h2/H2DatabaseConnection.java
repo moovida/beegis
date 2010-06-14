@@ -45,6 +45,7 @@ import eu.hydrologis.jgrass.database.interfaces.Utils;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class H2DatabaseConnection implements IDatabaseConnection {
+    public static final String DRIVER = "org.h2.Driver";
     private String user;
     private String passwd;
     private String databasePath;
@@ -117,7 +118,7 @@ public class H2DatabaseConnection implements IDatabaseConnection {
     public AnnotationConfiguration getAnnotationConfiguration() throws Exception {
         if (annotationConfiguration == null) {
             Properties dbProps = new Properties();
-            dbProps.put(Environment.DRIVER, "org.h2.Driver");
+            dbProps.put(Environment.DRIVER, DRIVER);
             dbProps.put(Environment.URL, connectionString);
             dbProps.put(Environment.USER, user);
             dbProps.put(Environment.PASS, passwd);
@@ -200,9 +201,9 @@ public class H2DatabaseConnection implements IDatabaseConnection {
             public void run() {
                 try {
                     if (!dbIsAlive) {
-                        String[] args = {"-tcp", "-tcpPort", String.valueOf(port)};
+                        String[] args = {"-tcp", "-tcpPort", port};
                         tcpServer = Server.createTcpServer(args).start();
-                        args = new String[]{"-web", "-webPort", String.valueOf(port + 1)};
+                        args = new String[]{"-web", "-webPort", String.valueOf(Integer.parseInt(port) + 1)};
                         webServer = Server.createWebServer(args).start();
                         dbIsAlive = true;
                     }

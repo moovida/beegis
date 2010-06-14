@@ -1,3 +1,20 @@
+/*
+ * JGrass - Free Open Source Java GIS http://www.jgrass.org 
+ * (C) HydroloGIS - www.hydrologis.com 
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package eu.hydrologis.jgrass.database;
 
 import java.io.File;
@@ -6,24 +23,25 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IPreferencesService;
-import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.jface.preference.IPreferenceStore;
+import net.refractions.udig.project.IProject;
+import net.refractions.udig.project.ui.ApplicationGIS;
+import net.refractions.udig.ui.ExceptionDetailsDialog;
+
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.ui.IMemento;
-import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import eu.hydrologis.jgrass.database.core.ConnectionFinder;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
+import eu.hydrologis.jgrass.database.core.h2.H2DatabaseConnection;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -38,7 +56,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
 
     private IDatabaseConnection activeDatabaseConnection;
 
-    private List<DatabaseConnectionProperties> availableDatabaseConnectionProperties;
+    private List<DatabaseConnectionProperties> availableDatabaseConnectionProperties = new ArrayList<DatabaseConnectionProperties>();
 
     /**
      * The constructor
@@ -46,20 +64,19 @@ public class DatabasePlugin extends AbstractUIPlugin {
     public DatabasePlugin() {
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-     */
     public void start( BundleContext context ) throws Exception {
         super.start(context);
         plugin = this;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-     */
     public void stop( BundleContext context ) throws Exception {
+        try {
+            disconnectActiveDatabaseConnection();
+            saveDatabaseConnections();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         plugin = null;
         super.stop(context);
     }
@@ -88,13 +105,53 @@ public class DatabasePlugin extends AbstractUIPlugin {
      */
     public synchronized IDatabaseConnection getActiveDatabaseConnection() throws Exception {
         if (activeDatabaseConnection == null) {
-            loadSavedDatabaseConnections();
+            try {
+                loadSavedDatabaseConnections();
+                activateDatabaseConnectionFromSaved();
+            } catch (Exception e) {
+                String message = "An error occurred while connecting to the database. Connecting to the default database.";
+                ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, DatabasePlugin.PLUGIN_ID, e);
+                // fold back on the default database
+            }
         }
         if (activeDatabaseConnection == null) {
-            // TODO create a default one
+            createDefaultDatabase();
         }
         return activeDatabaseConnection;
     }
+
+    private void createDefaultDatabase() throws Exception {
+        // create an embedded database inside the project folder
+        IProject activeProject = ApplicationGIS.getActiveProject();
+        URI id = activeProject.getID();
+        String projectPath = id.toFileString();
+        File projectFile = new File(projectPath);
+        if (!projectFile.exists()) {
+            String tempdir = System.getProperty("java.io.tmpdir");
+            projectFile = new File(tempdir);
+        } else {
+            projectFile = projectFile.getParentFile().getParentFile();
+        }
+        File databaseFolder = new File(projectFile, "databases/defaultdatabase");
+        databaseFolder.mkdirs();
+
+        DatabaseConnectionProperties props = new DatabaseConnectionProperties();
+        props.put("ISACTIVE", "true");
+        props.put("TITLE", "Default Database");
+        props.put("DESCRIPTION", "Default Database");
+        props.put("DRIVER", H2DatabaseConnection.DRIVER);
+        props.put("DATABASE", "database");
+        props.put("PORT", "9093");
+        props.put("USER", "sa");
+        props.put("PASS", "");
+        props.put("PATH", databaseFolder.getAbsolutePath());
+
+        activateDatabaseConnection(props);
+        if (!availableDatabaseConnectionProperties.contains(props)) {
+            availableDatabaseConnectionProperties.add(props);
+        }
+    }
+
     /**
      * Disconnects the active database connection.
      * 
@@ -103,6 +160,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
     public boolean disconnectActiveDatabaseConnection() {
         try {
             activeDatabaseConnection.closeSessionFactory();
+            activeDatabaseConnection = null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -110,20 +168,33 @@ public class DatabasePlugin extends AbstractUIPlugin {
         return true;
     }
 
-    public void setActiveDatabaseConnection( IDatabaseConnection databaseConnection ) throws Exception {
+    /**
+     * Creates a new database connection and activates it. 
+     * 
+     * @param newCP connection properties.
+     * @throws Exception
+     */
+    public void activateDatabaseConnection( DatabaseConnectionProperties newCP ) throws Exception {
+        // if another is active, first disconnect it
         if (activeDatabaseConnection != null) {
             disconnectActiveDatabaseConnection();
         }
-        activeDatabaseConnection = databaseConnection;
-
+        // create the new one
+        activeDatabaseConnection = ConnectionFinder.createDatabaseConnection(newCP);
+        // make connection
+        activeDatabaseConnection.getSessionFactory();
+        if (!availableDatabaseConnectionProperties.contains(newCP)) {
+            availableDatabaseConnectionProperties.add(newCP);
+        }
     }
-    
-    private IDatabaseConnection activateDatabaseConnection( DatabaseConnectionProperties newCP ) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
 
+    /**
+     * Loads the saved database connection properties.
+     * 
+     * 
+     * @throws IOException
+     * @throws Exception
+     */
     public void loadSavedDatabaseConnections() throws IOException, Exception {
         FileReader reader = null;
         try {
@@ -138,10 +209,9 @@ public class DatabasePlugin extends AbstractUIPlugin {
         }
     }
 
-    private void loadSavedDatabaseConnections( XMLMemento memento ) {
+    private void loadSavedDatabaseConnections( XMLMemento memento ) throws Exception {
         String[] possibleTags = DatabaseConnectionProperties.POSSIBLETAGS;
-        IMemento[] children = memento.getChildren(DatabaseConnectionProperties.DATABASES_XML);
-        availableDatabaseConnectionProperties = new ArrayList<DatabaseConnectionProperties>();
+        IMemento[] children = memento.getChildren(DatabaseConnectionProperties.DATABASE_XML);
         for( int i = 0; i < children.length; i++ ) {
             DatabaseConnectionProperties newCP = new DatabaseConnectionProperties();
             for( String tag : possibleTags ) {
@@ -149,20 +219,32 @@ public class DatabasePlugin extends AbstractUIPlugin {
                 if (value != null && value.length() > 0) {
                     newCP.put(tag, value);
                     availableDatabaseConnectionProperties.add(newCP);
-                    if (tag.equals(DatabaseConnectionProperties.ISACTIVE)) {
-                        if (activeDatabaseConnection != null) {
-                            throw new RuntimeException("No connection should be active at this time.");
-                        }
-                        activeDatabaseConnection = activateDatabaseConnection(newCP);
-                    }
+
                 }
             }
         }
     }
 
-    public void savedDatabaseConnections() throws IOException {
+    private void activateDatabaseConnectionFromSaved() throws Exception {
+        for( DatabaseConnectionProperties properties : availableDatabaseConnectionProperties ) {
+            if (properties.isActive()) {
+                activateDatabaseConnection(properties);
+                if (!availableDatabaseConnectionProperties.contains(properties)) {
+                    availableDatabaseConnectionProperties.add(properties);
+                }
+                break;
+            }
+        }
+    }
+
+    /**
+     * Saves collected database connections in the configuration area.
+     * 
+     * @throws IOException
+     */
+    public void saveDatabaseConnections() throws IOException {
         XMLMemento memento = XMLMemento.createWriteRoot(DatabaseConnectionProperties.DATABASES_XML);
-        savedDatabaseConnections(memento);
+        saveDatabaseConnections(memento);
 
         FileWriter writer = null;
         try {
@@ -176,7 +258,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
 
     }
 
-    private void savedDatabaseConnections( XMLMemento memento ) {
+    private void saveDatabaseConnections( XMLMemento memento ) {
         for( DatabaseConnectionProperties dcP : availableDatabaseConnectionProperties ) {
             IMemento child = memento.createChild(DatabaseConnectionProperties.DATABASE_XML);
             Set<Entry<Object, Object>> entries = dcP.entrySet();
@@ -186,7 +268,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
         }
     }
 
-    public File getConfigurationsFile() {
+    private File getConfigurationsFile() {
         return getStateLocation().append("databases.xml").toFile();
     }
 
