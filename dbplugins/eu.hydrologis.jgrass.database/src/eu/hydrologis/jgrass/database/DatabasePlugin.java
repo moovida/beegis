@@ -213,6 +213,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
         }
     }
 
+    // /home/moovida/rcpdevelopment/WORKSPACES/runtime-New_configuration/.metadata/.plugins/eu.hydrologis.jgrass.database/databases.xml
     private void loadSavedDatabaseConnections( XMLMemento memento ) throws Exception {
         String[] possibleTags = DatabaseConnectionProperties.POSSIBLETAGS;
         IMemento[] children = memento.getChildren(DatabaseConnectionProperties.DATABASE_XML);
@@ -222,10 +223,9 @@ public class DatabasePlugin extends AbstractUIPlugin {
                 String value = children[i].getString(tag);
                 if (value != null && value.length() > 0) {
                     newCP.put(tag, value);
-                    availableDatabaseConnectionProperties.add(newCP);
-
                 }
             }
+            availableDatabaseConnectionProperties.add(newCP);
         }
     }
 
@@ -276,4 +276,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
         return getStateLocation().append("databases.xml").toFile();
     }
 
+    public List<DatabaseConnectionProperties> getAvailableDatabaseConnectionProperties() {
+        return availableDatabaseConnectionProperties;
+    }
 }

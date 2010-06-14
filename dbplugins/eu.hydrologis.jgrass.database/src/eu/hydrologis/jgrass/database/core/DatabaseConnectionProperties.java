@@ -148,7 +148,7 @@ public class DatabaseConnectionProperties extends Properties {
             DatabaseConnectionProperties other = (DatabaseConnectionProperties) o;
             String equalsStringThis = getEqualsString(this);
             String equalsStringOther = getEqualsString(other);
-            return equalsStringThis == equalsStringOther;
+            return equalsStringThis.equals(equalsStringOther);
         } else
             return false;
     }
