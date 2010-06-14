@@ -42,6 +42,7 @@ import eu.hydrologis.jgrass.database.core.ConnectionFinder;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
 import eu.hydrologis.jgrass.database.core.h2.H2DatabaseConnection;
+import eu.hydrologis.jgrass.database.utils.ImageCache;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -78,6 +79,9 @@ public class DatabasePlugin extends AbstractUIPlugin {
         }
 
         plugin = null;
+
+        ImageCache.getInstance().dispose();
+        
         super.stop(context);
     }
 
