@@ -1,7 +1,26 @@
+/*
+ * JGrass - Free Open Source Java GIS http://www.jgrass.org 
+ * (C) HydroloGIS - www.hydrologis.com 
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package eu.hydrologis.jgrass.database.view;
 
 import java.util.HashMap;
 import java.util.List;
+
+import net.refractions.udig.project.ui.ApplicationGIS;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -9,10 +28,10 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -25,7 +44,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
 import eu.hydrologis.jgrass.database.DatabasePlugin;
@@ -33,6 +51,11 @@ import eu.hydrologis.jgrass.database.core.ConnectionManager;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 import eu.hydrologis.jgrass.database.utils.ImageCache;
 
+/**
+ * The database view.
+ * 
+ * @author Andrea Antonello (www.hydrologis.com)
+ */
 public class DatabaseView extends ViewPart {
 
     private HashMap<DatabaseConnectionProperties, DatabaseConnectionPropertiesWidget> widgetMap = new HashMap<DatabaseConnectionProperties, DatabaseConnectionPropertiesWidget>();
@@ -57,7 +80,7 @@ public class DatabaseView extends ViewPart {
         mainComposite.setLayout(new GridLayout(1, false));
         mainComposite.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
 
-        Group connectionsGroup = new Group(mainComposite, SWT.SHADOW_ETCHED_IN);
+        Group connectionsGroup = new Group(mainComposite, SWT.BORDER | SWT.SHADOW_ETCHED_IN);
         connectionsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         connectionsGroup.setLayout(new GridLayout(3, true));
         connectionsGroup.setText("Connections");
@@ -69,15 +92,29 @@ public class DatabaseView extends ViewPart {
         // connections panel
         final TableViewer connectionsViewer = createTableViewer(connectionsListComposite);
         connectionsViewer.setInput(availableDatabaseConnectionProperties);
-        addFilterButton(connectionsListComposite, connectionsViewer);
+        addFilterButtons(connectionsListComposite, connectionsViewer);
 
-        propertiesComposite = new Composite(connectionsGroup, SWT.NONE);
+        ScrolledComposite scrolledComposite = new ScrolledComposite(connectionsGroup, SWT.BORDER | SWT.V_SCROLL);
+        scrolledComposite.setLayout(new GridLayout(1, false));
+
+        propertiesComposite = new Composite(scrolledComposite, SWT.NONE);
         propertiesStackLayout = new StackLayout();
         propertiesComposite.setLayout(propertiesStackLayout);
         GridData propertiesCompositeGD = new GridData(SWT.FILL, SWT.FILL, true, true);
-        propertiesCompositeGD.horizontalSpan = 2;
+        // propertiesCompositeGD.horizontalSpan = 2;
         propertiesComposite.setLayoutData(propertiesCompositeGD);
+        Label l = new Label(propertiesComposite, SWT.SHADOW_ETCHED_IN);
+        l.setText("No item selected");
+        propertiesStackLayout.topControl = l;
 
+        scrolledComposite.setContent(propertiesComposite);
+        scrolledComposite.setExpandHorizontal(true);
+        scrolledComposite.setExpandVertical(true);
+        // scrolledComposite.setMinWidth(400);
+        scrolledComposite.setMinHeight(300);
+        GridData scrolledCompositeGD = new GridData(SWT.FILL, SWT.FILL, true, true);
+        scrolledCompositeGD.horizontalSpan = 2;
+        scrolledComposite.setLayoutData(scrolledCompositeGD);
     }
 
     private TableViewer createTableViewer( Composite connectionsListComposite ) {
@@ -91,7 +128,6 @@ public class DatabaseView extends ViewPart {
                 return array;
             }
             public void dispose() {
-                System.out.println("Disposing ...");
             }
             public void inputChanged( Viewer viewer, Object oldInput, Object newInput ) {
             }
@@ -166,19 +202,31 @@ public class DatabaseView extends ViewPart {
         return connectionsViewer;
     }
 
-    private void addFilterButton( Composite connectionsListComposite, final TableViewer connectionsViewer ) {
+    private void addFilterButtons( Composite connectionsListComposite, final TableViewer connectionsViewer ) {
         Button filterActive = new Button(connectionsListComposite, SWT.CHECK);
         filterActive.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         filterActive.setText("Filter active");
-        final ActiveFilter filter = new ActiveFilter();
-        
+        final ActiveFilter activeFilter = new ActiveFilter();
 
         filterActive.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent event ) {
                 if (((Button) event.widget).getSelection())
-                    connectionsViewer.addFilter(filter);
+                    connectionsViewer.addFilter(activeFilter);
                 else
-                    connectionsViewer.removeFilter(filter);
+                    connectionsViewer.removeFilter(activeFilter);
+            }
+        });
+        Button filterProjectmatch = new Button(connectionsListComposite, SWT.CHECK);
+        filterProjectmatch.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        filterProjectmatch.setText("Filter project");
+        final ProjectMatchFilter projectFilter = new ProjectMatchFilter();
+
+        filterProjectmatch.addSelectionListener(new SelectionAdapter(){
+            public void widgetSelected( SelectionEvent event ) {
+                if (((Button) event.widget).getSelection())
+                    connectionsViewer.addFilter(projectFilter);
+                else
+                    connectionsViewer.removeFilter(projectFilter);
             }
         });
     }
@@ -191,6 +239,17 @@ public class DatabaseView extends ViewPart {
     private class ActiveFilter extends ViewerFilter {
         public boolean select( Viewer arg0, Object arg1, Object arg2 ) {
             return ((DatabaseConnectionProperties) arg2).isActive();
+        }
+    }
+
+    private class ProjectMatchFilter extends ViewerFilter {
+        public boolean select( Viewer arg0, Object arg1, Object arg2 ) {
+            String name = ((DatabaseConnectionProperties) arg2).getTitle();
+            String projectName = ApplicationGIS.getActiveProject().getName();
+            if (name.matches("(?i).*" + projectName + ".*")) {
+                return true;
+            }
+            return false;
         }
     }
 
