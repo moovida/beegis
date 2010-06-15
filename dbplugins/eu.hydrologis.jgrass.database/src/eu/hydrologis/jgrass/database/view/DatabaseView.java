@@ -67,6 +67,8 @@ public class DatabaseView extends ViewPart {
     private Composite propertiesComposite;
     private StackLayout propertiesStackLayout;
 
+    private DatabaseConnectionProperties currentSelectedConnectionProperties;
+
     private TableViewer connectionsViewer;
 
     public DatabaseView() {
@@ -175,6 +177,7 @@ public class DatabaseView extends ViewPart {
         });
 
         connectionsViewer.addSelectionChangedListener(new ISelectionChangedListener(){
+
             public void selectionChanged( SelectionChangedEvent event ) {
                 if (!(event.getSelection() instanceof IStructuredSelection)) {
                     return;
@@ -187,13 +190,13 @@ public class DatabaseView extends ViewPart {
                     return;
                 }
                 if (selectedItem instanceof DatabaseConnectionProperties) {
-                    DatabaseConnectionProperties p = (DatabaseConnectionProperties) selectedItem;
-                    DatabaseConnectionPropertiesWidget widget = widgetMap.get(p);
+                    currentSelectedConnectionProperties = (DatabaseConnectionProperties) selectedItem;
+                    DatabaseConnectionPropertiesWidget widget = widgetMap.get(currentSelectedConnectionProperties);
                     if (widget == null) {
                         widget = new DatabaseConnectionPropertiesWidget(DatabaseView.this);
-                        widgetMap.put(p, widget);
+                        widgetMap.put(currentSelectedConnectionProperties, widget);
                     }
-                    Control propControl = widget.getComposite(p, propertiesComposite);
+                    Control propControl = widget.getComposite(currentSelectedConnectionProperties, propertiesComposite);
                     propertiesStackLayout.topControl = propControl;
                 } else {
                     Label l = new Label(propertiesComposite, SWT.SHADOW_ETCHED_IN);
@@ -257,6 +260,16 @@ public class DatabaseView extends ViewPart {
         }
     }
 
+    public void removeCurrentSelectedDatabaseDefinition() {
+        if (currentSelectedConnectionProperties != null) {
+            if (currentSelectedConnectionProperties.isActive()) {
+                DatabasePlugin.getDefault().disconnectActiveDatabaseConnection();
+            }
+            availableDatabaseConnectionProperties.remove(currentSelectedConnectionProperties);
+            relayout();
+        }
+    }
+
     public void relayout() {
 
         Display.getDefault().asyncExec(new Runnable(){
@@ -269,7 +282,7 @@ public class DatabaseView extends ViewPart {
                 // connectionsViewer.getTable().removeAll();
                 // connectionsViewer.setInput(null);
                 connectionsViewer.setInput(availableDatabaseConnectionProperties);
-                
+
                 List<ILayer> mapLayers = ApplicationGIS.getActiveMap().getMapLayers();
                 for( ILayer iLayer : mapLayers ) {
                     iLayer.refresh(null);

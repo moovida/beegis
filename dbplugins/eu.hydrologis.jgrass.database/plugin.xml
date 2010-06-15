@@ -46,40 +46,51 @@
             id="eu.hydrologis.jgrass.database.mainviewcontribution"
             targetID="eu.hydrologis.jgrass.database.catalogview">
          <action
-               class="eu.hydrologis.jgrass.database.view.CreateNewLocalDatabaseAction"
-               icon="icons/add_local_db.gif"
-               id="eu.hydrologis.jgrass.database.create_local_action"
-               label="%database.view.action.create_local"
-               style="push">
+               class="eu.hydrologis.jgrass.database.view.RemoveDatabaseAction"
+               icon="icons/remove_db.gif"
+               id="eu.hydrologis.jgrass.database.remove_action"
+               label="%database.view.action.remove"
+               style="push"
+               toolbarPath="dbtoolbar"
+               tooltip="%database.view.action.remove">
          </action>
-         <action
-               class="eu.hydrologis.jgrass.database.view.CreateNewRemoteDatabaseAction"
-               icon="icons/add_remote_db.gif"
-               id="eu.hydrologis.jgrass.database.create_remote_action"
-               label="%database.view.action.create_remote"
-               style="push">
+                  <action
+               class="eu.hydrologis.jgrass.database.view.ImportDatabaseAction"
+               icon="icons/import_local_db.gif"
+               id="eu.hydrologis.jgrass.database.import_local_action"
+               label="%database.view.action.import_local"
+               style="push"
+               toolbarPath="dbtoolbar"
+               tooltip="%database.view.action.import_local">
          </action>
          <action
                class="eu.hydrologis.jgrass.database.view.ExportDatabaseAction"
                icon="icons/export_local_db.gif"
                id="eu.hydrologis.jgrass.database.export_local_action"
                label="%database.view.action.export_local"
-               style="push">
+               style="push"
+               toolbarPath="dbtoolbar"
+               tooltip="%database.view.action.export_local">
          </action>
          <action
-               class="eu.hydrologis.jgrass.database.view.ImportDatabaseAction"
-               icon="icons/import_local_db.gif"
-               id="eu.hydrologis.jgrass.database.import_local_action"
-               label="%database.view.action.import_local"
-               style="push">
+               class="eu.hydrologis.jgrass.database.view.CreateNewRemoteDatabaseAction"
+               icon="icons/add_remote_db.gif"
+               id="eu.hydrologis.jgrass.database.create_remote_action"
+               label="%database.view.action.create_remote"
+               style="push"
+               toolbarPath="dbtoolbar"
+               tooltip="%database.view.action.create_remote">
          </action>
          <action
-               class="eu.hydrologis.jgrass.database.view.RemoveDatabaseAction"
-               icon="icons/remove_db.gif"
-               id="eu.hydrologis.jgrass.database.remove_action"
-               label="%database.view.action.remove"
-               style="push">
+               class="eu.hydrologis.jgrass.database.view.CreateNewLocalDatabaseAction"
+               icon="icons/add_local_db.gif"
+               id="eu.hydrologis.jgrass.database.create_local_action"
+               label="%database.view.action.create_local"
+               style="push"
+               toolbarPath="dbtoolbar"
+               tooltip="%database.view.action.create_local">
          </action>
+
       </viewContribution>
    </extension>
 </plugin>
