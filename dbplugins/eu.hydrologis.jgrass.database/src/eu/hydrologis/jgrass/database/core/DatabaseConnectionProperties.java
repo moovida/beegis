@@ -116,6 +116,9 @@ public class DatabaseConnectionProperties extends Properties {
 
     public boolean isActive() {
         String isActive = getProperty(ISACTIVE);
+        if (isActive == null) {
+            return false;
+        }
         return Boolean.parseBoolean(isActive);
     }
 

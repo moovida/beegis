@@ -40,7 +40,9 @@ public class ImageCache {
     public static final String EXPORT_LOCAL_DB = "icons/export_local_db.gif";
     public static final String IMPORT_LOCAL_DB = "icons/import_local_db.gif";
     public static final String LOCAL_DB = "icons/local_db.gif";
+    public static final String LOCAL_DB_ACTIVE = "icons/local_db_active.gif";
     public static final String REMOTE_DB = "icons/remote_db.gif";
+    public static final String REMOTE_DB_ACTIVE = "icons/remote_db_active.gif";
     public static final String REMOVE_DB = "icons/remove_db.gif";
 
     private static ImageCache imageCache;

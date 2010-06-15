@@ -74,6 +74,9 @@ public class H2DatabaseConnection implements IDatabaseConnection {
 
         final String database = databasePath + File.separator + databaseName;
         connectionString = "jdbc:h2:tcp://localhost:" + port + "/" + database;
+        
+        // make sure that every connection has it's type
+        connectionProperties.put(DatabaseConnectionProperties.TYPE, TYPE);
     }
 
     @Override

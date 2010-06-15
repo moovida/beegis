@@ -150,7 +150,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
         }
         File databaseFolder = new File(projectFile, "databases/defaultdatabase");
         boolean madeDirs = databaseFolder.mkdirs();
-        if (madeDirs) {
+        if (!madeDirs && databaseFolder.exists()) {
             DatabaseConnectionProperties props = new DatabaseConnectionProperties();
             props.put("TYPE", H2DatabaseConnection.TYPE);
             props.put("ISACTIVE", "true");

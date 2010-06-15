@@ -66,6 +66,9 @@ public class PostgresDatabaseConnection implements IDatabaseConnection {
         doLog = connectionProperties.doLogSql();
 
         connectionString = "jdbc:postgresql://" + databaseHost + ":" + port + "/" + databaseName;
+        
+        // make sure every connection has its type 
+        connectionProperties.put(DatabaseConnectionProperties.TYPE, TYPE);
     }
 
     @Override
