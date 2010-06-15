@@ -33,6 +33,7 @@ public class DatabaseConnectionProperties extends Properties {
     public static final String DATABASES_XML = "DATABASES";
     public static final String DATABASE_XML = "DATABASE";
 
+    public static final String TYPE = "TYPE";
     public static final String ISACTIVE = "ISACTIVE";
     public static final String TITLE = "TITLE";
     public static final String DESCRIPTION = "DESCRIPTION";
@@ -44,7 +45,7 @@ public class DatabaseConnectionProperties extends Properties {
     public static final String HOST = "HOST";
     public static final String PATH = "PATH";
 
-    public static String[] POSSIBLETAGS = {ISACTIVE, TITLE, DESCRIPTION, DRIVER, DATABASE, PORT, USER, PASS, HOST, PATH};
+    public static String[] POSSIBLETAGS = {TYPE, ISACTIVE, TITLE, DESCRIPTION, DRIVER, DATABASE, PORT, USER, PASS, HOST, PATH};
 
     public static final String SHOW_SQL = "SHOW_SQL";
     public static final String FORMAT_SQL = "FORMAT_SQL";
@@ -62,6 +63,10 @@ public class DatabaseConnectionProperties extends Properties {
         for( Entry<Object, Object> entry : entries ) {
             put(entry.getKey(), entry.getValue());
         }
+    }
+
+    public String getType() {
+        return getProperty(TYPE);
     }
 
     public String getTitle() {
@@ -155,6 +160,7 @@ public class DatabaseConnectionProperties extends Properties {
 
     private String getEqualsString( DatabaseConnectionProperties prop ) {
         StringBuilder sb = new StringBuilder();
+        sb.append(prop.getType());
         sb.append(prop.getTitle());
         sb.append(prop.getDescription());
         sb.append(prop.getDatabaseDriver());

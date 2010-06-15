@@ -32,7 +32,7 @@ import eu.hydrologis.jgrass.database.core.postgres.PostgresDatabaseConnection;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class ConnectionFinder {
+public class ConnectionManager {
 
     private static HashMap<String, IConnectionFactory> databaseDriver2ConnectionFactory = null;
 
@@ -44,6 +44,12 @@ public class ConnectionFinder {
         databaseDriver2ConnectionFactory.put(PostgresDatabaseConnection.DRIVER, new PostgresConnectionFactory());
     }
 
+    /**
+     * Creates a {@link IDatabaseConnection} for the given properties.
+     * 
+     * @param connectionProperties
+     * @return
+     */
     public static synchronized IDatabaseConnection createDatabaseConnection( DatabaseConnectionProperties connectionProperties ) {
         String databaseDriver = connectionProperties.getDatabaseDriver();
         IConnectionFactory iConnectionFactory = databaseDriver2ConnectionFactory.get(databaseDriver);
@@ -51,4 +57,21 @@ public class ConnectionFinder {
         return iConnectionFactory.createDatabaseConnection(connectionProperties);
     }
 
+    /**
+     * Checks if the connection is local or remote.
+     * 
+     * @param connectionProperties the properties to check for.
+     * @return true if the connection is local, false if remote.
+     */
+    public static boolean isLocal( DatabaseConnectionProperties connectionProperties ) {
+        String databaseDriver = connectionProperties.getDatabaseDriver();
+        if (databaseDriver.equals(H2DatabaseConnection.DRIVER)) {
+            return true;
+        } else if (databaseDriver.equals(PostgresDatabaseConnection.DRIVER)) {
+            return false;
+        }else{
+            throw new IllegalArgumentException("Unknown database type.");
+        }
+
+    }
 }

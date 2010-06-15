@@ -42,6 +42,7 @@ import eu.hydrologis.jgrass.database.interfaces.Utils;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class PostgresDatabaseConnection implements IDatabaseConnection {
+    public static final String TYPE = "PostgreSQL";
     public static final String DRIVER = "org.postgresql.Driver";
     private String user;
     private String passwd;

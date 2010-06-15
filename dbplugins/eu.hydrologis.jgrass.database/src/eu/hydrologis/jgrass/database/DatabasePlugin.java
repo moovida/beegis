@@ -38,7 +38,7 @@ import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import eu.hydrologis.jgrass.database.core.ConnectionFinder;
+import eu.hydrologis.jgrass.database.core.ConnectionManager;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
 import eu.hydrologis.jgrass.database.core.h2.H2DatabaseConnection;
@@ -56,6 +56,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
     private static DatabasePlugin plugin;
 
     private IDatabaseConnection activeDatabaseConnection;
+    private DatabaseConnectionProperties activeDatabaseConnectionProperties;
 
     private List<DatabaseConnectionProperties> availableDatabaseConnectionProperties = new ArrayList<DatabaseConnectionProperties>();
 
@@ -81,7 +82,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
         plugin = null;
 
         ImageCache.getInstance().dispose();
-        
+
         super.stop(context);
     }
 
@@ -124,6 +125,17 @@ public class DatabasePlugin extends AbstractUIPlugin {
         return activeDatabaseConnection;
     }
 
+    /**
+     * Returns the properties of the current active database connection.
+     * 
+     * <p><b>This should be called after {@link #getActiveDatabaseConnection()}, to ensure consistency.</b></p>
+     * 
+     * @return teh propeties of the active database connection.
+     */
+    public DatabaseConnectionProperties getActiveDatabaseConnectionProperties() {
+        return activeDatabaseConnectionProperties;
+    }
+
     private void createDefaultDatabase() throws Exception {
         // create an embedded database inside the project folder
         IProject activeProject = ApplicationGIS.getActiveProject();
@@ -137,22 +149,26 @@ public class DatabasePlugin extends AbstractUIPlugin {
             projectFile = projectFile.getParentFile().getParentFile();
         }
         File databaseFolder = new File(projectFile, "databases/defaultdatabase");
-        databaseFolder.mkdirs();
+        boolean madeDirs = databaseFolder.mkdirs();
+        if (madeDirs) {
+            DatabaseConnectionProperties props = new DatabaseConnectionProperties();
+            props.put("TYPE", H2DatabaseConnection.TYPE);
+            props.put("ISACTIVE", "true");
+            props.put("TITLE", "Default Database");
+            props.put("DESCRIPTION", "Default Database");
+            props.put("DRIVER", H2DatabaseConnection.DRIVER);
+            props.put("DATABASE", "database");
+            props.put("PORT", "9093");
+            props.put("USER", "sa");
+            props.put("PASS", "");
+            props.put("PATH", databaseFolder.getAbsolutePath());
 
-        DatabaseConnectionProperties props = new DatabaseConnectionProperties();
-        props.put("ISACTIVE", "true");
-        props.put("TITLE", "Default Database");
-        props.put("DESCRIPTION", "Default Database");
-        props.put("DRIVER", H2DatabaseConnection.DRIVER);
-        props.put("DATABASE", "database");
-        props.put("PORT", "9093");
-        props.put("USER", "sa");
-        props.put("PASS", "");
-        props.put("PATH", databaseFolder.getAbsolutePath());
-
-        activateDatabaseConnection(props);
-        if (!availableDatabaseConnectionProperties.contains(props)) {
-            availableDatabaseConnectionProperties.add(props);
+            activateDatabaseConnection(props);
+            if (!availableDatabaseConnectionProperties.contains(props)) {
+                availableDatabaseConnectionProperties.add(props);
+            }
+        } else {
+            throw new IOException("An error occurred while creating the default database.");
         }
     }
 
@@ -165,6 +181,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
         try {
             activeDatabaseConnection.closeSessionFactory();
             activeDatabaseConnection = null;
+            activeDatabaseConnectionProperties = null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -184,7 +201,8 @@ public class DatabasePlugin extends AbstractUIPlugin {
             disconnectActiveDatabaseConnection();
         }
         // create the new one
-        activeDatabaseConnection = ConnectionFinder.createDatabaseConnection(newCP);
+        activeDatabaseConnection = ConnectionManager.createDatabaseConnection(newCP);
+        activeDatabaseConnectionProperties = newCP;
         // make connection
         activeDatabaseConnection.getSessionFactory();
         if (!availableDatabaseConnectionProperties.contains(newCP)) {

@@ -45,6 +45,7 @@ import eu.hydrologis.jgrass.database.interfaces.Utils;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class H2DatabaseConnection implements IDatabaseConnection {
+    public static final String TYPE = "H2-database";
     public static final String DRIVER = "org.h2.Driver";
     private String user;
     private String passwd;
