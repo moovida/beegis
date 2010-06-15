@@ -7,16 +7,20 @@ import org.eclipse.ui.IViewPart;
 
 public class CreateNewLocalDatabaseAction implements IViewActionDelegate {
 
+    private IViewPart view;
+
     @Override
     public void init( IViewPart view ) {
-        // TODO Auto-generated method stub
-
+        this.view = view;
     }
 
     @Override
     public void run( IAction action ) {
-        // TODO Auto-generated method stub
+        if (view instanceof DatabaseView) {
+            DatabaseView dbView = (DatabaseView) view;
 
+            dbView.createNewLocalDatabaseDefinition();
+        }
     }
 
     @Override

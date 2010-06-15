@@ -52,6 +52,8 @@ import org.eclipse.ui.part.ViewPart;
 import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.ConnectionManager;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
+import eu.hydrologis.jgrass.database.core.h2.H2DatabaseConnection;
+import eu.hydrologis.jgrass.database.core.postgres.PostgresDatabaseConnection;
 import eu.hydrologis.jgrass.database.utils.ImageCache;
 
 /**
@@ -258,6 +260,38 @@ public class DatabaseView extends ViewPart {
             }
             return false;
         }
+    }
+
+    public void createNewLocalDatabaseDefinition() {
+        DatabaseConnectionProperties props = new DatabaseConnectionProperties();
+        props.put("TYPE", H2DatabaseConnection.TYPE);
+        props.put("ISACTIVE", "false");
+        props.put("TITLE", "New Local Database");
+        props.put("DRIVER", H2DatabaseConnection.DRIVER);
+        props.put("DATABASE", "database");
+        props.put("PORT", "9092");
+        props.put("USER", "sa");
+        props.put("PASS", "");
+        props.put("PATH", "");
+
+        availableDatabaseConnectionProperties.add(props);
+        relayout();
+    }
+
+    public void createNewRemoteDatabaseDefinition() {
+        DatabaseConnectionProperties props = new DatabaseConnectionProperties();
+        props.put("TYPE", PostgresDatabaseConnection.TYPE);
+        props.put("ISACTIVE", "false");
+        props.put("TITLE", "New Remote Database");
+        props.put("DRIVER", PostgresDatabaseConnection.DRIVER);
+        props.put("DATABASE", "databasename");
+        props.put("PORT", "5432");
+        props.put("USER", "");
+        props.put("PASS", "");
+        props.put("PATH", "");
+        
+        availableDatabaseConnectionProperties.add(props);
+        relayout();
     }
 
     public void removeCurrentSelectedDatabaseDefinition() {
