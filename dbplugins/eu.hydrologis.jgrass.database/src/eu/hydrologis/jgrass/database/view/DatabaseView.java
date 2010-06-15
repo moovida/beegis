@@ -17,9 +17,11 @@
  */
 package eu.hydrologis.jgrass.database.view;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.ui.ApplicationGIS;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -41,6 +43,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -63,6 +66,8 @@ public class DatabaseView extends ViewPart {
     private List<DatabaseConnectionProperties> availableDatabaseConnectionProperties;
     private Composite propertiesComposite;
     private StackLayout propertiesStackLayout;
+
+    private TableViewer connectionsViewer;
 
     public DatabaseView() {
         try {
@@ -89,8 +94,7 @@ public class DatabaseView extends ViewPart {
         connectionsListComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         connectionsListComposite.setLayout(new GridLayout(1, false));
 
-        // connections panel
-        final TableViewer connectionsViewer = createTableViewer(connectionsListComposite);
+        connectionsViewer = createTableViewer(connectionsListComposite);
         connectionsViewer.setInput(availableDatabaseConnectionProperties);
         addFilterButtons(connectionsListComposite, connectionsViewer);
 
@@ -186,7 +190,7 @@ public class DatabaseView extends ViewPart {
                     DatabaseConnectionProperties p = (DatabaseConnectionProperties) selectedItem;
                     DatabaseConnectionPropertiesWidget widget = widgetMap.get(p);
                     if (widget == null) {
-                        widget = new DatabaseConnectionPropertiesWidget();
+                        widget = new DatabaseConnectionPropertiesWidget(DatabaseView.this);
                         widgetMap.put(p, widget);
                     }
                     Control propControl = widget.getComposite(p, propertiesComposite);
@@ -251,6 +255,27 @@ public class DatabaseView extends ViewPart {
             }
             return false;
         }
+    }
+
+    public void relayout() {
+
+        Display.getDefault().asyncExec(new Runnable(){
+            public void run() {
+                // refresh widgets
+                Collection<DatabaseConnectionPropertiesWidget> widgets = widgetMap.values();
+                for( DatabaseConnectionPropertiesWidget widget : widgets ) {
+                    widget.refresh();
+                }
+                // connectionsViewer.getTable().removeAll();
+                // connectionsViewer.setInput(null);
+                connectionsViewer.setInput(availableDatabaseConnectionProperties);
+                
+                List<ILayer> mapLayers = ApplicationGIS.getActiveMap().getMapLayers();
+                for( ILayer iLayer : mapLayers ) {
+                    iLayer.refresh(null);
+                }
+            }
+        });
     }
 
 }

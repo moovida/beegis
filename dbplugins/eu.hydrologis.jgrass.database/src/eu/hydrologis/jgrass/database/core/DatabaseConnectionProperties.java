@@ -122,6 +122,10 @@ public class DatabaseConnectionProperties extends Properties {
         return Boolean.parseBoolean(isActive);
     }
 
+    public void setActive( boolean isActive ) {
+        put(ISACTIVE, String.valueOf(isActive));
+    }
+
     @Override
     public synchronized String toString() {
         StringBuilder sB = new StringBuilder();

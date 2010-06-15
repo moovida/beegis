@@ -23,6 +23,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -36,6 +37,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.hibernate.mapping.Table;
 import org.osgi.framework.BundleContext;
 
 import eu.hydrologis.jgrass.database.core.ConnectionManager;
@@ -73,8 +75,8 @@ public class DatabasePlugin extends AbstractUIPlugin {
 
     public void stop( BundleContext context ) throws Exception {
         try {
-            disconnectActiveDatabaseConnection();
             saveDatabaseConnections();
+            disconnectActiveDatabaseConnection();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -181,6 +183,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
         try {
             activeDatabaseConnection.closeSessionFactory();
             activeDatabaseConnection = null;
+            activeDatabaseConnectionProperties.setActive(false);
             activeDatabaseConnectionProperties = null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -205,8 +208,33 @@ public class DatabasePlugin extends AbstractUIPlugin {
         activeDatabaseConnectionProperties = newCP;
         // make connection
         activeDatabaseConnection.getSessionFactory();
+        checkTableExistence();
+        activeDatabaseConnectionProperties.setActive(true);
         if (!availableDatabaseConnectionProperties.contains(newCP)) {
             availableDatabaseConnectionProperties.add(newCP);
+        }
+        for( DatabaseConnectionProperties properties : availableDatabaseConnectionProperties ) {
+            if (!properties.equals(activeDatabaseConnectionProperties)) {
+                properties.setActive(false);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void checkTableExistence() throws Exception {
+        Iterator tableMappings = activeDatabaseConnection.getAnnotationConfiguration().getTableMappings();
+        List<String> tableList = new ArrayList<String>();
+        while( tableMappings.hasNext() ) {
+            Object next = tableMappings.next();
+            if (next instanceof Table) {
+                Table mappedTable = (Table) next;
+                String name = mappedTable.getName();
+                tableList.add(name);
+            }
+        }
+        boolean checkTables = activeDatabaseConnection.checkTables((String[]) tableList.toArray(new String[tableList.size()]));
+        if (!checkTables) {
+            activeDatabaseConnection.createSchemas(true);
         }
     }
 

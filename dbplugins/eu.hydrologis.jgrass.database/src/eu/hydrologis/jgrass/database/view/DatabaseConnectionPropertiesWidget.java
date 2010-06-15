@@ -24,6 +24,7 @@ import net.refractions.udig.ui.PlatformGIS;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -53,6 +54,18 @@ public class DatabaseConnectionPropertiesWidget {
     private Composite propertiesComposite = null;
     private Text pathText;
     private Text hostText;
+    private final DatabaseView databaseView;
+    private DatabaseConnectionProperties properties;
+    private Text nameText;
+    private Text databaseText;
+    private Text userText;
+    private Text passwordText;
+    private Text portText;
+    private Button activateButton;
+
+    public DatabaseConnectionPropertiesWidget( DatabaseView databaseView ) {
+        this.databaseView = databaseView;
+    }
 
     /**
      * Creates the widget for the database properties.
@@ -64,6 +77,7 @@ public class DatabaseConnectionPropertiesWidget {
      * @return the composite for the properties.
      */
     public Composite getComposite( final DatabaseConnectionProperties properties, Composite parent ) {
+        this.properties = properties;
         if (propertiesComposite == null) {
             propertiesComposite = new Composite(parent, SWT.NONE);
             propertiesComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -80,7 +94,7 @@ public class DatabaseConnectionPropertiesWidget {
             Label nameLabel = new Label(propertiesComposite, SWT.NONE);
             nameLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             nameLabel.setText("Connection name");
-            final Text nameText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+            nameText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
             nameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             String title = properties.getTitle();
             if (title == null) {
@@ -90,6 +104,7 @@ public class DatabaseConnectionPropertiesWidget {
             nameText.addKeyListener(new KeyAdapter(){
                 public void keyReleased( KeyEvent e ) {
                     properties.put(DatabaseConnectionProperties.TITLE, nameText.getText());
+                    triggerViewerLayout();
                 }
             });
 
@@ -134,7 +149,7 @@ public class DatabaseConnectionPropertiesWidget {
             Label databaseLabel = new Label(propertiesComposite, SWT.NONE);
             databaseLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             databaseLabel.setText("Database name");
-            final Text databaseText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+            databaseText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
             databaseText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             String databaseName = properties.getDatabaseName();
             if (databaseName == null) {
@@ -151,7 +166,7 @@ public class DatabaseConnectionPropertiesWidget {
             Label userLabel = new Label(propertiesComposite, SWT.NONE);
             userLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             userLabel.setText("User");
-            final Text userText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+            userText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
             userText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             String user = properties.getUser();
             if (user == null) {
@@ -168,7 +183,7 @@ public class DatabaseConnectionPropertiesWidget {
             Label passwordLabel = new Label(propertiesComposite, SWT.NONE);
             passwordLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             passwordLabel.setText("Password");
-            final Text passwordText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER | SWT.PASSWORD);
+            passwordText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER | SWT.PASSWORD);
             passwordText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             String password = properties.getPassword();
             if (password == null) {
@@ -185,7 +200,7 @@ public class DatabaseConnectionPropertiesWidget {
             Label portLabel = new Label(propertiesComposite, SWT.NONE);
             portLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             portLabel.setText("Port");
-            final Text portText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+            portText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
             portText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             String port = properties.getPort();
             if (port == null) {
@@ -198,15 +213,14 @@ public class DatabaseConnectionPropertiesWidget {
                 }
             });
 
-            // make connection active button
-            final Button activateButton = new Button(propertiesComposite, SWT.PUSH);
+            activateButton = new Button(propertiesComposite, SWT.PUSH);
             GridData activateButtonGD = new GridData(SWT.FILL, SWT.FILL, true, false);
             activateButtonGD.horizontalSpan = 2;
             activateButton.setLayoutData(activateButtonGD);
             activateButton.setText("Activate this connection");
             if (properties.isActive()) {
                 activateButton.setEnabled(false);
-            }else{
+            } else {
                 activateButton.setEnabled(true);
             }
             activateButton.addSelectionListener(new SelectionAdapter(){
@@ -235,6 +249,7 @@ public class DatabaseConnectionPropertiesWidget {
                                         "An error occurred while connecting to the new database."
                                                 + "\nPlease check the database parameters entered.");
                             }
+                            triggerViewerLayout();
 
                         }
                     };
@@ -256,75 +271,74 @@ public class DatabaseConnectionPropertiesWidget {
                 });
             }
 
-            propertiesComposite.addFocusListener(new FocusAdapter(){
-                public void focusGained( FocusEvent e ) {
-                    super.focusGained(e);
-                    
-                    // make sure the params are updated
-                    // name
-                    String title = properties.getTitle();
-                    if (title == null) {
-                        title = "";
-                    }
-                    nameText.setText(title);
-
-                    boolean isLocal = ConnectionManager.isLocal(properties);
-                    if (isLocal) {
-                        // path
-                        String path = properties.getPath();
-                        if (path == null) {
-                            path = "";
-                        }
-                        pathText.setText(path);
-                    } else {
-                        String host = properties.getHost();
-                        if (host == null) {
-                            host = "";
-                        }
-                        hostText.setText(host);
-                    }
-
-                    // database
-                    String databaseName = properties.getDatabaseName();
-                    if (databaseName == null) {
-                        databaseName = "";
-                    }
-                    databaseText.setText(databaseName);
-
-                    // user
-                    String user = properties.getUser();
-                    if (user == null) {
-                        user = "";
-                    }
-                    userText.setText(user);
-
-                    // password
-                    String password = properties.getPassword();
-                    if (password == null) {
-                        password = "";
-                    }
-                    passwordText.setText(password);
-
-                    // port
-                    String port = properties.getPort();
-                    if (port == null) {
-                        port = "";
-                    }
-                    portText.setText(port);
-
-                    // make connection active button
-                    if (properties.isActive()) {
-                        activateButton.setEnabled(false);
-                    }else{
-                        activateButton.setEnabled(true);
-                    }
-                }
-            });
-            
-            
         }
 
         return propertiesComposite;
+    }
+
+    public void refresh() {
+        // make sure the params are updated
+        // name
+        String title = properties.getTitle();
+        if (title == null) {
+            title = "";
+        }
+        nameText.setText(title);
+
+        boolean isLocal = ConnectionManager.isLocal(properties);
+        if (isLocal) {
+            // path
+            String path = properties.getPath();
+            if (path == null) {
+                path = "";
+            }
+            pathText.setText(path);
+        } else {
+            String host = properties.getHost();
+            if (host == null) {
+                host = "";
+            }
+            hostText.setText(host);
+        }
+
+        // database
+        String databaseName = properties.getDatabaseName();
+        if (databaseName == null) {
+            databaseName = "";
+        }
+        databaseText.setText(databaseName);
+
+        // user
+        String user = properties.getUser();
+        if (user == null) {
+            user = "";
+        }
+        userText.setText(user);
+
+        // password
+        String password = properties.getPassword();
+        if (password == null) {
+            password = "";
+        }
+        passwordText.setText(password);
+
+        // port
+        String port = properties.getPort();
+        if (port == null) {
+            port = "";
+        }
+        portText.setText(port);
+
+        // make connection active button
+        if (properties.isActive()) {
+            activateButton.setEnabled(false);
+        } else {
+            activateButton.setEnabled(true);
+        }
+    }
+
+    private void triggerViewerLayout() {
+        databaseView.relayout();
     }
 
 }
