@@ -41,8 +41,7 @@ public class CompressionUtilities {
      * @param destZipFile path to the final output zip file.
      * @param addBaseFolder flag to decide whether to add also the provided base folder or not.
      */
-    public static void zipFolder( String srcFolder, String destZipFile, boolean addBaseFolder )
-            throws IOException {
+    public static void zipFolder( String srcFolder, String destZipFile, boolean addBaseFolder ) throws IOException {
         if (new File(srcFolder).isDirectory()) {
 
             ZipOutputStream zip = null;
@@ -101,8 +100,7 @@ public class CompressionUtilities {
         zf.close();
     }
 
-    private static void addToZip( String path, String srcFile, ZipOutputStream zip )
-            throws IOException {
+    private static void addToZip( String path, String srcFile, ZipOutputStream zip ) throws IOException {
         File folder = new File(srcFile);
         if (folder.isDirectory()) {
             addFolderToZip(path, srcFile, zip, true);
@@ -123,8 +121,8 @@ public class CompressionUtilities {
         }
     }
 
-    private static void addFolderToZip( String path, String srcFolder, ZipOutputStream zip,
-            boolean addFolder ) throws IOException {
+    private static void addFolderToZip( String path, String srcFolder, ZipOutputStream zip, boolean addFolder )
+            throws IOException {
         File folder = new File(srcFolder);
         String listOfFiles[] = folder.list();
         for( int i = 0; i < listOfFiles.length; i++ ) {
@@ -139,17 +137,17 @@ public class CompressionUtilities {
         }
     }
 
-    public static void main( String[] args ) {
-        String zipPath = "C:\\Users\\moovida\\Desktop\\plugins\\geonotes_2.zip";
-        File zipFile = new File(zipPath);
-        File rootFolder = zipFile.getParentFile();
-
-        try {
-            unzipFolder(zipPath, rootFolder.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
+    // public static void main( String[] args ) {
+    // String zipPath = "C:\\Users\\moovida\\Desktop\\plugins\\geonotes_2.zip";
+    // File zipFile = new File(zipPath);
+    // File rootFolder = zipFile.getParentFile();
+    //
+    // try {
+    // unzipFolder(zipPath, rootFolder.getAbsolutePath());
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // }
+    //
+    // }
 
 }

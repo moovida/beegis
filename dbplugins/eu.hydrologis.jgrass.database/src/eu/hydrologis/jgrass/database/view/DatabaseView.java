@@ -245,13 +245,13 @@ public class DatabaseView extends ViewPart {
 
     }
 
-    private class ActiveFilter extends ViewerFilter {
+    private static class ActiveFilter extends ViewerFilter {
         public boolean select( Viewer arg0, Object arg1, Object arg2 ) {
             return ((DatabaseConnectionProperties) arg2).isActive();
         }
     }
 
-    private class ProjectMatchFilter extends ViewerFilter {
+    private static class ProjectMatchFilter extends ViewerFilter {
         public boolean select( Viewer arg0, Object arg1, Object arg2 ) {
             String name = ((DatabaseConnectionProperties) arg2).getTitle();
             String projectName = ApplicationGIS.getActiveProject().getName();

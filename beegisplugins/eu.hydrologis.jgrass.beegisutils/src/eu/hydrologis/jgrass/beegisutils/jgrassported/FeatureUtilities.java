@@ -202,6 +202,7 @@ public class FeatureUtilities {
         int fields = _classAndFieldNames.split(separator).length - 1;
         int numberOfFiledstoBeLineWithAttributes = is3d ? 3 + fields : 2 + fields;
 
+        // count
         int index = 0;
         BufferedReader bR = new BufferedReader(new FileReader(csvPath));
         while( bR.readLine() != null ) {

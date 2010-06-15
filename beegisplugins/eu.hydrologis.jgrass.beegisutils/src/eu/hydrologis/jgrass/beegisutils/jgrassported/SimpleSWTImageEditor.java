@@ -225,7 +225,7 @@ public class SimpleSWTImageEditor {
         clearButton.setToolTipText("clear the area from drawings");
         clearButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
-                lines.removeAll(lines);
+                lines.clear();
                 drawArea.redraw();
             }
         });

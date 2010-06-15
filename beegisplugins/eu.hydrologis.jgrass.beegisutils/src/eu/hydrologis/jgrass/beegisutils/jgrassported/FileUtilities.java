@@ -82,15 +82,15 @@ public class FileUtilities {
         return bits;
     }
 
-    public static byte[] BitSet2ByteArray( BitSet bs ) {
-        byte[] bytes = new byte[bs.size() / 8 + 1];
-
-        for( int i = 0; i < bs.size(); i++ )
-            if (bs.get(i))
-                bytes[i / 8] |= 1 << (i % 8);
-
-        return bytes;
-    }
+    // public static byte[] BitSet2ByteArray( BitSet bs ) {
+    // byte[] bytes = new byte[bs.size() / 8 + 1];
+    //
+    // for( int i = 0; i < bs.size(); i++ )
+    // if (bs.get(i))
+    // bytes[i / 8] |= 1 << (i % 8);
+    //
+    // return bytes;
+    // }
 
     public static byte[] toByteArray( BitSet bits ) {
         byte[] bytes = new byte[bits.length() / 8 + 1];
@@ -265,8 +265,7 @@ public class FileUtilities {
         return file;
     }
 
-    public static String pluginPathToAbsolutepath( String pluginId, String pluginPath )
-            throws IOException {
+    public static String pluginPathToAbsolutepath( String pluginId, String pluginPath ) throws IOException {
         String exePath;
         URL fileURL = FileLocator.find(Platform.getBundle(pluginId), new Path(pluginPath), null);
 
