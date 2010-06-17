@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -36,6 +37,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.h2.tools.Server;
 import org.hibernate.mapping.Table;
 import org.osgi.framework.BundleContext;
 
@@ -52,6 +54,7 @@ import eu.hydrologis.jgrass.database.utils.ImageCache;
  */
 public class DatabasePlugin extends AbstractUIPlugin {
 
+
     // The plug-in ID
     public static final String PLUGIN_ID = "eu.hydrologis.jgrass.database"; //$NON-NLS-1$
 
@@ -61,7 +64,11 @@ public class DatabasePlugin extends AbstractUIPlugin {
     private IDatabaseConnection activeDatabaseConnection;
     private DatabaseConnectionProperties activeDatabaseConnectionProperties;
 
+    public static final String WEBSERVERPORT = "10101"; //$NON-NLS-1$
+
     private List<DatabaseConnectionProperties> availableDatabaseConnectionProperties = new ArrayList<DatabaseConnectionProperties>();
+
+    private Server webServer;
 
     private static final String DATABASES_XML = "databases.xml"; //$NON-NLS-1$
 
@@ -74,6 +81,8 @@ public class DatabasePlugin extends AbstractUIPlugin {
     public void start( BundleContext context ) throws Exception {
         super.start(context);
         plugin = this;
+
+        startWebserver();
     }
 
     public void stop( BundleContext context ) throws Exception {
@@ -85,6 +94,9 @@ public class DatabasePlugin extends AbstractUIPlugin {
         }
 
         plugin = null;
+        if (webServer != null) {
+            webServer.stop();
+        }
 
         ImageCache.getInstance().dispose();
 
@@ -309,5 +321,21 @@ public class DatabasePlugin extends AbstractUIPlugin {
 
     public List<DatabaseConnectionProperties> getAvailableDatabaseConnectionProperties() {
         return availableDatabaseConnectionProperties;
+    }
+
+    private void startWebserver() {
+        Thread h2WebserverThread = new Thread(){
+            public void run() {
+                try {
+                    //                        String[] args = {"-tcp", "-tcpPort", port}; //$NON-NLS-1$ //$NON-NLS-2$
+                    // tcpServer = Server.createTcpServer(args).start();
+                    String[] args = new String[]{"-web", "-webPort", WEBSERVERPORT}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    webServer = Server.createWebServer(args).start();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        h2WebserverThread.start();
     }
 }

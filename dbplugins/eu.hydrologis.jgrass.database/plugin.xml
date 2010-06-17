@@ -41,6 +41,16 @@
             name="%database.view"
             restorable="true">
       </view>
+      <view
+            allowMultiple="false"
+            category="eu.hydrologis.jgrass.database.category"
+            class="eu.hydrologis.jgrass.database.view.DatabaseBrowserView"
+            icon="icons/db_browser.gif"
+            id="eu.hydrologis.jgrass.database.browserview"
+            fastViewWidthRatio="0.30"
+            name="%database.browserview"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.viewActions">
@@ -91,6 +101,15 @@
                style="push"
                toolbarPath="dbtoolbar"
                tooltip="%database.view.action.create_local">
+         </action>
+         <action
+               class="eu.hydrologis.jgrass.database.view.OpenInBrowserViewAction"
+               icon="icons/db_browser.gif"
+               id="eu.hydrologis.jgrass.database.open_browser_action"
+               label="%database.view.action.open_browser"
+               style="push"
+               toolbarPath="dbtoolbar"
+               tooltip="%database.view.action.open_browser">
          </action>
 
       </viewContribution>

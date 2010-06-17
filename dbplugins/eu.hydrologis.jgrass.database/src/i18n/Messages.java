@@ -20,6 +20,7 @@ public class Messages extends NLS {
     public static String databaseplugin__disconnecting_db;
     public static String databaseplugin__errmsg_connection;
     public static String databaseplugin__open_db_location;
+    public static String DatabaseBrowserView__no_db_connetion_established;
     public static String DatabasePlugin__errmsg_connecting_db;
     public static String DatabasePlugin__errmsg_creating_db;
     public static String DatabaseView__connections;
@@ -38,6 +39,7 @@ public class Messages extends NLS {
     public static String ImportDatabaseAction__select_folder;
     public static String ImportDatabaseAction__select_zip;
     public static String OpenDatabaseViewAction__errmsg_open_dbview;
+    public static String OpenInBrowserViewAction__errmsg_open_dbview;
     public static String RemoveDatabaseAction__remove_db_prompt;
     public static String RemoveDatabaseAction__remove_db_warning;
     static {

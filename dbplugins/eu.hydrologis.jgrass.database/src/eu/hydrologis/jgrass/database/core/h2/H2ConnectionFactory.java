@@ -19,15 +19,19 @@ package eu.hydrologis.jgrass.database.core.h2;
 
 import i18n.Messages;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 import net.refractions.udig.project.IProject;
 import net.refractions.udig.project.ui.ApplicationGIS;
 
 import org.eclipse.emf.common.util.URI;
 
+import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 import eu.hydrologis.jgrass.database.core.IConnectionFactory;
 import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
@@ -117,6 +121,50 @@ public class H2ConnectionFactory implements IConnectionFactory {
         props.put(DatabaseConnectionProperties.PASS, ""); //$NON-NLS-1$
         props.put(DatabaseConnectionProperties.PATH, databaseFolder.getAbsolutePath());
         return props;
+    }
+
+    @SuppressWarnings("nls")
+    public String generateWebserverConnectionString( DatabaseConnectionProperties connectionProperties ) throws IOException {
+        String port = DatabasePlugin.WEBSERVERPORT;
+        String dbRoot = connectionProperties.getPath();
+        String name = connectionProperties.getDatabaseName();
+        String user = connectionProperties.getUser();
+        String passwd = connectionProperties.getPassword();
+
+        // get the session id
+        String base = "http://localhost:" + port;
+        URL url = new URL(base);
+        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+        String str;
+        String loginDo = "";
+        while( (str = in.readLine()) != null ) {
+            if (str.matches(".*jsessionid.*")) {
+                str = str.replaceFirst("^.*jsessionid=", "");
+                str = str.replaceFirst("';$", "");
+                loginDo = "login.do?jsessionid=" + str;
+                break;
+            }
+        }
+        in.close();
+
+        StringBuilder sB = new StringBuilder();
+        sB.append(base);
+        if (loginDo.length() > 0) {
+            sB.append("/");
+            sB.append(loginDo);
+            sB.append("&");
+            sB.append("driver=org.h2.Driver&url=jdbc:h2:");
+            sB.append(dbRoot);
+            sB.append(File.separator);
+            sB.append(name);
+            sB.append("&");
+            sB.append("user=");
+            sB.append(user);
+            sB.append("&");
+            sB.append("password=");
+            sB.append(passwd);
+        }
+        return sB.toString();
     }
 
 }

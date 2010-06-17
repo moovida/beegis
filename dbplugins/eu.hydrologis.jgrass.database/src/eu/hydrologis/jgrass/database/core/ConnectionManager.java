@@ -63,6 +63,19 @@ public class ConnectionManager {
     }
 
     /**
+     * Get the {@link IConnectionFactory} for the given properties.
+     * 
+     * @param connectionProperties
+     * @return
+     */
+    public static synchronized IConnectionFactory getDatabaseConnectionFactory( DatabaseConnectionProperties connectionProperties ) {
+        String databaseDriver = connectionProperties.getDatabaseDriver();
+        IConnectionFactory iConnectionFactory = databaseDriver2ConnectionFactory.get(databaseDriver);
+
+        return iConnectionFactory;
+    }
+
+    /**
      * Checks if the connection is local or remote.
      * 
      * @param connectionProperties the properties to check for.

@@ -37,6 +37,13 @@ public interface IDatabaseConnection {
     public void setConnectionParameters( DatabaseConnectionProperties connectionProperties );
 
     /**
+     * Getter for the used {@link DatabaseConnectionProperties connection properties}.
+     * 
+     * @return the connection properties.
+     */
+    public DatabaseConnectionProperties getConnectionProperties();
+
+    /**
      * Getter for the {@link SessionFactory}.
      * 
      * <p><b>Note that this will also create the connection to the database.</b></p>

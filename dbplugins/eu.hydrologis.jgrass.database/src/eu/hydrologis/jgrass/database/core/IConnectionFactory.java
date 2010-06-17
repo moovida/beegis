@@ -51,4 +51,6 @@ public interface IConnectionFactory {
      */
     public DatabaseConnectionProperties createDefaultProperties();
 
+    public String generateWebserverConnectionString( DatabaseConnectionProperties connectionProperties ) throws IOException;
+
 }

@@ -56,15 +56,17 @@ public class H2DatabaseConnection implements IDatabaseConnection {
 
     private SessionFactory sessionFactory;
     private Server tcpServer = null;
-    private Server webServer = null;
+    // private Server webServer = null;
     private boolean dbIsAlive = false;
     private AnnotationConfiguration annotationConfiguration;
 
     private List<String> annotatedClassesList = new ArrayList<String>();
     private boolean doLog;
+    private DatabaseConnectionProperties connectionProperties;
 
     @Override
     public void setConnectionParameters( DatabaseConnectionProperties connectionProperties ) {
+        this.connectionProperties = connectionProperties;
         user = connectionProperties.getUser();
         passwd = connectionProperties.getPassword();
         databasePath = connectionProperties.getPath();
@@ -74,15 +76,20 @@ public class H2DatabaseConnection implements IDatabaseConnection {
 
         final String database = databasePath + File.separator + databaseName;
         connectionString = "jdbc:h2:tcp://localhost:" + port + "/" + database; //$NON-NLS-1$ //$NON-NLS-2$
-        
+
         // make sure that every connection has it's type
         connectionProperties.put(DatabaseConnectionProperties.TYPE, TYPE);
+    }
+    
+    @Override
+    public DatabaseConnectionProperties getConnectionProperties() {
+        return connectionProperties;
     }
 
     @Override
     public SessionFactory getSessionFactory() throws Exception {
         if (sessionFactory == null) {
-            startWebserver();
+            startTcpserver();
             int timeout = 0;
             while( !dbIsAlive ) {
                 try {
@@ -113,9 +120,9 @@ public class H2DatabaseConnection implements IDatabaseConnection {
         if (tcpServer != null) {
             tcpServer.stop();
         }
-        if (webServer != null) {
-            webServer.stop();
-        }
+        // if (webServer != null) {
+        // webServer.stop();
+        // }
     }
 
     @Override
@@ -199,16 +206,15 @@ public class H2DatabaseConnection implements IDatabaseConnection {
     /**
      * start the database instance
      */
-    private void startWebserver() {
+    private void startTcpserver() {
         Thread h2WebserverThread = new Thread(){
-
             public void run() {
                 try {
                     if (!dbIsAlive) {
                         String[] args = {"-tcp", "-tcpPort", port}; //$NON-NLS-1$ //$NON-NLS-2$
                         tcpServer = Server.createTcpServer(args).start();
-                        args = new String[]{"-web", "-webPort", String.valueOf(Integer.parseInt(port) + 1)}; //$NON-NLS-1$ //$NON-NLS-2$
-                        webServer = Server.createWebServer(args).start();
+                        //                        args = new String[]{"-web", "-webPort", String.valueOf(Integer.parseInt(port) + 1)}; //$NON-NLS-1$ //$NON-NLS-2$
+                        // webServer = Server.createWebServer(args).start();
                         dbIsAlive = true;
                     }
                 } catch (SQLException e) {
@@ -218,5 +224,6 @@ public class H2DatabaseConnection implements IDatabaseConnection {
         };
         h2WebserverThread.start();
     }
+
 
 }

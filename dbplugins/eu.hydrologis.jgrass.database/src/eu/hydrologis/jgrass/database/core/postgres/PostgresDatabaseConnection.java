@@ -55,9 +55,11 @@ public class PostgresDatabaseConnection implements IDatabaseConnection {
     private AnnotationConfiguration annotationConfiguration;
 
     private boolean doLog;
+    private DatabaseConnectionProperties connectionProperties;
 
     @Override
     public void setConnectionParameters( DatabaseConnectionProperties connectionProperties ) {
+        this.connectionProperties = connectionProperties;
         user = connectionProperties.getUser();
         passwd = connectionProperties.getPassword();
         databaseHost = connectionProperties.getHost();
@@ -66,9 +68,14 @@ public class PostgresDatabaseConnection implements IDatabaseConnection {
         doLog = connectionProperties.doLogSql();
 
         connectionString = "jdbc:postgresql://" + databaseHost + ":" + port + "/" + databaseName; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        
-        // make sure every connection has its type 
+
+        // make sure every connection has its type
         connectionProperties.put(DatabaseConnectionProperties.TYPE, TYPE);
+    }
+
+    @Override
+    public DatabaseConnectionProperties getConnectionProperties() {
+        return connectionProperties;
     }
 
     @Override

@@ -19,9 +19,13 @@ package eu.hydrologis.jgrass.database.core.postgres;
 
 import i18n.Messages;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 
+import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 import eu.hydrologis.jgrass.database.core.IConnectionFactory;
 import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
@@ -45,7 +49,7 @@ public class PostgresConnectionFactory implements IConnectionFactory {
         // postgres is not file based
         return null;
     }
-    
+
     @Override
     public DatabaseConnectionProperties createDefaultProperties() {
         DatabaseConnectionProperties props = new DatabaseConnectionProperties();
@@ -60,6 +64,55 @@ public class PostgresConnectionFactory implements IConnectionFactory {
         props.put(DatabaseConnectionProperties.PASS, ""); //$NON-NLS-1$
         props.put(DatabaseConnectionProperties.HOST, "localhost"); //$NON-NLS-1$
         return props;
+    }
+
+    @SuppressWarnings("nls")
+    public String generateWebserverConnectionString( DatabaseConnectionProperties connectionProperties ) throws IOException {
+        String port = DatabasePlugin.WEBSERVERPORT;
+        String host = connectionProperties.getHost();
+        String dbName = connectionProperties.getDatabaseName();
+        String user = connectionProperties.getUser();
+        String passwd = connectionProperties.getPassword();
+
+        // get the session id
+        String base = "http://localhost:" + port;
+        URL url = new URL(base);
+        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+        String str;
+        String loginDo = "";
+        while( (str = in.readLine()) != null ) {
+            if (str.matches(".*jsessionid.*")) {
+                str = str.replaceFirst("^.*jsessionid=", "");
+                str = str.replaceFirst("';$", "");
+                loginDo = "login.do?jsessionid=" + str;
+                break;
+            }
+        }
+        in.close();
+
+        StringBuilder sB = new StringBuilder();
+        sB.append(base);
+        if (loginDo.length() > 0) {
+            sB.append("/");
+            sB.append(loginDo);
+            sB.append("&");
+            sB.append("driver=org.postgresql.Driver&url=jdbc:postgresql:");
+            if (!host.trim().equals("localhost") && !host.trim().equals("127.0.0.1")) {
+                sB.append("//");
+                sB.append(host);
+                sB.append(":");
+                sB.append(port);
+                sB.append("/");
+            }
+            sB.append(dbName);
+            sB.append("&");
+            sB.append("user=");
+            sB.append(user);
+            sB.append("&");
+            sB.append("password=");
+            sB.append(passwd);
+        }
+        return sB.toString();
     }
 
 }

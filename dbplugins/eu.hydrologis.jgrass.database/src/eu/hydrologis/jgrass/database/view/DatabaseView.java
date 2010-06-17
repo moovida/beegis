@@ -19,11 +19,13 @@ package eu.hydrologis.jgrass.database.view;
 
 import i18n.Messages;
 
+import java.awt.image.RenderedImage;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
 import net.refractions.udig.project.ILayer;
+import net.refractions.udig.project.IMap;
 import net.refractions.udig.project.ui.ApplicationGIS;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -55,9 +57,7 @@ import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.ConnectionManager;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 import eu.hydrologis.jgrass.database.core.h2.H2ConnectionFactory;
-import eu.hydrologis.jgrass.database.core.h2.H2DatabaseConnection;
 import eu.hydrologis.jgrass.database.core.postgres.PostgresConnectionFactory;
-import eu.hydrologis.jgrass.database.core.postgres.PostgresDatabaseConnection;
 import eu.hydrologis.jgrass.database.utils.ImageCache;
 
 /**
@@ -311,7 +311,12 @@ public class DatabaseView extends ViewPart {
                 }
                 connectionsViewer.setInput(availableDatabaseConnectionProperties);
 
-                List<ILayer> mapLayers = ApplicationGIS.getActiveMap().getMapLayers();
+                IMap activeMap = ApplicationGIS.getActiveMap();
+                RenderedImage image = activeMap.getRenderManager().getImage();
+                if (image == null) {
+                    return;
+                }
+                List<ILayer> mapLayers = activeMap.getMapLayers();
                 for( ILayer iLayer : mapLayers ) {
                     iLayer.refresh(null);
                 }
