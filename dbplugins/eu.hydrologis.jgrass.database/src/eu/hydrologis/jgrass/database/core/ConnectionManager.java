@@ -18,6 +18,8 @@
  */
 package eu.hydrologis.jgrass.database.core;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 import eu.hydrologis.jgrass.database.core.h2.H2ConnectionFactory;
@@ -69,9 +71,30 @@ public class ConnectionManager {
             return true;
         } else if (databaseDriver.equals(PostgresDatabaseConnection.DRIVER)) {
             return false;
-        }else{
+        } else {
             throw new IllegalArgumentException("Unknown database type.");
         }
+    }
+
+    /**
+     * This creates {@link DatabaseConnectionProperties connection properties} based on a local db file.
+     * 
+     * <p>The type and some of the fields are guessed.</p>
+     * 
+     * <p><b>
+     * Note that currently this returns H2 properties, since it is the only one supported.
+     * </b></p>
+     * 
+     * @param dbFile the file representing a local database. 
+     * @return best guessed connection properties.
+     * @throws IOException 
+     */
+    public static DatabaseConnectionProperties createPropertiesBasedOnFolder( File dbFile ) throws IOException {
+
+        DatabaseConnectionProperties properties = H2ConnectionFactory.createProperties(dbFile);
+
+        return properties;
 
     }
+
 }

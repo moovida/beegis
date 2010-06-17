@@ -12,13 +12,15 @@
          point="org.eclipse.ui.actionSets">
       <actionSet
             id="eu.hydrologis.jgrass.database.main"
-            label="Database">
+            label="Database"
+            visible="true">
          <action
                class="eu.hydrologis.jgrass.database.view.OpenDatabaseViewAction"
                icon="icons/database_view.gif"
                id="eu.hydrologis.jgrass.database.opendatabaseview"
                label="%database.open.view"
                style="push"
+               toolbarPath="dbtoolbar"
                tooltip="%database.open.view">
          </action>
       </actionSet>

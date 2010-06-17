@@ -17,6 +17,8 @@
  */
 package eu.hydrologis.jgrass.database.view;
 
+import i18n.Messages;
+
 import java.lang.reflect.InvocationTargetException;
 
 import net.refractions.udig.ui.PlatformGIS;
@@ -24,10 +26,7 @@ import net.refractions.udig.ui.PlatformGIS;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -62,6 +61,7 @@ public class DatabaseConnectionPropertiesWidget {
     private Text passwordText;
     private Text portText;
     private Button activateButton;
+    private Button disableButton;
 
     public DatabaseConnectionPropertiesWidget( DatabaseView databaseView ) {
         this.databaseView = databaseView;
@@ -88,17 +88,17 @@ public class DatabaseConnectionPropertiesWidget {
             GridData typeLabelGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
             typeLabelGD.horizontalSpan = 2;
             typeLabel.setLayoutData(typeLabelGD);
-            typeLabel.setText("Database type: " + properties.getType());
+            typeLabel.setText(Messages.databaseplugin__database_type + properties.getType());
 
             // name
             Label nameLabel = new Label(propertiesComposite, SWT.NONE);
             nameLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-            nameLabel.setText("Connection name");
+            nameLabel.setText(Messages.databaseplugin__connection_name);
             nameText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
             nameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             String title = properties.getTitle();
             if (title == null) {
-                title = "";
+                title = ""; //$NON-NLS-1$
             }
             nameText.setText(title);
             nameText.addKeyListener(new KeyAdapter(){
@@ -113,12 +113,12 @@ public class DatabaseConnectionPropertiesWidget {
                 // path
                 Label pathLabel = new Label(propertiesComposite, SWT.NONE);
                 pathLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-                pathLabel.setText("Database folder");
+                pathLabel.setText(Messages.databaseplugin__database_folder);
                 pathText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
                 pathText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
                 String path = properties.getPath();
                 if (path == null) {
-                    path = "";
+                    path = ""; //$NON-NLS-1$
                 }
                 pathText.setText(path);
                 pathText.addKeyListener(new KeyAdapter(){
@@ -130,12 +130,12 @@ public class DatabaseConnectionPropertiesWidget {
                 // host
                 Label hostLabel = new Label(propertiesComposite, SWT.NONE);
                 hostLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-                hostLabel.setText("Host");
+                hostLabel.setText(Messages.databaseplugin__database_host);
                 hostText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
                 hostText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
                 String host = properties.getHost();
                 if (host == null) {
-                    host = "";
+                    host = ""; //$NON-NLS-1$
                 }
                 hostText.setText(host);
                 hostText.addKeyListener(new KeyAdapter(){
@@ -148,12 +148,12 @@ public class DatabaseConnectionPropertiesWidget {
             // database
             Label databaseLabel = new Label(propertiesComposite, SWT.NONE);
             databaseLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-            databaseLabel.setText("Database name");
+            databaseLabel.setText(Messages.databaseplugin__database_name);
             databaseText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
             databaseText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             String databaseName = properties.getDatabaseName();
             if (databaseName == null) {
-                databaseName = "";
+                databaseName = ""; //$NON-NLS-1$
             }
             databaseText.setText(databaseName);
             databaseText.addKeyListener(new KeyAdapter(){
@@ -165,12 +165,12 @@ public class DatabaseConnectionPropertiesWidget {
             // user
             Label userLabel = new Label(propertiesComposite, SWT.NONE);
             userLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-            userLabel.setText("User");
+            userLabel.setText(Messages.databaseplugin__database_user);
             userText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
             userText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             String user = properties.getUser();
             if (user == null) {
-                user = "";
+                user = ""; //$NON-NLS-1$
             }
             userText.setText(user);
             userText.addKeyListener(new KeyAdapter(){
@@ -182,12 +182,12 @@ public class DatabaseConnectionPropertiesWidget {
             // password
             Label passwordLabel = new Label(propertiesComposite, SWT.NONE);
             passwordLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-            passwordLabel.setText("Password");
+            passwordLabel.setText(Messages.databaseplugin__database_password);
             passwordText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER | SWT.PASSWORD);
             passwordText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             String password = properties.getPassword();
             if (password == null) {
-                password = "";
+                password = ""; //$NON-NLS-1$
             }
             passwordText.setText(password);
             passwordText.addKeyListener(new KeyAdapter(){
@@ -199,12 +199,12 @@ public class DatabaseConnectionPropertiesWidget {
             // port
             Label portLabel = new Label(propertiesComposite, SWT.NONE);
             portLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-            portLabel.setText("Port");
+            portLabel.setText(Messages.databaseplugin__database_port);
             portText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
             portText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
             String port = properties.getPort();
             if (port == null) {
-                port = "";
+                port = ""; //$NON-NLS-1$
             }
             portText.setText(port);
             portText.addKeyListener(new KeyAdapter(){
@@ -215,20 +215,17 @@ public class DatabaseConnectionPropertiesWidget {
 
             activateButton = new Button(propertiesComposite, SWT.PUSH);
             GridData activateButtonGD = new GridData(SWT.FILL, SWT.FILL, true, false);
-            activateButtonGD.horizontalSpan = 2;
             activateButton.setLayoutData(activateButtonGD);
-            activateButton.setText("Activate this connection");
-            if (properties.isActive()) {
-                activateButton.setEnabled(false);
-            } else {
-                activateButton.setEnabled(true);
-            }
+            activateButton.setText(Messages.databaseplugin__activate_connection);
+            activateButton.setEnabled(!properties.isActive());
             activateButton.addSelectionListener(new SelectionAdapter(){
                 public void widgetSelected( SelectionEvent e ) {
                     IRunnableWithProgress operation = new IRunnableWithProgress(){
                         public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
                             boolean troubles = false;
-                            pm.beginTask("Activate database: " + properties.getTitle(), IProgressMonitor.UNKNOWN);
+                            pm
+                                    .beginTask(Messages.databaseplugin__connecting_db + properties.getTitle(),
+                                            IProgressMonitor.UNKNOWN);
                             DatabaseConnectionProperties activeDatabaseConnectionProperties = DatabasePlugin.getDefault()
                                     .getActiveDatabaseConnectionProperties();
                             try {
@@ -245,15 +242,35 @@ public class DatabaseConnectionPropertiesWidget {
                             pm.done();
 
                             if (troubles) {
-                                MessageDialog.openWarning(portText.getShell(), "Connection error",
-                                        "An error occurred while connecting to the new database."
-                                                + "\nPlease check the database parameters entered.");
+                                MessageDialog.openWarning(portText.getShell(), Messages.databaseplugin__connection_error,
+                                        Messages.databaseplugin__errmsg_connection);
                             }
                             triggerViewerLayout();
 
                         }
                     };
-                    PlatformGIS.runInProgressDialog("Activate database...", true, operation, true);
+                    PlatformGIS.runInProgressDialog(Messages.databaseplugin__connecting_db, true, operation, true);
+                }
+            });
+
+            disableButton = new Button(propertiesComposite, SWT.PUSH);
+            GridData disableButtonGD = new GridData(SWT.FILL, SWT.FILL, true, false);
+            disableButton.setLayoutData(disableButtonGD);
+            disableButton.setText(Messages.databaseplugin__disconnect);
+            disableButton.setEnabled(properties.isActive());
+            disableButton.addSelectionListener(new SelectionAdapter(){
+                public void widgetSelected( SelectionEvent e ) {
+                    IRunnableWithProgress operation = new IRunnableWithProgress(){
+                        public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
+                            pm.beginTask(Messages.databaseplugin__disconnecting_db + properties.getTitle(),
+                                    IProgressMonitor.UNKNOWN);
+                            DatabasePlugin.getDefault().disconnectActiveDatabaseConnection();
+                            pm.done();
+
+                        }
+                    };
+                    PlatformGIS.runInProgressDialog(Messages.databaseplugin__disconnecting_db, true, operation, false);
+                    triggerViewerLayout();
                 }
             });
 
@@ -263,7 +280,7 @@ public class DatabaseConnectionPropertiesWidget {
                 GridData openFolderButtonGD = new GridData(SWT.FILL, SWT.FILL, true, false);
                 openFolderButtonGD.horizontalSpan = 2;
                 openFolderButton.setLayoutData(openFolderButtonGD);
-                openFolderButton.setText("Open database location");
+                openFolderButton.setText(Messages.databaseplugin__open_db_location);
                 openFolderButton.addSelectionListener(new SelectionAdapter(){
                     public void widgetSelected( SelectionEvent e ) {
                         Program.launch(properties.getPath());
@@ -281,7 +298,7 @@ public class DatabaseConnectionPropertiesWidget {
         // name
         String title = properties.getTitle();
         if (title == null) {
-            title = "";
+            title = ""; //$NON-NLS-1$
         }
         nameText.setText(title);
 
@@ -290,13 +307,13 @@ public class DatabaseConnectionPropertiesWidget {
             // path
             String path = properties.getPath();
             if (path == null) {
-                path = "";
+                path = ""; //$NON-NLS-1$
             }
             pathText.setText(path);
         } else {
             String host = properties.getHost();
             if (host == null) {
-                host = "";
+                host = ""; //$NON-NLS-1$
             }
             hostText.setText(host);
         }
@@ -304,37 +321,34 @@ public class DatabaseConnectionPropertiesWidget {
         // database
         String databaseName = properties.getDatabaseName();
         if (databaseName == null) {
-            databaseName = "";
+            databaseName = ""; //$NON-NLS-1$
         }
         databaseText.setText(databaseName);
 
         // user
         String user = properties.getUser();
         if (user == null) {
-            user = "";
+            user = ""; //$NON-NLS-1$
         }
         userText.setText(user);
 
         // password
         String password = properties.getPassword();
         if (password == null) {
-            password = "";
+            password = ""; //$NON-NLS-1$
         }
         passwordText.setText(password);
 
         // port
         String port = properties.getPort();
         if (port == null) {
-            port = "";
+            port = ""; //$NON-NLS-1$
         }
         portText.setText(port);
 
         // make connection active button
-        if (properties.isActive()) {
-            activateButton.setEnabled(false);
-        } else {
-            activateButton.setEnabled(true);
-        }
+        activateButton.setEnabled(!properties.isActive());
+        disableButton.setEnabled(properties.isActive());
     }
 
     private void triggerViewerLayout() {

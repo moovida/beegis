@@ -45,8 +45,8 @@ import eu.hydrologis.jgrass.database.interfaces.Utils;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class H2DatabaseConnection implements IDatabaseConnection {
-    public static final String TYPE = "H2-database";
-    public static final String DRIVER = "org.h2.Driver";
+    public static final String TYPE = "H2-database"; //$NON-NLS-1$
+    public static final String DRIVER = "org.h2.Driver"; //$NON-NLS-1$
     private String user;
     private String passwd;
     private String databasePath;
@@ -73,7 +73,7 @@ public class H2DatabaseConnection implements IDatabaseConnection {
         doLog = connectionProperties.doLogSql();
 
         final String database = databasePath + File.separator + databaseName;
-        connectionString = "jdbc:h2:tcp://localhost:" + port + "/" + database;
+        connectionString = "jdbc:h2:tcp://localhost:" + port + "/" + database; //$NON-NLS-1$ //$NON-NLS-2$
         
         // make sure that every connection has it's type
         connectionProperties.put(DatabaseConnectionProperties.TYPE, TYPE);
@@ -161,13 +161,13 @@ public class H2DatabaseConnection implements IDatabaseConnection {
     @Override
     public boolean checkTables( String... tables ) throws Exception {
         StringBuilder sB = new StringBuilder();
-        sB.append("SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE ");
+        sB.append("SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE "); //$NON-NLS-1$
         for( int i = 0; i < tables.length; i++ ) {
             String tableName = tables[i];
             if (i == 0) {
-                sB.append("UPPER(TABLE_NAME) = UPPER('").append(tableName).append("')");
+                sB.append("UPPER(TABLE_NAME) = UPPER('").append(tableName).append("')"); //$NON-NLS-1$ //$NON-NLS-2$
             } else {
-                sB.append(" OR UPPER(TABLE_NAME) = UPPER('").append(tableName).append("')");
+                sB.append(" OR UPPER(TABLE_NAME) = UPPER('").append(tableName).append("')"); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
@@ -205,9 +205,9 @@ public class H2DatabaseConnection implements IDatabaseConnection {
             public void run() {
                 try {
                     if (!dbIsAlive) {
-                        String[] args = {"-tcp", "-tcpPort", port};
+                        String[] args = {"-tcp", "-tcpPort", port}; //$NON-NLS-1$ //$NON-NLS-2$
                         tcpServer = Server.createTcpServer(args).start();
-                        args = new String[]{"-web", "-webPort", String.valueOf(Integer.parseInt(port) + 1)};
+                        args = new String[]{"-web", "-webPort", String.valueOf(Integer.parseInt(port) + 1)}; //$NON-NLS-1$ //$NON-NLS-2$
                         webServer = Server.createWebServer(args).start();
                         dbIsAlive = true;
                     }

@@ -62,6 +62,8 @@ import eu.hydrologis.jgrass.database.utils.ImageCache;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class DatabaseView extends ViewPart {
+    
+    public static final String ID = "eu.hydrologis.jgrass.database.catalogview";
 
     private HashMap<DatabaseConnectionProperties, DatabaseConnectionPropertiesWidget> widgetMap = new HashMap<DatabaseConnectionProperties, DatabaseConnectionPropertiesWidget>();
 
@@ -96,7 +98,7 @@ public class DatabaseView extends ViewPart {
 
         Composite connectionsListComposite = new Composite(connectionsGroup, SWT.NONE);
         connectionsListComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        connectionsListComposite.setLayout(new GridLayout(1, false));
+        connectionsListComposite.setLayout(new GridLayout(2, false));
 
         connectionsViewer = createTableViewer(connectionsListComposite);
         connectionsViewer.setInput(availableDatabaseConnectionProperties);
@@ -128,7 +130,9 @@ public class DatabaseView extends ViewPart {
     private TableViewer createTableViewer( Composite connectionsListComposite ) {
         final TableViewer connectionsViewer = new TableViewer(connectionsListComposite);
         Table table = connectionsViewer.getTable();
-        table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        GridData tableGD = new GridData(SWT.FILL, SWT.FILL, true, true);
+        tableGD.horizontalSpan = 2;
+        table.setLayoutData(tableGD);
         connectionsViewer.setContentProvider(new IStructuredContentProvider(){
             public Object[] getElements( Object inputElement ) {
                 DatabaseConnectionProperties[] array = (DatabaseConnectionProperties[]) availableDatabaseConnectionProperties
@@ -292,6 +296,10 @@ public class DatabaseView extends ViewPart {
         
         availableDatabaseConnectionProperties.add(props);
         relayout();
+    }
+    
+    public DatabaseConnectionProperties getCurrentSelectedConnectionProperties() {
+        return currentSelectedConnectionProperties;
     }
 
     public void removeCurrentSelectedDatabaseDefinition() {
