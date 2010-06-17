@@ -54,7 +54,9 @@ import org.eclipse.ui.part.ViewPart;
 import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.ConnectionManager;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
+import eu.hydrologis.jgrass.database.core.h2.H2ConnectionFactory;
 import eu.hydrologis.jgrass.database.core.h2.H2DatabaseConnection;
+import eu.hydrologis.jgrass.database.core.postgres.PostgresConnectionFactory;
 import eu.hydrologis.jgrass.database.core.postgres.PostgresDatabaseConnection;
 import eu.hydrologis.jgrass.database.utils.ImageCache;
 
@@ -64,7 +66,7 @@ import eu.hydrologis.jgrass.database.utils.ImageCache;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class DatabaseView extends ViewPart {
-    
+
     public static final String ID = "eu.hydrologis.jgrass.database.catalogview"; //$NON-NLS-1$
 
     private HashMap<DatabaseConnectionProperties, DatabaseConnectionPropertiesWidget> widgetMap = new HashMap<DatabaseConnectionProperties, DatabaseConnectionPropertiesWidget>();
@@ -206,15 +208,21 @@ public class DatabaseView extends ViewPart {
                     }
                     Control propControl = widget.getComposite(currentSelectedConnectionProperties, propertiesComposite);
                     propertiesStackLayout.topControl = propControl;
+                    propertiesComposite.layout(true);
                 } else {
-                    Label l = new Label(propertiesComposite, SWT.SHADOW_ETCHED_IN);
-                    l.setText(Messages.DatabaseView__no_item_selected);
-                    propertiesStackLayout.topControl = l;
+                    putUnselected();
                 }
-                propertiesComposite.layout(true);
             }
+
         });
         return connectionsViewer;
+    }
+
+    private void putUnselected() {
+        Label l = new Label(propertiesComposite, SWT.SHADOW_ETCHED_IN);
+        l.setText(Messages.DatabaseView__no_item_selected);
+        propertiesStackLayout.topControl = l;
+        propertiesComposite.layout(true);
     }
 
     private void addFilterButtons( Composite connectionsListComposite, final TableViewer connectionsViewer ) {
@@ -267,37 +275,17 @@ public class DatabaseView extends ViewPart {
     }
 
     public void createNewLocalDatabaseDefinition() {
-        DatabaseConnectionProperties props = new DatabaseConnectionProperties();
-        props.put("TYPE", H2DatabaseConnection.TYPE); //$NON-NLS-1$
-        props.put("ISACTIVE", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("TITLE", Messages.DatabaseView__new_local_db); //$NON-NLS-1$
-        props.put("DRIVER", H2DatabaseConnection.DRIVER); //$NON-NLS-1$
-        props.put("DATABASE", "database"); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("PORT", "9092"); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("USER", "sa"); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("PASS", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("PATH", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
-        availableDatabaseConnectionProperties.add(props);
+        DatabaseConnectionProperties defaultProperties = new H2ConnectionFactory().createDefaultProperties();
+        availableDatabaseConnectionProperties.add(defaultProperties);
         relayout();
     }
 
     public void createNewRemoteDatabaseDefinition() {
-        DatabaseConnectionProperties props = new DatabaseConnectionProperties();
-        props.put("TYPE", PostgresDatabaseConnection.TYPE); //$NON-NLS-1$
-        props.put("ISACTIVE", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("TITLE", Messages.DatabaseView__new_remote_db); //$NON-NLS-1$
-        props.put("DRIVER", PostgresDatabaseConnection.DRIVER); //$NON-NLS-1$
-        props.put("DATABASE", "databasename"); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("PORT", "5432"); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("USER", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("PASS", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("PATH", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        
-        availableDatabaseConnectionProperties.add(props);
+        DatabaseConnectionProperties defaultProperties = new PostgresConnectionFactory().createDefaultProperties();
+        availableDatabaseConnectionProperties.add(defaultProperties);
         relayout();
     }
-    
+
     public DatabaseConnectionProperties getCurrentSelectedConnectionProperties() {
         return currentSelectedConnectionProperties;
     }
@@ -321,14 +309,13 @@ public class DatabaseView extends ViewPart {
                 for( DatabaseConnectionPropertiesWidget widget : widgets ) {
                     widget.refresh();
                 }
-                // connectionsViewer.getTable().removeAll();
-                // connectionsViewer.setInput(null);
                 connectionsViewer.setInput(availableDatabaseConnectionProperties);
 
                 List<ILayer> mapLayers = ApplicationGIS.getActiveMap().getMapLayers();
                 for( ILayer iLayer : mapLayers ) {
                     iLayer.refresh(null);
                 }
+                putUnselected();
             }
         });
     }

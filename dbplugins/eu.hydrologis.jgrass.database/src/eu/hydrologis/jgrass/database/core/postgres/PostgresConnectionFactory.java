@@ -55,8 +55,8 @@ public class PostgresConnectionFactory implements IConnectionFactory {
         props.put(DatabaseConnectionProperties.DESCRIPTION, Messages.H2ConnectionFactory__default_db);
         props.put(DatabaseConnectionProperties.DRIVER, PostgresDatabaseConnection.DRIVER);
         props.put(DatabaseConnectionProperties.DATABASE, "database"); //$NON-NLS-1$
-        props.put(DatabaseConnectionProperties.PORT, "9093"); //$NON-NLS-1$
-        props.put(DatabaseConnectionProperties.USER, "sa"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.PORT, "5432"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.USER, ""); //$NON-NLS-1$
         props.put(DatabaseConnectionProperties.PASS, ""); //$NON-NLS-1$
         props.put(DatabaseConnectionProperties.HOST, "localhost"); //$NON-NLS-1$
         return props;
