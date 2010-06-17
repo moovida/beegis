@@ -276,12 +276,22 @@ public class DatabaseView extends ViewPart {
 
     public void createNewLocalDatabaseDefinition() {
         DatabaseConnectionProperties defaultProperties = new H2ConnectionFactory().createDefaultProperties();
+        String projectName = ApplicationGIS.getActiveProject().getName();
+        if (projectName != null && projectName.length() != 0) {
+            defaultProperties.put(DatabaseConnectionProperties.TITLE, projectName);
+            defaultProperties.put(DatabaseConnectionProperties.DESCRIPTION, projectName);
+        }
         availableDatabaseConnectionProperties.add(defaultProperties);
         relayout();
     }
 
     public void createNewRemoteDatabaseDefinition() {
         DatabaseConnectionProperties defaultProperties = new PostgresConnectionFactory().createDefaultProperties();
+        String projectName = ApplicationGIS.getActiveProject().getName();
+        if (projectName != null && projectName.length() != 0) {
+            defaultProperties.put(DatabaseConnectionProperties.TITLE, projectName);
+            defaultProperties.put(DatabaseConnectionProperties.DESCRIPTION, projectName);
+        }
         availableDatabaseConnectionProperties.add(defaultProperties);
         relayout();
     }
