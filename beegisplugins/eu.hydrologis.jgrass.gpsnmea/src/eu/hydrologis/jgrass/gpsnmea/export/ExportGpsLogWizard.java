@@ -101,23 +101,19 @@ public class ExportGpsLogWizard extends Wizard implements IExportWizard {
                             DateTime from = null;
                             DateTime to = null;
                             try {
-                                from = BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM
-                                        .parseDateTime(startDateStr);
+                                from = BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM.parseDateTime(startDateStr);
                             } catch (Exception e) {
                                 // not handled, since the default is used
                             }
                             try {
-                                to = BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM
-                                        .parseDateTime(endDateStr);
+                                to = BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM.parseDateTime(endDateStr);
                             } catch (Exception e) {
                                 // not handled, since the default is used
                             }
 
                             try {
-                                pm.beginTask("Extract points from database...",
-                                        IProgressMonitor.UNKNOWN);
-                                List<GpsPoint> gpsPointBetweenTimeStamp = dbMan
-                                        .getGpsPointBetweenTimeStamp(from, to);
+                                pm.beginTask("Extract points from database...", IProgressMonitor.UNKNOWN);
+                                List<GpsPoint> gpsPointBetweenTimeStamp = dbMan.getGpsPointBetweenTimeStamp(from, to);
                                 pm.done();
 
                                 if (isShp) {
@@ -131,8 +127,7 @@ public class ExportGpsLogWizard extends Wizard implements IExportWizard {
                                         coordsList.add(new Coordinate(longitude, latitude));
                                         DateTime utcDateTime = gpsPoint.utcDateTime;
                                         timestampList
-                                                .add(utcDateTime
-                                                        .toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMMSS));
+                                                .add(utcDateTime.toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMMSS));
                                         pm.worked(1);
                                     }
                                     pm.done();
@@ -174,8 +169,7 @@ public class ExportGpsLogWizard extends Wizard implements IExportWizard {
         addPage(mainPage);
     }
 
-    private void exportToShpPoint( List<Coordinate> coordsList, List<String> timestampList,
-            String filePath, IProgressMonitor pm ) {
+    private void exportToShpPoint( List<Coordinate> coordsList, List<String> timestampList, String filePath, IProgressMonitor pm ) {
         if (!filePath.endsWith("shp")) {
             filePath = filePath + ".shp";
         }
@@ -190,8 +184,7 @@ public class ExportGpsLogWizard extends Wizard implements IExportWizard {
         try {
             MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, mapCrs);
             pm.beginTask("Dump points...", coordsList.size());
-            FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections
-                    .newCollection();
+            FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections.newCollection();
             for( int i = 0; i < coordsList.size(); i++ ) {
                 Coordinate c = coordsList.get(i);
                 String t = timestampList.get(i);
@@ -220,8 +213,7 @@ public class ExportGpsLogWizard extends Wizard implements IExportWizard {
 
             FeatureUtilities.writeToShapefile(dStore, newCollection);
 
-            FeatureUtilities.addServiceToCatalogAndMap(filePath, true, true,
-                    new NullProgressMonitor());
+            FeatureUtilities.addServiceToCatalogAndMap(filePath, true, true, new NullProgressMonitor());
 
         } catch (Exception e1) {
             GpsActivator.log(e1.getLocalizedMessage(), e1);
@@ -229,8 +221,7 @@ public class ExportGpsLogWizard extends Wizard implements IExportWizard {
         }
     }
 
-    private void exportToShpLine( List<Coordinate> coordsList, List<String> timestampList,
-            String filePath, IProgressMonitor pm ) {
+    private void exportToShpLine( List<Coordinate> coordsList, List<String> timestampList, String filePath, IProgressMonitor pm ) {
         if (!filePath.endsWith("shp")) {
             filePath = filePath + ".shp";
         }
@@ -245,11 +236,9 @@ public class ExportGpsLogWizard extends Wizard implements IExportWizard {
         try {
             MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, mapCrs);
             pm.beginTask("Dump lines...", IProgressMonitor.UNKNOWN);
-            FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections
-                    .newCollection();
+            FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections.newCollection();
 
-            LineString lineString = gF.createLineString((Coordinate[]) coordsList
-                    .toArray(new Coordinate[coordsList.size()]));
+            LineString lineString = gF.createLineString((Coordinate[]) coordsList.toArray(new Coordinate[coordsList.size()]));
             MultiLineString mlineString = gF.createMultiLineString(new LineString[]{lineString});
             Geometry reprojectLineString = JTS.transform(mlineString, transform);
             String t = timestampList.get(0) + "/" + timestampList.get(timestampList.size() - 1);
@@ -272,8 +261,7 @@ public class ExportGpsLogWizard extends Wizard implements IExportWizard {
 
             FeatureUtilities.writeToShapefile(dStore, newCollection);
             pm.done();
-            FeatureUtilities.addServiceToCatalogAndMap(filePath, true, true,
-                    new NullProgressMonitor());
+            FeatureUtilities.addServiceToCatalogAndMap(filePath, true, true, new NullProgressMonitor());
 
         } catch (Exception e1) {
             GpsActivator.log(e1.getLocalizedMessage(), e1);
@@ -281,8 +269,8 @@ public class ExportGpsLogWizard extends Wizard implements IExportWizard {
         }
     }
 
-    private void exportToGpxPoint( List<GpsPoint> gpsPointBetweenTimeStamp, String filePath,
-            IProgressMonitor pm ) throws Exception {
+    private void exportToGpxPoint( List<GpsPoint> gpsPointBetweenTimeStamp, String filePath, IProgressMonitor pm )
+            throws Exception {
 
         ObjectFactory factory = new ObjectFactory();
 
@@ -321,8 +309,7 @@ public class ExportGpsLogWizard extends Wizard implements IExportWizard {
 
             GregorianCalendar gCalendar = (GregorianCalendar) GregorianCalendar.getInstance();
             gCalendar.setTimeInMillis(utc.getMillis());
-            XMLGregorianCalendar xmlCalendar = DatatypeFactory.newInstance()
-                    .newXMLGregorianCalendar(gCalendar);
+            XMLGregorianCalendar xmlCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gCalendar);
 
             WptType wptType = factory.createWptType();
             wptType.setEle(BigDecimal.valueOf(altitude));
@@ -347,8 +334,89 @@ public class ExportGpsLogWizard extends Wizard implements IExportWizard {
         metaType.setBounds(boundsType);
 
         GregorianCalendar gCalendar = (GregorianCalendar) GregorianCalendar.getInstance();
-        XMLGregorianCalendar xmlCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(
-                gCalendar);
+        XMLGregorianCalendar xmlCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gCalendar);
+        metaType.setTime(xmlCalendar);
+
+        gpxType.setMetadata(metaType);
+
+
+        List<WptType> wptList = gpxType.getWpt();
+        wptList.addAll(trkptList);
+
+        JAXBElement<GpxType> jaxbElement = factory.createGpx(gpxType);
+        JAXBContext jaxbContext = JAXBContext.newInstance("schema.gpx_1_1");
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
+        marshaller.marshal(jaxbElement, new FileOutputStream(filePath));
+
+    }
+
+    private void exportToGpxLine( List<GpsPoint> gpsPointBetweenTimeStamp, String filePath, IProgressMonitor pm )
+            throws Exception {
+
+        ObjectFactory factory = new ObjectFactory();
+
+        TrksegType trksegType = factory.createTrksegType();
+        List<WptType> trkptList = trksegType.getTrkpt();
+
+        double minLat = Double.POSITIVE_INFINITY;
+        double minLon = Double.POSITIVE_INFINITY;
+        double maxLat = Double.NEGATIVE_INFINITY;
+        double maxLon = Double.NEGATIVE_INFINITY;
+        DateTime first = null;
+        DateTime last = null;
+        for( GpsPoint gpsPoint : gpsPointBetweenTimeStamp ) {
+            double altitude = gpsPoint.altitude;
+            double lat = gpsPoint.latitude;
+            double lon = gpsPoint.longitude;
+            double sat = gpsPoint.sat;
+            double hdop = gpsPoint.hdop;
+
+            if (lat < minLat)
+                minLat = lat;
+            if (lat > maxLat)
+                maxLat = lat;
+            if (lon < minLon)
+                minLon = lon;
+            if (lon > maxLon)
+                maxLon = lon;
+
+            DateTime utc = gpsPoint.utcDateTime;
+            if (first == null || utc.isBefore(first)) {
+                first = utc;
+            }
+            if (last == null || utc.isAfter(last)) {
+                last = utc;
+            }
+
+            GregorianCalendar gCalendar = (GregorianCalendar) GregorianCalendar.getInstance();
+            gCalendar.setTimeInMillis(utc.getMillis());
+            XMLGregorianCalendar xmlCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gCalendar);
+
+            WptType wptType = factory.createWptType();
+            wptType.setEle(BigDecimal.valueOf(altitude));
+            wptType.setLat(BigDecimal.valueOf(lat));
+            wptType.setLon(BigDecimal.valueOf(lon));
+            wptType.setHdop(BigDecimal.valueOf(hdop));
+            wptType.setSat(BigInteger.valueOf((long) sat));
+            wptType.setTime(xmlCalendar);
+            trkptList.add(wptType);
+        }
+
+        GpxType gpxType = factory.createGpxType();
+        gpxType.setCreator("BeeGIS");
+        gpxType.setVersion("1.1");
+
+        MetadataType metaType = factory.createMetadataType();
+        BoundsType boundsType = factory.createBoundsType();
+        boundsType.setMaxlat(new BigDecimal(maxLat));
+        boundsType.setMinlat(new BigDecimal(minLat));
+        boundsType.setMaxlon(new BigDecimal(maxLon));
+        boundsType.setMinlon(new BigDecimal(minLon));
+        metaType.setBounds(boundsType);
+
+        GregorianCalendar gCalendar = (GregorianCalendar) GregorianCalendar.getInstance();
+        XMLGregorianCalendar xmlCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gCalendar);
         metaType.setTime(xmlCalendar);
 
         gpxType.setMetadata(metaType);
@@ -369,11 +437,5 @@ public class ExportGpsLogWizard extends Wizard implements IExportWizard {
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
         marshaller.marshal(jaxbElement, new FileOutputStream(filePath));
-
-    }
-
-    private void exportToGpxLine( List<GpsPoint> gpsPointBetweenTimeStamp, String filePath,
-            IProgressMonitor pm ) throws Exception {
-        exportToGpxPoint(gpsPointBetweenTimeStamp, filePath, pm);
     }
 }
