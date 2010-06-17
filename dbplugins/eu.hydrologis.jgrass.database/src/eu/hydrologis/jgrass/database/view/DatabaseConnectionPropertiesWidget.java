@@ -61,7 +61,7 @@ public class DatabaseConnectionPropertiesWidget {
     private Text passwordText;
     private Text portText;
     private Button activateButton;
-    private Button disableButton;
+    // private Button disableButton;
 
     public DatabaseConnectionPropertiesWidget( DatabaseView databaseView ) {
         this.databaseView = databaseView;
@@ -215,6 +215,7 @@ public class DatabaseConnectionPropertiesWidget {
 
             activateButton = new Button(propertiesComposite, SWT.PUSH);
             GridData activateButtonGD = new GridData(SWT.FILL, SWT.FILL, true, false);
+            activateButtonGD.horizontalSpan = 2;
             activateButton.setLayoutData(activateButtonGD);
             activateButton.setText(Messages.databaseplugin__activate_connection);
             activateButton.setEnabled(!properties.isActive());
@@ -253,26 +254,28 @@ public class DatabaseConnectionPropertiesWidget {
                 }
             });
 
-            disableButton = new Button(propertiesComposite, SWT.PUSH);
-            GridData disableButtonGD = new GridData(SWT.FILL, SWT.FILL, true, false);
-            disableButton.setLayoutData(disableButtonGD);
-            disableButton.setText(Messages.databaseplugin__disconnect);
-            disableButton.setEnabled(properties.isActive());
-            disableButton.addSelectionListener(new SelectionAdapter(){
-                public void widgetSelected( SelectionEvent e ) {
-                    IRunnableWithProgress operation = new IRunnableWithProgress(){
-                        public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
-                            pm.beginTask(Messages.databaseplugin__disconnecting_db + properties.getTitle(),
-                                    IProgressMonitor.UNKNOWN);
-                            DatabasePlugin.getDefault().disconnectActiveDatabaseConnection();
-                            pm.done();
-
-                        }
-                    };
-                    PlatformGIS.runInProgressDialog(Messages.databaseplugin__disconnecting_db, true, operation, false);
-                    triggerViewerLayout();
-                }
-            });
+            // disableButton = new Button(propertiesComposite, SWT.PUSH);
+            // GridData disableButtonGD = new GridData(SWT.FILL, SWT.FILL, true, false);
+            // disableButton.setLayoutData(disableButtonGD);
+            // disableButton.setText(Messages.databaseplugin__disconnect);
+            // disableButton.setEnabled(properties.isActive());
+            // disableButton.addSelectionListener(new SelectionAdapter(){
+            // public void widgetSelected( SelectionEvent e ) {
+            // IRunnableWithProgress operation = new IRunnableWithProgress(){
+            // public void run( IProgressMonitor pm ) throws InvocationTargetException,
+            // InterruptedException {
+            // pm.beginTask(Messages.databaseplugin__disconnecting_db + properties.getTitle(),
+            // IProgressMonitor.UNKNOWN);
+            // DatabasePlugin.getDefault().disconnectActiveDatabaseConnection();
+            // pm.done();
+            //
+            // }
+            // };
+            // PlatformGIS.runInProgressDialog(Messages.databaseplugin__disconnecting_db, true,
+            // operation, false);
+            // triggerViewerLayout();
+            // }
+            // });
 
             if (isLocal) {
                 // open db folder
@@ -348,7 +351,7 @@ public class DatabaseConnectionPropertiesWidget {
 
         // make connection active button
         activateButton.setEnabled(!properties.isActive());
-        disableButton.setEnabled(properties.isActive());
+        // disableButton.setEnabled(properties.isActive());
     }
 
     private void triggerViewerLayout() {

@@ -1,4 +1,23 @@
+/*
+ * JGrass - Free Open Source Java GIS http://www.jgrass.org 
+ * (C) HydroloGIS - www.hydrologis.com 
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package eu.hydrologis.jgrass.database.view;
+
+import i18n.Messages;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +46,9 @@ import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.ConnectionManager;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 
+/**
+ * @author Andrea Antonello (www.hydrologis.com)
+ */
 public class ImportDatabaseAction implements IViewActionDelegate {
 
     private IViewPart view;
@@ -42,11 +64,11 @@ public class ImportDatabaseAction implements IViewActionDelegate {
             final DatabaseView dbView = (DatabaseView) view;
 
             FileDialog fileDialog = new FileDialog(view.getSite().getShell(), SWT.OPEN);
-            fileDialog.setText("Select zip file of the database to import.");
+            fileDialog.setText(Messages.ImportDatabaseAction__select_zip);
             final String dbImportPath = fileDialog.open();
 
             DirectoryDialog folderDialog = new DirectoryDialog(view.getSite().getShell(), SWT.OPEN);
-            folderDialog.setText("Select folder where to unzip the database to import it.");
+            folderDialog.setText(Messages.ImportDatabaseAction__select_folder);
             final String dbParentFolderPath = folderDialog.open();
 
             if (dbParentFolderPath != null && new File(dbParentFolderPath).isDirectory()) {
@@ -70,7 +92,7 @@ public class ImportDatabaseAction implements IViewActionDelegate {
                             if (databaseFile.exists()) {
                                 DatabaseConnectionProperties connectionProperties = ConnectionManager
                                         .createPropertiesBasedOnFolder(databaseFile);
-                                String name = new File(dbImportPath).getName().replaceFirst("\\.zip$", "");
+                                String name = new File(dbImportPath).getName().replaceFirst("\\.zip$", ""); //$NON-NLS-1$ //$NON-NLS-2$
                                 connectionProperties.put(DatabaseConnectionProperties.TITLE, name);
                                 List<DatabaseConnectionProperties> databaseConnectionProperties = DatabasePlugin.getDefault()
                                         .getAvailableDatabaseConnectionProperties();
@@ -80,12 +102,12 @@ public class ImportDatabaseAction implements IViewActionDelegate {
 
                         } catch (IOException e) {
                             e.printStackTrace();
-                            String message = "An error occurred during the import of the database.";
+                            String message = Messages.ImportDatabaseAction__errmsg_db_import;
                             ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, DatabasePlugin.PLUGIN_ID, e);
                         }
                     }
                 };
-                PlatformGIS.runInProgressDialog("Export database", true, operation, true);
+                PlatformGIS.runInProgressDialog(Messages.ImportDatabaseAction__import_db, true, operation, true);
             }
         }
     }

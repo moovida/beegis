@@ -17,6 +17,8 @@
  */
 package eu.hydrologis.jgrass.database;
 
+import i18n.Messages;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -28,12 +30,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import net.refractions.udig.project.IProject;
-import net.refractions.udig.project.ui.ApplicationGIS;
 import net.refractions.udig.ui.ExceptionDetailsDialog;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -43,16 +42,18 @@ import org.osgi.framework.BundleContext;
 import eu.hydrologis.jgrass.database.core.ConnectionManager;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
-import eu.hydrologis.jgrass.database.core.h2.H2DatabaseConnection;
+import eu.hydrologis.jgrass.database.core.h2.H2ConnectionFactory;
 import eu.hydrologis.jgrass.database.utils.ImageCache;
 
 /**
+ * @author Andrea Antonello (www.hydrologis.com)
+ * 
  * The activator class controls the plug-in life cycle
  */
 public class DatabasePlugin extends AbstractUIPlugin {
 
     // The plug-in ID
-    public static final String PLUGIN_ID = "eu.hydrologis.jgrass.database";
+    public static final String PLUGIN_ID = "eu.hydrologis.jgrass.database"; //$NON-NLS-1$
 
     // The shared instance
     private static DatabasePlugin plugin;
@@ -61,6 +62,8 @@ public class DatabasePlugin extends AbstractUIPlugin {
     private DatabaseConnectionProperties activeDatabaseConnectionProperties;
 
     private List<DatabaseConnectionProperties> availableDatabaseConnectionProperties = new ArrayList<DatabaseConnectionProperties>();
+
+    private static final String DATABASES_XML = "databases.xml"; //$NON-NLS-1$
 
     /**
      * The constructor
@@ -116,7 +119,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
                 loadSavedDatabaseConnections();
                 activateDatabaseConnectionFromSaved();
             } catch (Exception e) {
-                String message = "An error occurred while connecting to the database. Connecting to the default database.";
+                String message = Messages.DatabasePlugin__errmsg_connecting_db;
                 ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, DatabasePlugin.PLUGIN_ID, e);
                 // fold back on the default database
             }
@@ -140,37 +143,19 @@ public class DatabasePlugin extends AbstractUIPlugin {
 
     private void createDefaultDatabase() throws Exception {
         // create an embedded database inside the project folder
-        IProject activeProject = ApplicationGIS.getActiveProject();
-        URI id = activeProject.getID();
-        String projectPath = id.toFileString();
-        File projectFile = new File(projectPath);
-        if (!projectFile.exists()) {
-            String tempdir = System.getProperty("java.io.tmpdir");
-            projectFile = new File(tempdir);
-        } else {
-            projectFile = projectFile.getParentFile().getParentFile();
-        }
-        File databaseFolder = new File(projectFile, "databases/defaultdatabase");
+        DatabaseConnectionProperties defaultProperties = new H2ConnectionFactory().createDefaultProperties();
+
+        File databaseFolder = new File(defaultProperties.getPath());
         boolean madeDirs = databaseFolder.mkdirs();
         if (!madeDirs && databaseFolder.exists()) {
-            DatabaseConnectionProperties props = new DatabaseConnectionProperties();
-            props.put("TYPE", H2DatabaseConnection.TYPE);
-            props.put("ISACTIVE", "true");
-            props.put("TITLE", "Default Database");
-            props.put("DESCRIPTION", "Default Database");
-            props.put("DRIVER", H2DatabaseConnection.DRIVER);
-            props.put("DATABASE", "database");
-            props.put("PORT", "9093");
-            props.put("USER", "sa");
-            props.put("PASS", "");
-            props.put("PATH", databaseFolder.getAbsolutePath());
+            defaultProperties.put(DatabaseConnectionProperties.ISACTIVE, "true"); //$NON-NLS-1$
 
-            activateDatabaseConnection(props);
-            if (!availableDatabaseConnectionProperties.contains(props)) {
-                availableDatabaseConnectionProperties.add(props);
+            activateDatabaseConnection(defaultProperties);
+            if (!availableDatabaseConnectionProperties.contains(defaultProperties)) {
+                availableDatabaseConnectionProperties.add(defaultProperties);
             }
         } else {
-            throw new IOException("An error occurred while creating the default database.");
+            throw new IOException(Messages.DatabasePlugin__errmsg_creating_db);
         }
     }
 
@@ -319,7 +304,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
     }
 
     private File getConfigurationsFile() {
-        return getStateLocation().append("databases.xml").toFile();
+        return getStateLocation().append(DATABASES_XML).toFile();
     }
 
     public List<DatabaseConnectionProperties> getAvailableDatabaseConnectionProperties() {

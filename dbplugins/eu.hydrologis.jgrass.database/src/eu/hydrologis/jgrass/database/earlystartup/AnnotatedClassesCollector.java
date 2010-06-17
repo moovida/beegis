@@ -42,14 +42,14 @@ public class AnnotatedClassesCollector implements IStartup {
 
         IExtensionRegistry reg = Platform.getExtensionRegistry();
         IConfigurationElement[] extensions = reg
-                .getConfigurationElementsFor("eu.hydrologis.jgrass.database.annotatedclasses");
+                .getConfigurationElementsFor("eu.hydrologis.jgrass.database.annotatedclasses"); //$NON-NLS-1$
 
         for( int i = 0; i < extensions.length; i++ ) {
             IConfigurationElement element = extensions[i];
-            if (!element.getName().equals("annotatedclass")) {
+            if (!element.getName().equals("annotatedclass")) { //$NON-NLS-1$
                 continue;
             }
-            String classStr = element.getAttribute("annotatedclass");
+            String classStr = element.getAttribute("annotatedclass"); //$NON-NLS-1$
             if (!annotatedClassesList.contains(classStr)) {
                 annotatedClassesList.add(classStr);
             }

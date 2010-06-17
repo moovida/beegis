@@ -30,25 +30,25 @@ import java.util.Map.Entry;
 public class DatabaseConnectionProperties extends Properties {
     private static final long serialVersionUID = 1L;
 
-    public static final String DATABASES_XML = "DATABASES";
-    public static final String DATABASE_XML = "DATABASE";
+    public static final String DATABASES_XML = "DATABASES"; //$NON-NLS-1$
+    public static final String DATABASE_XML = "DATABASE"; //$NON-NLS-1$
 
-    public static final String TYPE = "TYPE";
-    public static final String ISACTIVE = "ISACTIVE";
-    public static final String TITLE = "TITLE";
-    public static final String DESCRIPTION = "DESCRIPTION";
-    public static final String DRIVER = "DRIVER";
-    public static final String DATABASE = "DATABASE";
-    public static final String PORT = "PORT";
-    public static final String USER = "USER";
-    public static final String PASS = "PASS";
-    public static final String HOST = "HOST";
-    public static final String PATH = "PATH";
+    public static final String TYPE = "TYPE"; //$NON-NLS-1$
+    public static final String ISACTIVE = "ISACTIVE"; //$NON-NLS-1$
+    public static final String TITLE = "TITLE"; //$NON-NLS-1$
+    public static final String DESCRIPTION = "DESCRIPTION"; //$NON-NLS-1$
+    public static final String DRIVER = "DRIVER"; //$NON-NLS-1$
+    public static final String DATABASE = "DATABASE"; //$NON-NLS-1$
+    public static final String PORT = "PORT"; //$NON-NLS-1$
+    public static final String USER = "USER"; //$NON-NLS-1$
+    public static final String PASS = "PASS"; //$NON-NLS-1$
+    public static final String HOST = "HOST"; //$NON-NLS-1$
+    public static final String PATH = "PATH"; //$NON-NLS-1$
 
     public static String[] POSSIBLETAGS = {TYPE, ISACTIVE, TITLE, DESCRIPTION, DRIVER, DATABASE, PORT, USER, PASS, HOST, PATH};
 
-    public static final String SHOW_SQL = "SHOW_SQL";
-    public static final String FORMAT_SQL = "FORMAT_SQL";
+    public static final String SHOW_SQL = "SHOW_SQL"; //$NON-NLS-1$
+    public static final String FORMAT_SQL = "FORMAT_SQL"; //$NON-NLS-1$
 
     public DatabaseConnectionProperties() {
     }
@@ -92,7 +92,7 @@ public class DatabaseConnectionProperties extends Properties {
     public String getPassword() {
         String password = getProperty(PASS);
         if (password == null) {
-            password = "";
+            password = ""; //$NON-NLS-1$
         }
         return password;
     }
@@ -132,9 +132,9 @@ public class DatabaseConnectionProperties extends Properties {
         Set<Entry<Object, Object>> entries = entrySet();
         for( Entry<Object, Object> entry : entries ) {
             sB.append(entry.getKey().toString());
-            sB.append("=");
+            sB.append("="); //$NON-NLS-1$
             sB.append(entry.getValue().toString());
-            sB.append("\n");
+            sB.append("\n"); //$NON-NLS-1$
         }
         return sB.toString();
     }
@@ -145,10 +145,10 @@ public class DatabaseConnectionProperties extends Properties {
      * @param propertiesString
      */
     public void fromString( String propertiesString ) {
-        String[] linesSplit = propertiesString.split("\n|\r");
+        String[] linesSplit = propertiesString.split("\n|\r"); //$NON-NLS-1$
         for( String line : linesSplit ) {
-            if (line.contains("=")) {
-                String[] split = line.trim().split("=");
+            if (line.contains("=")) { //$NON-NLS-1$
+                String[] split = line.trim().split("="); //$NON-NLS-1$
                 put(split[0], split[1]);
             }
         }

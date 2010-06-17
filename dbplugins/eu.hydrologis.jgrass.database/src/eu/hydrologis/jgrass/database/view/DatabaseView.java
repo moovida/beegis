@@ -17,6 +17,8 @@
  */
 package eu.hydrologis.jgrass.database.view;
 
+import i18n.Messages;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +65,7 @@ import eu.hydrologis.jgrass.database.utils.ImageCache;
  */
 public class DatabaseView extends ViewPart {
     
-    public static final String ID = "eu.hydrologis.jgrass.database.catalogview";
+    public static final String ID = "eu.hydrologis.jgrass.database.catalogview"; //$NON-NLS-1$
 
     private HashMap<DatabaseConnectionProperties, DatabaseConnectionPropertiesWidget> widgetMap = new HashMap<DatabaseConnectionProperties, DatabaseConnectionPropertiesWidget>();
 
@@ -94,7 +96,7 @@ public class DatabaseView extends ViewPart {
         Group connectionsGroup = new Group(mainComposite, SWT.BORDER | SWT.SHADOW_ETCHED_IN);
         connectionsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         connectionsGroup.setLayout(new GridLayout(3, true));
-        connectionsGroup.setText("Connections");
+        connectionsGroup.setText(Messages.DatabaseView__connections);
 
         Composite connectionsListComposite = new Composite(connectionsGroup, SWT.NONE);
         connectionsListComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -114,7 +116,7 @@ public class DatabaseView extends ViewPart {
         // propertiesCompositeGD.horizontalSpan = 2;
         propertiesComposite.setLayoutData(propertiesCompositeGD);
         Label l = new Label(propertiesComposite, SWT.SHADOW_ETCHED_IN);
-        l.setText("No item selected");
+        l.setText(Messages.DatabaseView__no_item_selected);
         propertiesStackLayout.topControl = l;
 
         scrolledComposite.setContent(propertiesComposite);
@@ -178,7 +180,7 @@ public class DatabaseView extends ViewPart {
                     DatabaseConnectionProperties connProp = (DatabaseConnectionProperties) element;
                     return connProp.getTitle();
                 }
-                return "";
+                return ""; //$NON-NLS-1$
             }
         });
 
@@ -206,7 +208,7 @@ public class DatabaseView extends ViewPart {
                     propertiesStackLayout.topControl = propControl;
                 } else {
                     Label l = new Label(propertiesComposite, SWT.SHADOW_ETCHED_IN);
-                    l.setText("No item selected");
+                    l.setText(Messages.DatabaseView__no_item_selected);
                     propertiesStackLayout.topControl = l;
                 }
                 propertiesComposite.layout(true);
@@ -218,7 +220,7 @@ public class DatabaseView extends ViewPart {
     private void addFilterButtons( Composite connectionsListComposite, final TableViewer connectionsViewer ) {
         Button filterActive = new Button(connectionsListComposite, SWT.CHECK);
         filterActive.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        filterActive.setText("Filter active");
+        filterActive.setText(Messages.DatabaseView__filter_active);
         final ActiveFilter activeFilter = new ActiveFilter();
 
         filterActive.addSelectionListener(new SelectionAdapter(){
@@ -231,7 +233,7 @@ public class DatabaseView extends ViewPart {
         });
         Button filterProjectmatch = new Button(connectionsListComposite, SWT.CHECK);
         filterProjectmatch.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        filterProjectmatch.setText("Filter project");
+        filterProjectmatch.setText(Messages.DatabaseView__filter_project);
         final ProjectMatchFilter projectFilter = new ProjectMatchFilter();
 
         filterProjectmatch.addSelectionListener(new SelectionAdapter(){
@@ -245,8 +247,6 @@ public class DatabaseView extends ViewPart {
     }
     @Override
     public void setFocus() {
-        // TODO Auto-generated method stub
-
     }
 
     private static class ActiveFilter extends ViewerFilter {
@@ -259,7 +259,7 @@ public class DatabaseView extends ViewPart {
         public boolean select( Viewer arg0, Object arg1, Object arg2 ) {
             String name = ((DatabaseConnectionProperties) arg2).getTitle();
             String projectName = ApplicationGIS.getActiveProject().getName();
-            if (name.matches("(?i).*" + projectName + ".*")) {
+            if (name.matches("(?i).*" + projectName + ".*")) { //$NON-NLS-1$ //$NON-NLS-2$
                 return true;
             }
             return false;
@@ -268,15 +268,15 @@ public class DatabaseView extends ViewPart {
 
     public void createNewLocalDatabaseDefinition() {
         DatabaseConnectionProperties props = new DatabaseConnectionProperties();
-        props.put("TYPE", H2DatabaseConnection.TYPE);
-        props.put("ISACTIVE", "false");
-        props.put("TITLE", "New Local Database");
-        props.put("DRIVER", H2DatabaseConnection.DRIVER);
-        props.put("DATABASE", "database");
-        props.put("PORT", "9092");
-        props.put("USER", "sa");
-        props.put("PASS", "");
-        props.put("PATH", "");
+        props.put("TYPE", H2DatabaseConnection.TYPE); //$NON-NLS-1$
+        props.put("ISACTIVE", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+        props.put("TITLE", Messages.DatabaseView__new_local_db); //$NON-NLS-1$
+        props.put("DRIVER", H2DatabaseConnection.DRIVER); //$NON-NLS-1$
+        props.put("DATABASE", "database"); //$NON-NLS-1$ //$NON-NLS-2$
+        props.put("PORT", "9092"); //$NON-NLS-1$ //$NON-NLS-2$
+        props.put("USER", "sa"); //$NON-NLS-1$ //$NON-NLS-2$
+        props.put("PASS", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        props.put("PATH", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
         availableDatabaseConnectionProperties.add(props);
         relayout();
@@ -284,15 +284,15 @@ public class DatabaseView extends ViewPart {
 
     public void createNewRemoteDatabaseDefinition() {
         DatabaseConnectionProperties props = new DatabaseConnectionProperties();
-        props.put("TYPE", PostgresDatabaseConnection.TYPE);
-        props.put("ISACTIVE", "false");
-        props.put("TITLE", "New Remote Database");
-        props.put("DRIVER", PostgresDatabaseConnection.DRIVER);
-        props.put("DATABASE", "databasename");
-        props.put("PORT", "5432");
-        props.put("USER", "");
-        props.put("PASS", "");
-        props.put("PATH", "");
+        props.put("TYPE", PostgresDatabaseConnection.TYPE); //$NON-NLS-1$
+        props.put("ISACTIVE", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+        props.put("TITLE", Messages.DatabaseView__new_remote_db); //$NON-NLS-1$
+        props.put("DRIVER", PostgresDatabaseConnection.DRIVER); //$NON-NLS-1$
+        props.put("DATABASE", "databasename"); //$NON-NLS-1$ //$NON-NLS-2$
+        props.put("PORT", "5432"); //$NON-NLS-1$ //$NON-NLS-2$
+        props.put("USER", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        props.put("PASS", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        props.put("PATH", ""); //$NON-NLS-1$ //$NON-NLS-2$
         
         availableDatabaseConnectionProperties.add(props);
         relayout();

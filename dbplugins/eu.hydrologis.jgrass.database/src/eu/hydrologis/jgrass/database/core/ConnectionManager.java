@@ -18,8 +18,11 @@
  */
 package eu.hydrologis.jgrass.database.core;
 
+import i18n.Messages;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 
 import eu.hydrologis.jgrass.database.core.h2.H2ConnectionFactory;
@@ -72,7 +75,7 @@ public class ConnectionManager {
         } else if (databaseDriver.equals(PostgresDatabaseConnection.DRIVER)) {
             return false;
         } else {
-            throw new IllegalArgumentException("Unknown database type.");
+            throw new IllegalArgumentException(Messages.ConnectionManager__unknown_db_type);
         }
     }
 
@@ -90,11 +93,14 @@ public class ConnectionManager {
      * @throws IOException 
      */
     public static DatabaseConnectionProperties createPropertiesBasedOnFolder( File dbFile ) throws IOException {
-
-        DatabaseConnectionProperties properties = H2ConnectionFactory.createProperties(dbFile);
-
-        return properties;
-
+        Collection<IConnectionFactory> factories = databaseDriver2ConnectionFactory.values();
+        for( IConnectionFactory iConnectionFactory : factories ) {
+            DatabaseConnectionProperties properties = iConnectionFactory.createProperties(dbFile);
+            if (properties != null) {
+                return properties;
+            }
+        }
+        return null;
     }
 
 }

@@ -32,6 +32,7 @@ import eu.hydrologis.jgrass.database.DatabasePlugin;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
+@SuppressWarnings("nls")
 public class ImageCache {
 
     public static final String ADD_LOCAL_DB = "icons/add_local_db.gif";

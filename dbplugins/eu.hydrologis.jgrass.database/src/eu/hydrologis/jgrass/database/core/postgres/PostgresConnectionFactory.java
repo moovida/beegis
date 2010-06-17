@@ -17,6 +17,11 @@
  */
 package eu.hydrologis.jgrass.database.core.postgres;
 
+import i18n.Messages;
+
+import java.io.File;
+import java.io.IOException;
+
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 import eu.hydrologis.jgrass.database.core.IConnectionFactory;
 import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
@@ -35,6 +40,26 @@ public class PostgresConnectionFactory implements IConnectionFactory {
         return connection;
     }
 
-
+    @Override
+    public DatabaseConnectionProperties createProperties( File dbFile ) throws IOException {
+        // postgres is not file based
+        return null;
+    }
+    
+    @Override
+    public DatabaseConnectionProperties createDefaultProperties() {
+        DatabaseConnectionProperties props = new DatabaseConnectionProperties();
+        props.put(DatabaseConnectionProperties.TYPE, PostgresDatabaseConnection.TYPE);
+        props.put(DatabaseConnectionProperties.ISACTIVE, "false"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.TITLE, Messages.H2ConnectionFactory__default_db);
+        props.put(DatabaseConnectionProperties.DESCRIPTION, Messages.H2ConnectionFactory__default_db);
+        props.put(DatabaseConnectionProperties.DRIVER, PostgresDatabaseConnection.DRIVER);
+        props.put(DatabaseConnectionProperties.DATABASE, "database"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.PORT, "9093"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.USER, "sa"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.PASS, ""); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.HOST, "localhost"); //$NON-NLS-1$
+        return props;
+    }
 
 }

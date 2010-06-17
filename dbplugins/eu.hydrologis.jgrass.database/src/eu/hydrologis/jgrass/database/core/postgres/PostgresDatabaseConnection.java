@@ -42,8 +42,8 @@ import eu.hydrologis.jgrass.database.interfaces.Utils;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class PostgresDatabaseConnection implements IDatabaseConnection {
-    public static final String TYPE = "PostgreSQL";
-    public static final String DRIVER = "org.postgresql.Driver";
+    public static final String TYPE = "PostgreSQL"; //$NON-NLS-1$
+    public static final String DRIVER = "org.postgresql.Driver"; //$NON-NLS-1$
     private String user;
     private String passwd;
     private String databaseHost;
@@ -65,7 +65,7 @@ public class PostgresDatabaseConnection implements IDatabaseConnection {
         port = connectionProperties.getPort();
         doLog = connectionProperties.doLogSql();
 
-        connectionString = "jdbc:postgresql://" + databaseHost + ":" + port + "/" + databaseName;
+        connectionString = "jdbc:postgresql://" + databaseHost + ":" + port + "/" + databaseName; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         
         // make sure every connection has its type 
         connectionProperties.put(DatabaseConnectionProperties.TYPE, TYPE);
@@ -100,7 +100,7 @@ public class PostgresDatabaseConnection implements IDatabaseConnection {
             dbProps.put(Environment.URL, connectionString);
             dbProps.put(Environment.USER, user);
             dbProps.put(Environment.PASS, passwd);
-            dbProps.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
+            dbProps.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect"); //$NON-NLS-1$
             dbProps.put(Environment.SHOW_SQL, String.valueOf(doLog));
             dbProps.put(Environment.FORMAT_SQL, String.valueOf(doLog));
 
@@ -128,13 +128,13 @@ public class PostgresDatabaseConnection implements IDatabaseConnection {
     @Override
     public boolean checkTables( String... tables ) throws Exception {
         StringBuilder sB = new StringBuilder();
-        sB.append("SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE ");
+        sB.append("SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE "); //$NON-NLS-1$
         for( int i = 0; i < tables.length; i++ ) {
             String tableName = tables[i];
             if (i == 0) {
-                sB.append("UPPER(TABLE_NAME) = UPPER('").append(tableName).append("')");
+                sB.append("UPPER(TABLE_NAME) = UPPER('").append(tableName).append("')"); //$NON-NLS-1$ //$NON-NLS-2$
             } else {
-                sB.append(" OR UPPER(TABLE_NAME) = UPPER('").append(tableName).append("')");
+                sB.append(" OR UPPER(TABLE_NAME) = UPPER('").append(tableName).append("')"); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 

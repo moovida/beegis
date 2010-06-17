@@ -23,6 +23,11 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 
+import net.refractions.udig.project.IProject;
+import net.refractions.udig.project.ui.ApplicationGIS;
+
+import org.eclipse.emf.common.util.URI;
+
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 import eu.hydrologis.jgrass.database.core.IConnectionFactory;
 import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
@@ -50,7 +55,7 @@ public class H2ConnectionFactory implements IConnectionFactory {
      * @return best guessed connection properties.
      * @throws IOException 
      */
-    public static DatabaseConnectionProperties createProperties( File dbFile ) throws IOException {
+    public DatabaseConnectionProperties createProperties( File dbFile ) throws IOException {
         if (!dbFile.exists()) {
             throw new IOException(Messages.H2ConnectionFactory__db_doesnt_exist);
         }
@@ -72,19 +77,46 @@ public class H2ConnectionFactory implements IConnectionFactory {
 
         // curently only H2 is supported
         DatabaseConnectionProperties props = new DatabaseConnectionProperties();
-        props.put("TYPE", H2DatabaseConnection.TYPE); //$NON-NLS-1$
-        props.put("ISACTIVE", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("TITLE", dbName); //$NON-NLS-1$
-        props.put("DESCRIPTION", dbName); //$NON-NLS-1$
-        props.put("DRIVER", H2DatabaseConnection.DRIVER); //$NON-NLS-1$
-        props.put("DATABASE", dbName); //$NON-NLS-1$
-        props.put("PORT", "9092"); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("USER", "sa"); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("PASS", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put("PATH", dbFile.getAbsolutePath()); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.TYPE, H2DatabaseConnection.TYPE);
+        props.put(DatabaseConnectionProperties.ISACTIVE, "false"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.TITLE, dbName);
+        props.put(DatabaseConnectionProperties.DESCRIPTION, dbName);
+        props.put(DatabaseConnectionProperties.DRIVER, H2DatabaseConnection.DRIVER);
+        props.put(DatabaseConnectionProperties.DATABASE, dbName);
+        props.put(DatabaseConnectionProperties.PORT, "9092"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.USER, "sa"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.PASS, ""); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.PATH, dbFile.getAbsolutePath());
 
         return props;
 
+    }
+
+    @Override
+    public DatabaseConnectionProperties createDefaultProperties() {
+        IProject activeProject = ApplicationGIS.getActiveProject();
+        URI id = activeProject.getID();
+        String projectPath = id.toFileString();
+        File projectFile = new File(projectPath);
+        if (!projectFile.exists()) {
+            String tempdir = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
+            projectFile = new File(tempdir);
+        } else {
+            projectFile = projectFile.getParentFile().getParentFile();
+        }
+        File databaseFolder = new File(projectFile, "databases/defaultdatabase"); //$NON-NLS-1$
+        DatabaseConnectionProperties props = new DatabaseConnectionProperties();
+        props.put(DatabaseConnectionProperties.TYPE, H2DatabaseConnection.TYPE);
+        props.put(DatabaseConnectionProperties.ISACTIVE, "false"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.TITLE, Messages.H2ConnectionFactory__default_db);
+        props.put(DatabaseConnectionProperties.DESCRIPTION, Messages.H2ConnectionFactory__default_db);
+        props.put(DatabaseConnectionProperties.DRIVER, H2DatabaseConnection.DRIVER);
+        props.put(DatabaseConnectionProperties.DATABASE, "database"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.PORT, "9093"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.USER, "sa"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.PASS, ""); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.PATH, databaseFolder.getAbsolutePath());
+        return props;
     }
 
 }

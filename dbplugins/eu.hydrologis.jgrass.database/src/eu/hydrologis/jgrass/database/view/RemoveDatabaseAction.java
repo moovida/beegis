@@ -1,4 +1,23 @@
+/*
+ * JGrass - Free Open Source Java GIS http://www.jgrass.org 
+ * (C) HydroloGIS - www.hydrologis.com 
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package eu.hydrologis.jgrass.database.view;
+
+import i18n.Messages;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -6,6 +25,9 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
+/**
+ * @author Andrea Antonello (www.hydrologis.com)
+ */
 public class RemoveDatabaseAction implements IViewActionDelegate {
 
     private IViewPart view;
@@ -21,8 +43,8 @@ public class RemoveDatabaseAction implements IViewActionDelegate {
             DatabaseView dbView = (DatabaseView) view;
 
             boolean doRemove = MessageDialog
-                    .openConfirm(dbView.getViewSite().getShell(), "Remove database warning",
-                            "This will remove the database definition from the database view and can't be undone. Are you sure you want to contine?");
+                    .openConfirm(dbView.getViewSite().getShell(), Messages.RemoveDatabaseAction__remove_db_warning,
+                            Messages.RemoveDatabaseAction__remove_db_prompt);
 
             if (doRemove) {
                 dbView.removeCurrentSelectedDatabaseDefinition();
