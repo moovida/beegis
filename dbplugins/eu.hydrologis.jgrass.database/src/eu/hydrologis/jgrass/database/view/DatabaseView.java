@@ -290,6 +290,11 @@ public class DatabaseView extends ViewPart {
         relayout();
     }
 
+    public void createExistingLocalDatabaseDefinition(DatabaseConnectionProperties props) {
+        availableDatabaseConnectionProperties.add(props);
+        relayout();
+    }
+
     public void createNewRemoteDatabaseDefinition() {
         DatabaseConnectionProperties defaultProperties = new PostgresConnectionFactory().createDefaultProperties();
         String projectName = ApplicationGIS.getActiveProject().getName();

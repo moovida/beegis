@@ -103,6 +103,15 @@
                tooltip="%database.view.action.create_local">
          </action>
          <action
+               class="eu.hydrologis.jgrass.database.view.OpenExistingLocalDatabaseAction"
+               icon="icons/open_local_db.gif"
+               id="eu.hydrologis.jgrass.database.open_local_action"
+               label="%database.view.action.open_local"
+               style="push"
+               toolbarPath="dbtoolbar"
+               tooltip="%database.view.action.open_local">
+         </action>
+         <action
                class="eu.hydrologis.jgrass.database.view.OpenInBrowserViewAction"
                icon="icons/db_browser.gif"
                id="eu.hydrologis.jgrass.database.open_browser_action"
