@@ -20,6 +20,7 @@ package eu.hydrologis.jgrass.database.view;
 import i18n.Messages;
 
 import java.awt.image.RenderedImage;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +77,7 @@ public class DatabaseView extends ViewPart {
     private StackLayout propertiesStackLayout;
 
     private DatabaseConnectionProperties currentSelectedConnectionProperties;
+    private List<DatabaseConnectionProperties> currentSelectedConnectionPropertiesList = new ArrayList<DatabaseConnectionProperties>();
 
     private TableViewer connectionsViewer;
 
@@ -199,6 +201,7 @@ public class DatabaseView extends ViewPart {
                     // unselected, show empty panel
                     return;
                 }
+
                 if (selectedItem instanceof DatabaseConnectionProperties) {
                     currentSelectedConnectionProperties = (DatabaseConnectionProperties) selectedItem;
                     DatabaseConnectionPropertiesWidget widget = widgetMap.get(currentSelectedConnectionProperties);
@@ -209,6 +212,15 @@ public class DatabaseView extends ViewPart {
                     Control propControl = widget.getComposite(currentSelectedConnectionProperties, propertiesComposite);
                     propertiesStackLayout.topControl = propControl;
                     propertiesComposite.layout(true);
+
+                    currentSelectedConnectionPropertiesList.clear();
+                    Object[] array = sel.toArray();
+                    for( Object conn : array ) {
+                        if (conn instanceof DatabaseConnectionProperties) {
+                            currentSelectedConnectionPropertiesList.add((DatabaseConnectionProperties) conn);
+                        }
+                    }
+
                 } else {
                     putUnselected();
                 }
@@ -216,13 +228,6 @@ public class DatabaseView extends ViewPart {
 
         });
         return connectionsViewer;
-    }
-
-    private void putUnselected() {
-        Label l = new Label(propertiesComposite, SWT.SHADOW_ETCHED_IN);
-        l.setText(Messages.DatabaseView__no_item_selected);
-        propertiesStackLayout.topControl = l;
-        propertiesComposite.layout(true);
     }
 
     private void addFilterButtons( Composite connectionsListComposite, final TableViewer connectionsViewer ) {
@@ -301,12 +306,27 @@ public class DatabaseView extends ViewPart {
     }
 
     public void removeCurrentSelectedDatabaseDefinition() {
-        if (currentSelectedConnectionProperties != null) {
-            if (currentSelectedConnectionProperties.isActive()) {
-                DatabasePlugin.getDefault().disconnectActiveDatabaseConnection();
+        if (currentSelectedConnectionPropertiesList.size() > 0) {
+            for( DatabaseConnectionProperties conn : currentSelectedConnectionPropertiesList ) {
+                if (conn.isActive()) {
+                    DatabasePlugin.getDefault().disconnectActiveDatabaseConnection();
+                }
+                availableDatabaseConnectionProperties.remove(conn);
+                widgetMap.remove(conn);
             }
-            availableDatabaseConnectionProperties.remove(currentSelectedConnectionProperties);
-            relayout();
+        }
+        relayout();
+    }
+
+    public void refreshMap() {
+        IMap activeMap = ApplicationGIS.getActiveMap();
+        RenderedImage image = activeMap.getRenderManager().getImage();
+        if (image == null) {
+            return;
+        }
+        List<ILayer> mapLayers = activeMap.getMapLayers();
+        for( ILayer iLayer : mapLayers ) {
+            iLayer.refresh(null);
         }
     }
 
@@ -317,22 +337,17 @@ public class DatabaseView extends ViewPart {
                 // refresh widgets
                 Collection<DatabaseConnectionPropertiesWidget> widgets = widgetMap.values();
                 for( DatabaseConnectionPropertiesWidget widget : widgets ) {
-                    widget.refresh();
+                    widget.loadData();
                 }
                 connectionsViewer.setInput(availableDatabaseConnectionProperties);
-
-                IMap activeMap = ApplicationGIS.getActiveMap();
-                RenderedImage image = activeMap.getRenderManager().getImage();
-                if (image == null) {
-                    return;
-                }
-                List<ILayer> mapLayers = activeMap.getMapLayers();
-                for( ILayer iLayer : mapLayers ) {
-                    iLayer.refresh(null);
-                }
-                putUnselected();
             }
         });
     }
 
+    public void putUnselected() {
+        Label l = new Label(propertiesComposite, SWT.SHADOW_ETCHED_IN);
+        l.setText(Messages.DatabaseView__no_item_selected);
+        propertiesStackLayout.topControl = l;
+        propertiesComposite.layout(true);
+    }
 }

@@ -27,8 +27,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -101,10 +101,11 @@ public class DatabaseConnectionPropertiesWidget {
                 title = ""; //$NON-NLS-1$
             }
             nameText.setText(title);
-            nameText.addKeyListener(new KeyAdapter(){
-                public void keyReleased( KeyEvent e ) {
+            nameText.addFocusListener(new FocusAdapter(){
+                public void focusLost( FocusEvent e ) {
                     properties.put(DatabaseConnectionProperties.TITLE, nameText.getText());
                     triggerViewerLayout();
+                    super.focusLost(e);
                 }
             });
 
@@ -121,9 +122,10 @@ public class DatabaseConnectionPropertiesWidget {
                     path = ""; //$NON-NLS-1$
                 }
                 pathText.setText(path);
-                pathText.addKeyListener(new KeyAdapter(){
-                    public void keyReleased( KeyEvent e ) {
+                pathText.addFocusListener(new FocusAdapter(){
+                    public void focusLost( FocusEvent e ) {
                         properties.put(DatabaseConnectionProperties.PATH, pathText.getText());
+                        super.focusLost(e);
                     }
                 });
             } else {
@@ -138,9 +140,10 @@ public class DatabaseConnectionPropertiesWidget {
                     host = ""; //$NON-NLS-1$
                 }
                 hostText.setText(host);
-                hostText.addKeyListener(new KeyAdapter(){
-                    public void keyReleased( KeyEvent e ) {
+                hostText.addFocusListener(new FocusAdapter(){
+                    public void focusLost( FocusEvent e ) {
                         properties.put(DatabaseConnectionProperties.HOST, hostText.getText());
+                        super.focusLost(e);
                     }
                 });
             }
@@ -156,9 +159,10 @@ public class DatabaseConnectionPropertiesWidget {
                 databaseName = ""; //$NON-NLS-1$
             }
             databaseText.setText(databaseName);
-            databaseText.addKeyListener(new KeyAdapter(){
-                public void keyReleased( KeyEvent e ) {
+            databaseText.addFocusListener(new FocusAdapter(){
+                public void focusLost( FocusEvent e ) {
                     properties.put(DatabaseConnectionProperties.DATABASE, databaseText.getText());
+                    super.focusLost(e);
                 }
             });
 
@@ -173,9 +177,10 @@ public class DatabaseConnectionPropertiesWidget {
                 user = ""; //$NON-NLS-1$
             }
             userText.setText(user);
-            userText.addKeyListener(new KeyAdapter(){
-                public void keyReleased( KeyEvent e ) {
+            userText.addFocusListener(new FocusAdapter(){
+                public void focusLost( FocusEvent e ) {
                     properties.put(DatabaseConnectionProperties.USER, userText.getText());
+                    super.focusLost(e);
                 }
             });
 
@@ -190,9 +195,10 @@ public class DatabaseConnectionPropertiesWidget {
                 password = ""; //$NON-NLS-1$
             }
             passwordText.setText(password);
-            passwordText.addKeyListener(new KeyAdapter(){
-                public void keyReleased( KeyEvent e ) {
+            passwordText.addFocusListener(new FocusAdapter(){
+                public void focusLost( FocusEvent e ) {
                     properties.put(DatabaseConnectionProperties.PASS, passwordText.getText());
+                    super.focusLost(e);
                 }
             });
 
@@ -207,9 +213,10 @@ public class DatabaseConnectionPropertiesWidget {
                 port = ""; //$NON-NLS-1$
             }
             portText.setText(port);
-            portText.addKeyListener(new KeyAdapter(){
-                public void keyReleased( KeyEvent e ) {
+            portText.addFocusListener(new FocusAdapter(){
+                public void focusLost( FocusEvent e ) {
                     properties.put(DatabaseConnectionProperties.PORT, portText.getText());
+                    super.focusLost(e);
                 }
             });
 
@@ -247,7 +254,7 @@ public class DatabaseConnectionPropertiesWidget {
                                         Messages.databaseplugin__errmsg_connection);
                             }
                             triggerViewerLayout();
-
+                            databaseView.refreshMap();
                         }
                     };
                     PlatformGIS.runInProgressDialog(Messages.databaseplugin__connecting_db, true, operation, true);
@@ -290,13 +297,12 @@ public class DatabaseConnectionPropertiesWidget {
                     }
                 });
             }
-
         }
 
         return propertiesComposite;
     }
 
-    public void refresh() {
+    public void loadData() {
         // make sure the params are updated
         // name
         String title = properties.getTitle();
