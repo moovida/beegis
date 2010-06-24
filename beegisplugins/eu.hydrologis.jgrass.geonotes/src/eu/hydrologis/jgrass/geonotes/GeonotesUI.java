@@ -22,6 +22,8 @@ import static eu.hydrologis.jgrass.geonotes.GeonoteConstants.GPS;
 import static eu.hydrologis.jgrass.geonotes.GeonoteConstants.NORMAL;
 import static eu.hydrologis.jgrass.geonotes.GeonoteConstants.PHOTO;
 
+import i18n.Messages;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +65,6 @@ import eu.hydrologis.jgrass.beegisutils.jgrassported.DressedStroke;
 import eu.hydrologis.jgrass.beegisutils.jgrassported.SimpleSWTImageEditor;
 import eu.hydrologis.jgrass.beegisutils.jgrassported.WindowUtilities;
 import eu.hydrologis.jgrass.geonotes.GeonoteConstants.NOTIFICATION;
-import eu.hydrologis.jgrass.geonotes.messages.Messages;
 import eu.hydrologis.jgrass.geonotes.util.ImageManager;
 
 /**

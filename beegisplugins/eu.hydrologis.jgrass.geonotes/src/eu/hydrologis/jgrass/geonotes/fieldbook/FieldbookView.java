@@ -115,8 +115,7 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
     /**
      * The possible search types that appear in the search types combo.
      */
-    public static String[] SEARCHTYPES = {"Text search", "Color search", "Date interval search",
-            "Type search"};
+    public static String[] SEARCHTYPES = {"Text search", "Color search", "Date interval search", "Type search"};
 
     public HashMap<String, Control> searchTypesMap = new HashMap<String, Control>();
 
@@ -198,12 +197,10 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
                             toAdd.add(geonoteHandler);
                         } else {
                             // check also in text
-                            GeonotesTextareaTable geonotesTextareaTable = geonoteHandler
-                                    .getGeonotesTextareaTable();
+                            GeonotesTextareaTable geonotesTextareaTable = geonoteHandler.getGeonotesTextareaTable();
                             if (geonotesTextareaTable != null) {
                                 String textAreaText = geonotesTextareaTable.getText();
-                                if (textAreaText != null
-                                        && textAreaText.matches(".*" + userText + ".*")) {
+                                if (textAreaText != null && textAreaText.matches(".*" + userText + ".*")) {
                                     toAdd.add(geonoteHandler);
                                 }
                             }
@@ -230,8 +227,8 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
             l.addMouseListener(new MouseAdapter(){
                 public void mouseDown( MouseEvent e ) {
                     Color geonoteColor = l.getBackground();
-                    String selectedColor = geonoteColor.getRed() + ":" + geonoteColor.getGreen()
-                            + ":" + geonoteColor.getBlue() + ":255";
+                    String selectedColor = geonoteColor.getRed() + ":" + geonoteColor.getGreen() + ":" + geonoteColor.getBlue()
+                            + ":255";
                     if (geonotesList != null) {
                         List<GeonotesHandler> toAdd = new ArrayList<GeonotesHandler>();
                         for( GeonotesHandler geonoteHandler : geonotesList ) {
@@ -263,10 +260,8 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
             public void widgetSelected( SelectionEvent e ) {
                 String fromDateString = fromDateButton.getToolTipText();
                 String toDateString = toDateButton.getToolTipText();
-                DateTime fromDate = BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM
-                        .parseDateTime(fromDateString);
-                DateTime toDate = BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM
-                        .parseDateTime(toDateString);
+                DateTime fromDate = BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM.parseDateTime(fromDateString);
+                DateTime toDate = BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM.parseDateTime(toDateString);
                 Interval interval = new Interval(fromDate, toDate);
                 if (geonotesList != null) {
                     List<GeonotesHandler> toAdd = new ArrayList<GeonotesHandler>();
@@ -288,10 +283,9 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
                     final Shell dialog = new Shell(Display.getDefault(), SWT.DIALOG_TRIM);
                     dialog.setLayout(new GridLayout(3, false));
 
-                    final org.eclipse.swt.widgets.DateTime date = new org.eclipse.swt.widgets.DateTime(
-                            dialog, SWT.DATE);
-                    final org.eclipse.swt.widgets.DateTime time = new org.eclipse.swt.widgets.DateTime(
-                            dialog, SWT.TIME | SWT.SHORT);
+                    final org.eclipse.swt.widgets.DateTime date = new org.eclipse.swt.widgets.DateTime(dialog, SWT.DATE);
+                    final org.eclipse.swt.widgets.DateTime time = new org.eclipse.swt.widgets.DateTime(dialog, SWT.TIME
+                            | SWT.SHORT);
 
                     new Label(dialog, SWT.NONE);
                     new Label(dialog, SWT.NONE);
@@ -355,8 +349,7 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
                 Control[] children = isGpsWidget.getChildren();
                 for( int i = 0; i < children.length; i++ ) {
                     Control child = children[i];
-                    if (e.widget != child && child instanceof Button
-                            && (child.getStyle() & SWT.TOGGLE) != 0) {
+                    if (e.widget != child && child instanceof Button && (child.getStyle() & SWT.TOGGLE) != 0) {
                         ((Button) child).setSelection(false);
                     }
                 }
@@ -415,8 +408,7 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
         searchTypesMap.put(SEARCHTYPES[2], searchByDateWidget);
         searchTypesMap.put(SEARCHTYPES[3], isGpsWidget);
 
-        geonotesViewer = new GeonotesListViewer(mainListComposite, mainGeonotesComposite, SWT.MULTI
-                | SWT.BORDER);
+        geonotesViewer = new GeonotesListViewer(mainListComposite, mainGeonotesComposite, SWT.MULTI | SWT.BORDER);
         GridData gd3 = new GridData(SWT.FILL, SWT.FILL, true, true);
         geonotesViewer.getTable().setLayoutData(gd3);
 
@@ -448,8 +440,7 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
         table.setMenu(menu);
 
         // drop support
-        Transfer[] transferTypes = new Transfer[]{TextTransfer.getInstance(),
-                FileTransfer.getInstance()};
+        Transfer[] transferTypes = new Transfer[]{TextTransfer.getInstance(), FileTransfer.getInstance()};
         int dndOperations = DND.DROP_MOVE | DND.DROP_LINK;
         geonotesViewer.addDropSupport(dndOperations, transferTypes, new FileDropListener());
 
@@ -518,8 +509,7 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
                     // transform coordinates before check
                     MathTransform transform = CRS.findMathTransform(noteCrs, mapCrs, true);
                     // jts geometry
-                    com.vividsolutions.jts.geom.Point pt = gF.createPoint(new Coordinate(east,
-                            north));
+                    com.vividsolutions.jts.geom.Point pt = gF.createPoint(new Coordinate(east, north));
                     Geometry targetGeometry = JTS.transform(pt, transform);
                     point = targetGeometry.getCoordinate();
                 }
@@ -538,10 +528,15 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
 
         } catch (Exception e) {
             String message = "An error occurred while refreshing the entries.";
-            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                    GeonotesPlugin.PLUGIN_ID, e);
+            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
             e.printStackTrace();
         }
+    }
+
+    public void resetGeonotes() {
+        geonotesList = GeonotesHandler.getGeonotesHandlers();
+        geonotesViewer.setInput(geonotesList);
+        geonotesViewer.setRelatedToNeutral();
     }
 
     public void updateFromGeonotes( final GeonotesHandler handler, Object arg ) {
@@ -554,8 +549,7 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
                     public void run() {
                         geonotesList.remove(handler);
                         ILayer geonotesLayer = GeonotesPlugin.getDefault().getGeonotesLayer();
-                        CoordinateReferenceSystem crs = ApplicationGIS.getActiveMap()
-                                .getViewportModel().getCRS();
+                        CoordinateReferenceSystem crs = ApplicationGIS.getActiveMap().getViewportModel().getCRS();
                         geonotesLayer.refresh(handler.getBoundsAsReferenceEnvelope(crs));
                         geonotesViewer.setInput(geonotesList);
                         geonotesViewer.setRelatedToNeutral();
@@ -570,8 +564,7 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
                         geonotesViewer.setInput(geonotesList);
                         geonotesViewer.setRelatedToNeutral();
                         ILayer geonotesLayer = GeonotesPlugin.getDefault().getGeonotesLayer();
-                        CoordinateReferenceSystem crs = ApplicationGIS.getActiveMap()
-                                .getViewportModel().getCRS();
+                        CoordinateReferenceSystem crs = ApplicationGIS.getActiveMap().getViewportModel().getCRS();
                         geonotesLayer.refresh(handler.getBoundsAsReferenceEnvelope(crs));
                     }
                 });

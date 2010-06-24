@@ -17,6 +17,8 @@
  */
 package eu.hydrologis.jgrass.geonotes;
 
+import i18n.Messages;
+
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
@@ -53,7 +55,6 @@ import eu.hydrologis.jgrass.geonotes.actions.ClearEntriesAction;
 import eu.hydrologis.jgrass.geonotes.actions.ClearSelectedEntriesAction;
 import eu.hydrologis.jgrass.geonotes.actions.OpenSelectedEntryAction;
 import eu.hydrologis.jgrass.geonotes.actions.OpenSelectedEntryWithDefaultAction;
-import eu.hydrologis.jgrass.geonotes.messages.Messages;
 
 /**
  * The table holding all the saved media. It supports dnd.
