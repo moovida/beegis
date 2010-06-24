@@ -34,6 +34,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
@@ -288,11 +289,19 @@ public class DatabaseView extends ViewPart {
         }
         availableDatabaseConnectionProperties.add(defaultProperties);
         relayout();
+        
+        IStructuredSelection sel = new StructuredSelection(defaultProperties);
+        connectionsViewer.setSelection(sel);
+        connectionsViewer.refresh(true, true);
     }
 
     public void createExistingLocalDatabaseDefinition(DatabaseConnectionProperties props) {
         availableDatabaseConnectionProperties.add(props);
         relayout();
+
+        IStructuredSelection sel = new StructuredSelection(props);
+        connectionsViewer.setSelection(sel);
+        connectionsViewer.refresh(true, true);
     }
 
     public void createNewRemoteDatabaseDefinition() {
@@ -321,6 +330,7 @@ public class DatabaseView extends ViewPart {
             }
         }
         relayout();
+        putUnselected();
     }
 
     public void refreshMap() {
@@ -337,7 +347,7 @@ public class DatabaseView extends ViewPart {
 
     public void relayout() {
 
-        Display.getDefault().asyncExec(new Runnable(){
+        Display.getDefault().syncExec(new Runnable(){
             public void run() {
                 // refresh widgets
                 Collection<DatabaseConnectionPropertiesWidget> widgets = widgetMap.values();

@@ -17,5 +17,6 @@ Export-Package: eu.hydrologis.jgrass.database,
  eu.hydrologis.jgrass.database.core.h2,
  eu.hydrologis.jgrass.database.core.postgres,
  eu.hydrologis.jgrass.database.earlystartup,
- eu.hydrologis.jgrass.database.interfaces
+ eu.hydrologis.jgrass.database.interfaces,
+ eu.hydrologis.jgrass.database.view
 Eclipse-BuddyPolicy: global

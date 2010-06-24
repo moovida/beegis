@@ -51,6 +51,7 @@
 			<dependency groupId="joda-time" artifactId="joda-time-hibernate" version="1.1" />
 			<dependency groupId="org.slf4j" artifactId="slf4j-simple" version="1.5.8" />
 			<dependency groupId="org.slf4j" artifactId="slf4j-nop" version="1.5.8" />
+			<dependency groupId="antlr" artifactId="antlr" version="2.7.7" />
 			<dependency groupId="jfreechart" artifactId="jcommon" version="1.0.16" />
 			<dependency groupId="jfreechart" artifactId="jfreechart-experimental" version="1.0.13" />
 			<dependency groupId="jfreechart" artifactId="jfreechart-swt" version="1.0.13" />

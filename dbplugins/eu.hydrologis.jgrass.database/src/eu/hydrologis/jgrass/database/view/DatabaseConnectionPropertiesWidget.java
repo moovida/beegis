@@ -19,6 +19,8 @@ package eu.hydrologis.jgrass.database.view;
 
 import i18n.Messages;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import net.refractions.udig.ui.PlatformGIS;
@@ -36,6 +38,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -50,6 +54,9 @@ import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
  */
 public class DatabaseConnectionPropertiesWidget {
 
+    private static final String ACTIVATE_CONNECTION = Messages.databaseplugin__activate_connection;
+    private static final String CREATE_DATABASE = Messages.DatabaseConnectionPropertiesWidget__create_db_and_connect;
+
     private Composite propertiesComposite = null;
     private Text pathText;
     private Text hostText;
@@ -61,6 +68,7 @@ public class DatabaseConnectionPropertiesWidget {
     private Text passwordText;
     private Text portText;
     private Button activateButton;
+    private boolean isLocal;
     // private Button disableButton;
 
     public DatabaseConnectionPropertiesWidget( DatabaseView databaseView ) {
@@ -109,14 +117,23 @@ public class DatabaseConnectionPropertiesWidget {
                 }
             });
 
-            boolean isLocal = ConnectionManager.isLocal(properties);
+            isLocal = ConnectionManager.isLocal(properties);
             if (isLocal) {
                 // path
                 Label pathLabel = new Label(propertiesComposite, SWT.NONE);
                 pathLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
                 pathLabel.setText(Messages.databaseplugin__database_folder);
-                pathText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
-                pathText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+                Composite pathComposite = new Composite(propertiesComposite, SWT.NONE);
+                pathComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+                GridLayout gridLayout = new GridLayout(2, false);
+                gridLayout.marginHeight = 0;
+                gridLayout.marginWidth = 0;
+                pathComposite.setLayout(gridLayout);
+
+                pathText = new Text(pathComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+                GridData pathTextGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+                pathText.setLayoutData(pathTextGD);
                 String path = properties.getPath();
                 if (path == null) {
                     path = ""; //$NON-NLS-1$
@@ -125,9 +142,28 @@ public class DatabaseConnectionPropertiesWidget {
                 pathText.addFocusListener(new FocusAdapter(){
                     public void focusLost( FocusEvent e ) {
                         properties.put(DatabaseConnectionProperties.PATH, pathText.getText());
+                        checkActivationButton();
                         super.focusLost(e);
                     }
                 });
+
+                Button browseButton = new Button(pathComposite, SWT.PUSH);
+                browseButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+                browseButton.setText("..."); //$NON-NLS-1$
+                browseButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter(){
+                    public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
+                        DirectoryDialog fileDialog = new DirectoryDialog(pathText.getShell(), SWT.OPEN);
+                        String path = fileDialog.open();
+                        if (path == null || path.length() < 1) {
+                            return;
+                        } else {
+                            pathText.setText(path);
+                            properties.put(DatabaseConnectionProperties.PATH, pathText.getText());
+                            checkActivationButton();
+                        }
+                    }
+                });
+
             } else {
                 // host
                 Label hostLabel = new Label(propertiesComposite, SWT.NONE);
@@ -224,7 +260,9 @@ public class DatabaseConnectionPropertiesWidget {
             GridData activateButtonGD = new GridData(SWT.FILL, SWT.FILL, true, false);
             activateButtonGD.horizontalSpan = 2;
             activateButton.setLayoutData(activateButtonGD);
-            activateButton.setText(Messages.databaseplugin__activate_connection);
+
+            checkActivationButton();
+
             activateButton.setEnabled(!properties.isActive());
             activateButton.addSelectionListener(new SelectionAdapter(){
                 public void widgetSelected( SelectionEvent e ) {
@@ -253,6 +291,7 @@ public class DatabaseConnectionPropertiesWidget {
                                 MessageDialog.openWarning(portText.getShell(), Messages.databaseplugin__connection_error,
                                         Messages.databaseplugin__errmsg_connection);
                             }
+                            checkActivationButton();
                             triggerViewerLayout();
                             databaseView.refreshMap();
                         }
@@ -300,6 +339,31 @@ public class DatabaseConnectionPropertiesWidget {
         }
 
         return propertiesComposite;
+    }
+
+    private void checkActivationButton() {
+
+        Display.getDefault().syncExec(new Runnable(){
+            public void run() {
+                if (isLocal) {
+                    try {
+                        File file = new File(pathText.getText());
+                        DatabaseConnectionProperties tmp = ConnectionManager.createPropertiesBasedOnFolder(file);
+                        if (tmp == null) {
+                            // db files do not exist yet
+                            activateButton.setText(CREATE_DATABASE);
+                        } else {
+                            activateButton.setText(ACTIVATE_CONNECTION);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        activateButton.setText(CREATE_DATABASE);
+                    }
+                } else {
+                    activateButton.setText(ACTIVATE_CONNECTION);
+                }
+            }
+        });
     }
 
     public void loadData() {

@@ -21,6 +21,7 @@ public class Messages extends NLS {
     public static String databaseplugin__errmsg_connection;
     public static String databaseplugin__open_db_location;
     public static String DatabaseBrowserView__no_db_connetion_established;
+    public static String DatabaseConnectionPropertiesWidget__create_db_and_connect;
     public static String DatabasePlugin__errmsg_connecting_db;
     public static String DatabasePlugin__errmsg_creating_db;
     public static String DatabaseView__connections;

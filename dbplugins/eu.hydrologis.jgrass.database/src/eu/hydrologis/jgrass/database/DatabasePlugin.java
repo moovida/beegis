@@ -54,7 +54,6 @@ import eu.hydrologis.jgrass.database.utils.ImageCache;
  */
 public class DatabasePlugin extends AbstractUIPlugin {
 
-
     // The plug-in ID
     public static final String PLUGIN_ID = "eu.hydrologis.jgrass.database"; //$NON-NLS-1$
 
@@ -178,10 +177,14 @@ public class DatabasePlugin extends AbstractUIPlugin {
      */
     public boolean disconnectActiveDatabaseConnection() {
         try {
-            activeDatabaseConnection.closeSessionFactory();
-            activeDatabaseConnection = null;
-            activeDatabaseConnectionProperties.setActive(false);
-            activeDatabaseConnectionProperties = null;
+            if (activeDatabaseConnection != null) {
+                activeDatabaseConnection.closeSessionFactory();
+                activeDatabaseConnection = null;
+            }
+            if (activeDatabaseConnectionProperties != null) {
+                activeDatabaseConnectionProperties.setActive(false);
+                activeDatabaseConnectionProperties = null;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -329,7 +332,7 @@ public class DatabasePlugin extends AbstractUIPlugin {
                 try {
                     //                        String[] args = {"-tcp", "-tcpPort", port}; //$NON-NLS-1$ //$NON-NLS-2$
                     // tcpServer = Server.createTcpServer(args).start();
-                    String[] args = new String[]{"-web", "-webPort", WEBSERVERPORT}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    String[] args = new String[]{"-web", "-webPort", WEBSERVERPORT}; //$NON-NLS-1$ //$NON-NLS-2$ 
                     webServer = Server.createWebServer(args).start();
                 } catch (SQLException e) {
                     e.printStackTrace();

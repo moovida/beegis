@@ -17,6 +17,7 @@
  */
 package eu.hydrologis.jgrass.gpsnmea.actions;
 
+import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.IMap;
 import net.refractions.udig.project.ui.ApplicationGIS;
 import net.refractions.udig.ui.ExceptionDetailsDialog;
@@ -39,6 +40,7 @@ import eu.hydrologis.jgrass.geonotes.GeonoteConstants;
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
 import eu.hydrologis.jgrass.geonotes.GeonotesUI;
+import eu.hydrologis.jgrass.geonotes.GeonoteConstants.NOTIFICATION;
 import eu.hydrologis.jgrass.geonotes.fieldbook.FieldbookView;
 import eu.hydrologis.jgrass.gpsnmea.GpsActivator;
 import eu.hydrologis.jgrass.gpsnmea.gps.GpsPoint;
@@ -95,10 +97,15 @@ public class GeonoteAdd extends Action implements IWorkbenchWindowActionDelegate
                 GeonotesUI geoNote = new GeonotesUI(geonotesHandler);
                 geoNote.openInShell(null);
 
+                ILayer geonotesLayer = GeonotesPlugin.getDefault().getGeonotesLayer();
+                geonotesLayer.refresh(geonotesHandler.getBoundsAsReferenceEnvelope(ApplicationGIS.getActiveMap()
+                        .getViewportModel().getCRS()));
+
                 FieldbookView fieldBookView = GeonotesPlugin.getDefault().getFieldbookView();
                 if (fieldBookView != null) {
                     geonotesHandler.addObserver(fieldBookView);
                 }
+                geonotesHandler.notifyObservers(NOTIFICATION.NOTEADDED);
 
             } catch (Exception e) {
                 String message = "An error occurred while adding the geonote.";
