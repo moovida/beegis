@@ -43,6 +43,9 @@ public class Messages extends NLS {
     public static String ImportDatabaseAction__select_folder;
     public static String ImportDatabaseAction__select_zip;
     public static String OpenDatabaseViewAction__errmsg_open_dbview;
+    public static String OpenExistingLocalDatabaseAction__db_error;
+    public static String OpenExistingLocalDatabaseAction__inserted_folder_not_dbfolder;
+    public static String OpenExistingLocalDatabaseAction__inserted_folder_not_exist;
     public static String OpenInBrowserViewAction__errmsg_open_dbview;
     public static String RemoveDatabaseAction__remove_db_prompt;
     public static String RemoveDatabaseAction__remove_db_warning;

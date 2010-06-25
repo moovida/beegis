@@ -1,5 +1,7 @@
 package eu.hydrologis.jgrass.database.view;
 
+import i18n.database.Messages;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -36,7 +38,8 @@ public class OpenExistingLocalDatabaseAction implements IViewActionDelegate {
 
             File file = new File(path);
             if (!file.exists()) {
-                MessageDialog.openError(view.getSite().getShell(), "Database Error", "The inserted folder does not exist.");
+                MessageDialog.openError(view.getSite().getShell(), Messages.OpenExistingLocalDatabaseAction__db_error,
+                        Messages.OpenExistingLocalDatabaseAction__inserted_folder_not_exist);
                 return;
             }
 
@@ -48,8 +51,8 @@ public class OpenExistingLocalDatabaseAction implements IViewActionDelegate {
             }
 
             if (props == null) {
-                MessageDialog.openError(view.getSite().getShell(), "Database Error",
-                        "The inserted folder does not seem to be a local database folder.");
+                MessageDialog.openError(view.getSite().getShell(), Messages.OpenExistingLocalDatabaseAction__db_error,
+                        Messages.OpenExistingLocalDatabaseAction__inserted_folder_not_dbfolder);
                 return;
             }
 
