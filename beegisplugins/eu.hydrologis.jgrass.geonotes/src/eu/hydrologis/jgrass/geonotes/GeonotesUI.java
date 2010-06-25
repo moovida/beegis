@@ -21,8 +21,7 @@ import static eu.hydrologis.jgrass.geonotes.GeonoteConstants.DEFAULTBACKGROUNDCO
 import static eu.hydrologis.jgrass.geonotes.GeonoteConstants.GPS;
 import static eu.hydrologis.jgrass.geonotes.GeonoteConstants.NORMAL;
 import static eu.hydrologis.jgrass.geonotes.GeonoteConstants.PHOTO;
-
-import i18n.Messages;
+import i18n.geonotes.Messages;
 
 import java.util.ArrayList;
 import java.util.HashMap;

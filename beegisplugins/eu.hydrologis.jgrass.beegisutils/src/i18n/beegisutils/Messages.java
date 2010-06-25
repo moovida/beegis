@@ -1,9 +1,9 @@
-package i18n;
+package i18n.beegisutils;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "i18n.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "i18n.beegisutils.messages"; //$NON-NLS-1$
 
     static {
         // initialize resource bundle

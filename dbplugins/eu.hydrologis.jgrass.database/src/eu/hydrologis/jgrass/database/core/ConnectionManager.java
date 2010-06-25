@@ -18,7 +18,7 @@
  */
 package eu.hydrologis.jgrass.database.core;
 
-import i18n.Messages;
+import i18n.database.Messages;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +29,8 @@ import eu.hydrologis.jgrass.database.core.h2.H2ConnectionFactory;
 import eu.hydrologis.jgrass.database.core.h2.H2DatabaseConnection;
 import eu.hydrologis.jgrass.database.core.postgres.PostgresConnectionFactory;
 import eu.hydrologis.jgrass.database.core.postgres.PostgresDatabaseConnection;
+import eu.hydrologis.jgrass.database.interfaces.IConnectionFactory;
+import eu.hydrologis.jgrass.database.interfaces.IDatabaseConnection;
 
 /**
  * Class taking care to find the proper {@link IDatabaseConnection}.

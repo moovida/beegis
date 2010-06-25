@@ -15,12 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package eu.hydrologis.jgrass.database.core;
+package eu.hydrologis.jgrass.database.interfaces;
 
 import org.geotools.data.DataStore;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.classic.Session;
+
+import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 
 /**
  * Interface for all database types sessionfactories.

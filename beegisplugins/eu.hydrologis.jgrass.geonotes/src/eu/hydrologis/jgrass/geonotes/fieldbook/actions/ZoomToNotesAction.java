@@ -52,6 +52,10 @@ public class ZoomToNotesAction extends Action {
 
     public void run() {
         List<GeonotesHandler> currentGeonotesSelection = geonotesViewer.getCurrentGeonotesSelection();
+        if (currentGeonotesSelection == null || currentGeonotesSelection.size() == 0) {
+            currentGeonotesSelection = (List<GeonotesHandler>) geonotesViewer.getInput();
+        }
+        
         IMap map = ApplicationGIS.getActiveMap();
         if (map.getMapLayers().size() < 1) {
             return;

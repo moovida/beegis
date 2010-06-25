@@ -17,7 +17,7 @@
  */
 package eu.hydrologis.jgrass.database;
 
-import i18n.Messages;
+import i18n.database.Messages;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,8 +43,9 @@ import org.osgi.framework.BundleContext;
 
 import eu.hydrologis.jgrass.database.core.ConnectionManager;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
-import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
 import eu.hydrologis.jgrass.database.core.h2.H2ConnectionFactory;
+import eu.hydrologis.jgrass.database.interfaces.IDatabaseConnection;
+import eu.hydrologis.jgrass.database.interfaces.IDatabaseEventListener;
 import eu.hydrologis.jgrass.database.utils.ImageCache;
 
 /**
@@ -62,11 +63,11 @@ public class DatabasePlugin extends AbstractUIPlugin {
 
     private IDatabaseConnection activeDatabaseConnection;
     private DatabaseConnectionProperties activeDatabaseConnectionProperties;
-
-    public static final String WEBSERVERPORT = "10101"; //$NON-NLS-1$
-
     private List<DatabaseConnectionProperties> availableDatabaseConnectionProperties = new ArrayList<DatabaseConnectionProperties>();
 
+    private List<IDatabaseEventListener> databaseListeners = new ArrayList<IDatabaseEventListener>();
+
+    public static final String WEBSERVERPORT = "10101"; //$NON-NLS-1$
     private Server webServer;
 
     private static final String DATABASES_XML = "databases.xml"; //$NON-NLS-1$
@@ -181,9 +182,14 @@ public class DatabasePlugin extends AbstractUIPlugin {
                 activeDatabaseConnection.closeSessionFactory();
                 activeDatabaseConnection = null;
             }
+            DatabaseConnectionProperties dbProps = activeDatabaseConnectionProperties;
             if (activeDatabaseConnectionProperties != null) {
                 activeDatabaseConnectionProperties.setActive(false);
                 activeDatabaseConnectionProperties = null;
+            }
+
+            for( IDatabaseEventListener dbListener : databaseListeners ) {
+                dbListener.onDatabaseClosed(dbProps);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -217,6 +223,10 @@ public class DatabasePlugin extends AbstractUIPlugin {
             if (!properties.equals(activeDatabaseConnectionProperties)) {
                 properties.setActive(false);
             }
+        }
+
+        for( IDatabaseEventListener dbListener : databaseListeners ) {
+            dbListener.onDatabaseOpened(activeDatabaseConnectionProperties);
         }
     }
 
@@ -318,6 +328,36 @@ public class DatabasePlugin extends AbstractUIPlugin {
         }
     }
 
+    /**
+     * Checks if the supplied connection has a same name connection already and in case corrects the name.
+     * 
+     * @param properties the {@link DatabaseConnectionProperties properties} to check.
+     */
+    @SuppressWarnings("nls")
+    public void checkSameNameDbconnection( DatabaseConnectionProperties properties ) {
+        int index = 1;
+        for( int i = 0; i < availableDatabaseConnectionProperties.size(); i++ ) {
+            DatabaseConnectionProperties connProp = availableDatabaseConnectionProperties.get(i);
+            String tmpName = connProp.getTitle().trim();
+            String name = properties.getTitle().trim();
+            if (tmpName.equals(name)) {
+                // name exists, change the name of the entering
+                if (name.endsWith(")")) {
+                    name = name.trim().replaceFirst("\\([0-9]+\\)$", "(" + (index++) + ")");
+                } else {
+                    name = name + " (" + (index++) + ")";
+                }
+                properties.setProperty(DatabaseConnectionProperties.TITLE, name);
+                // start again
+                i = 0;
+            }
+            if (index == 1000) {
+                // something odd is going on
+                throw new RuntimeException();
+            }
+        }
+    }
+
     private File getConfigurationsFile() {
         return getStateLocation().append(DATABASES_XML).toFile();
     }
@@ -341,4 +381,25 @@ public class DatabasePlugin extends AbstractUIPlugin {
         };
         h2WebserverThread.start();
     }
+
+    /**
+     * Add a {@link IDatabaseEventListener database listener}.
+     * 
+     * @param databaseListener the listener to add.
+     */
+    public void addDatabaseEventListener( IDatabaseEventListener databaseListener ) {
+        if (!databaseListeners.contains(databaseListener)) {
+            databaseListeners.add(databaseListener);
+        }
+    }
+
+    /**
+     * Remove a {@link IDatabaseEventListener database listener}.
+     * 
+     * @param databaseListener the listener to remove.
+     */
+    public void removeDatabaseEventListener( IDatabaseEventListener databaseListener ) {
+        databaseListeners.remove(databaseListener);
+    }
+
 }

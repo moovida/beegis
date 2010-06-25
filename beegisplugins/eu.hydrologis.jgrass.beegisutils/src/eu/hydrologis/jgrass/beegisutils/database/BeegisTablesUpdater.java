@@ -33,7 +33,7 @@ import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTable;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTextareaTable;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GpsLogTable;
 import eu.hydrologis.jgrass.database.DatabasePlugin;
-import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
+import eu.hydrologis.jgrass.database.interfaces.IDatabaseConnection;
 
 /**
  * Creates the tables if they do not exist.

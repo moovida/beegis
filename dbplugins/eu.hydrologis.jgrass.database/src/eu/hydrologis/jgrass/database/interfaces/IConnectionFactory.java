@@ -15,10 +15,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package eu.hydrologis.jgrass.database.core;
+package eu.hydrologis.jgrass.database.interfaces;
 
 import java.io.File;
 import java.io.IOException;
+
+import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 
 /**
  * Database connection factory interface.

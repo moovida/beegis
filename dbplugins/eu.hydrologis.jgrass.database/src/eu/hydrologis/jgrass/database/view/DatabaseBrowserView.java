@@ -17,7 +17,7 @@
  */
 package eu.hydrologis.jgrass.database.view;
 
-import i18n.Messages;
+import i18n.database.Messages;
 
 import java.io.IOException;
 
@@ -30,7 +30,7 @@ import org.eclipse.ui.part.ViewPart;
 import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.ConnectionManager;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
-import eu.hydrologis.jgrass.database.core.IConnectionFactory;
+import eu.hydrologis.jgrass.database.interfaces.IConnectionFactory;
 
 /**
  * The browser view where the database H2 webserver browser is opened.

@@ -17,7 +17,7 @@
  */
 package eu.hydrologis.jgrass.geonotes;
 
-import i18n.Messages;
+import i18n.geonotes.Messages;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -81,8 +81,7 @@ public class MediaBoxUI {
         lv.getControl().setBackground(geonotesHandler.getColor(parent.getDisplay()));
 
         // drop support
-        Transfer[] transferTypes = new Transfer[]{TextTransfer.getInstance(),
-                FileTransfer.getInstance()};
+        Transfer[] transferTypes = new Transfer[]{TextTransfer.getInstance(), FileTransfer.getInstance()};
         int dndOperations = DND.DROP_MOVE | DND.DROP_LINK;
         lv.addDropSupport(dndOperations, transferTypes, new FileDropListener());
 
@@ -94,17 +93,15 @@ public class MediaBoxUI {
         Menu menu = popManager.createContextMenu(lv.getTable());
         lv.getTable().setMenu(menu);
         // open with default viewer
-        IAction openDefaultAction = new OpenSelectedEntryWithDefaultAction(
-                "Open with system viewer", lv); //$NON-NLS-1$
+        IAction openDefaultAction = new OpenSelectedEntryWithDefaultAction("Open with system viewer", lv); //$NON-NLS-1$
         popManager.add(openDefaultAction);
         popManager.add(new Separator());
         // clear all entries
-        IAction clearAction = new ClearEntriesAction(Messages
-                .getString("GeonoteMediaBox.clearmediabox"), lv, dndfiles); //$NON-NLS-1$
+        IAction clearAction = new ClearEntriesAction(Messages.getString("GeonoteMediaBox.clearmediabox"), lv, dndfiles); //$NON-NLS-1$
         popManager.add(clearAction);
         // clear all entries
-        IAction deleteSelectedAction = new ClearSelectedEntriesAction(Messages
-                .getString("GeonoteMediaBox.deleteselectedmedi"), lv, //$NON-NLS-1$
+        IAction deleteSelectedAction = new ClearSelectedEntriesAction(
+                Messages.getString("GeonoteMediaBox.deleteselectedmedi"), lv, //$NON-NLS-1$
                 dndfiles);
         popManager.add(deleteSelectedAction);
 
@@ -189,8 +186,7 @@ public class MediaBoxUI {
      */
     public void addNewMediaFiles( final List<File> mediaFiles ) {
         IRunnableWithProgress operation = new IRunnableWithProgress(){
-            public void run( IProgressMonitor pm ) throws InvocationTargetException,
-                    InterruptedException {
+            public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
                 pm.beginTask("Adding media...", mediaFiles.size());
                 try {
                     for( File mediaFile : mediaFiles ) {
@@ -213,12 +209,9 @@ public class MediaBoxUI {
                             geonotesHandler.addMedia(mediaFile, fileName);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            String message = MessageFormat
-                                    .format(
-                                            "An error occurred while adding the file : {0} to the mediabox.",
-                                            fileName);
-                            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                                    GeonotesPlugin.PLUGIN_ID, e);
+                            String message = MessageFormat.format(
+                                    "An error occurred while adding the file : {0} to the mediabox.", fileName);
+                            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
                         }
                         pm.worked(1);
                     }
@@ -242,8 +235,7 @@ public class MediaBoxUI {
      * @throws Exception
      */
     public void loadExistingMedia() throws Exception {
-        List<GeonotesMediaboxTable> geonotesMediaboxTables = geonotesHandler
-                .getGeonotesMediaboxTables(null);
+        List<GeonotesMediaboxTable> geonotesMediaboxTables = geonotesHandler.getGeonotesMediaboxTables(null);
         for( GeonotesMediaboxTable geonotesMediaboxTable : geonotesMediaboxTables ) {
             String mediaName = geonotesMediaboxTable.getMediaName();
 

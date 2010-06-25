@@ -17,7 +17,7 @@
  */
 package eu.hydrologis.jgrass.database.core.postgres;
 
-import i18n.Messages;
+import i18n.database.Messages;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,8 +27,8 @@ import java.net.URL;
 
 import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
-import eu.hydrologis.jgrass.database.core.IConnectionFactory;
-import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
+import eu.hydrologis.jgrass.database.interfaces.IConnectionFactory;
+import eu.hydrologis.jgrass.database.interfaces.IDatabaseConnection;
 
 /**
  * A connection factory for Postgresql databases.

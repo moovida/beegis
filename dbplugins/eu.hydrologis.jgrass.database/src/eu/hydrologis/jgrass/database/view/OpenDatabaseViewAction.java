@@ -17,7 +17,7 @@
  */
 package eu.hydrologis.jgrass.database.view;
 
-import i18n.Messages;
+import i18n.database.Messages;
 import net.refractions.udig.ui.ExceptionDetailsDialog;
 
 import org.eclipse.core.runtime.IStatus;

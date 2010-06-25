@@ -17,7 +17,7 @@
  */
 package eu.hydrologis.jgrass.database.view;
 
-import i18n.Messages;
+import i18n.database.Messages;
 
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.IMap;
 import net.refractions.udig.project.ui.ApplicationGIS;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -213,6 +214,7 @@ public class DatabaseView extends ViewPart {
                     Control propControl = widget.getComposite(currentSelectedConnectionProperties, propertiesComposite);
                     propertiesStackLayout.topControl = propControl;
                     propertiesComposite.layout(true);
+                    widget.checkActivationButton();
 
                     currentSelectedConnectionPropertiesList.clear();
                     Object[] array = sel.toArray();
@@ -280,6 +282,9 @@ public class DatabaseView extends ViewPart {
         }
     }
 
+    /**
+     * Creates a new default local {@link DatabaseConnectionProperties} and adds it to the list.
+     */
     public void createNewLocalDatabaseDefinition() {
         DatabaseConnectionProperties defaultProperties = new H2ConnectionFactory().createDefaultProperties();
         String projectName = ApplicationGIS.getActiveProject().getName();
@@ -287,23 +292,30 @@ public class DatabaseView extends ViewPart {
             defaultProperties.put(DatabaseConnectionProperties.TITLE, projectName);
             defaultProperties.put(DatabaseConnectionProperties.DESCRIPTION, projectName);
         }
+
+        DatabasePlugin.getDefault().checkSameNameDbconnection(defaultProperties);
+
         availableDatabaseConnectionProperties.add(defaultProperties);
         relayout();
-        
-        IStructuredSelection sel = new StructuredSelection(defaultProperties);
-        connectionsViewer.setSelection(sel);
-        connectionsViewer.refresh(true, true);
+
+        setDatabaseSelected(defaultProperties);
     }
 
-    public void createExistingLocalDatabaseDefinition(DatabaseConnectionProperties props) {
+    /**
+     * Creates a {@link DatabaseConnectionProperties} definition for an existing local database.
+     */
+    public void createExistingLocalDatabaseDefinition( DatabaseConnectionProperties props ) {
+        DatabasePlugin.getDefault().checkSameNameDbconnection(props);
+
         availableDatabaseConnectionProperties.add(props);
         relayout();
 
-        IStructuredSelection sel = new StructuredSelection(props);
-        connectionsViewer.setSelection(sel);
-        connectionsViewer.refresh(true, true);
+        setDatabaseSelected(props);
     }
 
+    /**
+     * Creates a new default remote {@link DatabaseConnectionProperties} and adds it to the list.
+     */
     public void createNewRemoteDatabaseDefinition() {
         DatabaseConnectionProperties defaultProperties = new PostgresConnectionFactory().createDefaultProperties();
         String projectName = ApplicationGIS.getActiveProject().getName();
@@ -311,19 +323,47 @@ public class DatabaseView extends ViewPart {
             defaultProperties.put(DatabaseConnectionProperties.TITLE, projectName);
             defaultProperties.put(DatabaseConnectionProperties.DESCRIPTION, projectName);
         }
+
+        DatabasePlugin.getDefault().checkSameNameDbconnection(defaultProperties);
+
         availableDatabaseConnectionProperties.add(defaultProperties);
         relayout();
     }
 
+    /**
+     * Sets the current selection of the viewer on the supplied {@link DatabaseConnectionProperties}.
+     * 
+     * @param props the properties to select.
+     */
+    public void setDatabaseSelected( DatabaseConnectionProperties props ) {
+        IStructuredSelection sel = new StructuredSelection(props);
+        connectionsViewer.setSelection(sel);
+        connectionsViewer.refresh(true, true);
+    }
+
+    /**
+     * Getter for the current selected {@link DatabaseConnectionProperties}.
+     * 
+     * @return the current selected {@link DatabaseConnectionProperties}.
+     */
     public DatabaseConnectionProperties getCurrentSelectedConnectionProperties() {
         return currentSelectedConnectionProperties;
     }
 
+    /**
+     * Deletes the current selected {@link DatabaseConnectionProperties} from the viewer.
+     */
     public void removeCurrentSelectedDatabaseDefinition() {
         if (currentSelectedConnectionPropertiesList.size() > 0) {
             for( DatabaseConnectionProperties conn : currentSelectedConnectionPropertiesList ) {
                 if (conn.isActive()) {
-                    DatabasePlugin.getDefault().disconnectActiveDatabaseConnection();
+                    Display.getDefault().asyncExec(new Runnable(){
+                        public void run() {
+                            MessageDialog.openWarning(connectionsViewer.getTable().getShell(), "Warning",
+                                    "Active database connections will not be removed.");
+                        }
+                    });
+                    continue;
                 }
                 availableDatabaseConnectionProperties.remove(conn);
                 widgetMap.remove(conn);
@@ -345,8 +385,10 @@ public class DatabaseView extends ViewPart {
         }
     }
 
+    /**
+     * Resfresh the viewer.
+     */
     public void relayout() {
-
         Display.getDefault().syncExec(new Runnable(){
             public void run() {
                 // refresh widgets
@@ -359,6 +401,9 @@ public class DatabaseView extends ViewPart {
         });
     }
 
+    /**
+     * Put the properties view to an label that defines no selection.
+     */
     public void putUnselected() {
         Label l = new Label(propertiesComposite, SWT.SHADOW_ETCHED_IN);
         l.setText(Messages.DatabaseView__no_item_selected);

@@ -32,9 +32,9 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
-import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
 import eu.hydrologis.jgrass.database.earlystartup.AnnotatedClassesCollector;
-import eu.hydrologis.jgrass.database.interfaces.Utils;
+import eu.hydrologis.jgrass.database.interfaces.IDatabaseConnection;
+import eu.hydrologis.jgrass.database.utils.Utils;
 
 /**
  * A Postgresql database connection.

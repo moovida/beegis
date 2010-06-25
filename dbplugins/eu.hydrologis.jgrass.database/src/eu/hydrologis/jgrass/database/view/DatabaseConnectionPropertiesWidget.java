@@ -17,11 +17,14 @@
  */
 package eu.hydrologis.jgrass.database.view;
 
-import i18n.Messages;
+import i18n.database.Messages;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import net.refractions.udig.ui.PlatformGIS;
 
@@ -42,6 +45,8 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import com.google.common.collect.Lists;
 
 import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.ConnectionManager;
@@ -111,8 +116,29 @@ public class DatabaseConnectionPropertiesWidget {
             nameText.setText(title);
             nameText.addFocusListener(new FocusAdapter(){
                 public void focusLost( FocusEvent e ) {
-                    properties.put(DatabaseConnectionProperties.TITLE, nameText.getText());
-                    triggerViewerLayout();
+                    String previousName = properties.getTitle();
+                    String wantedName = nameText.getText();
+                    List<DatabaseConnectionProperties> availableDatabaseConnectionProperties = DatabasePlugin.getDefault()
+                            .getAvailableDatabaseConnectionProperties();
+                    List<DatabaseConnectionProperties> tmpList = new ArrayList<DatabaseConnectionProperties>(
+                            availableDatabaseConnectionProperties);
+                    Collections.copy(tmpList, availableDatabaseConnectionProperties);
+                    boolean remove = tmpList.remove(properties);
+                    if (remove) {
+                        for( DatabaseConnectionProperties tmpProp : tmpList ) {
+                            String name = tmpProp.getTitle().trim();
+                            if (wantedName.equals(name)) {
+                                nameText.setText(previousName);
+                                MessageDialog.openWarning(nameText.getShell(), "Warning",
+                                        "A database definition with the same name already exists. Please chose another name.");
+                                return;
+                            }
+                        }
+
+                        properties.put(DatabaseConnectionProperties.TITLE, nameText.getText());
+
+                        triggerViewerLayout();
+                    }
                     super.focusLost(e);
                 }
             });
@@ -341,7 +367,7 @@ public class DatabaseConnectionPropertiesWidget {
         return propertiesComposite;
     }
 
-    private void checkActivationButton() {
+    public void checkActivationButton() {
 
         Display.getDefault().syncExec(new Runnable(){
             public void run() {
@@ -362,6 +388,19 @@ public class DatabaseConnectionPropertiesWidget {
                 } else {
                     activateButton.setText(ACTIVATE_CONNECTION);
                 }
+
+                boolean active = properties.isActive();
+
+                if (pathText != null)
+                    pathText.setEnabled(!active);
+                if (hostText != null)
+                    hostText.setEnabled(!active);
+                nameText.setEnabled(!active);
+                if (databaseText != null)
+                    databaseText.setEnabled(!active);
+                userText.setEnabled(!active);
+                passwordText.setEnabled(!active);
+                portText.setEnabled(!active);
             }
         });
     }

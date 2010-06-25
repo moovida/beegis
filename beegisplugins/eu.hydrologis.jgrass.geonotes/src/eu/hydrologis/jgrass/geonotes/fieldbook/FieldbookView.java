@@ -86,6 +86,9 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 
 import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTextareaTable;
+import eu.hydrologis.jgrass.database.DatabasePlugin;
+import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
+import eu.hydrologis.jgrass.database.interfaces.IDatabaseEventListener;
 import eu.hydrologis.jgrass.geonotes.GeonoteConstants;
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
 import eu.hydrologis.jgrass.geonotes.GeonotesObserver;
@@ -108,7 +111,7 @@ import eu.hydrologis.jgrass.geonotes.tools.GeoNoteSelectionTool;
  * @since 3.0
  * @see GeonotesUI
  */
-public class FieldbookView extends ViewPart implements GeonotesObserver {
+public class FieldbookView extends ViewPart implements GeonotesObserver, IDatabaseEventListener {
 
     public final static String ID = "eu.hydrologis.jgrass.geonotes.fieldbook.view";
 
@@ -476,6 +479,15 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
             }
         });
 
+        DatabasePlugin.getDefault().addDatabaseEventListener(this);
+
+    }
+
+    @Override
+    public void dispose() {
+        DatabasePlugin.getDefault().removeDatabaseEventListener(this);
+
+        super.dispose();
     }
 
     public void setFocus() {
@@ -531,12 +543,6 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
             ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
             e.printStackTrace();
         }
-    }
-
-    public void resetGeonotes() {
-        geonotesList = GeonotesHandler.getGeonotesHandlers();
-        geonotesViewer.setInput(geonotesList);
-        geonotesViewer.setRelatedToNeutral();
     }
 
     public void updateFromGeonotes( final GeonotesHandler handler, Object arg ) {
@@ -626,6 +632,22 @@ public class FieldbookView extends ViewPart implements GeonotesObserver {
         public void dropAccept( DropTargetEvent arg0 ) {
         }
 
+    }
+
+    @Override
+    public void onDatabaseClosed( DatabaseConnectionProperties connectionProperties ) {
+        geonotesList.clear();
+    }
+
+    @Override
+    public void onDatabaseOpened( DatabaseConnectionProperties connectionProperties ) {
+        Display.getDefault().asyncExec(new Runnable(){
+            public void run() {
+                geonotesList = GeonotesHandler.getGeonotesHandlers();
+                geonotesViewer.setInput(geonotesList);
+                geonotesViewer.setRelatedToNeutral();
+            }
+        });
     }
 
 }

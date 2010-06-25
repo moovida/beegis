@@ -17,7 +17,7 @@
  */
 package eu.hydrologis.jgrass.database.view;
 
-import i18n.Messages;
+import i18n.database.Messages;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;

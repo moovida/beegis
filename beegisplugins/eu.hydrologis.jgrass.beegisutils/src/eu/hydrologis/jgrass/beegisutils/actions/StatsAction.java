@@ -17,9 +17,10 @@
  */
 package eu.hydrologis.jgrass.beegisutils.actions;
 
-import i18n.Messages;
+import i18n.beegisutils.Messages;
 
 import java.text.MessageFormat;
+
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -32,7 +33,7 @@ import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.AnnotationsTab
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTable;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GpsLogTable;
 import eu.hydrologis.jgrass.database.DatabasePlugin;
-import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
+import eu.hydrologis.jgrass.database.interfaces.IDatabaseConnection;
 import eu.hydrologis.jgrass.database.view.DatabaseView;
 
 /**
@@ -62,8 +63,8 @@ public class StatsAction implements IViewActionDelegate {
                 Number annotCount = (Number) session.createCriteria(AnnotationsTable.class).setProjection(Projections.rowCount())
                         .uniqueResult();
 
-                String msg = MessageFormat.format(Messages.StatsAction__db_summary_text,
-                        geonotesCount.intValue(), logsCount.intValue(), annotCount.intValue());
+                String msg = MessageFormat.format(Messages.StatsAction__db_summary_text, dbConn.getConnectionProperties()
+                        .getTitle(), geonotesCount.intValue(), logsCount.intValue(), annotCount.intValue());
 
                 MessageDialog.openInformation(view.getSite().getShell(), Messages.StatsAction__db_summary, msg);
 

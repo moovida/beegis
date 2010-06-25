@@ -17,7 +17,7 @@
  */
 package eu.hydrologis.jgrass.database.core.h2;
 
-import i18n.Messages;
+import i18n.database.Messages;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,8 +33,8 @@ import org.eclipse.emf.common.util.URI;
 
 import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
-import eu.hydrologis.jgrass.database.core.IConnectionFactory;
-import eu.hydrologis.jgrass.database.core.IDatabaseConnection;
+import eu.hydrologis.jgrass.database.interfaces.IConnectionFactory;
+import eu.hydrologis.jgrass.database.interfaces.IDatabaseConnection;
 
 /**
  * A connection factory for H2 databases.

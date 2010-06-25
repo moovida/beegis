@@ -1,4 +1,4 @@
-package eu.hydrologis.jgrass.database.interfaces;
+package eu.hydrologis.jgrass.database.utils;
 
 import java.io.BufferedWriter;
 import java.io.File;

@@ -1,9 +1,9 @@
-package i18n;
+package i18n.database;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "i18n.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "i18n.database.messages"; //$NON-NLS-1$
     public static String ConnectionManager__unknown_db_type;
     public static String databaseplugin__activate_connection;
     public static String databaseplugin__connecting_db;
