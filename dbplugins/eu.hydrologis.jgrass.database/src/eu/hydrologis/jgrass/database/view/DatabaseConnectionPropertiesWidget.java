@@ -74,6 +74,7 @@ public class DatabaseConnectionPropertiesWidget {
     private boolean isLocal;
     // private Button disableButton;
     private Button openFolderButton;
+    private Button browseButton;
 
     public DatabaseConnectionPropertiesWidget( DatabaseView databaseView ) {
         this.databaseView = databaseView;
@@ -173,7 +174,7 @@ public class DatabaseConnectionPropertiesWidget {
                     }
                 });
 
-                Button browseButton = new Button(pathComposite, SWT.PUSH);
+                browseButton = new Button(pathComposite, SWT.PUSH);
                 browseButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
                 browseButton.setText("..."); //$NON-NLS-1$
                 browseButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter(){
@@ -392,8 +393,8 @@ public class DatabaseConnectionPropertiesWidget {
 
                 if (pathText != null)
                     pathText.setEnabled(!active);
-                if (openFolderButton != null)
-                    openFolderButton.setEnabled(!active);
+                if (browseButton != null)
+                    browseButton.setEnabled(!active);
                 if (hostText != null)
                     hostText.setEnabled(!active);
                 nameText.setEnabled(!active);

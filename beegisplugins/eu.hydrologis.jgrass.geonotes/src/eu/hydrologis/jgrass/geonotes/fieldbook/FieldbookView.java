@@ -97,7 +97,7 @@ import eu.hydrologis.jgrass.geonotes.GeonotesUI;
 import eu.hydrologis.jgrass.geonotes.GeonoteConstants.NOTIFICATION;
 import eu.hydrologis.jgrass.geonotes.fieldbook.actions.DumpNotesAction;
 import eu.hydrologis.jgrass.geonotes.fieldbook.actions.DumpNotesBinaryAction;
-import eu.hydrologis.jgrass.geonotes.fieldbook.actions.ExportToShapefileAction;
+import eu.hydrologis.jgrass.geonotes.fieldbook.actions.ExportToFeatureLayerAction;
 import eu.hydrologis.jgrass.geonotes.fieldbook.actions.ImportNotesAction;
 import eu.hydrologis.jgrass.geonotes.fieldbook.actions.RemoveNotesAction;
 import eu.hydrologis.jgrass.geonotes.fieldbook.actions.SendNotesAction;
@@ -427,7 +427,7 @@ public class FieldbookView extends ViewPart implements GeonotesObserver, IDataba
         menuAction = new RemoveNotesAction(geonotesViewer);
         popManager.add(menuAction);
         popManager.add(new Separator());
-        menuAction = new ExportToShapefileAction(geonotesViewer);
+        menuAction = new ExportToFeatureLayerAction(geonotesViewer);
         popManager.add(menuAction);
         menuAction = new DumpNotesAction(geonotesViewer);
         popManager.add(menuAction);
