@@ -22,9 +22,12 @@ public class Messages extends NLS {
     public static String databaseplugin__open_db_location;
     public static String DatabaseBrowserView__no_db_connetion_established;
     public static String DatabaseConnectionPropertiesWidget__create_db_and_connect;
+    public static String DatabaseConnectionPropertiesWidget__double_db_definition_warning;
+    public static String DatabaseConnectionPropertiesWidget__warning;
     public static String DatabasePlugin__errmsg_connecting_db;
     public static String DatabasePlugin__errmsg_creating_db;
     public static String DatabaseView__connections;
+    public static String DatabaseView__db_not_removed_warning;
     public static String DatabaseView__filter_active;
     public static String DatabaseView__filter_project;
     public static String DatabaseView__new_local_db;

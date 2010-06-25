@@ -359,8 +359,9 @@ public class DatabaseView extends ViewPart {
                 if (conn.isActive()) {
                     Display.getDefault().asyncExec(new Runnable(){
                         public void run() {
-                            MessageDialog.openWarning(connectionsViewer.getTable().getShell(), "Warning",
-                                    "Active database connections will not be removed.");
+                            MessageDialog.openWarning(connectionsViewer.getTable().getShell(),
+                                    Messages.DatabaseConnectionPropertiesWidget__warning,
+                                    Messages.DatabaseView__db_not_removed_warning);
                         }
                     });
                     continue;

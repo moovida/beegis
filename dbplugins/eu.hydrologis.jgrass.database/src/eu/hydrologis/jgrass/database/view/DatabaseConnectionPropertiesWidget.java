@@ -46,8 +46,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import com.google.common.collect.Lists;
-
 import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.ConnectionManager;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
@@ -129,8 +127,8 @@ public class DatabaseConnectionPropertiesWidget {
                             String name = tmpProp.getTitle().trim();
                             if (wantedName.equals(name)) {
                                 nameText.setText(previousName);
-                                MessageDialog.openWarning(nameText.getShell(), "Warning",
-                                        "A database definition with the same name already exists. Please chose another name.");
+                                MessageDialog.openWarning(nameText.getShell(), Messages.DatabaseConnectionPropertiesWidget__warning,
+                                        Messages.DatabaseConnectionPropertiesWidget__double_db_definition_warning);
                                 return;
                             }
                         }
