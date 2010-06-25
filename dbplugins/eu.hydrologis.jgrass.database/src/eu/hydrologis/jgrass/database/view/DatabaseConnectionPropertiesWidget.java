@@ -73,6 +73,7 @@ public class DatabaseConnectionPropertiesWidget {
     private Button activateButton;
     private boolean isLocal;
     // private Button disableButton;
+    private Button openFolderButton;
 
     public DatabaseConnectionPropertiesWidget( DatabaseView databaseView ) {
         this.databaseView = databaseView;
@@ -127,7 +128,8 @@ public class DatabaseConnectionPropertiesWidget {
                             String name = tmpProp.getTitle().trim();
                             if (wantedName.equals(name)) {
                                 nameText.setText(previousName);
-                                MessageDialog.openWarning(nameText.getShell(), Messages.DatabaseConnectionPropertiesWidget__warning,
+                                MessageDialog.openWarning(nameText.getShell(),
+                                        Messages.DatabaseConnectionPropertiesWidget__warning,
                                         Messages.DatabaseConnectionPropertiesWidget__double_db_definition_warning);
                                 return;
                             }
@@ -206,25 +208,25 @@ public class DatabaseConnectionPropertiesWidget {
                         super.focusLost(e);
                     }
                 });
-            }
 
-            // database
-            Label databaseLabel = new Label(propertiesComposite, SWT.NONE);
-            databaseLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-            databaseLabel.setText(Messages.databaseplugin__database_name);
-            databaseText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
-            databaseText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-            String databaseName = properties.getDatabaseName();
-            if (databaseName == null) {
-                databaseName = ""; //$NON-NLS-1$
-            }
-            databaseText.setText(databaseName);
-            databaseText.addFocusListener(new FocusAdapter(){
-                public void focusLost( FocusEvent e ) {
-                    properties.put(DatabaseConnectionProperties.DATABASE, databaseText.getText());
-                    super.focusLost(e);
+                // database
+                Label databaseLabel = new Label(propertiesComposite, SWT.NONE);
+                databaseLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+                databaseLabel.setText(Messages.databaseplugin__database_name);
+                databaseText = new Text(propertiesComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+                databaseText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+                String databaseName = properties.getDatabaseName();
+                if (databaseName == null) {
+                    databaseName = ""; //$NON-NLS-1$
                 }
-            });
+                databaseText.setText(databaseName);
+                databaseText.addFocusListener(new FocusAdapter(){
+                    public void focusLost( FocusEvent e ) {
+                        properties.put(DatabaseConnectionProperties.DATABASE, databaseText.getText());
+                        super.focusLost(e);
+                    }
+                });
+            }
 
             // user
             Label userLabel = new Label(propertiesComposite, SWT.NONE);
@@ -348,8 +350,7 @@ public class DatabaseConnectionPropertiesWidget {
             // });
 
             if (isLocal) {
-                // open db folder
-                Button openFolderButton = new Button(propertiesComposite, SWT.PUSH);
+                openFolderButton = new Button(propertiesComposite, SWT.PUSH);
                 GridData openFolderButtonGD = new GridData(SWT.FILL, SWT.FILL, true, false);
                 openFolderButtonGD.horizontalSpan = 2;
                 openFolderButton.setLayoutData(openFolderButtonGD);
@@ -391,6 +392,8 @@ public class DatabaseConnectionPropertiesWidget {
 
                 if (pathText != null)
                     pathText.setEnabled(!active);
+                if (openFolderButton != null)
+                    openFolderButton.setEnabled(!active);
                 if (hostText != null)
                     hostText.setEnabled(!active);
                 nameText.setEnabled(!active);
@@ -421,19 +424,20 @@ public class DatabaseConnectionPropertiesWidget {
             }
             pathText.setText(path);
         } else {
+            // host
             String host = properties.getHost();
             if (host == null) {
                 host = ""; //$NON-NLS-1$
             }
             hostText.setText(host);
-        }
 
-        // database
-        String databaseName = properties.getDatabaseName();
-        if (databaseName == null) {
-            databaseName = ""; //$NON-NLS-1$
+            // database
+            String databaseName = properties.getDatabaseName();
+            if (databaseName == null) {
+                databaseName = ""; //$NON-NLS-1$
+            }
+            databaseText.setText(databaseName);
         }
-        databaseText.setText(databaseName);
 
         // user
         String user = properties.getUser();

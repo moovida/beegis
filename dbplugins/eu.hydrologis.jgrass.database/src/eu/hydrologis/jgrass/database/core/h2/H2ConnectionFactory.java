@@ -43,6 +43,16 @@ import eu.hydrologis.jgrass.database.interfaces.IDatabaseConnection;
  */
 public class H2ConnectionFactory implements IConnectionFactory {
 
+    /**
+     * The name for the database.
+     * 
+     * <p>
+     * This is kept to be just <i>database</i>, in order to avoid to ask users
+     * that usually have no idea. The db therefore has the name of the folder that contains it.
+     * </p>
+     */
+    public static final String DATABASE = "database"; //$NON-NLS-1$
+
     @Override
     public IDatabaseConnection createDatabaseConnection( DatabaseConnectionProperties connectionProperties ) {
         H2DatabaseConnection connection = new H2DatabaseConnection();
@@ -69,7 +79,8 @@ public class H2ConnectionFactory implements IConnectionFactory {
 
         File[] files = dbFile.listFiles(new FileFilter(){
             public boolean accept( File pathname ) {
-                return pathname.getName().endsWith(".data.db"); //$NON-NLS-1$
+                // H2 databases are handled always and only with the name "database"
+                return pathname.getName().equals(DATABASE + ".data.db"); //$NON-NLS-1$
             }
         });
 
@@ -77,16 +88,16 @@ public class H2ConnectionFactory implements IConnectionFactory {
             return null;
         }
 
-        String dbName = files[0].getName().replaceFirst("\\.data\\.db", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        // the database name is given by the containing folder name
+        String dbName = dbFile.getName();
 
-        // curently only H2 is supported
         DatabaseConnectionProperties props = new DatabaseConnectionProperties();
         props.put(DatabaseConnectionProperties.TYPE, H2DatabaseConnection.TYPE);
         props.put(DatabaseConnectionProperties.ISACTIVE, "false"); //$NON-NLS-1$
         props.put(DatabaseConnectionProperties.TITLE, dbName);
         props.put(DatabaseConnectionProperties.DESCRIPTION, dbName);
         props.put(DatabaseConnectionProperties.DRIVER, H2DatabaseConnection.DRIVER);
-        props.put(DatabaseConnectionProperties.DATABASE, dbName);
+        props.put(DatabaseConnectionProperties.DATABASE, DATABASE);
         props.put(DatabaseConnectionProperties.PORT, "9092"); //$NON-NLS-1$
         props.put(DatabaseConnectionProperties.USER, "sa"); //$NON-NLS-1$
         props.put(DatabaseConnectionProperties.PASS, ""); //$NON-NLS-1$
@@ -115,7 +126,7 @@ public class H2ConnectionFactory implements IConnectionFactory {
         props.put(DatabaseConnectionProperties.TITLE, Messages.H2ConnectionFactory__default_db);
         props.put(DatabaseConnectionProperties.DESCRIPTION, Messages.H2ConnectionFactory__default_db);
         props.put(DatabaseConnectionProperties.DRIVER, H2DatabaseConnection.DRIVER);
-        props.put(DatabaseConnectionProperties.DATABASE, "database"); //$NON-NLS-1$
+        props.put(DatabaseConnectionProperties.DATABASE, DATABASE);
         props.put(DatabaseConnectionProperties.PORT, "9093"); //$NON-NLS-1$
         props.put(DatabaseConnectionProperties.USER, "sa"); //$NON-NLS-1$
         props.put(DatabaseConnectionProperties.PASS, ""); //$NON-NLS-1$

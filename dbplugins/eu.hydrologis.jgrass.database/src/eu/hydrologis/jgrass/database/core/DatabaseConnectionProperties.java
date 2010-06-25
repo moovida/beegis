@@ -30,21 +30,74 @@ import java.util.Map.Entry;
 public class DatabaseConnectionProperties extends Properties {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The constant used for the xml representation of the root tag for databases.
+     */
     public static final String DATABASES_XML = "DATABASES"; //$NON-NLS-1$
+
+    /**
+     * The constant used for the xml representation of the single database tag.
+     */
     public static final String DATABASE_XML = "DATABASE"; //$NON-NLS-1$
 
+    /**
+     * Property key defining the database type.
+     */
     public static final String TYPE = "TYPE"; //$NON-NLS-1$
+
+    /**
+     * Property key defining whether the database is currently connected.
+     */
     public static final String ISACTIVE = "ISACTIVE"; //$NON-NLS-1$
+
+    /**
+     * Property key defining the database title (a human readable name for tables or so).
+     */
     public static final String TITLE = "TITLE"; //$NON-NLS-1$
+
+    /**
+     * Property key defining the database description.
+     */
     public static final String DESCRIPTION = "DESCRIPTION"; //$NON-NLS-1$
+
+    /**
+     * Property key defining the database driver class.
+     */
     public static final String DRIVER = "DRIVER"; //$NON-NLS-1$
+    
+    /**
+     * Property key defining the database name.
+     */
     public static final String DATABASE = "DATABASE"; //$NON-NLS-1$
+
+    /**
+     * Property key defining the database port.
+     */
     public static final String PORT = "PORT"; //$NON-NLS-1$
+    
+    /**
+     * Property key defining the database user.
+     */
     public static final String USER = "USER"; //$NON-NLS-1$
+    
+    /**
+     * Property key defining the database password.
+     */
     public static final String PASS = "PASS"; //$NON-NLS-1$
+    
+    /**
+     * Property key defining the database host (for remote databases).
+     */
     public static final String HOST = "HOST"; //$NON-NLS-1$
+    
+    /**
+     * Property key defining the database path (for local databases).
+     */
     public static final String PATH = "PATH"; //$NON-NLS-1$
 
+    /**
+     * All available database properties key to store when doing persistence. 
+     */
     public static String[] POSSIBLETAGS = {TYPE, ISACTIVE, TITLE, DESCRIPTION, DRIVER, DATABASE, PORT, USER, PASS, HOST, PATH};
 
     public static final String SHOW_SQL = "SHOW_SQL"; //$NON-NLS-1$
@@ -54,7 +107,7 @@ public class DatabaseConnectionProperties extends Properties {
     }
 
     /**
-     * Wrapps a {@link Properties} object into a {@link DatabaseConnectionProperties}.
+     * Wraps a {@link Properties} object into a {@link DatabaseConnectionProperties}.
      * 
      * @param properties the properties object.
      */
