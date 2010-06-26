@@ -8,7 +8,7 @@ Bundle-Vendor: HydroloGIS S.r.l.
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- eu.hydrologis.jgrass.gpsrxtx,
+ eu.hydrologis.jgrass.rxtx;bundle-version="2.2.2",
  net.refractions.udig.libs,
  net.refractions.udig.project.ui,
  net.refractions.udig.tools.edit,
