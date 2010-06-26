@@ -2,6 +2,6 @@ syntax: regexp
 
 .jar
 bin
-\.class
+\.class$
 ~$
 .swp$
