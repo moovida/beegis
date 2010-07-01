@@ -39,6 +39,13 @@
 			<dependency groupId="eu.hydrologis.jgrass" artifactId="jgrassgears" version="0.1-SNAPSHOT" />
 			<dependency groupId="eu.hydrologis.jgrass" artifactId="hortonmachine" version="0.1-SNAPSHOT" />
 
+	        <dependency groupId="org.scannotation" artifactId="scannotation" version="1.0.2" />
+	        <dependency groupId="org.geotools" artifactId="gt-imageio-ext-gdal" version="${geotools.version}" />
+	        <dependency groupId="org.geotools" artifactId="gt-grassraster" version="2.7-SNAPSHOT" />
+	        <dependency groupId="com.googlecode.jaitools" artifactId="jiffle" version="1.0.1" />
+	        <dependency groupId="com.googlecode.jaitools" artifactId="zonalstats" version="1.0.1" />
+
+			
 			<!-- in the jgrasstools maven repo -->
 			<dependency groupId="oms" artifactId="oms" version="3-SNAPSHOT" />
 			<dependency groupId="jama" artifactId="jama" version="1.0.2" />
@@ -134,6 +141,11 @@
 			<rsel:name name="*javassist*.jar" />
 			<rsel:name name="*slf4j*.jar" />
 			<rsel:name name="*ejb3-persistence*.jar" />
+			<rsel:name name="*scannotation*.jar" />
+			<rsel:name name="*jiffle*.jar" />
+			<rsel:name name="*zonalstats*.jar" />
+			<rsel:name name="*gt-imageio-ext-gdal*.jar" />
+			<rsel:name name="*gt-grassraster*.jar" />
 
 			<rsel:name name="*jta*.jar" />
 			<rsel:name name="*antlr*.jar" />
