@@ -72,6 +72,7 @@ public class ImageCache {
         Image image = imageMap.get(key);
         if (image == null) {
             image = createImage(key);
+            imageMap.put(key, image);
         }
         return image;
     }
