@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
 import org.joda.time.DateTime;
@@ -59,20 +58,24 @@ public class DatabaseManager {
             return;
         }
 
-        Session session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
-        Transaction transaction = session.beginTransaction();
+        Session session = null;
+        try {
+            session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
+            Transaction transaction = session.beginTransaction();
 
-        GpsLogTable gpsLog = new GpsLogTable();
-        gpsLog.setUtcTime(gpsPoint.utcDateTime);
-        gpsLog.setEast(gpsPoint.longitude);
-        gpsLog.setNorth(gpsPoint.latitude);
-        gpsLog.setAltimetry(gpsPoint.altitude);
-        gpsLog.setNumberOfTrackedSatellites((int) gpsPoint.sat);
-        gpsLog.setHorizontalDilutionOfPosition(gpsPoint.hdop);
+            GpsLogTable gpsLog = new GpsLogTable();
+            gpsLog.setUtcTime(gpsPoint.utcDateTime);
+            gpsLog.setEast(gpsPoint.longitude);
+            gpsLog.setNorth(gpsPoint.latitude);
+            gpsLog.setAltimetry(gpsPoint.altitude);
+            gpsLog.setNumberOfTrackedSatellites((int) gpsPoint.sat);
+            gpsLog.setHorizontalDilutionOfPosition(gpsPoint.hdop);
 
-        session.save(gpsLog);
-        transaction.commit();
-        session.close();
+            session.save(gpsLog);
+            transaction.commit();
+        } finally {
+            session.close();
+        }
     }
 
     /**
