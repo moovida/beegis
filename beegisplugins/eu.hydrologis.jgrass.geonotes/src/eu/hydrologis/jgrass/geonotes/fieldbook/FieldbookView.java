@@ -555,11 +555,11 @@ public class FieldbookView extends ViewPart implements GeonotesObserver, IDataba
                 Display.getDefault().asyncExec(new Runnable(){
                     public void run() {
                         geonotesList.remove(handler);
-                        ILayer geonotesLayer = GeonotesPlugin.getDefault().getGeonotesLayer();
-                        CoordinateReferenceSystem crs = ApplicationGIS.getActiveMap().getViewportModel().getCRS();
-                        geonotesLayer.refresh(handler.getBoundsAsReferenceEnvelope(crs));
                         geonotesViewer.setInput(geonotesList);
                         geonotesViewer.setRelatedToNeutral();
+                        ILayer geonotesLayer = GeonotesPlugin.getDefault().getGeonotesLayer();
+                        CoordinateReferenceSystem crs = ApplicationGIS.getActiveMap().getViewportModel().getCRS();
+                        geonotesLayer.refresh(null);
                     }
                 });
 

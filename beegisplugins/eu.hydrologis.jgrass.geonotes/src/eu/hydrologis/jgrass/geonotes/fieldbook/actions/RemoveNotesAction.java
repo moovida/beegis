@@ -2,6 +2,7 @@ package eu.hydrologis.jgrass.geonotes.fieldbook.actions;
 
 import java.util.List;
 
+import net.refractions.udig.project.ILayer;
 import net.refractions.udig.ui.ExceptionDetailsDialog;
 
 import org.eclipse.core.runtime.IStatus;
@@ -40,6 +41,10 @@ public class RemoveNotesAction extends Action {
             }
         }
         
-        geonotesViewer.setInput(currentGeonotesSelection);
+        List<GeonotesHandler> geonotesList = (List<GeonotesHandler>) geonotesViewer.getInput();
+        geonotesList.removeAll(currentGeonotesSelection);
+        geonotesViewer.setInput(geonotesList);
+        ILayer geonotesLayer = GeonotesPlugin.getDefault().getGeonotesLayer();
+        geonotesLayer.refresh(null);
     }
 }

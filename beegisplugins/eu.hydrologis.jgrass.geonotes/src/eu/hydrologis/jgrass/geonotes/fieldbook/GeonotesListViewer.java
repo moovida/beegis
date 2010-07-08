@@ -228,10 +228,7 @@ public class GeonotesListViewer extends TableViewer implements ISelectionChanged
                 .toArray(new ReferencedEnvelope[refList.size()]));
 
         ILayer geonotesLayer = GeonotesPlugin.getDefault().getGeonotesLayer();
-        for( ReferencedEnvelope referencedEnvelope : refList ) {
-            geonotesLayer.refresh(referencedEnvelope);
-        }
-
+        geonotesLayer.refresh(null);
     }
 
     private class GeonotesListContentProvider implements ITreeContentProvider {
