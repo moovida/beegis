@@ -326,7 +326,8 @@ public class GeonotesUI implements GeonotesObserver {
                         + colorValue.blue + ":255";
                 geonotesHandler.setColor(okButton.getDisplay(), colorString);
                 geonotesHandler.setTitle(titleText.getText());
-
+                geonotesHandler.notifyObservers(NOTIFICATION.NOTESAVED);
+                
                 stackLayout.topControl = tabFolder;
                 stackComposite.layout();
             }

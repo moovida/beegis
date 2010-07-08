@@ -577,23 +577,26 @@ public class FieldbookView extends ViewPart implements GeonotesObserver, IDataba
                 break;
             case NOTESAVED:
                 // TO CHECK this should now be handled in update of ui
+                GeonotesUI.guiCache.clear();
+                Display.getDefault().asyncExec(new Runnable(){
+                    public void run() {
 
-                // Display.getDefault().asyncExec(new Runnable(){
-                // public void run() {
-                // GeonotesUI newGeoNote = new GeonotesUI(handler);
-                // newGeoNote.createNoteComposite(mainGeonotesComposite);
-                // for( int i = 0; i < geonotesList.size(); i++ ) {
-                // GeonotesUI gN = geonotesList.get(i);
-                // if (gN.getNoteID() == newGeoNote.getNoteID()) {
-                // geonotesList.remove(gN);
-                // geonotesList.add(i, newGeoNote);
-                // break;
-                // }
-                // }
-                // geonotesViewer.setInput(geonotesList);
-                // geonotesViewer.setRelatedToNeutral();
-                // }
-                // });
+                        Long hId = handler.getId();
+                        int index = -1;
+                        for( int i = 0; i < geonotesList.size(); i++ ) {
+                            GeonotesHandler geonotesHandler = geonotesList.get(i);
+                            if (hId.equals(geonotesHandler.getId())) {
+                                index = i;
+                                break;
+                            }
+                        }
+                        if (index != -1) {
+                            geonotesList.set(index, handler);
+                            geonotesViewer.refresh(true);
+                            geonotesViewer.setRelatedToNeutral();
+                        }
+                    }
+                });
                 break;
 
             default:
