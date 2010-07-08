@@ -18,6 +18,7 @@
 package eu.hydrologis.jgrass.geonotes.fieldbook;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,6 +36,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.graphics.Image;
@@ -62,6 +64,7 @@ import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
 import eu.hydrologis.jgrass.geonotes.GeonotesUI;
 import eu.hydrologis.jgrass.geonotes.tools.GeoNoteSelectionTool;
+import eu.hydrologis.jgrass.geonotes.util.GeonotesNameSorter;
 import eu.hydrologis.jgrass.geonotes.util.ImageManager;
 
 /**
@@ -81,6 +84,7 @@ public class GeonotesListViewer extends TableViewer implements ISelectionChanged
     private List<GeonotesHandler> selectedNotesList;
     private GeometryFactory gF = new GeometryFactory();
     private Composite neutralComposite;
+    private ViewerSorter tableSorter = new GeonotesNameSorter();
 
     public GeonotesListViewer( Composite parent, Composite related, int multi ) {
         super(parent, multi);
@@ -97,7 +101,13 @@ public class GeonotesListViewer extends TableViewer implements ISelectionChanged
         GeonotesListLabelProvider glLP = new GeonotesListLabelProvider();
         this.setLabelProvider(glLP);
 
+        this.setSorter(tableSorter);
+
         setRelatedToNeutral();
+    }
+    
+    public void setTableSorter( ViewerSorter tableSorter ) {
+        this.tableSorter = tableSorter;
     }
 
     public void selectionChanged( SelectionChangedEvent event ) {

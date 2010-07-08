@@ -101,6 +101,8 @@ import eu.hydrologis.jgrass.geonotes.fieldbook.actions.ExportToFeatureLayerActio
 import eu.hydrologis.jgrass.geonotes.fieldbook.actions.ImportNotesAction;
 import eu.hydrologis.jgrass.geonotes.fieldbook.actions.RemoveNotesAction;
 import eu.hydrologis.jgrass.geonotes.fieldbook.actions.SendNotesAction;
+import eu.hydrologis.jgrass.geonotes.fieldbook.actions.SortNotesTimeAction;
+import eu.hydrologis.jgrass.geonotes.fieldbook.actions.SortNotesTitleAction;
 import eu.hydrologis.jgrass.geonotes.fieldbook.actions.ZoomToNotesAction;
 import eu.hydrologis.jgrass.geonotes.tools.GeoNoteSelectionTool;
 
@@ -438,6 +440,11 @@ public class FieldbookView extends ViewPart implements GeonotesObserver, IDataba
         popManager.add(importAction);
         popManager.add(new Separator());
         menuAction = new SendNotesAction(geonotesViewer);
+        popManager.add(menuAction);
+        popManager.add(new Separator());
+        menuAction = new SortNotesTitleAction(geonotesViewer);
+        popManager.add(menuAction);
+        menuAction = new SortNotesTimeAction(geonotesViewer);
         popManager.add(menuAction);
 
         Menu menu = popManager.createContextMenu(table);
