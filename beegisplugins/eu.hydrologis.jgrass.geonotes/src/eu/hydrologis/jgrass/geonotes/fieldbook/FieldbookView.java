@@ -203,13 +203,14 @@ public class FieldbookView extends ViewPart implements GeonotesObserver, IDataba
                             GeonotesTextareaTable geonotesTextareaTable = geonoteHandler.getGeonotesTextareaTable();
                             if (geonotesTextareaTable != null) {
                                 String textAreaText = geonotesTextareaTable.getText();
-                                if (textAreaText != null && textAreaText.matches(".*" + userText + ".*")) {
+                                if (textAreaText != null && textAreaText.toLowerCase().indexOf(userText.toLowerCase()) != -1) {
                                     toAdd.add(geonoteHandler);
                                 }
                             }
                         }
                     }
                     geonotesViewer.setInput(toAdd);
+                    geonotesViewer.setRelatedToNeutral();
                 }
             }
         });
@@ -577,9 +578,10 @@ public class FieldbookView extends ViewPart implements GeonotesObserver, IDataba
                 break;
             case NOTESAVED:
                 // TO CHECK this should now be handled in update of ui
-                GeonotesUI.guiCache.clear();
                 Display.getDefault().asyncExec(new Runnable(){
                     public void run() {
+                        geonotesViewer.setRelatedToNeutral();
+                        GeonotesUI.guiCache.clear();
 
                         Long hId = handler.getId();
                         int index = -1;
@@ -593,7 +595,6 @@ public class FieldbookView extends ViewPart implements GeonotesObserver, IDataba
                         if (index != -1) {
                             geonotesList.set(index, handler);
                             geonotesViewer.refresh(true);
-                            geonotesViewer.setRelatedToNeutral();
                         }
                     }
                 });

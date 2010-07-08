@@ -473,6 +473,7 @@ public class GeonotesUI implements GeonotesObserver {
                  * so no need for adding them now.
                  */
                 geonotesHandler.persistNote();
+                geonotesHandler.notifyObservers(NOTIFICATION.NOTESAVED);
                 if (shell != null && !shell.isDisposed())
                     shell.close();
             }
