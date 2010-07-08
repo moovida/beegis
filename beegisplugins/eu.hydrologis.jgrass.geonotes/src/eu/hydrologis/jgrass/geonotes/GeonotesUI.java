@@ -212,7 +212,7 @@ public class GeonotesUI implements GeonotesObserver {
             item1.setControl(drawArea.getMainControl());
             CTabItem item2 = new CTabItem(tabFolder, SWT.NONE);
             item2.setText(Messages.getString("GeoNote.text")); //$NON-NLS-1$
-            textArea = new TextAreaUI(tabFolder, SWT.MULTI, geonoteColor);
+            textArea = new TextAreaUI(tabFolder, SWT.MULTI | SWT.WRAP, geonoteColor);
             item2.setControl(textArea.getTextArea());
             CTabItem item3 = new CTabItem(tabFolder, SWT.NONE);
             item3.setText(Messages.getString("GeoNote.media")); //$NON-NLS-1$
