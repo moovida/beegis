@@ -24,7 +24,7 @@ public class RemoveNotesAction extends Action {
     public void run() {
 
         boolean answer = MessageDialog.openQuestion(geonotesViewer.getControl().getShell(), "Removal warning",
-                "Do you really want to remove all the geonotes?");
+                "Do you really want to remove the selected geonotes?");
 
         if (!answer) {
             return;
@@ -39,5 +39,7 @@ public class RemoveNotesAction extends Action {
                 ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
             }
         }
+        
+        geonotesViewer.setInput(currentGeonotesSelection);
     }
 }
