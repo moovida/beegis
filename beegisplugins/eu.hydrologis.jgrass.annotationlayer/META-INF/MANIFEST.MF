@@ -11,6 +11,7 @@ Require-Bundle: org.eclipse.ui,
  net.refractions.udig.project,
  net.refractions.udig.project.ui,
  net.refractions.udig.mapgraphic,
+ eu.hydrologis.jgrass.extlibs;bundle-version="1.0.0",
  eu.hydrologis.jgrass.database;bundle-version="1.0.0",
  eu.hydrologis.jgrass.beegisutils;bundle-version="1.0.0"
 Eclipse-LazyStart: true

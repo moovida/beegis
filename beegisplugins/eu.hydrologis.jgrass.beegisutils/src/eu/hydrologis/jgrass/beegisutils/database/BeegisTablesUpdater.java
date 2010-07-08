@@ -43,6 +43,7 @@ import eu.hydrologis.jgrass.database.interfaces.IDatabaseConnection;
 public class BeegisTablesUpdater implements IStartup {
 
     public void earlyStartup() {
+        
         // update beegis tables if necessary
 
         // get the table names

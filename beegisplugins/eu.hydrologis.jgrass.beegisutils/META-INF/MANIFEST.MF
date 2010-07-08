@@ -9,6 +9,7 @@ Bundle-Vendor: HydroloGIS s.r.l.
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  net.refractions.udig.libs;bundle-version="1.2.0",
+ eu.hydrologis.jgrass.extlibs;bundle-version="1.0.0",
  eu.hydrologis.jgrass.database;bundle-version="1.0.0",
  net.refractions.udig.project,
  net.refractions.udig.mapgraphic;bundle-version="1.2.0"

@@ -135,7 +135,7 @@ public class DatabaseConnectionProperties extends Properties {
     }
 
     public String getDatabaseName() {
-        return getProperty(DATABASE);
+        return "database";//getProperty(DATABASE);
     }
 
     public String getUser() {

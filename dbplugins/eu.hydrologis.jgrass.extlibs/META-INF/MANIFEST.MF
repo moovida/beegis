@@ -436,3 +436,4 @@ Export-Package: Jama,
  org.slf4j.impl,
  org.slf4j.spi
 Eclipse-BuddyPolicy: global
+Require-Bundle: net.refractions.udig.libs;visibility:=reexport

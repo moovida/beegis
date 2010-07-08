@@ -6,6 +6,7 @@ import net.refractions.udig.ui.ExceptionDetailsDialog;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.MessageDialog;
 
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
@@ -21,15 +22,21 @@ public class RemoveNotesAction extends Action {
     }
 
     public void run() {
-        List<GeonotesHandler> currentGeonotesSelection = geonotesViewer
-                .getCurrentGeonotesSelection();
+
+        boolean answer = MessageDialog.openQuestion(geonotesViewer.getControl().getShell(), "Removal warning",
+                "Do you really want to remove all the geonotes?");
+
+        if (!answer) {
+            return;
+        }
+
+        List<GeonotesHandler> currentGeonotesSelection = geonotesViewer.getCurrentGeonotesSelection();
         for( GeonotesHandler geoNote : currentGeonotesSelection ) {
             try {
                 geoNote.deleteNote();
             } catch (Exception e) {
                 String message = "An error occurred while removing the Geonote.";
-                ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                        GeonotesPlugin.PLUGIN_ID, e);
+                ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
             }
         }
     }
