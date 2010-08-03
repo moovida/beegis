@@ -57,6 +57,9 @@ public class DumpNotesAction extends Action {
             try {
                 for( GeonotesHandler geoNote : currentGeonotesSelection ) {
                     GeonotesUI geonotesUI = GeonotesUI.guiCache.get(geoNote);
+                    if (geonotesUI==null) {
+                        geonotesUI = new GeonotesUI(geoNote);
+                    }
                     Image drawareaImage = geonotesUI.getDrawareaImage();
                     geoNote.dumpNote(path, drawareaImage);
                 }

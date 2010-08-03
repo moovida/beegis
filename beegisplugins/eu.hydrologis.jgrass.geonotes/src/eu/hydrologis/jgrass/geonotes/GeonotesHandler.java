@@ -807,12 +807,15 @@ public class GeonotesHandler {
                     try {
                         File textFile = new File(mainDir.getAbsolutePath() + File.separator + "geonote_textbox.txt");
                         BufferedWriter bW = new BufferedWriter(new FileWriter(textFile));
-                        String text = getGeonotesTextareaTable().getText();
-                        if (text != null) {
-                            bW.write(text);
-                        } else {
-                            bW.write("");
+                        GeonotesTextareaTable textareaTable = getGeonotesTextareaTable();
+                        String text = "";
+                        if (textareaTable != null) {
+                            String tmptext = textareaTable.getText();
+                            if (text != null) {
+                                text = tmptext;
+                            }
                         }
+                        bW.write(text);
                         bW.close();
                         pm.worked(1);
                     } catch (Exception e) {
@@ -927,8 +930,12 @@ public class GeonotesHandler {
                             text = tmp;
                         }
                     }
-                    List<DressedStroke> drawing = getGeonotesDrawareaTable().getDrawings();
-                    DressedStroke[] drawingArray = (DressedStroke[]) drawing.toArray(new DressedStroke[drawing.size()]);
+                    GeonotesDrawareaTable drawareaTable = getGeonotesDrawareaTable();
+                    DressedStroke[] drawingArray = new DressedStroke[0];
+                    if (drawareaTable != null) {
+                        List<DressedStroke> drawing = drawareaTable.getDrawings();
+                        drawingArray = (DressedStroke[]) drawing.toArray(new DressedStroke[drawing.size()]);
+                    }
 
                     // the geonote
                     File dumpFile = new File(folderFile, GEONOTE_BIN_PROPERTIES);
