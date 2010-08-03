@@ -24,6 +24,8 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.osgi.framework.BundleContext;
 
+import eu.hydrologis.jgrass.beegisutils.utils.ImageCache;
+
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -68,6 +70,7 @@ public class BeegisUtilsPlugin extends AbstractUIPlugin {
      */
     public void stop( BundleContext context ) throws Exception {
         plugin = null;
+        ImageCache.getInstance().dispose();
         super.stop(context);
     }
 

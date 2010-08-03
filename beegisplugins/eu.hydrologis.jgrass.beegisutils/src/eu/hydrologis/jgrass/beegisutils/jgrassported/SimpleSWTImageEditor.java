@@ -56,6 +56,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
+import eu.hydrologis.jgrass.beegisutils.utils.ImageCache;
 
 /**
  * An SWT widget for freehand painting.
@@ -125,8 +126,8 @@ public class SimpleSWTImageEditor {
      * @param minScroll the minimum dimension for the scrolling.
      * @param doZoom flag that defines if the zoom tools should be added.
      */
-    public SimpleSWTImageEditor( Composite parent, int style, List<DressedStroke> preloadedLines,
-            Image backGroundImage, Point minScroll, boolean doZoom ) {
+    public SimpleSWTImageEditor( Composite parent, int style, List<DressedStroke> preloadedLines, Image backGroundImage,
+            Point minScroll, boolean doZoom ) {
         this.doZoom = doZoom;
         if (backGroundImage != null)
             this.backImage = backGroundImage;
@@ -139,20 +140,7 @@ public class SimpleSWTImageEditor {
         mainComposite.setLayout(new GridLayout());
         propsComposite = new Composite(mainComposite, style);
         propsComposite.setLayout(new RowLayout());
-        propsComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-                | GridData.GRAB_HORIZONTAL));
-
-        // stroke width
-        Image img1 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID,
-                "/icons/strokewidth_1.png").createImage();
-        Image img2 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID,
-                "/icons/strokewidth_2.png").createImage();
-        Image img3 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID,
-                "/icons/strokewidth_3.png").createImage();
-        Image img4 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID,
-                "/icons/strokewidth_4.png").createImage();
-        Image img5 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID,
-                "/icons/strokewidth_5.png").createImage();
+        propsComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
 
         Composite strokeComposite = new Composite(propsComposite, SWT.None);
         strokeComposite.setLayout(new GridLayout(2, false));
@@ -161,11 +149,11 @@ public class SimpleSWTImageEditor {
         GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
         gridData.widthHint = 30;
         strokeWidthCombo.setLayoutData(gridData);
-        strokeWidthCombo.add("1", img1);
-        strokeWidthCombo.add("2", img2);
-        strokeWidthCombo.add("3", img3);
-        strokeWidthCombo.add("4", img4);
-        strokeWidthCombo.add("5", img5);
+        strokeWidthCombo.add("1", ImageCache.getInstance().getImage(ImageCache.STROKE_WIDTH_1));
+        strokeWidthCombo.add("2", ImageCache.getInstance().getImage(ImageCache.STROKE_WIDTH_2));
+        strokeWidthCombo.add("3", ImageCache.getInstance().getImage(ImageCache.STROKE_WIDTH_3));
+        strokeWidthCombo.add("4", ImageCache.getInstance().getImage(ImageCache.STROKE_WIDTH_4));
+        strokeWidthCombo.add("5", ImageCache.getInstance().getImage(ImageCache.STROKE_WIDTH_5));
         strokeWidthCombo.select(0);
         strokeWidthCombo.setToolTipText("stroke width");
         strokeWidthCombo.addSelectionListener(new SelectionAdapter(){
@@ -218,10 +206,8 @@ public class SimpleSWTImageEditor {
         });
 
         // clear all
-        ImageDescriptor clearID = AbstractUIPlugin.imageDescriptorFromPlugin(
-                BeegisUtilsPlugin.PLUGIN_ID, "icons/trash.gif"); //$NON-NLS-1$
         Button clearButton = new Button(buttonsComposite, SWT.BORDER | SWT.PUSH);
-        clearButton.setImage(clearID.createImage());
+        clearButton.setImage(ImageCache.getInstance().getImage(ImageCache.TRASH));
         clearButton.setToolTipText("clear the area from drawings");
         clearButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
@@ -230,10 +216,8 @@ public class SimpleSWTImageEditor {
             }
         });
         // clear shape
-        ImageDescriptor removeID = AbstractUIPlugin.imageDescriptorFromPlugin(
-                BeegisUtilsPlugin.PLUGIN_ID, "icons/close.gif"); //$NON-NLS-1$
         Button removeButton = new Button(buttonsComposite, SWT.BORDER | SWT.PUSH);
-        removeButton.setImage(removeID.createImage());
+        removeButton.setImage(ImageCache.getInstance().getImage(ImageCache.CLOSE));
         removeButton.setToolTipText("remove selected line");
         removeButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
@@ -245,10 +229,8 @@ public class SimpleSWTImageEditor {
 
         if (doZoom) {
             // zoom all
-            ImageDescriptor zoomAllID = AbstractUIPlugin.imageDescriptorFromPlugin(
-                    BeegisUtilsPlugin.PLUGIN_ID, "icons/zoom_all.gif"); //$NON-NLS-1$
             Button zoomAllButton = new Button(buttonsComposite, SWT.PUSH);
-            zoomAllButton.setImage(zoomAllID.createImage());
+            zoomAllButton.setImage(ImageCache.getInstance().getImage(ImageCache.ZOOM_ALL));
             zoomAllButton.setToolTipText("zoom to the whole extend");
             zoomAllButton.addSelectionListener(new SelectionAdapter(){
                 public void widgetSelected( SelectionEvent e ) {
@@ -259,10 +241,8 @@ public class SimpleSWTImageEditor {
             });
 
             // zoom in
-            ImageDescriptor zoomInID = AbstractUIPlugin.imageDescriptorFromPlugin(
-                    BeegisUtilsPlugin.PLUGIN_ID, "icons/zoom_in.gif"); //$NON-NLS-1$
             Button zoomInButton = new Button(buttonsComposite, SWT.PUSH);
-            zoomInButton.setImage(zoomInID.createImage());
+            zoomInButton.setImage(ImageCache.getInstance().getImage(ImageCache.ZOOM_IN));
             zoomInButton.setToolTipText("zoom in");
             zoomInButton.addSelectionListener(new SelectionAdapter(){
                 public void widgetSelected( SelectionEvent e ) {
@@ -272,10 +252,8 @@ public class SimpleSWTImageEditor {
             });
 
             // zoom out
-            ImageDescriptor zoomOutID = AbstractUIPlugin.imageDescriptorFromPlugin(
-                    BeegisUtilsPlugin.PLUGIN_ID, "icons/zoom_out.gif"); //$NON-NLS-1$
             Button zoomOutButton = new Button(buttonsComposite, SWT.PUSH);
-            zoomOutButton.setImage(zoomOutID.createImage());
+            zoomOutButton.setImage(ImageCache.getInstance().getImage(ImageCache.ZOOM_OUT));
             zoomOutButton.setToolTipText("zoom out");
             zoomOutButton.addSelectionListener(new SelectionAdapter(){
                 public void widgetSelected( SelectionEvent e ) {
@@ -286,10 +264,8 @@ public class SimpleSWTImageEditor {
 
         }
         // rotate right
-        ImageDescriptor rotateID = AbstractUIPlugin.imageDescriptorFromPlugin(
-                BeegisUtilsPlugin.PLUGIN_ID, "icons/rotate.gif"); //$NON-NLS-1$
         Button rotateButton = new Button(buttonsComposite, SWT.PUSH);
-        rotateButton.setImage(rotateID.createImage());
+        rotateButton.setImage(ImageCache.getInstance().getImage(ImageCache.ROTATE));
         rotateButton.setToolTipText("rotate right");
         rotateButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
@@ -298,8 +274,7 @@ public class SimpleSWTImageEditor {
             }
         });
 
-        drawAreaScroller = new ScrolledComposite(mainComposite, SWT.BORDER | SWT.H_SCROLL
-                | SWT.V_SCROLL);
+        drawAreaScroller = new ScrolledComposite(mainComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         drawArea = new Canvas(drawAreaScroller, SWT.None);
         defaultCursor = drawArea.getCursor();
         drawAreaScroller.setContent(drawArea);
@@ -309,8 +284,7 @@ public class SimpleSWTImageEditor {
             drawAreaScroller.setMinWidth(minScroll.x);
             drawAreaScroller.setMinHeight(minScroll.y);
         }
-        drawAreaScroller.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL
-                | GridData.GRAB_VERTICAL));
+        drawAreaScroller.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
 
         Listener drawListener = new Listener(){
             int lastX = 0, lastY = 0;
@@ -369,16 +343,14 @@ public class SimpleSWTImageEditor {
                         Rectangle imgBounds = backImage.getBounds();
                         ImageData backImageData = backImage.getImageData();
                         if (doRotate) {
-                            System.out.println("rotate");
                             backImageData = rotate(backImageData, SWT.RIGHT);
                             // rotation has to be persisted
                             backImage.dispose();
                             backImage = new Image(drawArea.getDisplay(), backImageData);
                             doRotate = false;
                         }
-                        
-                        ImageData newImageData = backImageData.scaledTo(
-                                (int) Math.round(imgBounds.width * scaleFactor),
+
+                        ImageData newImageData = backImageData.scaledTo((int) Math.round(imgBounds.width * scaleFactor),
                                 (int) Math.round(imgBounds.height * scaleFactor));
                         Image newImage = new Image(drawArea.getDisplay(), newImageData);
                         gcImage.drawImage(newImage, 0, 0);
@@ -386,14 +358,12 @@ public class SimpleSWTImageEditor {
                     // draw the lines
                     for( int i = 0; i < lines.size(); i = i + 1 ) {
                         DressedStroke tmpStroke = lines.get(i);
-                        gcImage.setLineWidth((int) Math.round(tmpStroke.strokeWidth[0]
-                                * scaleFactor));
+                        gcImage.setLineWidth((int) Math.round(tmpStroke.strokeWidth[0] * scaleFactor));
                         gcImage.setLineCap(SWT.CAP_ROUND);
                         gcImage.setLineJoin(SWT.JOIN_ROUND);
                         gcImage.setLineStyle(SWT.LINE_SOLID);
                         int[] rgb = tmpStroke.rgb;
-                        gcImage.setForeground(new Color(drawArea.getDisplay(), rgb[0], rgb[1],
-                                rgb[2]));
+                        gcImage.setForeground(new Color(drawArea.getDisplay(), rgb[0], rgb[1], rgb[2]));
                         gcImage.setAlpha(tmpStroke.strokeAlpha);
                         int[] nodes = tmpStroke.getScaledNodes(scaleFactor);
                         // at least 4 values to have two points
@@ -424,8 +394,7 @@ public class SimpleSWTImageEditor {
                     gc.setLineCap(SWT.CAP_ROUND);
                     gc.setLineJoin(SWT.JOIN_ROUND);
                     gc.setLineStyle(SWT.LINE_SOLID);
-                    Color color = new Color(drawArea.getDisplay(), strokeRGB[0], strokeRGB[1],
-                            strokeRGB[2]);
+                    Color color = new Color(drawArea.getDisplay(), strokeRGB[0], strokeRGB[1], strokeRGB[2]);
                     gc.setForeground(color);
                     gc.setAlpha(255 * strokeAlpha / 100);
                     gc.drawLine(lastX, lastY, event.x, event.y);
@@ -545,8 +514,7 @@ public class SimpleSWTImageEditor {
         }
         if (bounds == null)
             return null;
-        bounds = new Rectangle(bounds.x, bounds.y, bounds.width + maxStrokeWidth, bounds.height
-                + maxStrokeWidth);
+        bounds = new Rectangle(bounds.x, bounds.y, bounds.width + maxStrokeWidth, bounds.height + maxStrokeWidth);
 
         drawnImage = new Image(drawArea.getDisplay(), bounds);
         GC gcImage = new GC(drawnImage);
@@ -555,8 +523,7 @@ public class SimpleSWTImageEditor {
         // draw the background image
         if (backImage != null) {
             Rectangle imgBounds = backImage.getBounds();
-            ImageData newImageData = backImage.getImageData().scaledTo(
-                    (int) Math.round(imgBounds.width * scaleFactor),
+            ImageData newImageData = backImage.getImageData().scaledTo((int) Math.round(imgBounds.width * scaleFactor),
                     (int) Math.round(imgBounds.height * scaleFactor));
             Image newImage = new Image(drawArea.getDisplay(), newImageData);
             gcImage.drawImage(newImage, 0, 0);
@@ -595,9 +562,7 @@ public class SimpleSWTImageEditor {
             Rectangle imageBound = backImage.getBounds();
             double scaleFactorX = (double) mainCompositeBound.width / (double) imageBound.width;
             double scaleFactorY = (double) mainCompositeBound.height / (double) imageBound.height;
-            baseScaleFactor = mainCompositeBound.width < mainCompositeBound.height
-                    ? scaleFactorX
-                    : scaleFactorY;
+            baseScaleFactor = mainCompositeBound.width < mainCompositeBound.height ? scaleFactorX : scaleFactorY;
         } else {
             baseScaleFactor = 1.0;
         }
@@ -605,12 +570,8 @@ public class SimpleSWTImageEditor {
 
     private ImageData rotate( ImageData srcData, int direction ) {
         int bytesPerPixel = srcData.bytesPerLine / srcData.width;
-        int destBytesPerLine = (direction == SWT.DOWN)
-                ? srcData.width * bytesPerPixel
-                : srcData.height * bytesPerPixel;
-        byte[] newData = new byte[(direction == SWT.DOWN)
-                ? srcData.height * destBytesPerLine
-                : srcData.width * destBytesPerLine];
+        int destBytesPerLine = (direction == SWT.DOWN) ? srcData.width * bytesPerPixel : srcData.height * bytesPerPixel;
+        byte[] newData = new byte[(direction == SWT.DOWN) ? srcData.height * destBytesPerLine : srcData.width * destBytesPerLine];
         int width = 0, height = 0;
         for( int srcY = 0; srcY < srcData.height; srcY++ ) {
             for( int srcX = 0; srcX < srcData.width; srcX++ ) {
@@ -641,24 +602,25 @@ public class SimpleSWTImageEditor {
             }
         }
         // destBytesPerLine is used as scanlinePad to ensure that no padding is required
-        return new ImageData(width, height, srcData.depth, srcData.palette, srcData.scanlinePad,
-                newData);
+        return new ImageData(width, height, srcData.depth, srcData.palette, srcData.scanlinePad, newData);
     }
 
     public static void main( String[] args ) {
 
-        Display display = new Display();
-        ImageData imgD = new ImageData("/Users/moovida/Desktop/Picture3.png");
-        Image img = new Image(display, imgD);
-        Shell shell = new Shell(display);
-        shell.setLayout(new FillLayout());
-        new SimpleSWTImageEditor(shell, SWT.None, null, img, new Point(600, 400), true);
-        shell.open();
-        while( !shell.isDisposed() ) {
-            if (!display.readAndDispatch())
-                display.sleep();
-        }
-        display.dispose();
+        System.out.println(3<<2);
+        
+//        Display display = new Display();
+//        ImageData imgD = new ImageData("/Users/moovida/Desktop/Picture3.png");
+//        Image img = new Image(display, imgD);
+//        Shell shell = new Shell(display);
+//        shell.setLayout(new FillLayout());
+//        new SimpleSWTImageEditor(shell, SWT.None, null, img, new Point(600, 400), true);
+//        shell.open();
+//        while( !shell.isDisposed() ) {
+//            if (!display.readAndDispatch())
+//                display.sleep();
+//        }
+//        display.dispose();
 
     }
 }
