@@ -25,10 +25,16 @@
          </cursor>
       </modalTool>
       <toolCursor
-            hotspotX="5"
-            hotspotY="5"
+            hotspotX="10"
+            hotspotY="10"
             id="geonotesCursor"
             image="icons/geonote_tool.gif">
+      </toolCursor>
+      <toolCursor
+            hotspotX="10"
+            hotspotY="10"
+            id="geonotesPanCursor"
+            image="icons/geonote_pantool.gif">
       </toolCursor>
       <modalTool
             categoryId="eu.hydrologis.jgrass.geonotes.category"
@@ -40,6 +46,22 @@
             onToolbar="true"
             toolCursorId="geonotesCursor"
             tooltip="%postitselection.tooltip">
+         <cursor
+               hotspotX="5"
+               hotspotY="5"
+               image="icons/select_source.png">
+         </cursor>
+      </modalTool>
+      <modalTool
+            categoryId="eu.hydrologis.jgrass.geonotes.category"
+            class="eu.hydrologis.jgrass.geonotes.tools.GeoNoteMoveTool"
+            cursor="default"
+            icon="icons/pan_redpin16.png"
+            id="eu.hydrologis.jgrass.geonotes.tools.geonotemovetool"
+            name="%postitmove.name"
+            onToolbar="true"
+            toolCursorId="geonotesPanCursor"
+            tooltip="%postitmove.tooltip">
          <cursor
                hotspotX="5"
                hotspotY="5"
