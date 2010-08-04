@@ -22,6 +22,11 @@
             class="eu.hydrologis.jgrass.gpsnmea.preferences.pages.GpsPropertiesPreferencePage"
             id="eu.hydrologis.jgrass.gpsnmea.preferences.pages.GpsPropertiesPreferencePage"
             name="%gps.properties.name"/>
+      <page
+            category="eu.hydrologis.jgrass.gpsnmea.preferences.pages.GpsPreferencePage"
+            class="eu.hydrologis.jgrass.gpsnmea.preferences.pages.GpsCorrectionPreferencePage"
+            id="eu.hydrologis.jgrass.gpsnmea.preferences.pages.GpsCorrectionPreferencePage"
+            name="%gps.correction.name"/>
    </extension>
    <extension
          point="org.eclipse.ui.views">

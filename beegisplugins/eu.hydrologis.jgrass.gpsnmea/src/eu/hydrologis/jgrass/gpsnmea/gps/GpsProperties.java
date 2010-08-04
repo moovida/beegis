@@ -40,5 +40,5 @@ public class GpsProperties {
     
     public static double deltaX = 0d;
     
-    public static double deltay = 0d;
+    public static double deltaY = 0d;
 }

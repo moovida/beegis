@@ -61,12 +61,15 @@ public class GpsArtist {
             double minY = bounds.getMinY();
             Point ll = viewportModel.worldToPixel(new Coordinate(minX, minY));
             Point ur = viewportModel.worldToPixel(new Coordinate(maxX, maxY));
-            Point p = viewportModel.worldToPixel(gpsPoint.reproject(null));
+            Coordinate reprojected = gpsPoint.reproject(null);
+            reprojected = new Coordinate(reprojected.x + GpsProperties.deltaX, reprojected.y + GpsProperties.deltaY);
+            Point p = viewportModel.worldToPixel(reprojected);
 
             if (gpsPositionDrawCommand != null) {
                 gpsPositionDrawCommand.setValid(false);
             }
-            gpsPositionDrawCommand = new GpsPositionDrawCommand(p, ll, ur, gpsPoint.angle, GpsActivator.getDefault().isInAutomaticMode());
+            gpsPositionDrawCommand = new GpsPositionDrawCommand(p, ll, ur, gpsPoint.angle, GpsActivator.getDefault()
+                    .isInAutomaticMode());
             gpsPositionDrawCommand.setValid(true);
             IToolContext toolContext = ApplicationGIS.createContext(activeMap);
             toolContext.sendASyncCommand(gpsPositionDrawCommand);
