@@ -17,6 +17,11 @@
             class="eu.hydrologis.jgrass.gpsnmea.preferences.pages.AdvancedGpsPreferencePage"
             id="eu.hydrologis.jgrass.gpsnmea.preferences.pages.AdvancedGpsPreferencePage"
             name="%gps.advanced.name"/>
+      <page
+            category="eu.hydrologis.jgrass.gpsnmea.preferences.pages.GpsPreferencePage"
+            class="eu.hydrologis.jgrass.gpsnmea.preferences.pages.GpsPropertiesPreferencePage"
+            id="eu.hydrologis.jgrass.gpsnmea.preferences.pages.GpsPropertiesPreferencePage"
+            name="%gps.properties.name"/>
    </extension>
    <extension
          point="org.eclipse.ui.views">

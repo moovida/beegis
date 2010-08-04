@@ -19,7 +19,10 @@ package eu.hydrologis.jgrass.gpsnmea.gps;
 
 import java.awt.Point;
 
+import org.geotools.geometry.jts.ReferencedEnvelope;
+
 import net.refractions.udig.project.IMap;
+import net.refractions.udig.project.render.IViewportModel;
 import net.refractions.udig.project.ui.ApplicationGIS;
 import net.refractions.udig.project.ui.tool.IToolContext;
 
@@ -49,12 +52,21 @@ public class GpsArtist {
         try {
             // to draw we need the screen coordinates
             final IMap activeMap = ApplicationGIS.getActiveMap();
-            Point p = activeMap.getViewportModel().worldToPixel(gpsPoint.reproject(null));
+            IViewportModel viewportModel = activeMap.getViewportModel();
+            ReferencedEnvelope bounds = viewportModel.getBounds();
+
+            double maxX = bounds.getMaxX();
+            double minX = bounds.getMinX();
+            double maxY = bounds.getMaxY();
+            double minY = bounds.getMinY();
+            Point ll = viewportModel.worldToPixel(new Coordinate(minX, minY));
+            Point ur = viewportModel.worldToPixel(new Coordinate(maxX, maxY));
+            Point p = viewportModel.worldToPixel(gpsPoint.reproject(null));
+
             if (gpsPositionDrawCommand != null) {
                 gpsPositionDrawCommand.setValid(false);
             }
-            gpsPositionDrawCommand = new GpsPositionDrawCommand(p, gpsPoint.angle, GpsActivator
-                    .getDefault().isInAutomaticMode());
+            gpsPositionDrawCommand = new GpsPositionDrawCommand(p, ll, ur, gpsPoint.angle, GpsActivator.getDefault().isInAutomaticMode());
             gpsPositionDrawCommand.setValid(true);
             IToolContext toolContext = ApplicationGIS.createContext(activeMap);
             toolContext.sendASyncCommand(gpsPositionDrawCommand);

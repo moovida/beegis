@@ -607,20 +607,18 @@ public class SimpleSWTImageEditor {
 
     public static void main( String[] args ) {
 
-        System.out.println(3<<2);
-        
-//        Display display = new Display();
-//        ImageData imgD = new ImageData("/Users/moovida/Desktop/Picture3.png");
-//        Image img = new Image(display, imgD);
-//        Shell shell = new Shell(display);
-//        shell.setLayout(new FillLayout());
-//        new SimpleSWTImageEditor(shell, SWT.None, null, img, new Point(600, 400), true);
-//        shell.open();
-//        while( !shell.isDisposed() ) {
-//            if (!display.readAndDispatch())
-//                display.sleep();
-//        }
-//        display.dispose();
+        Display display = new Display();
+        ImageData imgD = new ImageData("/Users/moovida/Desktop/Picture3.png");
+        Image img = new Image(display, imgD);
+        Shell shell = new Shell(display);
+        shell.setLayout(new FillLayout());
+        new SimpleSWTImageEditor(shell, SWT.None, null, img, new Point(600, 400), true);
+        shell.open();
+        while( !shell.isDisposed() ) {
+            if (!display.readAndDispatch())
+                display.sleep();
+        }
+        display.dispose();
 
     }
 }

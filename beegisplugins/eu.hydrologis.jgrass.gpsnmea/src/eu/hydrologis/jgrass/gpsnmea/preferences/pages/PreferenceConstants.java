@@ -28,18 +28,38 @@ public class PreferenceConstants {
     /*
      * GPS preferences
      */
+    public static final String GPS_IS_ON = "gps is on";
+    public static final String PORTUSED = "Gps port in use";
+    public static final String INTERVAL_SECONDS = "Interval for Gps acquisition [sec].";
+    public static final String DISTANCE_THRESHOLD = "Distance threshold for Gps acquisition [map unit].";
+    public static final String TESTMODE = "Test mode with dummy data (if no gps available)";
+
+    /*
+     * advanced
+     */
     public static final String PORT = "Ports available found to which a GPS could be connected.";
     public static final String MAXWAIT = "Max wait time to get ownership of port";
     public static final String BAUDRATE = "Baudrate";
     public static final String DATABIT = "Data bit";
     public static final String STOPBIT = "Stop bit";
     public static final String PARITYBIT = "Parity bit"; // none = 0
-    public static final String TESTMODE = "Test mode with dummy data (if no gps available)";
     
-    
-    public static final String GPS_IS_ON = "gps is on";
-    public static final String PORTUSED = "Gps port in use";
-    public static final String INTERVAL_SECONDS = "Interval in seconds for Gps acquisition.";
-    public static final String DISTANCE_THRESHOLD = "Distance threshold for Gps acquisition.";
+    /*
+     * properties
+     */
+    public static final String WIDTH = "Gps symbol width.";
+    public static final String ACTIVECOLOR = "Active gps symbol color.";
+    public static final String NONACTIVECOLOR = "Non-active gps symbol color.";
 
+    public static final String DOCROSSHAIR = "Draw a crosshair through the gps position.";
+    public static final String CROSSWIDTH = "Gps crosshair width.";
+    public static final String CROSSCOLOR = "Crosshair's color.";
+    
+    /*
+     * corrections
+     */
+    public static final String DELTAX = "A delta to apply along X [map units].";
+    public static final String DELTAY = "A delta to apply along Y [map units].";
+    
+    
 }
