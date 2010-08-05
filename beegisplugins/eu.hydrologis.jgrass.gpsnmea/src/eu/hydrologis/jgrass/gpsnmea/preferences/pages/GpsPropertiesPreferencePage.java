@@ -26,6 +26,7 @@ import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
+import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.preference.ScaleFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
@@ -71,18 +72,10 @@ public class GpsPropertiesPreferencePage extends FieldEditorPreferencePage imple
         widthEditor.setValidRange(1, 5);
         addField(widthEditor);
 
-        // symbol colors
-        Color red = Display.getDefault().getSystemColor(SWT.COLOR_RED);
-        RGB activeRgb = red.getRGB();
-        Color magenta = Display.getDefault().getSystemColor(SWT.COLOR_MAGENTA);
-        RGB nonActiveRgb = magenta.getRGB();
-
         activeColorEditor = new ColorFieldEditor(ACTIVECOLOR, ACTIVECOLOR, getFieldEditorParent());
-        activeColorEditor.getColorSelector().setColorValue(activeRgb);
         addField(activeColorEditor);
 
         nonActiveColorEditor = new ColorFieldEditor(NONACTIVECOLOR, NONACTIVECOLOR, getFieldEditorParent());
-        nonActiveColorEditor.getColorSelector().setColorValue(nonActiveRgb);
         addField(nonActiveColorEditor);
 
         doCrossEditor = new BooleanFieldEditor(DOCROSSHAIR, DOCROSSHAIR, getFieldEditorParent());
@@ -93,10 +86,7 @@ public class GpsPropertiesPreferencePage extends FieldEditorPreferencePage imple
         addField(crossWidthEditor);
 
         // cross color
-        Color gray = Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY);
-        RGB crossRgb = gray.getRGB();
         crossColorEditor = new ColorFieldEditor(CROSSCOLOR, CROSSCOLOR, getFieldEditorParent());
-        crossColorEditor.getColorSelector().setColorValue(crossRgb);
         addField(crossColorEditor);
 
     }

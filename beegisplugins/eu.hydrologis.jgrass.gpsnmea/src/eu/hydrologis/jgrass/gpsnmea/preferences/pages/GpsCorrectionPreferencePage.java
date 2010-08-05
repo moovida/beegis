@@ -48,21 +48,6 @@ public class GpsCorrectionPreferencePage extends FieldEditorPreferencePage imple
         setPreferenceStore(preferences);
         setDescription("GPS Corrections Page (the dirty tweak page)");
 
-        checkInitValues();
-    }
-
-    private void checkInitValues() {
-        /*
-         * check values
-         */
-        String dx = preferences.getString(DELTAX);
-        String dy = preferences.getString(DELTAY);
-        if (dx == null || dx.length() == 0) {
-            preferences.setDefault(DELTAX, "0.0");
-        }
-        if (dy == null || dy.length() == 0) {
-            preferences.setDefault(DELTAY, "0.0");
-        }
     }
 
     protected void createFieldEditors() {
@@ -121,7 +106,6 @@ public class GpsCorrectionPreferencePage extends FieldEditorPreferencePage imple
     }
 
     public void init( IWorkbench workbench ) {
-        checkInitValues();
     }
 
 }

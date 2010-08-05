@@ -18,8 +18,21 @@
  */
 package eu.hydrologis.jgrass.gpsnmea.preferences.pages;
 
+import static eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants.ACTIVECOLOR;
+import static eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants.CROSSCOLOR;
+import static eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants.CROSSWIDTH;
+import static eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants.DELTAX;
+import static eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants.DELTAY;
+import static eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants.DOCROSSHAIR;
+import static eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants.NONACTIVECOLOR;
+import static eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants.WIDTH;
+
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceConverter;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 
 import eu.hydrologis.jgrass.gpsnmea.GpsActivator;
 
@@ -35,6 +48,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         if (gpsActivator != null) {
             IPreferenceStore store = gpsActivator.getPreferenceStore();
             if (store != null) {
+                // advanced page
                 store.setDefault(PreferenceConstants.MAXWAIT, "5000");
                 store.setDefault(PreferenceConstants.BAUDRATE, "4800");
                 store.setDefault(PreferenceConstants.DATABIT, "8");
@@ -43,6 +57,21 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
                 store.setDefault(PreferenceConstants.TESTMODE, false);
                 store.setDefault(PreferenceConstants.DISTANCE_THRESHOLD, 3.0);
                 store.setDefault(PreferenceConstants.INTERVAL_SECONDS, 5);
+                
+                // correction page
+                store.setDefault(DELTAX, "0.0");
+                store.setDefault(DELTAY, "0.0");
+                
+                // properties page
+                store.setDefault(WIDTH, 1);
+                Color red = Display.getDefault().getSystemColor(SWT.COLOR_RED);
+                PreferenceConverter.setDefault(store, ACTIVECOLOR, red.getRGB());
+                Color magenta = Display.getDefault().getSystemColor(SWT.COLOR_MAGENTA);
+                PreferenceConverter.setDefault(store, NONACTIVECOLOR, magenta.getRGB());
+                store.setDefault(DOCROSSHAIR, false);
+                store.setDefault(CROSSWIDTH, 1);
+                Color gray = Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY);
+                PreferenceConverter.setDefault(store, CROSSCOLOR, gray.getRGB());
             }
         }
     }
