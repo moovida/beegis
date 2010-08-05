@@ -46,7 +46,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     public void initializeDefaultPreferences() {
         GpsActivator gpsActivator = GpsActivator.getDefault();
         if (gpsActivator != null) {
-            IPreferenceStore store = gpsActivator.getPreferenceStore();
+            final IPreferenceStore store = gpsActivator.getPreferenceStore();
             if (store != null) {
                 // advanced page
                 store.setDefault(PreferenceConstants.MAXWAIT, "5000");
@@ -57,21 +57,26 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
                 store.setDefault(PreferenceConstants.TESTMODE, false);
                 store.setDefault(PreferenceConstants.DISTANCE_THRESHOLD, 3.0);
                 store.setDefault(PreferenceConstants.INTERVAL_SECONDS, 5);
-                
+
                 // correction page
                 store.setDefault(DELTAX, "0.0");
                 store.setDefault(DELTAY, "0.0");
-                
-                // properties page
-                store.setDefault(WIDTH, 1);
-                Color red = Display.getDefault().getSystemColor(SWT.COLOR_RED);
-                PreferenceConverter.setDefault(store, ACTIVECOLOR, red.getRGB());
-                Color magenta = Display.getDefault().getSystemColor(SWT.COLOR_MAGENTA);
-                PreferenceConverter.setDefault(store, NONACTIVECOLOR, magenta.getRGB());
-                store.setDefault(DOCROSSHAIR, false);
-                store.setDefault(CROSSWIDTH, 1);
-                Color gray = Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY);
-                PreferenceConverter.setDefault(store, CROSSCOLOR, gray.getRGB());
+
+                Display.getDefault().syncExec(new Runnable(){
+                    public void run() {
+                        // properties page
+                        store.setDefault(WIDTH, 1);
+                        Color red = Display.getDefault().getSystemColor(SWT.COLOR_RED);
+                        PreferenceConverter.setDefault(store, ACTIVECOLOR, red.getRGB());
+                        Color magenta = Display.getDefault().getSystemColor(SWT.COLOR_MAGENTA);
+                        PreferenceConverter.setDefault(store, NONACTIVECOLOR, magenta.getRGB());
+                        store.setDefault(DOCROSSHAIR, false);
+                        store.setDefault(CROSSWIDTH, 1);
+                        Color gray = Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY);
+                        PreferenceConverter.setDefault(store, CROSSCOLOR, gray.getRGB());
+                    }
+                });
+
             }
         }
     }

@@ -18,11 +18,8 @@
  */
 package eu.hydrologis.jgrass.gpsnmea.animation;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
 
 import net.refractions.udig.project.ui.commands.AbstractDrawCommand;
 import net.refractions.udig.project.ui.commands.IDrawCommand;
@@ -79,23 +76,8 @@ public class GpsPositionDrawCommand extends AbstractDrawCommand implements IDraw
          */
         if (active) {
             graphics.setColor(GpsProperties.gpsActiveColor);
-            // graphics.setLineWidth(GpsProperties.gpsSymbolWidth);
-            // graphics.drawLine(point.x, point.y - frame, point.x, point.y + frame);
-            // graphics.drawLine(point.x - frame, point.y, point.x + frame, point.y);
-            // graphics.drawRect(point.x - frame / 2, point.y - frame / 2, frame, frame);
-            // GeneralPath p = new GeneralPath();
-            // p.moveTo(point.x, point.y - 2 * frame);
-            // p.lineTo(point.x, point.y + 2 * frame);
-            // p.lineTo(point.x - 2, point.y + 2 * frame - 4);
-            // p.lineTo(point.x + 2, point.y + 2 * frame - 4);
-            // p.lineTo(point.x, point.y + 2 * frame);
-            // AffineTransform rotTransform = AffineTransform.getRotateInstance(angle * Math.PI
-            // / 180.0 + Math.PI, point.x, point.y);
-            // p.transform(rotTransform);
-            // graphics.setColor(Color.blue);
-            // graphics.draw(p);
         } else {
-            graphics.setColor(GpsProperties.gpsActiveColor);
+            graphics.setColor(GpsProperties.gpsNonActiveColor);
         }
         graphics.setLineWidth(GpsProperties.gpsSymbolWidth);
         graphics.drawLine(point.x, point.y - frame, point.x, point.y + frame);
