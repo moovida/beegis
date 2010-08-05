@@ -47,14 +47,29 @@ public class GpsCorrectionPreferencePage extends FieldEditorPreferencePage imple
         preferences = (ScopedPreferenceStore) GpsActivator.getDefault().getPreferenceStore();
         setPreferenceStore(preferences);
         setDescription("GPS Corrections Page (the dirty tweak page)");
+
+        checkInitValues();
+    }
+
+    private void checkInitValues() {
+        /*
+         * check values
+         */
+        String dx = preferences.getString(DELTAX);
+        String dy = preferences.getString(DELTAY);
+        if (dx == null || dx.length() == 0) {
+            preferences.setDefault(DELTAX, "0.0");
+        }
+        if (dy == null || dy.length() == 0) {
+            preferences.setDefault(DELTAY, "0.0");
+        }
     }
 
     protected void createFieldEditors() {
+
         deltaXEditor = new StringFieldEditor(DELTAX, DELTAX, getFieldEditorParent());
-        deltaXEditor.setStringValue("0.0");
         addField(deltaXEditor);
         deltaYEditor = new StringFieldEditor(DELTAY, DELTAY, getFieldEditorParent());
-        deltaYEditor.setStringValue("0.0");
         addField(deltaYEditor);
     }
 
@@ -84,11 +99,11 @@ public class GpsCorrectionPreferencePage extends FieldEditorPreferencePage imple
         setErrorMessage(null);
         setValid(true);
     }
-    
+
     @Override
     public void propertyChange( PropertyChangeEvent event ) {
         super.propertyChange(event);
-        
+
         checkState();
     }
 
@@ -106,6 +121,7 @@ public class GpsCorrectionPreferencePage extends FieldEditorPreferencePage imple
     }
 
     public void init( IWorkbench workbench ) {
+        checkInitValues();
     }
 
 }
