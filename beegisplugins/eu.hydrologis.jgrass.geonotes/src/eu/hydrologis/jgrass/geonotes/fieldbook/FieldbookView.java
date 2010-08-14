@@ -645,12 +645,10 @@ public class FieldbookView extends ViewPart implements GeonotesObserver, IDataba
 
     }
 
-    @Override
     public void onDatabaseClosed( DatabaseConnectionProperties connectionProperties ) {
         geonotesList.clear();
     }
 
-    @Override
     public void onDatabaseOpened( DatabaseConnectionProperties connectionProperties ) {
         Display.getDefault().asyncExec(new Runnable(){
             public void run() {

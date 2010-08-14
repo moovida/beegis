@@ -29,12 +29,10 @@ public class CreateNewRemoteDatabaseAction implements IViewActionDelegate {
 
     private IViewPart view;
 
-    @Override
     public void init( IViewPart view ) {
         this.view = view;
     }
 
-    @Override
     public void run( IAction action ) {
         if (view instanceof DatabaseView) {
             DatabaseView dbView = (DatabaseView) view;
@@ -43,7 +41,6 @@ public class CreateNewRemoteDatabaseAction implements IViewActionDelegate {
         }
     }
 
-    @Override
     public void selectionChanged( IAction action, ISelection selection ) {
     }
 

@@ -53,7 +53,6 @@ public class H2ConnectionFactory implements IConnectionFactory {
      */
     public static final String DATABASE = "database"; //$NON-NLS-1$
 
-    @Override
     public IDatabaseConnection createDatabaseConnection( DatabaseConnectionProperties connectionProperties ) {
         H2DatabaseConnection connection = new H2DatabaseConnection();
         connection.setConnectionParameters(connectionProperties);
@@ -107,7 +106,6 @@ public class H2ConnectionFactory implements IConnectionFactory {
 
     }
 
-    @Override
     public DatabaseConnectionProperties createDefaultProperties() {
         IProject activeProject = ApplicationGIS.getActiveProject();
         URI id = activeProject.getID();

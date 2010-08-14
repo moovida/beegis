@@ -36,16 +36,13 @@ public class OpenDatabaseViewAction implements IWorkbenchWindowActionDelegate {
 
     private IWorkbenchWindow window;
 
-    @Override
     public void dispose() {
     }
 
-    @Override
     public void init( IWorkbenchWindow window ) {
         this.window = window;
     }
 
-    @Override
     public void run( IAction action ) {
         try {
             window.getActivePage().showView(DatabaseView.ID);
@@ -57,7 +54,6 @@ public class OpenDatabaseViewAction implements IWorkbenchWindowActionDelegate {
 
     }
 
-    @Override
     public void selectionChanged( IAction action, ISelection selection ) {
     }
 

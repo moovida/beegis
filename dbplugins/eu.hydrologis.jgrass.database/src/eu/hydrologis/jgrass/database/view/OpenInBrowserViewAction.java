@@ -17,12 +17,10 @@ public class OpenInBrowserViewAction implements IViewActionDelegate {
 
     private IViewPart view;
 
-    @Override
     public void init( IViewPart view ) {
         this.view = view;
     }
 
-    @Override
     public void run( IAction action ) {
         try {
            view.getViewSite().getWorkbenchWindow().getActivePage().showView(DatabaseBrowserView.ID);
@@ -34,7 +32,6 @@ public class OpenInBrowserViewAction implements IViewActionDelegate {
 
     }
 
-    @Override
     public void selectionChanged( IAction action, ISelection selection ) {
     }
 

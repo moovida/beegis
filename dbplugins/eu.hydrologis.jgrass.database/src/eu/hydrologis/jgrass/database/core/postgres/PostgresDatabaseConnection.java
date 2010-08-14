@@ -57,7 +57,7 @@ public class PostgresDatabaseConnection implements IDatabaseConnection {
     private boolean doLog;
     private DatabaseConnectionProperties connectionProperties;
 
-    @Override
+    
     public void setConnectionParameters( DatabaseConnectionProperties connectionProperties ) {
         this.connectionProperties = connectionProperties;
         user = connectionProperties.getUser();
@@ -73,12 +73,12 @@ public class PostgresDatabaseConnection implements IDatabaseConnection {
         connectionProperties.put(DatabaseConnectionProperties.TYPE, TYPE);
     }
 
-    @Override
+    
     public DatabaseConnectionProperties getConnectionProperties() {
         return connectionProperties;
     }
 
-    @Override
+    
     public SessionFactory getSessionFactory() throws Exception {
         if (sessionFactory == null) {
             sessionFactory = getAnnotationConfiguration().buildSessionFactory();
@@ -86,12 +86,12 @@ public class PostgresDatabaseConnection implements IDatabaseConnection {
         return sessionFactory;
     }
 
-    @Override
+    
     public Session openSession() {
         return sessionFactory.openSession();
     }
 
-    @Override
+    
     public void closeSessionFactory() {
         if (sessionFactory == null) {
             return;
@@ -99,7 +99,7 @@ public class PostgresDatabaseConnection implements IDatabaseConnection {
         sessionFactory.close();
     }
 
-    @Override
+    
     public AnnotationConfiguration getAnnotationConfiguration() throws Exception {
         if (annotationConfiguration == null) {
             Properties dbProps = new Properties();
@@ -126,13 +126,13 @@ public class PostgresDatabaseConnection implements IDatabaseConnection {
         return annotationConfiguration;
     }
 
-    @Override
+    
     public DataStore getSpatialDataStore() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    
     public boolean checkTables( String... tables ) throws Exception {
         StringBuilder sB = new StringBuilder();
         sB.append("SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE "); //$NON-NLS-1$
@@ -158,7 +158,7 @@ public class PostgresDatabaseConnection implements IDatabaseConnection {
         return false;
     }
 
-    @Override
+    
     public void createSchemas( boolean doUpdate ) throws Exception {
         getSessionFactory();
         if (doUpdate) {
