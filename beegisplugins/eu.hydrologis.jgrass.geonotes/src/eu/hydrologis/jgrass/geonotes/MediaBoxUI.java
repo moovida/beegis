@@ -173,15 +173,21 @@ public class MediaBoxUI {
                 String[] split = idPlusName.split(","); //$NON-NLS-1$
                 long srcGeonoteId = Long.parseLong(split[0]);
                 String mediaName = split[1];
-                
+
                 try {
                     geonotesHandler.moveMedia(mediaName, srcGeonoteId);
                 } catch (Exception e) {
                     String message = "An error occurred while dropping the media into the geonote.";
                     ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
                 }
-                
+
+                try {
+                    loadExistingMedia();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
         }
 
         public void dropAccept( DropTargetEvent arg0 ) {
@@ -205,6 +211,15 @@ public class MediaBoxUI {
                     Long id = geonotesHandler.getId();
                     // send src geonote id + media name
                     event.data = id + "," + text;
+
+                    // remove from list
+                    for( DndFile dndFile : dndfiles ) {
+                        if (dndFile.name.equals(text)) {
+                            dndfiles.remove(dndFile);
+                            break;
+                        }
+                    }
+                    updateTable();
                 }
             }
         }
@@ -286,6 +301,7 @@ public class MediaBoxUI {
      * @throws Exception
      */
     public void loadExistingMedia() throws Exception {
+        dndfiles.clear();
         List<GeonotesMediaboxTable> geonotesMediaboxTables = geonotesHandler.getGeonotesMediaboxTables(null);
         for( GeonotesMediaboxTable geonotesMediaboxTable : geonotesMediaboxTables ) {
             String mediaName = geonotesMediaboxTable.getMediaName();
