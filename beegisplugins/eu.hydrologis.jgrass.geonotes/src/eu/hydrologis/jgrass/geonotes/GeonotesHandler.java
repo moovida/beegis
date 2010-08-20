@@ -231,9 +231,9 @@ public class GeonotesHandler {
         try {
             Criteria criteria = session.createCriteria(GeonotesTable.class);
             criteria.add(Restrictions.eq(GEONOTESTABLE_ID_FIELD, id));
-            List resultsList = criteria.list();
-            if (resultsList.size() != 0) {
-                geonoteTable = (GeonotesTable) resultsList.get(0);
+            Object result = criteria.uniqueResult();
+            if (result != null) {
+                geonoteTable = (GeonotesTable) result;
                 this.id = id;
             } else {
                 throw new IOException("Couldn't retrieve a geonote with id: " + id);
@@ -594,30 +594,36 @@ public class GeonotesHandler {
     }
 
     /**
-     * Move a media from one geonote to the other.
+     * Move a media from one geonote to this.
      * 
      * @param mediaName the name to use for lists.
-     * @param srcGeonoteTable the geonote from which to take the media file.
-     * @param destGeonoteTable the geonote into which to put the media file.
+     * @param srcGeonoteTableId the geonote id from which to take the media file.
      * @throws Exception
      */
-    public  void moveMedia( String mediaName, GeonotesTable srcGeonoteTable, GeonotesTable destGeonoteTable)
+    public void moveMedia( String mediaName, long srcGeonoteTableId)
             throws Exception {
 
         Session session = openSession();
         Transaction transaction = session.beginTransaction();
         try {
+            Criteria criteria = session.createCriteria(GeonotesTable.class);
+            criteria.add(Restrictions.eq(GEONOTESTABLE_ID_FIELD, srcGeonoteTableId));
+            GeonotesTable srcGeonoteTable = (GeonotesTable) criteria.uniqueResult();
+            if (srcGeonoteTable==null) {
+                throw new IOException("Couldn't retrieve a geonote with id: " + id);
+            }
+            
             // extract media box
             GeonotesMediaboxTable newMediaBox = new GeonotesMediaboxTable();
             newMediaBox.setGeonotesId(srcGeonoteTable);
             newMediaBox.setMediaName(mediaName);
             Example example = Example.create(newMediaBox);
-            Criteria criteria = session.createCriteria(GeonotesMediaboxTable.class);
+            criteria = session.createCriteria(GeonotesMediaboxTable.class);
             criteria.add(example);
             GeonotesMediaboxTable geonotesMediaboxTable = (GeonotesMediaboxTable) criteria.uniqueResult();
             
             // and simply change its parent
-            geonotesMediaboxTable.setGeonotesId(destGeonoteTable);
+            geonotesMediaboxTable.setGeonotesId(geonoteTable);
 
             session.update(geonotesMediaboxTable);
             transaction.commit();

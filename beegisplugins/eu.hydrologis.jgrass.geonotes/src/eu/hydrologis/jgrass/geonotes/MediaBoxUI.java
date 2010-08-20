@@ -40,6 +40,9 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.FileTransfer;
@@ -49,6 +52,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Widget;
 
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesMediaboxTable;
 import eu.hydrologis.jgrass.geonotes.actions.ClearEntriesAction;
@@ -82,11 +88,13 @@ public class MediaBoxUI {
 
         // drop support
         Transfer[] transferTypes = new Transfer[]{TextTransfer.getInstance(), FileTransfer.getInstance()};
-        int dndOperations = DND.DROP_MOVE | DND.DROP_LINK;
-        lv.addDropSupport(dndOperations, transferTypes, new FileDropListener());
+        int dropOperations = DND.DROP_MOVE | DND.DROP_LINK;
+        lv.addDropSupport(dropOperations, transferTypes, new FileDropListener());
+        int dragOperations = DND.DROP_MOVE | DND.DROP_LINK;
+        lv.addDragSupport(dragOperations, transferTypes, new FileDragListener());
 
-        IDoubleClickListener openSelectedAction = new OpenSelectedEntryAction(Messages
-                .getString("GeonoteMediaBox.openselectedmedia"), lv); //$NON-NLS-1$
+        IDoubleClickListener openSelectedAction = new OpenSelectedEntryAction(
+                Messages.getString("GeonoteMediaBox.openselectedmedia"), lv); //$NON-NLS-1$
         lv.addDoubleClickListener(openSelectedAction);
         // add a popup
         MenuManager popManager = new MenuManager();
@@ -146,19 +154,62 @@ public class MediaBoxUI {
         public void dragOver( DropTargetEvent arg0 ) {
         }
 
-        public void drop( DropTargetEvent arg0 ) {
-            String[] data = (String[]) arg0.data;
-            List<File> dataList = new ArrayList<File>();
-            for( String string : data ) {
-                File file = new File(string);
-                if (file.exists() && !file.isDirectory()) {
-                    dataList.add(file);
+        public void drop( DropTargetEvent event ) {
+            // file/s dropped in
+            if (event.data instanceof String[]) {
+                String[] data = (String[]) event.data;
+                List<File> dataList = new ArrayList<File>();
+                for( String string : data ) {
+                    File file = new File(string);
+                    if (file.exists() && !file.isDirectory()) {
+                        dataList.add(file);
+                    }
                 }
+                addNewMediaFiles(dataList);
             }
-            addNewMediaFiles(dataList);
+            // drop from other geonote
+            if (event.data instanceof String) {
+                String idPlusName = (String) event.data;
+                String[] split = idPlusName.split(","); //$NON-NLS-1$
+                long srcGeonoteId = Long.parseLong(split[0]);
+                String mediaName = split[1];
+                
+                try {
+                    geonotesHandler.moveMedia(mediaName, srcGeonoteId);
+                } catch (Exception e) {
+                    String message = "An error occurred while dropping the media into the geonote.";
+                    ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
+                }
+                
+            }
         }
 
         public void dropAccept( DropTargetEvent arg0 ) {
+        }
+
+    }
+
+    private class FileDragListener implements DragSourceListener {
+
+        public void dragStart( DragSourceEvent event ) {
+        }
+
+        public void dragSetData( DragSourceEvent event ) {
+            if (TextTransfer.getInstance().isSupportedType(event.dataType)) {
+                DragSource source = (DragSource) event.getSource();
+                Object table = source.getControl();
+                if (table instanceof Table) {
+                    Table t = (Table) table;
+                    TableItem[] selection = t.getSelection();
+                    String text = selection[0].getText();
+                    Long id = geonotesHandler.getId();
+                    // send src geonote id + media name
+                    event.data = id + "," + text;
+                }
+            }
+        }
+
+        public void dragFinished( DragSourceEvent event ) {
         }
 
     }
