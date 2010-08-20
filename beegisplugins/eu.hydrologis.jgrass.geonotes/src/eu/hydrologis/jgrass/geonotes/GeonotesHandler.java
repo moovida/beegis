@@ -65,6 +65,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
+import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -586,6 +587,39 @@ public class GeonotesHandler {
 
             session.save(newMediaBox);
             session.save(newMediaBlobs);
+            transaction.commit();
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     * Move a media from one geonote to the other.
+     * 
+     * @param mediaName the name to use for lists.
+     * @param srcGeonoteTable the geonote from which to take the media file.
+     * @param destGeonoteTable the geonote into which to put the media file.
+     * @throws Exception
+     */
+    public  void moveMedia( String mediaName, GeonotesTable srcGeonoteTable, GeonotesTable destGeonoteTable)
+            throws Exception {
+
+        Session session = openSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            // extract media box
+            GeonotesMediaboxTable newMediaBox = new GeonotesMediaboxTable();
+            newMediaBox.setGeonotesId(srcGeonoteTable);
+            newMediaBox.setMediaName(mediaName);
+            Example example = Example.create(newMediaBox);
+            Criteria criteria = session.createCriteria(GeonotesMediaboxTable.class);
+            criteria.add(example);
+            GeonotesMediaboxTable geonotesMediaboxTable = (GeonotesMediaboxTable) criteria.uniqueResult();
+            
+            // and simply change its parent
+            geonotesMediaboxTable.setGeonotesId(destGeonoteTable);
+
+            session.update(geonotesMediaboxTable);
             transaction.commit();
         } finally {
             session.close();
