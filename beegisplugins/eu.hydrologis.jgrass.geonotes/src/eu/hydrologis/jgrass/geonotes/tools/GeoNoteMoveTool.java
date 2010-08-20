@@ -134,9 +134,12 @@ public class GeoNoteMoveTool extends AbstractModalTool implements ModalTool {
             Envelope newPointEnv = context.getPixelBoundingBox(point);
             Coordinate centre = newPointEnv.centre();
 
-            Point pt = gF.createPoint(new Coordinate(centre.x, centre.y));
-            Geometry targetGeometry = JTS.transform(pt, inverseTransform);
-            Coordinate reprojectedCoordinate = targetGeometry.getCoordinate();
+            Coordinate reprojectedCoordinate= new Coordinate(centre.x, centre.y);
+            if (inverseTransform != null) {
+                Point pt = gF.createPoint(reprojectedCoordinate);
+                Geometry targetGeometry = JTS.transform(pt, inverseTransform);
+                reprojectedCoordinate = targetGeometry.getCoordinate();
+            }
 
             selectedGeonote.setEast(reprojectedCoordinate.x);
             selectedGeonote.setNorth(reprojectedCoordinate.y);
