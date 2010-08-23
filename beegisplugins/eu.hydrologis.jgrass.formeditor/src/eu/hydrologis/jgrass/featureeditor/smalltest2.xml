@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<form>
+    <tab h="120.0" w="300.0" y="0.0" x="0.0" text="generalita'" name="tab1"/>
+    <tab h="120.0" w="300.0" y="0.0" x="0.0" text="anagrafica" name="tab2"/>
+</form>
