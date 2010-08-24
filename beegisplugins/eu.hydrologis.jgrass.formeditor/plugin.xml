@@ -11,6 +11,25 @@
               id="eu.hydrologis.jgrass.formeditor.FormEditor">
       </editor>
    </extension>
+      <extension
+         id="eu.hydrologis.jgrass.featureeditor.views"
+         name="Form Views"
+         point="org.eclipse.ui.views">
+      <view
+            class="eu.hydrologis.jgrass.featureeditor.views.FormView"
+            id="eu.hydrologis.jgrass.featureeditor.views.FormView"
+            name="Form View"
+            restorable="false">
+      </view>
+   </extension>
+      <extension
+         point="net.refractions.udig.project.ui.featureEditor">
+      <editor
+            id="eu.hydrologis.jgrass.featureeditor.views.FormView.editor"
+            name="Feature Editor"
+            viewId="eu.hydrologis.jgrass.featureeditor.views.FormView">
+      </editor>
+   </extension>
      <extension
            point="org.eclipse.ui.actionSets">
         <actionSet
