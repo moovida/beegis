@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.Form;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.OrderedGuiElement;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.Tab;
 
 @SuppressWarnings("nls")
@@ -48,8 +48,9 @@ public class FormGuiCreator {
             tabComposite.setLayout(new MigLayout(tab.layoutConstraints, tab.colConstraints));
             item.setControl(tabComposite);
 
-            List< ? extends OrderedGuiElement> orderedElements = tab.getOrderedElements();
-            for( OrderedGuiElement orderedGuiElement : orderedElements ) {
+            List< ? extends FormElement> orderedElements = tab.getOrderedElements();
+            for( FormElement orderedGuiElement : orderedElements ) {
+                
                 orderedGuiElement.makeGui(tabComposite);
             }
 

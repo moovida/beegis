@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package eu.hydrologis.jgrass.featureeditor.xml.annotated;
+package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
 import net.miginfocom.swt.MigLayout;
 
@@ -23,11 +23,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * An ordered element.
+ * A gui element.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public abstract class OrderedGuiElement implements Comparable<OrderedGuiElement> {
+public abstract class FormGuiElement {
 
     /**
      * Creates the gui for the element basing on the {@link MigLayout}.
@@ -36,33 +36,5 @@ public abstract class OrderedGuiElement implements Comparable<OrderedGuiElement>
      * @return the created control.
      */
     public abstract Control makeGui( Composite parent );
-
-    /**
-     * Getter for the name of the element.
-     * 
-     * @return the name of the element.
-     */
-    public abstract String getName();
-
-    /**
-     * Getter for the order of the element.
-     * 
-     * @return the order of the element.
-     */
-    public abstract int getOrder();
-
-    @Override
-    public int compareTo( OrderedGuiElement o ) {
-        // this ordering is not consistent with equals.
-        int thisOrder = this.getOrder();
-        int thatOrder = o.getOrder();
-
-        if (thisOrder < thatOrder) {
-            return -1;
-        } else if (thisOrder > thatOrder) {
-            return 1;
-        } else
-            return 0;
-    }
 
 }

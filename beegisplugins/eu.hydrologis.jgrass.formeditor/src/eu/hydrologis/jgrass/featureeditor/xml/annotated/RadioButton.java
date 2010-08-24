@@ -47,7 +47,7 @@ import org.eclipse.swt.widgets.Control;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = RADIOBUTTON)
-public class RadioButton extends OrderedGuiElement {
+public class RadioButton extends FormElement {
 
     /**
      * The attribute's table field name.
@@ -110,27 +110,4 @@ public class RadioButton extends OrderedGuiElement {
         return name;
     }
 
-    @Override
-    public Control makeGui( Composite parent ) {
-
-        Composite radioComposite = new Composite(parent, SWT.NONE);
-        radioComposite.setLayoutData(constraints);
-
-        if (orientation == null || orientation.toLowerCase().startsWith("ver")) {
-            radioComposite.setLayout(new GridLayout(1, false));
-        } else {
-            radioComposite.setLayout(new GridLayout(item.size(), false));
-        }
-
-        for( String radioText : item ) {
-            Button button = new Button(radioComposite, SWT.RADIO);
-            button.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-            button.setText(radioText);
-            if (defaultText.equals(radioText)) {
-                button.setSelection(true);
-            }
-        }
-
-        return radioComposite;
-    }
 }
