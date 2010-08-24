@@ -18,28 +18,26 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CONSTRAINTS;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.LABEL;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.*;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.NAME;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORDER;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.SEPARATOR;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.TEXT;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * Class representing an swt label.
+ * Class representing an swt separator label.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-@XmlRootElement(name = LABEL)
-public class Label extends OrderedGuiElement {
+@XmlRootElement(name = SEPARATOR)
+public class Separator extends OrderedGuiElement {
 
     /**
      * Unique name for the object.
@@ -48,16 +46,16 @@ public class Label extends OrderedGuiElement {
     public String name = null;
 
     /**
-     * Text for the label.
-     */
-    @XmlAttribute(name = TEXT)
-    public String text = null;
-
-    /**
      * The widget order.
      */
     @XmlAttribute(name = ORDER)
     public Integer order = null;
+
+    /**
+     * The separator orientation.
+     */
+    @XmlAttribute(name = ORIENTATION)
+    public String orientation = null;
 
     /**
      * The layout constraints.
@@ -80,9 +78,13 @@ public class Label extends OrderedGuiElement {
 
     @Override
     public Control makeGui( Composite parent ) {
-        org.eclipse.swt.widgets.Label label = new org.eclipse.swt.widgets.Label(parent, SWT.NONE);
+        int style = SWT.HORIZONTAL | SWT.SEPARATOR;
+        if (orientation != null && orientation.toLowerCase().startsWith("ver")) {
+            style = SWT.VERTICAL | SWT.SEPARATOR;
+        }
+
+        org.eclipse.swt.widgets.Label label = new org.eclipse.swt.widgets.Label(parent, style);
         label.setLayoutData(constraints);
-        label.setText(text);
 
         return label;
     }

@@ -10,6 +10,7 @@ public class AnnotationConstants {
     public static final String COMBOBOX = "combobox";
     public static final String RADIOBUTTON = "radiobutton";
     public static final String LABEL = "label";
+    public static final String SEPARATOR = "separator";
     public static final String TEXTAREA = "textarea";
     public static final String TEXTFIELD = "textfield";
     

@@ -36,6 +36,12 @@ import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstan
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Text;
+
 /**
  * Class representing an swt textfield.
  * 
@@ -97,6 +103,17 @@ public class TextField extends OrderedGuiElement {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Control makeGui( Composite parent ) {
+        Text text = new Text(parent, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+        text.setLayoutData(constraints);
+        if (defaultText != null) {
+            text.setText(defaultText);
+        }
+
+        return null;
     }
 
 }
