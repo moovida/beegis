@@ -2,6 +2,7 @@ package eu.hydrologis.jgrass.featureeditor.views;
 
 import net.miginfocom.layout.CC;
 import net.miginfocom.swt.MigLayout;
+import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.command.CompositeCommand;
 import net.refractions.udig.project.ui.tool.IToolContext;
 
@@ -166,5 +167,10 @@ public class FormPropertiesPanel implements KeyListener, ISelectionChangedListen
 
     public void setFocus() {
         // name.setFocus();
+    }
+
+    public void updateOnLayer( ILayer selectedLayer ) {
+        // TODO Auto-generated method stub
+        
     }
 }
