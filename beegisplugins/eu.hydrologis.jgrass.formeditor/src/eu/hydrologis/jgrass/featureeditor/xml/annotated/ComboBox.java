@@ -30,12 +30,14 @@ import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstan
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Class representing an swt combobox.
@@ -66,8 +68,8 @@ public class ComboBox extends OrderedGuiElement {
     /**
      * The list of items to put in the combo.
      */
-    @XmlAttribute(name = LIST)
-    public List<String> list = null;
+    @XmlElement
+    public List<String> item = null;
 
     /**
      * A default item of the combo to select.
@@ -101,11 +103,11 @@ public class ComboBox extends OrderedGuiElement {
     }
 
     @Override
-    public Composite makeGui( Composite parent ) {
+    public Control makeGui( Composite parent ) {
         Combo combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
         combo.setLayoutData(constraints);
 
-        String[] listArray = (String[]) list.toArray(new String[list.size()]);
+        String[] listArray = (String[]) item.toArray(new String[item.size()]);
         combo.setItems(listArray);
         if (defaultText != null) {
             int index = 0;

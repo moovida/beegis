@@ -34,6 +34,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
 /**
  * A class representing the main tabbed component.
  * 
@@ -67,6 +70,9 @@ public class Tab extends OrderedGuiElement {
     public List<Label> label = new ArrayList<Label>();
 
     @XmlElement
+    public List<Separator> separator = new ArrayList<Separator>();
+
+    @XmlElement
     public List<RadioButton> radiobutton = new ArrayList<RadioButton>();
 
     @XmlElement
@@ -80,6 +86,7 @@ public class Tab extends OrderedGuiElement {
         orderedElements.addAll(checkbox);
         orderedElements.addAll(combobox);
         orderedElements.addAll(label);
+        orderedElements.addAll(separator);
         orderedElements.addAll(radiobutton);
         orderedElements.addAll(textarea);
         orderedElements.addAll(textfield);
@@ -105,5 +112,10 @@ public class Tab extends OrderedGuiElement {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Control makeGui( Composite parent ) {
+        return null;
     }
 }

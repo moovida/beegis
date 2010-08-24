@@ -36,6 +36,9 @@ import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstan
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
 /**
  * Class representing an swt textarea.
  * 
@@ -97,6 +100,12 @@ public class TextArea extends OrderedGuiElement {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Control makeGui( Composite parent ) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

@@ -31,7 +31,15 @@ import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstan
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Class representing an swt combobox.
@@ -62,8 +70,8 @@ public class RadioButton extends OrderedGuiElement {
     /**
      * The list of items out of which to make radiobuttons.
      */
-    @XmlAttribute(name = LIST)
-    public List<String> list = null;
+    @XmlElement
+    public List<String> item = null;
 
     /**
      * A default item of the list of radiobuttons to be selected.
@@ -100,5 +108,29 @@ public class RadioButton extends OrderedGuiElement {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Control makeGui( Composite parent ) {
+
+        Composite radioComposite = new Composite(parent, SWT.NONE);
+        radioComposite.setLayoutData(constraints);
+
+        if (orientation == null || orientation.toLowerCase().startsWith("ver")) {
+            radioComposite.setLayout(new GridLayout(1, false));
+        } else {
+            radioComposite.setLayout(new GridLayout(item.size(), false));
+        }
+
+        for( String radioText : item ) {
+            Button button = new Button(radioComposite, SWT.RADIO);
+            button.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+            button.setText(radioText);
+            if (defaultText.equals(radioText)) {
+                button.setSelection(true);
+            }
+        }
+
+        return radioComposite;
     }
 }

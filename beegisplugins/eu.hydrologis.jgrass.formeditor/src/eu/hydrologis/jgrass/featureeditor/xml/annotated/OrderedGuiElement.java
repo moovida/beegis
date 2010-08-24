@@ -20,6 +20,7 @@ package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 import net.miginfocom.swt.MigLayout;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * An ordered element.
@@ -34,7 +35,7 @@ public abstract class OrderedGuiElement implements Comparable<OrderedGuiElement>
      * @param parent the parent {@link Composite}, assuming that it has a {@link MigLayout}.
      * @return the created control.
      */
-    public abstract Composite makeGui( Composite parent );
+    public abstract Control makeGui( Composite parent );
 
     /**
      * Getter for the name of the element.

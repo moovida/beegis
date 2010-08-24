@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Class representing an swt checkbox.
@@ -83,7 +84,7 @@ public class CheckBox extends OrderedGuiElement {
     }
 
     @Override
-    public Composite makeGui( Composite parent ) {
+    public Control makeGui( Composite parent ) {
         
         
         return null;

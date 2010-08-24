@@ -1,35 +1,35 @@
 <form>
-    <tab order="0" name="tab1" text="General" layout="insets 20 20 20 20" col="[right]">
-        <label order="0" name="label1" text="Country name" constraints="gap 10"/>
+    <tab order="0" name="tab1" text="General" layout="insets 20 20 20 20, fillx" col="">
+        <label order="0" name="label1" text="Country name" constraints=""/>
         <textfield order="1" name="text1" default="" fieldname="CNTRY_NAME" valuetype="string" constraints="growx"/>
-        <label order="2" name="label2" text="ISO2" constraints="gap 20"/>
-        <combobox order="3" name="combo1" default="" fieldname="ISO_2DIGIT" constraints="wrap">
-            RU
-            IT
-            IS
-            UK
+        <label order="2" name="label2" text="ISO2" constraints="skip 2"/>
+        <combobox order="3" name="combo1" default="" fieldname="ISO_2DIGIT" constraints="growx, wrap">
+            <item>RU</item>
+            <item>IT</item>
+            <item>IS</item>
+            <item>UK</item>
         </combobox>
         <label order="4" name="label3" text="Currency" constraints="gap 20"/>
-        <combobox order="5" name="combo2" default="euro" fieldname="CURR_TYPE" constraints="growx">
-            euro
-            kune
-            rubli
-            krone
+        <combobox order="5" name="combo2" default="euro" fieldname="CURR_TYPE" constraints="span, growx">
+            <item>euro</item>
+            <item>kune</item>
+            <item>rubli</item>
+            <item>krone</item>
         </combobox>
     </tab>
-    <tab order="1" name="tab2" text="Statistics" layout="insets 20 20 20 20" col="[right]">
+    <tab order="1" name="tab2" text="Statistics" layout="insets 20 20 20 20, fillx" col="">
         <label order="0" name="label4" text="Population" constraints="gap 10"/>
-        <textfield order="1" name="text2" default="" fieldname="POP_CNTRY" valuetype="string" constraints="growx"/>
+        <textfield order="1" name="text2" default="" fieldname="POP_CNTRY" valuetype="string" constraints="growx, wrap"/>
         <label order="2" name="label5" text="Area" constraints="gap 20"/>
-        <separator order="3" orientation="vertical" constraints="growx, wrap"/>
+        <separator order="3" orientation="horizontal" constraints="growx, wrap"/>
         <label order="5" name="label6" text="km2" constraints="gap 40"/>
         <textfield order="6" name="text3" default="" fieldname="SQKM" valuetype="string" constraints="growx, wrap"/>
         <label order="7" name="label7" text="miles" constraints="gap 40"/>
         <textfield order="8" name="text4" default="" fieldname="SQMI" valuetype="string" constraints="growx, wrap"/>
         <label order="9" name="label8" text="landlocked" constraints="gap 10"/>
-        <radiobutton order="10" name="radio1" default="true" fieldname="LANDLOCKED" valuetype="string" constraints="growx, wrap">
-            locked, Y
-            not locked, N
+        <radiobutton order="10" name="radio1" default="not locked, N" fieldname="LANDLOCKED" constraints="growx">
+            <item>locked, Y</item>
+            <item>not locked, N</item>
         </radiobutton>
     </tab>
 </form>

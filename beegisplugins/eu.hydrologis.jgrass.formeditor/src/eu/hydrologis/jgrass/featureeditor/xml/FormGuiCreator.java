@@ -35,6 +35,8 @@ public class FormGuiCreator {
         CTabFolder folder = new CTabFolder(mainComposite, SWT.BOTTOM);
         folder.setUnselectedCloseVisible(false);
         folder.setSimple(false);
+        folder.setLayout(new MigLayout("fill"));
+        folder.setLayoutData("grow");
 
         List<Tab> orderedTabs = form.getOrderedTabs();
         for( Tab tab : orderedTabs ) {
@@ -42,8 +44,8 @@ public class FormGuiCreator {
             item.setText(tab.text);
 
             Composite tabComposite = new Composite(folder, SWT.NONE);
-            tabComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-            tabComposite.setLayout(new MigLayout("insets 20 20 20 20"));
+            tabComposite.setLayoutData("grow");
+            tabComposite.setLayout(new MigLayout(tab.layoutConstraints, tab.colConstraints));
             item.setControl(tabComposite);
 
             List< ? extends OrderedGuiElement> orderedElements = tab.getOrderedElements();
@@ -65,7 +67,7 @@ public class FormGuiCreator {
 
         Composite mainComposite = new Composite(shell, SWT.NONE);
         mainComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        mainComposite.setLayout(new GridLayout(1, false));
+        mainComposite.setLayout(new MigLayout("fill"));
 
         Form form = getForm();
         Control c = new FormGuiCreator().makeGui(mainComposite, form);
