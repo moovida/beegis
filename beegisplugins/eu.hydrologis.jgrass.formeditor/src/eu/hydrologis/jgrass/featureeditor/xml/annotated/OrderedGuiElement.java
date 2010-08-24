@@ -17,12 +17,24 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
+import net.miginfocom.swt.MigLayout;
+
+import org.eclipse.swt.widgets.Composite;
+
 /**
  * An ordered element.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public abstract class OrderedElement implements Comparable<OrderedElement> {
+public abstract class OrderedGuiElement implements Comparable<OrderedGuiElement> {
+
+    /**
+     * Creates the gui for the element basing on the {@link MigLayout}.
+     * 
+     * @param parent the parent {@link Composite}, assuming that it has a {@link MigLayout}.
+     * @return the created control.
+     */
+    public abstract Composite makeGui( Composite parent );
 
     /**
      * Getter for the name of the element.
@@ -30,7 +42,7 @@ public abstract class OrderedElement implements Comparable<OrderedElement> {
      * @return the name of the element.
      */
     public abstract String getName();
-    
+
     /**
      * Getter for the order of the element.
      * 
@@ -39,7 +51,7 @@ public abstract class OrderedElement implements Comparable<OrderedElement> {
     public abstract int getOrder();
 
     @Override
-    public int compareTo( OrderedElement o ) {
+    public int compareTo( OrderedGuiElement o ) {
         // this ordering is not consistent with equals.
         int thisOrder = this.getOrder();
         int thatOrder = o.getOrder();

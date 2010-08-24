@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = LABEL)
-public class Label extends OrderedElement {
+public class Label extends OrderedGuiElement {
 
     /**
      * Unique name for the object.

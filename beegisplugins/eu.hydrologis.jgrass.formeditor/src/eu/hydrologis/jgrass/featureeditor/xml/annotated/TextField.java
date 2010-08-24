@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = TEXTFIELD)
-public class TextField extends OrderedElement {
+public class TextField extends OrderedGuiElement {
 
     /**
      * The attribute's table field name.

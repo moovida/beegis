@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = TAB)
-public class Tab extends OrderedElement {
+public class Tab extends OrderedGuiElement {
 
     @XmlAttribute(name = NAME)
     public String name = null;
@@ -75,8 +75,8 @@ public class Tab extends OrderedElement {
     @XmlElement
     public List<TextField> textfield = new ArrayList<TextField>();
 
-    public List< ? extends OrderedElement> getOrderedElements() {
-        List<OrderedElement> orderedElements = new ArrayList<OrderedElement>();
+    public List< ? extends OrderedGuiElement> getOrderedElements() {
+        List<OrderedGuiElement> orderedElements = new ArrayList<OrderedGuiElement>();
         orderedElements.addAll(checkbox);
         orderedElements.addAll(combobox);
         orderedElements.addAll(label);
