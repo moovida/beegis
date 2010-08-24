@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Control;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = LABEL)
-public class Label extends OrderedGuiElement {
+public class Label extends FormElement {
 
     /**
      * Unique name for the object.
@@ -76,14 +76,5 @@ public class Label extends OrderedGuiElement {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public Control makeGui( Composite parent ) {
-        org.eclipse.swt.widgets.Label label = new org.eclipse.swt.widgets.Label(parent, SWT.NONE);
-        label.setLayoutData(constraints);
-        label.setText(text);
-
-        return label;
     }
 }

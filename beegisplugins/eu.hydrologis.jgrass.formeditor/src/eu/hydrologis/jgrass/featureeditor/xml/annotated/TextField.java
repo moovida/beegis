@@ -21,26 +21,14 @@ package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CONSTRAINTS;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.DEFAULT;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.FIELDNAME;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.HEIGHTFE;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.HEIGHTHINT;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.NAME;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORDER;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.TEXT;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.TEXTFIELD;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.VALUETYPE;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.WIDTHFE;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.WIDTHHINT;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.XFE;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.YFE;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Class representing an swt textfield.
@@ -48,7 +36,7 @@ import org.eclipse.swt.widgets.Text;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = TEXTFIELD)
-public class TextField extends OrderedGuiElement {
+public class TextField extends FormElement {
 
     /**
      * The attribute's table field name.
@@ -103,17 +91,6 @@ public class TextField extends OrderedGuiElement {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public Control makeGui( Composite parent ) {
-        Text text = new Text(parent, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
-        text.setLayoutData(constraints);
-        if (defaultText != null) {
-            text.setText(defaultText);
-        }
-
-        return null;
     }
 
 }

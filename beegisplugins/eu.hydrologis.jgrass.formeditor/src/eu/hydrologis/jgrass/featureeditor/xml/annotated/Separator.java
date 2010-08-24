@@ -18,18 +18,14 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.*;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CONSTRAINTS;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.NAME;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORDER;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORIENTATION;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.SEPARATOR;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.TEXT;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 /**
  * Class representing an swt separator label.
@@ -37,7 +33,7 @@ import org.eclipse.swt.widgets.Control;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = SEPARATOR)
-public class Separator extends OrderedGuiElement {
+public class Separator extends FormElement {
 
     /**
      * Unique name for the object.
@@ -74,18 +70,5 @@ public class Separator extends OrderedGuiElement {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public Control makeGui( Composite parent ) {
-        int style = SWT.HORIZONTAL | SWT.SEPARATOR;
-        if (orientation != null && orientation.toLowerCase().startsWith("ver")) {
-            style = SWT.VERTICAL | SWT.SEPARATOR;
-        }
-
-        org.eclipse.swt.widgets.Label label = new org.eclipse.swt.widgets.Label(parent, style);
-        label.setLayoutData(constraints);
-
-        return label;
     }
 }

@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Control;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = COMBOBOX)
-public class ComboBox extends OrderedGuiElement {
+public class ComboBox extends FormElement {
 
     /**
      * The attribute's table field name.
@@ -100,26 +100,6 @@ public class ComboBox extends OrderedGuiElement {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public Control makeGui( Composite parent ) {
-        Combo combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-        combo.setLayoutData(constraints);
-
-        String[] listArray = (String[]) item.toArray(new String[item.size()]);
-        combo.setItems(listArray);
-        if (defaultText != null) {
-            int index = 0;
-            for( int i = 0; i < listArray.length; i++ ) {
-                if (listArray[i].equals(defaultText)) {
-                    index = i;
-                    break;
-                }
-            }
-            combo.select(index);
-        }
-        return combo;
     }
 
 }

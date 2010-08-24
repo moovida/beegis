@@ -34,16 +34,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-
 /**
  * A class representing the main tabbed component.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = TAB)
-public class Tab extends OrderedGuiElement {
+public class Tab extends FormElement {
 
     @XmlAttribute(name = NAME)
     public String name = null;
@@ -81,8 +78,8 @@ public class Tab extends OrderedGuiElement {
     @XmlElement
     public List<TextField> textfield = new ArrayList<TextField>();
 
-    public List< ? extends OrderedGuiElement> getOrderedElements() {
-        List<OrderedGuiElement> orderedElements = new ArrayList<OrderedGuiElement>();
+    public List< ? extends FormElement> getOrderedElements() {
+        List<FormElement> orderedElements = new ArrayList<FormElement>();
         orderedElements.addAll(checkbox);
         orderedElements.addAll(combobox);
         orderedElements.addAll(label);
@@ -112,10 +109,5 @@ public class Tab extends OrderedGuiElement {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public Control makeGui( Composite parent ) {
-        return null;
     }
 }

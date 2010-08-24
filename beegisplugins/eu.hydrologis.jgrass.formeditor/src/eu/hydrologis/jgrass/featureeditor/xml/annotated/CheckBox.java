@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Control;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = CHECKBOX)
-public class CheckBox extends OrderedGuiElement {
+public class CheckBox extends FormElement {
 
     /**
      * The attribute's table field name.
@@ -81,12 +81,5 @@ public class CheckBox extends OrderedGuiElement {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public Control makeGui( Composite parent ) {
-        
-        
-        return null;
     }
 }
