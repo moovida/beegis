@@ -21,6 +21,7 @@ package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.FORM;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -35,4 +36,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Form {
     @XmlElement
     public List<Tab> tab = new ArrayList<Tab>();
+
+    public List<Tab> getOrderedTabs() {
+        Collections.sort(tab);
+        return tab;
+    }
 }

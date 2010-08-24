@@ -19,17 +19,13 @@
 package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.COMBOBOX;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CONSTRAINTS;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.DEFAULT;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.FIELDNAME;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.HEIGHTFE;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.HEIGHTHINT;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.LIST;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.NAME;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORDER;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.TEXT;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.WIDTHFE;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.WIDTHHINT;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.XFE;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.YFE;
 
 import java.util.List;
 
@@ -42,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = COMBOBOX)
-public class ComboBox {
+public class ComboBox extends OrderedElement {
 
     /**
      * The attribute's table field name.
@@ -75,39 +71,28 @@ public class ComboBox {
     public String defaultText = null;
 
     /**
-     * A hint for the width in the gui. 
+     * The widget order.
      */
-    @XmlAttribute(name = WIDTHHINT)
-    public Integer widthHint;
+    @XmlAttribute(name = ORDER)
+    public Integer order = null;
 
     /**
-     * A hint for the height in the gui. 
+     * The layout constraints.
      */
-    @XmlAttribute(name = HEIGHTHINT)
-    public Integer heightHint;
+    @XmlAttribute(name = CONSTRAINTS)
+    public String constraints = null;
 
-    /**
-     * The x position of the widget in the Form Editor. Doesn't affect gui.
-     */
-    @XmlAttribute(name = XFE)
-    public Integer xFE;
+    @Override
+    public int getOrder() {
+        if (order == null) {
+            order = 0;
+        }
+        return order;
+    }
 
-    /**
-     * The y position of the widget in the Form Editor. Doesn't affect gui.
-     */
-    @XmlAttribute(name = YFE)
-    public Integer yFE;
-
-    /**
-     * The width of the widget in the Form Editor. Doesn't affect gui.
-     */
-    @XmlAttribute(name = WIDTHFE)
-    public Integer widthFE;
-
-    /**
-     * The height of the widget in the Form Editor. Doesn't affect gui.
-     */
-    @XmlAttribute(name = HEIGHTFE)
-    public Integer heightFE;
+    @Override
+    public String getName() {
+        return name;
+    }
 
 }

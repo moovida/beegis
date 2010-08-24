@@ -1,33 +1,33 @@
 <form>
-    <tab name="tab1" text="General" layout="insets 20 20 20 20" col="[right]">
-        <label name="label1" text="Country name" constraints="gap 10"/>
-        <textfield name="text1" default="" fieldname="CNTRY_NAME" valuetype="string" constraints="growx"/>
-        <label name="label2" text="ISO2" constraints="gap 20"/>
-        <combobox name="combo1" default="" fieldname="ISO_2DIGIT" constraints="wrap">
+    <tab order="0" name="tab1" text="General" layout="insets 20 20 20 20" col="[right]">
+        <label order="0" name="label1" text="Country name" constraints="gap 10"/>
+        <textfield order="1" name="text1" default="" fieldname="CNTRY_NAME" valuetype="string" constraints="growx"/>
+        <label order="2" name="label2" text="ISO2" constraints="gap 20"/>
+        <combobox order="3" name="combo1" default="" fieldname="ISO_2DIGIT" constraints="wrap">
             RU
             IT
             IS
             UK
         </combobox>
-        <label name="label3" text="Currency" constraints="gap 20"/>
-        <combobox name="combo2" default="euro" fieldname="CURR_TYPE" constraints="growx">
+        <label order="4" name="label3" text="Currency" constraints="gap 20"/>
+        <combobox order="5" name="combo2" default="euro" fieldname="CURR_TYPE" constraints="growx">
             euro
             kune
             rubli
             krone
         </combobox>
     </tab>
-    <tab name="tab2" text="Statistics" layout="insets 20 20 20 20" col="[right]">
-        <label name="label4" text="Population" constraints="gap 10"/>
-        <textfield name="text2" default="" fieldname="POP_CNTRY" valuetype="string" constraints="growx"/>
-        <label name="label5" text="Area" constraints="gap 20"/>
-        <separator orientation="vertical" constraints="growx, wrap"/>
-        <label name="label6" text="km2" constraints="gap 40"/>
-        <textfield name="text3" default="" fieldname="SQKM" valuetype="string" constraints="growx, wrap"/>
-        <label name="label7" text="miles" constraints="gap 40"/>
-        <textfield name="text4" default="" fieldname="SQMI" valuetype="string" constraints="growx, wrap"/>
-        <label name="label8" text="landlocked" constraints="gap 10"/>
-        <radiobutton name="radio1" default="true" fieldname="LANDLOCKED" valuetype="string" constraints="growx, wrap">
+    <tab order="1" name="tab2" text="Statistics" layout="insets 20 20 20 20" col="[right]">
+        <label order="0" name="label4" text="Population" constraints="gap 10"/>
+        <textfield order="1" name="text2" default="" fieldname="POP_CNTRY" valuetype="string" constraints="growx"/>
+        <label order="2" name="label5" text="Area" constraints="gap 20"/>
+        <separator order="3" orientation="vertical" constraints="growx, wrap"/>
+        <label order="5" name="label6" text="km2" constraints="gap 40"/>
+        <textfield order="6" name="text3" default="" fieldname="SQKM" valuetype="string" constraints="growx, wrap"/>
+        <label order="7" name="label7" text="miles" constraints="gap 40"/>
+        <textfield order="8" name="text4" default="" fieldname="SQMI" valuetype="string" constraints="growx, wrap"/>
+        <label order="9" name="label8" text="landlocked" constraints="gap 10"/>
+        <radiobutton order="10" name="radio1" default="true" fieldname="LANDLOCKED" valuetype="string" constraints="growx, wrap">
             locked, Y
             not locked, N
         </radiobutton>
