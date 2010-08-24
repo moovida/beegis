@@ -46,7 +46,7 @@ public class FormParser {
 
         BufferedReader r = new BufferedReader(
                 new FileReader(
-                        "/home/moovida/development/hydrologis-hg/hydrologis/hydrologis_extentions/jgrass4udig12/eu.hydrologis.jgrass.formeditor/src/eu/hydrologis/jgrass/featureeditor/test2.xml"));
+                        "/home/moovida/development/beegis-hg/beegis/beegisplugins/eu.hydrologis.jgrass.formeditor/src/eu/hydrologis/jgrass/featureeditor/test.xml"));
         StringBuilder xml = new StringBuilder();
 
         String line = null;

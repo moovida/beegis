@@ -1,16 +1,35 @@
 <form>
-	<tab name="tab1" text="generalita'" xFE="0" yFE="0" w="400" h="600">
-		<textfield name="text1" text="Codice" default="75" fieldname="code" valuetype="int" xFE="10" yFE="10" widthFE="120" heightFE="30"/>
-		<textfield name="text2" text="Data" default="2009-04-29" fieldname="date" xFE="10" yFE="50" widthFE="120" heightFE="30"/>
-		<textfield name="text3" text="Comune" default="Perletto" fieldname="comune" xFE="10" yFE="50" widthFE="120" heightFE="30"/>
-	</tab>
-	<tab name="tab2" text="danni" xFE="0" yFE="0" widthFE="400" heightFE="600">
-		<group name="group1" text="" orientation="horizontal" border="false" xFE="10" yFE="10" widthFE="200" heightFE="300">
-			<textfield name="text4" text="Vittime" default="0" fieldname="vittime" valuetype="int" xFE="10" yFE="10" widthFE="120" heightFE="30"/>
-			<textfield name="text5" text="Feriti" default="0" fieldname="feriti" xFE="140" yFE="10" widthFE="120" heightFE="30"/>
-		</group>
-		<textfield name="text6" text="Tipo di danno" fieldname="danno" xFE="10" yFE="50" widthFE="120" heightFE="30"/>
-		<textfield name="text7" text="Dettaglio" fieldname="dettaglio" xFE="10" yFE="90" widthFE="120" heightFE="30"/>
-		<textfield name="text8" text="Descrizione" fieldname="descr" xFE="10" yFE="130" widthFE="120" heightFE="30"/>
-	</tab>
+    <tab name="tab1" text="General" layout="insets 20 20 20 20" col="[right]">
+        <label name="label1" text="Country name" constraints="gap 10"/>
+        <textfield name="text1" default="" fieldname="CNTRY_NAME" valuetype="string" constraints="growx"/>
+        <label name="label2" text="ISO2" constraints="gap 20"/>
+        <combobox name="combo1" default="" fieldname="ISO_2DIGIT" constraints="wrap">
+            RU
+            IT
+            IS
+            UK
+        </combobox>
+        <label name="label3" text="Currency" constraints="gap 20"/>
+        <combobox name="combo2" default="euro" fieldname="CURR_TYPE" constraints="growx">
+            euro
+            kune
+            rubli
+            krone
+        </combobox>
+    </tab>
+    <tab name="tab2" text="Statistics" layout="insets 20 20 20 20" col="[right]">
+        <label name="label4" text="Population" constraints="gap 10"/>
+        <textfield name="text2" default="" fieldname="POP_CNTRY" valuetype="string" constraints="growx"/>
+        <label name="label5" text="Area" constraints="gap 20"/>
+        <separator orientation="vertical" constraints="growx, wrap"/>
+        <label name="label6" text="km2" constraints="gap 40"/>
+        <textfield name="text3" default="" fieldname="SQKM" valuetype="string" constraints="growx, wrap"/>
+        <label name="label7" text="miles" constraints="gap 40"/>
+        <textfield name="text4" default="" fieldname="SQMI" valuetype="string" constraints="growx, wrap"/>
+        <label name="label8" text="landlocked" constraints="gap 10"/>
+        <radiobutton name="radio1" default="true" fieldname="LANDLOCKED" valuetype="string" constraints="growx, wrap">
+            locked, Y
+            not locked, N
+        </radiobutton>
+    </tab>
 </form>

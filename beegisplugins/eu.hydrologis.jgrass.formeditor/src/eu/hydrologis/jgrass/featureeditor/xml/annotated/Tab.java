@@ -18,7 +18,7 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.HEIGHTFE;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.*;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.NAME;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.TAB;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.TEXT;
@@ -47,18 +47,15 @@ public class Tab {
     @XmlAttribute(name = TEXT)
     public String text = null;
 
-    @XmlAttribute(name = XFE)
-    public Double x;
+    @XmlAttribute(name = LAYOUT)
+    public String layoutConstraints;
 
-    @XmlAttribute(name = YFE)
-    public Double y;
+    @XmlAttribute(name = COL)
+    public String colConstraints;
 
-    @XmlAttribute(name = WIDTHFE)
-    public Double w;
+    @XmlAttribute(name = ROW)
+    public String rowConstraints;
 
-    @XmlAttribute(name = HEIGHTFE)
-    public Double h;
-    
     @XmlElement
     public List<Group> group = new ArrayList<Group>();
     
