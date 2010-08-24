@@ -17,7 +17,9 @@ public class AnnotationConstants {
     public static final String LAYOUT = "layout";
     public static final String COL = "col";
     public static final String ROW = "row";
+    public static final String CONSTRAINTS = "constraints";
 
+    public static final String ORDER = "order";
     public static final String FIELDNAME = "fieldname";
     public static final String NAME = "name";
     public static final String TEXT = "text";

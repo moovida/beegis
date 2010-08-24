@@ -18,15 +18,11 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.HEIGHTFE;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.HEIGHTHINT;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CONSTRAINTS;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.LABEL;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.NAME;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORDER;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.TEXT;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.WIDTHFE;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.WIDTHHINT;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.XFE;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.YFE;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = LABEL)
-public class Label {
+public class Label extends OrderedElement {
 
     /**
      * Unique name for the object.
@@ -52,39 +48,27 @@ public class Label {
     public String text = null;
 
     /**
-     * A hint for the width in the gui. 
+     * The widget order.
      */
-    @XmlAttribute(name = WIDTHHINT)
-    public Integer widthHint;
+    @XmlAttribute(name = ORDER)
+    public Integer order = null;
+
+    /**
+     * The layout constraints.
+     */
+    @XmlAttribute(name = CONSTRAINTS)
+    public String constraints = null;
+
+    @Override
+    public int getOrder() {
+        if (order == null) {
+            order = 0;
+        }
+        return order;
+    }
     
-    /**
-     * A hint for the height in the gui. 
-     */
-    @XmlAttribute(name = HEIGHTHINT)
-    public Integer heightHint;
-
-    /**
-     * The x position of the widget in the Form Editor. Doesn't affect gui.
-     */
-    @XmlAttribute(name = XFE)
-    public Integer xFE;
-
-    /**
-     * The y position of the widget in the Form Editor. Doesn't affect gui.
-     */
-    @XmlAttribute(name = YFE)
-    public Integer yFE;
-
-    /**
-     * The width of the widget in the Form Editor. Doesn't affect gui.
-     */
-    @XmlAttribute(name = WIDTHFE)
-    public Integer widthFE;
-
-    /**
-     * The height of the widget in the Form Editor. Doesn't affect gui.
-     */
-    @XmlAttribute(name = HEIGHTFE)
-    public Integer heightFE;
-
+    @Override
+    public String getName() {
+        return name;
+    }
 }
