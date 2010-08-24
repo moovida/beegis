@@ -23,13 +23,15 @@ import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstan
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.eclipse.swt.widgets.Composite;
+
 /**
  * Class representing an swt checkbox.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = CHECKBOX)
-public class CheckBox extends OrderedElement {
+public class CheckBox extends OrderedGuiElement {
 
     /**
      * The attribute's table field name.
@@ -78,5 +80,12 @@ public class CheckBox extends OrderedElement {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Composite makeGui( Composite parent ) {
+        
+        
+        return null;
     }
 }

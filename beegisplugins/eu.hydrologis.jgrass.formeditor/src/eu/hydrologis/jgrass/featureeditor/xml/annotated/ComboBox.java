@@ -32,13 +32,18 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+
 /**
  * Class representing an swt combobox.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = COMBOBOX)
-public class ComboBox extends OrderedElement {
+public class ComboBox extends OrderedGuiElement {
 
     /**
      * The attribute's table field name.
@@ -93,6 +98,26 @@ public class ComboBox extends OrderedElement {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Composite makeGui( Composite parent ) {
+        Combo combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+        combo.setLayoutData(constraints);
+
+        String[] listArray = (String[]) list.toArray(new String[list.size()]);
+        combo.setItems(listArray);
+        if (defaultText != null) {
+            int index = 0;
+            for( int i = 0; i < listArray.length; i++ ) {
+                if (listArray[i].equals(defaultText)) {
+                    index = i;
+                    break;
+                }
+            }
+            combo.select(index);
+        }
+        return combo;
     }
 
 }

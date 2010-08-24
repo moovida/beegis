@@ -13,7 +13,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.Form;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.OrderedElement;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.OrderedGuiElement;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.Tab;
 
 @SuppressWarnings("nls")
@@ -64,8 +64,8 @@ public class FormParser {
         List<Tab> tabList = form.getOrderedTabs();
         for( Tab tab : tabList ) {
             System.out.println("tab: " + tab.name);
-            List< ? extends OrderedElement> orderedElements = tab.getOrderedElements();
-            for( OrderedElement orderedElement : orderedElements ) {
+            List< ? extends OrderedGuiElement> orderedElements = tab.getOrderedElements();
+            for( OrderedGuiElement orderedElement : orderedElements ) {
                 String name = orderedElement.getName();
                 System.out.println("Element: " + name);
             }
