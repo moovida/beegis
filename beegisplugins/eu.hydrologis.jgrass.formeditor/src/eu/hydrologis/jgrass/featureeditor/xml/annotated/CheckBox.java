@@ -18,13 +18,16 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.*;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CHECKBOX;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CONSTRAINTS;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.DEFAULT;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.FIELDNAME;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.NAME;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORDER;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.TEXT;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 /**
  * Class representing an swt checkbox.
@@ -77,9 +80,10 @@ public class CheckBox extends FormElement {
         }
         return order;
     }
-    
+
     @Override
     public String getName() {
         return name;
     }
+
 }

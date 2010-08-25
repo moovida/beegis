@@ -27,12 +27,6 @@ import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstan
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-
 /**
  * Class representing an swt label.
  * 
