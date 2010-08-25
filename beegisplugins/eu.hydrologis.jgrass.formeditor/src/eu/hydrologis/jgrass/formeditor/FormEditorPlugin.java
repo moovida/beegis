@@ -91,8 +91,10 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
 
     private void setActiveMap( Map map ) {
         if (map == null) {
-            activeMap.removeMapListener(this);
-            activeMap = null;
+            if (activeMap != null) {
+                activeMap.removeMapListener(this);
+                activeMap = null;
+            }
             return;
         }
         if (!map.equals(activeMap)) {
@@ -104,9 +106,9 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
             ILayer tmpSelectedLayer = map.getEditManager().getSelectedLayer();
             if (tmpSelectedLayer != null) {
                 selectedLayer = tmpSelectedLayer;
-                notifySelectionListeners();
             }
         }
+        notifySelectionListeners();
     }
 
     public void partActivated( IWorkbenchPartReference partRef ) {
@@ -165,6 +167,8 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
             }
             selectedLayer = tmpSelectedLayer;
             selectedLayer.addListener(this);
+
+            notifySelectionListeners();
         }
     }
 
@@ -187,12 +191,16 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
                     if (featureIterator.hasNext()) {
                         lastSelectedFeature = featureIterator.next();
                     }
+                } else {
+                    lastSelectedFeature = null;
                 }
-                notifySelectionListeners();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else {
+            // what here?
         }
+        notifySelectionListeners();
     }
 
     private List<ISelectionObserver> observers = new ArrayList<ISelectionObserver>();

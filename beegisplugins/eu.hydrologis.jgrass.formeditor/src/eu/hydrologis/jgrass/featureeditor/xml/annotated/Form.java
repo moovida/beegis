@@ -33,12 +33,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = FORM)
-public class Form {
+public class Form extends FormElement {
     @XmlElement
     public List<Tab> tab = new ArrayList<Tab>();
 
     public List<Tab> getOrderedTabs() {
         Collections.sort(tab);
         return tab;
+    }
+
+    @Override
+    public String getName() {
+        return "ROOT";
+    }
+
+    @Override
+    public int getOrder() {
+        return -1;
     }
 }

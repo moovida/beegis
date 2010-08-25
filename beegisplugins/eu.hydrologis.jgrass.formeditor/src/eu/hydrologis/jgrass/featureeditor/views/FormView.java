@@ -19,6 +19,7 @@ package eu.hydrologis.jgrass.featureeditor.views;
 
 import java.io.File;
 
+import net.miginfocom.swt.MigLayout;
 import net.refractions.udig.catalog.ID;
 import net.refractions.udig.project.EditManagerEvent;
 import net.refractions.udig.project.IEditManagerListener;
@@ -37,6 +38,7 @@ import net.refractions.udig.project.ui.tool.IToolContext;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -56,7 +58,7 @@ import eu.hydrologis.jgrass.formeditor.FormEditorPlugin;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class FormView extends ViewPart implements IUDIGView, ISelectionObserver {
+public class FormView extends ViewPart implements ISelectionObserver {
 
     // private FormPropertiesPanel panel = null;
     private ILayer selectedLayer;
@@ -67,8 +69,8 @@ public class FormView extends ViewPart implements IUDIGView, ISelectionObserver 
     private Control currentControl = null;
     private Composite parentComposite;
 
-    private IToolContext context;
     private FormPropertiesPanel featurePropertiesPanel;
+    private Composite parent;
 
     /**
      * Check which layer is currently selected and if the selection changed.
@@ -112,52 +114,15 @@ public class FormView extends ViewPart implements IUDIGView, ISelectionObserver 
     // }
 
     public void createPartControl( Composite parent ) {
-        this.parentComposite = parent;
-        updateGui();
-    }
+        this.parent = parent;
+        parentComposite = new Composite(parent, SWT.NONE);
+        parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        parentComposite.setLayout(new GridLayout(1, true));
 
-    private void updateGui() {
-        Display.getDefault().syncExec(new Runnable(){
-            public void run() {
-                boolean hasChanged = false;// checkSelectedLayer();
-                if (hasChanged) {
-                    if (currentControl != null) {
-                        currentControl.dispose();
-                    }
-                    if (selectedLayerFormFile == null) {
-                        setNoFormPanel(parentComposite);
-                    } else {
-                        setFormPanel(parentComposite);
-                    }
-                } else {
-                    // just update the gui content
-
-                }
-                parentComposite.layout();
-            }
-        });
-    }
-
-    private void setFormPanel( Composite parent ) {
-        Label dummyLabel = new Label(parent, SWT.NONE);
-        dummyLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-        String name = "";
-        if (selectedLayer != null) {
-            name = selectedLayer.getName();
-        }
-        dummyLabel.setText("This layer " + name + " has a dummy form file associated.");
-        currentControl = dummyLabel;
-    }
-
-    private void setNoFormPanel( Composite parent ) {
-        Label noSupportLabel = new Label(parent, SWT.NONE);
-        noSupportLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-        String name = "";
-        if (selectedLayer != null) {
-            name = selectedLayer.getName();
-        }
-        noSupportLabel.setText("This layer " + name + " has no form file associated.");
-        currentControl = noSupportLabel;
+        Label startSelectionLabel = new Label(parentComposite, SWT.NONE);
+        startSelectionLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+        startSelectionLabel.setText("Select a feature to start.");
+        currentControl = startSelectionLabel;
     }
 
     @Override
@@ -178,19 +143,6 @@ public class FormView extends ViewPart implements IUDIGView, ISelectionObserver 
         // panel.setFocus();
     }
 
-    public void setContext( IToolContext newContext ) {
-        context = newContext;
-    }
-
-    public IToolContext getContext() {
-        return context;
-    }
-
-    public void editFeatureChanged( SimpleFeature feature ) {
-        // panel.setEditFeature(feature, context);
-        System.out.println("editfeature");
-    }
-
     @Override
     public void selectionChanged( Map selectedMap, final ILayer newLayer, final SimpleFeature selectedFeature ) {
         Display.getDefault().syncExec(new Runnable(){
@@ -201,6 +153,24 @@ public class FormView extends ViewPart implements IUDIGView, ISelectionObserver 
     }
 
     private void updateGui( final ILayer newLayer, SimpleFeature newFeature ) {
+        if (newFeature == null) {
+            selectedLayer = newLayer;
+            if (currentControl != null) {
+                currentControl.dispose();
+            }
+            Label noFeatureSelectedLabel = new Label(parentComposite, SWT.NONE);
+            noFeatureSelectedLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+            String name = "";
+            if (selectedLayer != null) {
+                name = selectedLayer.getName();
+            }
+            noFeatureSelectedLabel.setText("No feature selected on layer " + name);
+            currentControl = noFeatureSelectedLabel;
+            featurePropertiesPanel = null;
+            parentComposite.layout();
+            parentComposite.redraw();
+            return;
+        }
         if (newLayer != selectedLayer || featurePropertiesPanel == null) {
             selectedLayer = newLayer;
             ID id = selectedLayer.getGeoResource().getID();
@@ -213,10 +183,15 @@ public class FormView extends ViewPart implements IUDIGView, ISelectionObserver 
             }
             if (selectedLayerFormFile != null) {
                 // layer changed, has form file, load new gui
-                featurePropertiesPanel = new FormPropertiesPanel(null);
-                currentControl = featurePropertiesPanel.createControl(parentComposite);
-                parentComposite.layout();
-            } else {
+                try {
+                    featurePropertiesPanel = new FormPropertiesPanel(Utilities.readForm(selectedLayerFormFile));
+                    currentControl = featurePropertiesPanel.createControl(parentComposite);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    selectedLayerFormFile = null;
+                }
+            }
+            if (selectedLayerFormFile == null) {
                 // layer changed, has no form file
                 Label noSupportLabel = new Label(parentComposite, SWT.NONE);
                 noSupportLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
@@ -224,9 +199,12 @@ public class FormView extends ViewPart implements IUDIGView, ISelectionObserver 
                 if (selectedLayer != null) {
                     name = selectedLayer.getName();
                 }
-                noSupportLabel.setText("This layer " + name + " has no form file associated.");
+                noSupportLabel.setText("The layer " + name + " has no valid form file associated.");
                 currentControl = noSupportLabel;
+                featurePropertiesPanel = null;
             }
+            parentComposite.layout();
+            parentComposite.redraw();
         } else {
             // layer the same, feature changed
             ToolContextImpl newcontext = new ToolContextImpl();
