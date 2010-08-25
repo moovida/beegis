@@ -17,15 +17,9 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
-import net.miginfocom.swt.MigLayout;
-
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-
-import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.FormGuiElement;
 
 /**
- * An ordered element.
+ * An ordered form element.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
@@ -58,10 +52,4 @@ public abstract class FormElement implements Comparable<FormElement> {
         } else
             return 0;
     }
-    
-    
-    public FormGuiElement getGui(){
-        
-    }
-
 }

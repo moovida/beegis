@@ -27,6 +27,8 @@ import org.eclipse.swt.widgets.Shell;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.Form;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.Tab;
+import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.FormGuiElement;
+import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.FormGuiFactory;
 
 @SuppressWarnings("nls")
 public class FormGuiCreator {
@@ -34,7 +36,7 @@ public class FormGuiCreator {
     private Control makeGui( Composite mainComposite, Form form ) {
         CTabFolder folder = new CTabFolder(mainComposite, SWT.BOTTOM);
         folder.setUnselectedCloseVisible(false);
-        folder.setSimple(false);
+        // folder.setSimple(false);
         folder.setLayout(new MigLayout("fill"));
         folder.setLayoutData("grow");
 
@@ -50,8 +52,9 @@ public class FormGuiCreator {
 
             List< ? extends FormElement> orderedElements = tab.getOrderedElements();
             for( FormElement orderedGuiElement : orderedElements ) {
-                
-                orderedGuiElement.makeGui(tabComposite);
+
+                FormGuiElement formGui = FormGuiFactory.createFormGui(orderedGuiElement);
+                formGui.makeGui(tabComposite);
             }
 
         }

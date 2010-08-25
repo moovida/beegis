@@ -21,7 +21,6 @@ package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CONSTRAINTS;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.DEFAULT;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.FIELDNAME;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.LIST;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.NAME;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORDER;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORIENTATION;
@@ -33,13 +32,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 /**
  * Class representing an swt combobox.
@@ -109,5 +101,4 @@ public class RadioButton extends FormElement {
     public String getName() {
         return name;
     }
-
 }
