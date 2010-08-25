@@ -17,11 +17,12 @@
  */
 package eu.hydrologis.jgrass.featureeditor.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.StringReader;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
@@ -57,6 +58,31 @@ public class Utilities {
     }
 
     /**
+     * Reads a {@link Form} from a form file.
+     * 
+     * @param formFile the file containing the form xml.
+     * @return the {@link Form} object.
+     * @throws Exception
+     */
+    public static Form readForm( File formFile ) throws Exception {
+        BufferedReader br = null;
+        StringBuilder xml = new StringBuilder();
+        try {
+            br = new BufferedReader(new FileReader(formFile));
+            String line = null;
+            while( (line = br.readLine()) != null ) {
+                xml.append(line).append("\n"); //$NON-NLS-1$
+            }
+        } finally {
+            br.close();
+        }
+
+        String xmlString = xml.toString();
+        Form form = parseXML(xmlString);
+        return form;
+    }
+
+    /**
      * Parse a form xml.
      * 
      * @param xml the xml containing the form definition. 
@@ -83,4 +109,5 @@ public class Utilities {
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.marshal(form, file);
     }
+
 }
