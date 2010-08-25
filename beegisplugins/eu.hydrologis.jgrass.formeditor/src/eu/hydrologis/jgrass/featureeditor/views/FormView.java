@@ -20,11 +20,12 @@ package eu.hydrologis.jgrass.featureeditor.views;
 import java.io.File;
 
 import net.refractions.udig.catalog.ID;
+import net.refractions.udig.project.EditManagerEvent;
+import net.refractions.udig.project.IEditManagerListener;
 import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.ILayerListener;
 import net.refractions.udig.project.IMap;
 import net.refractions.udig.project.IMapListener;
-import net.refractions.udig.project.IProject;
 import net.refractions.udig.project.LayerEvent;
 import net.refractions.udig.project.LayerEvent.EventType;
 import net.refractions.udig.project.MapEvent;
@@ -43,6 +44,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 import org.opengis.feature.simple.SimpleFeature;
 
+import eu.hydrologis.jgrass.featureeditor.utils.MapLayerHandler;
 import eu.hydrologis.jgrass.featureeditor.utils.Utilities;
 
 /**
@@ -50,10 +52,11 @@ import eu.hydrologis.jgrass.featureeditor.utils.Utilities;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class FormView extends ViewPart implements IUDIGView, IMapListener, ILayerListener {
+public class FormView extends ViewPart implements IUDIGView {
 
     // private FormPropertiesPanel panel = null;
     private ILayer selectedLayer;
+    private IMap selectedMap;
     private File selectedLayerFormFile;
 
     private Control currentControl = null;
@@ -64,41 +67,41 @@ public class FormView extends ViewPart implements IUDIGView, IMapListener, ILaye
      * 
      * @return true if the selected layer changed.
      */
-    private boolean checkSelectedLayer() {
-        IMap tmpSelectedMap = ApplicationGIS.getActiveMap();
-        if (selectedMap == null || tmpSelectedMap.getID().equals(selectedMap.getID())) {
-            // map changed or init
-            if (selectedMap != null) {
-                selectedMap.removeMapListener(this);
-            }
-            selectedMap = tmpSelectedMap;
-            selectedMap.addMapListener(this);
-        }
-
-        ILayer tmpSelectedLayer = selectedMap.getEditManager().getSelectedLayer();
-        boolean hasChanged = false;
-        if (selectedLayer == null || !tmpSelectedLayer.getID().equals(selectedLayer.getID())) {
-            /*
-             * layer changed
-             */
-            hasChanged = true;
-            ID id = tmpSelectedLayer.getGeoResource().getID();
-            if (id.isFile()) {
-                File file = id.toFile();
-                selectedLayerFormFile = Utilities.getFormFile(file);
-            }
-
-            // reset listeners
-            if (selectedLayer != null) {
-                selectedLayer.removeListener(this);
-            }
-            selectedLayer = tmpSelectedLayer;
-            selectedLayer.addListener(this);
-        }
-
-        // panel.updateOnLayer(selectedLayer);
-        return hasChanged;
-    }
+//    private boolean checkSelectedLayer() {
+//        IMap tmpSelectedMap = ApplicationGIS.getActiveMap();
+//        if (selectedMap == null || tmpSelectedMap.getID().equals(selectedMap.getID())) {
+//            // map changed or init
+//            if (selectedMap != null) {
+//                selectedMap.removeMapListener(this);
+//            }
+//            selectedMap = tmpSelectedMap;
+//            selectedMap.addMapListener(this);
+//        }
+//
+//        ILayer tmpSelectedLayer = selectedMap.getEditManager().getSelectedLayer();
+//        boolean hasChanged = false;
+//        if (selectedLayer == null || !tmpSelectedLayer.getID().equals(selectedLayer.getID())) {
+//            /*
+//             * layer changed
+//             */
+//            hasChanged = true;
+//            ID id = tmpSelectedLayer.getGeoResource().getID();
+//            if (id.isFile()) {
+//                File file = id.toFile();
+//                selectedLayerFormFile = Utilities.getFormFile(file);
+//            }
+//
+//            // reset listeners
+//            if (selectedLayer != null) {
+//                selectedLayer.removeListener(this);
+//            }
+//            selectedLayer = tmpSelectedLayer;
+//            selectedLayer.addListener(this);
+//        }
+//
+//        // panel.updateOnLayer(selectedLayer);
+//        return hasChanged;
+//    }
 
     public void createPartControl( Composite parent ) {
         this.parentComposite = parent;
@@ -108,7 +111,7 @@ public class FormView extends ViewPart implements IUDIGView, IMapListener, ILaye
     private void updateGui() {
         Display.getDefault().syncExec(new Runnable(){
             public void run() {
-                boolean hasChanged = checkSelectedLayer();
+                boolean hasChanged =false;// checkSelectedLayer();
                 if (hasChanged) {
                     if (currentControl != null) {
                         currentControl.dispose();
@@ -152,13 +155,14 @@ public class FormView extends ViewPart implements IUDIGView, IMapListener, ILaye
     @Override
     public void init( IViewSite site ) throws PartInitException {
         super.init(site);
+        MapLayerHandler.getInstance();
     }
     public void setFocus() {
+        System.out.println("focus");
         // panel.setFocus();
     }
 
     private IToolContext context;
-    private IMap selectedMap;
 
     public void setContext( IToolContext newContext ) {
         context = newContext;
@@ -180,6 +184,7 @@ public class FormView extends ViewPart implements IUDIGView, IMapListener, ILaye
      */
     public void changed( MapEvent event ) {
         updateGui();
+        System.out.println("mapevent");
     }
 
     /* 
@@ -194,4 +199,8 @@ public class FormView extends ViewPart implements IUDIGView, IMapListener, ILaye
         }
 
     }
+    
+    
+
+
 }
