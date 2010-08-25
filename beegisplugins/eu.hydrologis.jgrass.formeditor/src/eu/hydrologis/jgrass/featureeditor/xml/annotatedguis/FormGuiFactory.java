@@ -19,11 +19,11 @@ package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.CheckBox;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ComboBox;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.Form;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.Label;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.RadioButton;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.Separator;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Tab;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.TextArea;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.TextField;
 
@@ -57,9 +57,9 @@ public class FormGuiFactory {
         } else if (formElement instanceof Separator) {
             Separator separator = (Separator) formElement;
             return new SeparatorGui(separator);
-        } else if (formElement instanceof Tab) {
-            Tab tab = (Tab) formElement;
-            return new TabGui(tab);
+        } else if (formElement instanceof Form) {
+            Form form = (Form) formElement;
+            return new FormGui(form);
         } else if (formElement instanceof TextArea) {
             TextArea textArea = (TextArea) formElement;
             return new TextAreaGui();
