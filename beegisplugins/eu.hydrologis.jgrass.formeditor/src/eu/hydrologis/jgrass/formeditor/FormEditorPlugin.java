@@ -104,10 +104,9 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
             ILayer tmpSelectedLayer = map.getEditManager().getSelectedLayer();
             if (tmpSelectedLayer != null) {
                 selectedLayer = tmpSelectedLayer;
+                notifySelectionListeners();
             }
-            System.out.println("set active map: " + selectedLayer.getName());
         }
-
     }
 
     public void partActivated( IWorkbenchPartReference partRef ) {
@@ -158,8 +157,6 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
      * @see net.refractions.udig.project.IMapListener#changed(net.refractions.udig.project.MapEvent)
      */
     public void changed( MapEvent event ) {
-        System.out.println("mapevent");
-
         ILayer tmpSelectedLayer = activeMap.getEditManager().getSelectedLayer();
         if (tmpSelectedLayer != selectedLayer) {
             // layer has changed, reset listeners
@@ -169,7 +166,6 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
             selectedLayer = tmpSelectedLayer;
             selectedLayer.addListener(this);
         }
-        System.out.println("selected layer = " + selectedLayer.getName());
     }
 
     /* 
@@ -179,7 +175,6 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
      */
     public void refresh( LayerEvent event ) {
         EventType type = event.getType();
-        Object newValue = event.getNewValue();
         if (type == EventType.FILTER) {
             Filter filter = selectedLayer.getFilter();
             LayerImpl layerImpl = (LayerImpl) selectedLayer;
@@ -193,10 +188,10 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
                         lastSelectedFeature = featureIterator.next();
                     }
                 }
+                notifySelectionListeners();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println("feature selection has changed " + lastSelectedFeature.getID());
         }
     }
 
@@ -214,7 +209,7 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
 
     public void notifySelectionListeners() {
         for( ISelectionObserver observer : observers ) {
-            observer.selectionChanged(activeMap, selectedLayer, null);
+            observer.selectionChanged(activeMap, selectedLayer, lastSelectedFeature);
         }
     }
 

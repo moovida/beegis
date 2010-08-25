@@ -24,6 +24,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -54,7 +55,7 @@ public class FormPropertiesPanel implements KeyListener, ISelectionChangedListen
 
     }
 
-    public void createControl( Composite parent ) {
+    public Control createControl( Composite parent ) {
         parent.setLayout(new MigLayout("", "[right]10[left, grow][min!][min!]", "30"));
         // SWT Widgets
 
@@ -77,6 +78,8 @@ public class FormPropertiesPanel implements KeyListener, ISelectionChangedListen
                 resetChanges();
             }
         });
+        
+        return apply;
     }
 
     public void keyPressed( KeyEvent e ) {
