@@ -54,4 +54,34 @@ public abstract class FormGuiElement {
      */
     public abstract FormElement getFormElement();
 
+    /**
+     * Tries to convert a string to the required class.
+     * 
+     * @param value the string to convert.
+     * @param clazz the class to which convert.
+     * @return the new object or <code>null</code> if it can't adapt.
+     */
+    public <T> T adapt( String value, Class<T> clazz ) {
+        try {
+            if (clazz.isAssignableFrom(Double.class)) {
+                Double parsedDouble = new Double(value);
+                return clazz.cast(parsedDouble);
+            } else if (clazz.isAssignableFrom(Float.class)) {
+                Float parsedFloat = new Float(value);
+                return clazz.cast(parsedFloat);
+            } else if (clazz.isAssignableFrom(Integer.class)) {
+                Integer parsedInteger = new Integer(value);
+                return clazz.cast(parsedInteger);
+            } else if (clazz.isAssignableFrom(Long.class)) {
+                Long parsedLong = new Long(value);
+                return clazz.cast(parsedLong);
+            } else if (clazz.isAssignableFrom(String.class)) {
+                return clazz.cast(value);
+            }
+        } catch (Exception e) {
+            // ignore, if it can't resolve, return null
+        }
+        return null;
+    }
+
 }

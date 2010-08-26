@@ -186,6 +186,9 @@ public class FormView extends ViewPart implements ISelectionObserver {
                 try {
                     featurePropertiesPanel = new FormPropertiesPanel(Utilities.readForm(selectedLayerFormFile));
                     currentControl = featurePropertiesPanel.createControl(parentComposite);
+                    ToolContextImpl newcontext = new ToolContextImpl();
+                    newcontext.setMapInternal((Map) selectedMap);
+                    featurePropertiesPanel.setEditFeature(newFeature, newcontext);
                 } catch (Exception e) {
                     e.printStackTrace();
                     selectedLayerFormFile = null;
