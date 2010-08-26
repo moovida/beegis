@@ -18,7 +18,7 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CHECKBOX;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.COMBOBOX;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CONSTRAINTS;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.DEFAULT;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.FIELDNAME;
@@ -26,16 +26,19 @@ import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstan
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORDER;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.TEXT;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Class representing an swt checkbox.
+ * Class representing an swt combobox.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-@XmlRootElement(name = CHECKBOX)
-public class CheckBox extends FormElement {
+@XmlRootElement(name = COMBOBOX)
+public class AComboBox extends FormElement {
 
     /**
      * The attribute's table field name.
@@ -50,13 +53,19 @@ public class CheckBox extends FormElement {
     public String name = null;
 
     /**
-     * Text for the checkbox label.
+     * Text for the combobox label.
      */
     @XmlAttribute(name = TEXT)
     public String text = null;
 
     /**
-     * A default selection for the checkbox.
+     * The list of items to put in the combo.
+     */
+    @XmlElement
+    public List<String> item = null;
+
+    /**
+     * A default item of the combo to select.
      */
     @XmlAttribute(name = DEFAULT)
     public String defaultText = null;
@@ -85,5 +94,5 @@ public class CheckBox extends FormElement {
     public String getName() {
         return name;
     }
-
+    
 }

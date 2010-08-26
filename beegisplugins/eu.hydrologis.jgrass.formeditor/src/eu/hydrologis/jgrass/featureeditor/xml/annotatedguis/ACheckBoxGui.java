@@ -18,45 +18,18 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
-import java.util.List;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.ComboBox;
-
 /**
- * Class representing an swt combobox gui.
+ * Class representing an swt checkbox gui.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class ComboBoxGui extends FormGuiElement {
-    private final ComboBox comboBox;
-
-    public ComboBoxGui( ComboBox comboBox ) {
-        this.comboBox = comboBox;
-    }
+public class ACheckBoxGui extends FormGuiElement {
 
     public Control makeGui( Composite parent ) {
-        Combo combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-        combo.setLayoutData(comboBox.constraints);
 
-        List<String> item = comboBox.item;
-        String[] listArray = (String[]) item.toArray(new String[item.size()]);
-        combo.setItems(listArray);
-        if (comboBox.defaultText != null) {
-            int index = 0;
-            for( int i = 0; i < listArray.length; i++ ) {
-                if (listArray[i].equals(comboBox.defaultText)) {
-                    index = i;
-                    break;
-                }
-            }
-            combo.select(index);
-        }
-        return combo;
+        return null;
     }
-
 }

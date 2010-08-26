@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = TAB)
-public class Tab extends FormElement {
+public class ATab extends FormElement {
 
     @XmlAttribute(name = NAME)
     public String name = null;
@@ -58,25 +58,25 @@ public class Tab extends FormElement {
     public String rowConstraints;
 
     @XmlElement
-    public List<CheckBox> checkbox = new ArrayList<CheckBox>();
+    public List<ACheckBox> checkbox = new ArrayList<ACheckBox>();
 
     @XmlElement
-    public List<ComboBox> combobox = new ArrayList<ComboBox>();
+    public List<AComboBox> combobox = new ArrayList<AComboBox>();
 
     @XmlElement
-    public List<Label> label = new ArrayList<Label>();
+    public List<ALabel> label = new ArrayList<ALabel>();
 
     @XmlElement
-    public List<Separator> separator = new ArrayList<Separator>();
+    public List<ASeparator> separator = new ArrayList<ASeparator>();
 
     @XmlElement
-    public List<RadioButton> radiobutton = new ArrayList<RadioButton>();
+    public List<ARadioButton> radiobutton = new ArrayList<ARadioButton>();
 
     @XmlElement
-    public List<TextArea> textarea = new ArrayList<TextArea>();
+    public List<ATextArea> textarea = new ArrayList<ATextArea>();
 
     @XmlElement
-    public List<TextField> textfield = new ArrayList<TextField>();
+    public List<ATextField> textfield = new ArrayList<ATextField>();
 
     public List< ? extends FormElement> getOrderedElements() {
         List<FormElement> orderedElements = new ArrayList<FormElement>();

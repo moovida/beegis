@@ -18,12 +18,13 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.COMBOBOX;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CONSTRAINTS;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.DEFAULT;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.FIELDNAME;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.NAME;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORDER;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORIENTATION;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.RADIOBUTTON;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.TEXT;
 
 import java.util.List;
@@ -37,8 +38,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-@XmlRootElement(name = COMBOBOX)
-public class ComboBox extends FormElement {
+@XmlRootElement(name = RADIOBUTTON)
+public class ARadioButton extends FormElement {
 
     /**
      * The attribute's table field name.
@@ -53,22 +54,28 @@ public class ComboBox extends FormElement {
     public String name = null;
 
     /**
-     * Text for the combobox label.
+     * Text for the radiobutton label.
      */
     @XmlAttribute(name = TEXT)
     public String text = null;
 
     /**
-     * The list of items to put in the combo.
+     * The list of items out of which to make radiobuttons.
      */
     @XmlElement
     public List<String> item = null;
 
     /**
-     * A default item of the combo to select.
+     * A default item of the list of radiobuttons to be selected.
      */
     @XmlAttribute(name = DEFAULT)
     public String defaultText = null;
+
+    /**
+     * Orientation of the radiobuttons (horizontal, vertical).
+     */
+    @XmlAttribute(name = ORIENTATION)
+    public String orientation = null;
 
     /**
      * The widget order.
@@ -94,5 +101,4 @@ public class ComboBox extends FormElement {
     public String getName() {
         return name;
     }
-    
 }

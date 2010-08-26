@@ -18,22 +18,30 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CHECKBOX;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CONSTRAINTS;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.DEFAULT;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.FIELDNAME;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.NAME;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORDER;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORIENTATION;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.SEPARATOR;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.TEXT;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Class representing an swt separator label.
+ * Class representing an swt checkbox.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-@XmlRootElement(name = SEPARATOR)
-public class Separator extends FormElement {
+@XmlRootElement(name = CHECKBOX)
+public class ACheckBox extends FormElement {
+
+    /**
+     * The attribute's table field name.
+     */
+    @XmlAttribute(name = FIELDNAME)
+    public final String fieldName = null;
 
     /**
      * Unique name for the object.
@@ -42,16 +50,22 @@ public class Separator extends FormElement {
     public String name = null;
 
     /**
+     * Text for the checkbox label.
+     */
+    @XmlAttribute(name = TEXT)
+    public String text = null;
+
+    /**
+     * A default selection for the checkbox.
+     */
+    @XmlAttribute(name = DEFAULT)
+    public String defaultText = null;
+
+    /**
      * The widget order.
      */
     @XmlAttribute(name = ORDER)
     public Integer order = null;
-
-    /**
-     * The separator orientation.
-     */
-    @XmlAttribute(name = ORIENTATION)
-    public String orientation = null;
 
     /**
      * The layout constraints.
@@ -71,4 +85,5 @@ public class Separator extends FormElement {
     public String getName() {
         return name;
     }
+
 }

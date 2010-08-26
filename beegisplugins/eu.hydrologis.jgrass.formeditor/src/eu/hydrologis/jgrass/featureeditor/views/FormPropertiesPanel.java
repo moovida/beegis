@@ -20,7 +20,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Form;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
 import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.FormGuiElement;
 import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.FormGuiFactory;
 
@@ -34,9 +34,9 @@ public class FormPropertiesPanel implements KeyListener, ISelectionChangedListen
 
     /** Used send commands to the edit blackboard */
     private IToolContext context;
-    private final Form form;
+    private final AForm form;
 
-    public FormPropertiesPanel( Form form ) {
+    public FormPropertiesPanel( AForm form ) {
         this.form = form;
 
     }

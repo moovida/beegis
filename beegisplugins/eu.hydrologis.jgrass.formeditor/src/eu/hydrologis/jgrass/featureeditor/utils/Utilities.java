@@ -28,7 +28,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.io.FilenameUtils;
 
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Form;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
 
 /**
  * Utilities for forms.
@@ -58,13 +58,13 @@ public class Utilities {
     }
 
     /**
-     * Reads a {@link Form} from a form file.
+     * Reads a {@link AForm} from a form file.
      * 
      * @param formFile the file containing the form xml.
-     * @return the {@link Form} object.
+     * @return the {@link AForm} object.
      * @throws Exception
      */
-    public static Form readForm( File formFile ) throws Exception {
+    public static AForm readForm( File formFile ) throws Exception {
         BufferedReader br = null;
         StringBuilder xml = new StringBuilder();
         try {
@@ -78,7 +78,7 @@ public class Utilities {
         }
 
         String xmlString = xml.toString();
-        Form form = parseXML(xmlString);
+        AForm form = parseXML(xmlString);
         return form;
     }
 
@@ -86,25 +86,25 @@ public class Utilities {
      * Parse a form xml.
      * 
      * @param xml the xml containing the form definition. 
-     * @return the {@link Form}.
+     * @return the {@link AForm}.
      * @throws Exception
      */
-    public static Form parseXML( String xml ) throws Exception {
+    public static AForm parseXML( String xml ) throws Exception {
         JAXBContext jc = JAXBContext.newInstance("eu.hydrologis.jgrass.featureeditor.xml.annotated"); //$NON-NLS-1$
         Unmarshaller um = jc.createUnmarshaller();
         StringReader sr = new StringReader(xml);
-        return (Form) um.unmarshal(sr);
+        return (AForm) um.unmarshal(sr);
     }
 
     /**
-     * Write the {@link Form} to xml file.
+     * Write the {@link AForm} to xml file.
      * 
-     * @param form the {@link Form} object.
+     * @param form the {@link AForm} object.
      * @param file the file to which to dump to. 
      * @throws Exception
      */
-    public static void writeXML( Form form, File file ) throws Exception {
-        JAXBContext jc = JAXBContext.newInstance(Form.class);
+    public static void writeXML( AForm form, File file ) throws Exception {
+        JAXBContext jc = JAXBContext.newInstance(AForm.class);
         Marshaller marshaller = jc.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.marshal(form, file);
