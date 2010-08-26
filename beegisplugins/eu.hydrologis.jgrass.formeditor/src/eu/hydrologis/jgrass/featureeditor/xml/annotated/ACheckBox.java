@@ -73,7 +73,6 @@ public class ACheckBox extends FormElement {
     @XmlAttribute(name = CONSTRAINTS)
     public String constraints = null;
 
-    @Override
     public int getOrder() {
         if (order == null) {
             order = 0;
@@ -81,9 +80,12 @@ public class ACheckBox extends FormElement {
         return order;
     }
 
-    @Override
     public String getName() {
         return name;
+    }
+
+    public String getFieldName() {
+        return fieldName;
     }
 
 }

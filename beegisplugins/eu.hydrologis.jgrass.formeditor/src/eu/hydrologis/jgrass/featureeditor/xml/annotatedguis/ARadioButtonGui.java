@@ -24,8 +24,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.opengis.feature.simple.SimpleFeature;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ARadioButton;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 
 /**
  * Class representing an swt combobox gui.
@@ -34,6 +36,7 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.ARadioButton;
  */
 public class ARadioButtonGui extends FormGuiElement {
     private final ARadioButton radioButton;
+    private SimpleFeature feature;
 
     public ARadioButtonGui( ARadioButton radioButton ) {
         this.radioButton = radioButton;
@@ -62,5 +65,13 @@ public class ARadioButtonGui extends FormGuiElement {
         }
 
         return radioComposite;
+    }
+
+    public void setFeature( SimpleFeature feature ) {
+        this.feature = feature;
+    }
+    
+    public FormElement getFormElement() {
+        return radioButton;
     }
 }

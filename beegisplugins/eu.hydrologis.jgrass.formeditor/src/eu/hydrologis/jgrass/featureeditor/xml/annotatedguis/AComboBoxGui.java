@@ -24,8 +24,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.opengis.feature.simple.SimpleFeature;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.AComboBox;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 
 /**
  * Class representing an swt combobox gui.
@@ -34,6 +36,7 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.AComboBox;
  */
 public class AComboBoxGui extends FormGuiElement {
     private final AComboBox comboBox;
+    private SimpleFeature feature;
 
     public AComboBoxGui( AComboBox comboBox ) {
         this.comboBox = comboBox;
@@ -57,6 +60,14 @@ public class AComboBoxGui extends FormGuiElement {
             combo.select(index);
         }
         return combo;
+    }
+    
+    public void setFeature( SimpleFeature feature ) {
+        this.feature = feature;
+    }
+
+    public FormElement getFormElement() {
+        return comboBox;
     }
 
 }

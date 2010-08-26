@@ -21,8 +21,10 @@ package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.opengis.feature.simple.SimpleFeature;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ALabel;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 
 /**
  * Class representing an swt label gui.
@@ -31,6 +33,7 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.ALabel;
  */
 public class ALabelGui extends FormGuiElement {
     private final ALabel label;
+    private SimpleFeature feature;
 
     public ALabelGui( ALabel label ) {
         this.label = label;
@@ -42,5 +45,13 @@ public class ALabelGui extends FormGuiElement {
         swtlabel.setLayoutData(label.constraints);
         swtlabel.setText(label.text);
         return swtlabel;
+    }
+    
+    public void setFeature( SimpleFeature feature ) {
+        this.feature = feature;
+    }
+
+    public FormElement getFormElement() {
+        return label;
     }
 }

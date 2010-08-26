@@ -20,6 +20,9 @@ package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.opengis.feature.simple.SimpleFeature;
+
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 
 /**
  * Class representing an swt textarea gui.
@@ -28,10 +31,19 @@ import org.eclipse.swt.widgets.Control;
  */
 public class ATextAreaGui extends FormGuiElement {
 
+    private SimpleFeature feature;
+
     @Override
     public Control makeGui( Composite parent ) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    public void setFeature( SimpleFeature feature ) {
+        this.feature = feature;
+    }
+
+    public FormElement getFormElement() {
+        return null;
+    }
 }

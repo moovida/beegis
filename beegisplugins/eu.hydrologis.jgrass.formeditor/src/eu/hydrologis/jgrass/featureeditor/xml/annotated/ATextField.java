@@ -92,5 +92,9 @@ public class ATextField extends FormElement {
     public String getName() {
         return name;
     }
+    
+    public String getFieldName() {
+        return fieldName;
+    }
 
 }

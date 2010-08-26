@@ -22,8 +22,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
+import org.opengis.feature.simple.SimpleFeature;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextField;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 
 /**
  * Class representing an swt textfield gui.
@@ -33,6 +35,7 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextField;
 public class ATextFieldGui extends FormGuiElement {
 
     private final ATextField textField;
+    private SimpleFeature feature;
 
     public ATextFieldGui( ATextField textField ) {
         this.textField = textField;
@@ -49,4 +52,11 @@ public class ATextFieldGui extends FormGuiElement {
         return text;
     }
 
+    public void setFeature( SimpleFeature feature ) {
+        this.feature = feature;
+    }
+
+    public FormElement getFormElement() {
+        return textField;
+    }
 }

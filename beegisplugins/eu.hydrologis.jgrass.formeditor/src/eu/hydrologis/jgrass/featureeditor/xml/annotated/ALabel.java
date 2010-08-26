@@ -71,4 +71,8 @@ public class ALabel extends FormElement {
     public String getName() {
         return name;
     }
+    
+    public String getFieldName() {
+        return null;
+    }
 }

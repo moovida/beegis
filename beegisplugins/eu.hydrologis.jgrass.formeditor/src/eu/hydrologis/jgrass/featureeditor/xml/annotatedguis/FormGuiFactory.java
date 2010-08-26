@@ -17,6 +17,8 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
+import java.util.HashMap;
+
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ACheckBox;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.AComboBox;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
@@ -34,40 +36,55 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextField;
  */
 public class FormGuiFactory {
 
+    private HashMap<String, FormGuiElement> fieldNames2GuiElementsMap = new HashMap<String, FormGuiElement>();
+
+    /**
+     * Getter for the map of gui elements that do modify an attribute.
+     * 
+     * @return the {@link HashMap map} that maps the fieldname to the editing gui.
+     */
+    public HashMap<String, FormGuiElement> getFieldNames2GuiElementsMap() {
+        return fieldNames2GuiElementsMap;
+    }
+    
     /**
      * Create the gui for the given {@link FormElement}.
      * 
      * @param formElement the form element.
-     * @return teh gui for the form element.
+     * @return the gui for the form element.
      */
-    public static FormGuiElement createFormGui( FormElement formElement ) {
+    public FormGuiElement createFormGui( FormElement formElement ) {
 
+        FormGuiElement guiElement = null;
         if (formElement instanceof ACheckBox) {
             ACheckBox checkbox = (ACheckBox) formElement;
-            return new ACheckBoxGui();
+            guiElement = new ACheckBoxGui();
         } else if (formElement instanceof AComboBox) {
             AComboBox comboBox = (AComboBox) formElement;
-            return new AComboBoxGui(comboBox);
+            guiElement = new AComboBoxGui(comboBox);
         } else if (formElement instanceof ALabel) {
             ALabel label = (ALabel) formElement;
-            return new ALabelGui(label);
+            guiElement = new ALabelGui(label);
         } else if (formElement instanceof ARadioButton) {
             ARadioButton radioButton = (ARadioButton) formElement;
-            return new ARadioButtonGui(radioButton);
+            guiElement = new ARadioButtonGui(radioButton);
         } else if (formElement instanceof ASeparator) {
             ASeparator separator = (ASeparator) formElement;
-            return new ASeparatorGui(separator);
-        } else if (formElement instanceof AForm) {
-            AForm form = (AForm) formElement;
-            return new AFormGui(form);
+            guiElement = new ASeparatorGui(separator);
         } else if (formElement instanceof ATextArea) {
             ATextArea textArea = (ATextArea) formElement;
-            return new ATextAreaGui();
+            guiElement = new ATextAreaGui();
         } else if (formElement instanceof ATextField) {
             ATextField textField = (ATextField) formElement;
-            return new ATextFieldGui(textField);
+            guiElement = new ATextFieldGui(textField);
         }
-
+        if (guiElement != null) {
+            String fieldName = guiElement.getFormElement().getFieldName();
+            if (fieldName != null) {
+                fieldNames2GuiElementsMap.put(fieldName, guiElement);
+            }
+            return guiElement;
+        }
         throw new IllegalArgumentException();
     }
 }

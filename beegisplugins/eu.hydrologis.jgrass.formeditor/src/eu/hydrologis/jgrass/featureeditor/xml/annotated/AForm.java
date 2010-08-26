@@ -51,4 +51,8 @@ public class AForm extends FormElement {
     public int getOrder() {
         return -1;
     }
+    
+    public String getFieldName() {
+        return null;
+    }
 }

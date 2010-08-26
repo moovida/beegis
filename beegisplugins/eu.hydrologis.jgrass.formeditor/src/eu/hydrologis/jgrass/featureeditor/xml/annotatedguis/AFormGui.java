@@ -18,6 +18,8 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import net.miginfocom.swt.MigLayout;
@@ -32,6 +34,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.opengis.feature.simple.SimpleFeature;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
@@ -42,14 +45,15 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATab;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class AFormGui extends FormGuiElement {
+public class AFormGui {
     private final AForm form;
+
+    private FormGuiFactory formGuiFactory = new FormGuiFactory();
 
     public AFormGui( AForm form ) {
         this.form = form;
     }
 
-    @Override
     public Control makeGui( Composite parent ) {
         // parent has FillLayout
 
@@ -57,7 +61,7 @@ public class AFormGui extends FormGuiElement {
         final CTabFolder folder = new CTabFolder(parent, SWT.BOTTOM);
         folder.setUnselectedCloseVisible(false);
         folder.setLayout(new FillLayout());
-        
+
         // for every Tab object create a tab
         List<ATab> orderedTabs = form.getOrderedTabs();
         boolean first = true;
@@ -71,11 +75,11 @@ public class AFormGui extends FormGuiElement {
                 folder.setSelection(tab);
                 first = false;
             }
-            
+
             // we want the content to scroll
             final ScrolledComposite scroller = new ScrolledComposite(folder, SWT.V_SCROLL);
             scroller.setLayout(new FillLayout());
-            
+
             // the actual content of the tab
             Composite tabComposite = new Composite(scroller, SWT.NONE);
             tabComposite.setLayout(new MigLayout(orderedTab.layoutConstraints, orderedTab.colConstraints));
@@ -87,24 +91,37 @@ public class AFormGui extends FormGuiElement {
             scroller.setMinHeight(folder.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
             scroller.addControlListener(new ControlAdapter(){
                 public void controlResized( ControlEvent e ) {
-                    // recalculate height in case the resize makes texts 
+                    // recalculate height in case the resize makes texts
                     // wrap or things happen that require it
                     Rectangle r = scroller.getClientArea();
                     scroller.setMinHeight(folder.computeSize(SWT.DEFAULT, r.height).y);
                 }
             });
-            
+
             // the scroller gets the control of the tab item
             tab.setControl(scroller);
 
             // add things to the tab composite
             List< ? extends FormElement> orderedElements = orderedTab.getOrderedElements();
             for( FormElement orderedGuiElement : orderedElements ) {
-                FormGuiElement formGui = FormGuiFactory.createFormGui(orderedGuiElement);
+                FormGuiElement formGui = formGuiFactory.createFormGui(orderedGuiElement);
                 formGui.makeGui(tabComposite);
             }
         }
 
         return folder;
+    }
+
+    public void setFeature( SimpleFeature feature ) {
+        // set in kids
+        HashMap<String, FormGuiElement> fieldNames2GuiElementsMap = formGuiFactory.getFieldNames2GuiElementsMap();
+        Collection<FormGuiElement> guiElements = fieldNames2GuiElementsMap.values();
+        for( FormGuiElement formGuiElement : guiElements ) {
+            formGuiElement.setFeature(feature);
+        }
+    }
+
+    public FormElement getFormElement() {
+        return form;
     }
 }

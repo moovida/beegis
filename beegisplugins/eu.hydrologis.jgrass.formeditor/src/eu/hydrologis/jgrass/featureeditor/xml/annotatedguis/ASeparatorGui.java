@@ -21,8 +21,10 @@ package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.opengis.feature.simple.SimpleFeature;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ASeparator;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 
 /**
  * Class representing an swt separator label gui.
@@ -32,6 +34,7 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.ASeparator;
 public class ASeparatorGui extends FormGuiElement {
 
     private final ASeparator separator;
+    private SimpleFeature feature;
     public ASeparatorGui( ASeparator separator ) {
         this.separator = separator;
 
@@ -47,5 +50,13 @@ public class ASeparatorGui extends FormGuiElement {
         label.setLayoutData(separator.constraints);
 
         return label;
+    }
+    
+    public void setFeature( SimpleFeature feature ) {
+        this.feature = feature;
+    }
+
+    public FormElement getFormElement() {
+        return separator;
     }
 }
