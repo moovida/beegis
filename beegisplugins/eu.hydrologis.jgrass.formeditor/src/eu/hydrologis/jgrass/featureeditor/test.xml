@@ -10,11 +10,17 @@
             <item>UK</item>
         </combobox>
         <label order="4" name="label3" text="Currency" constraints="gap 20"/>
-        <combobox order="5" name="combo2" default="euro" fieldname="CURR_TYPE" constraints="span, growx">
-            <item>euro</item>
-            <item>kune</item>
-            <item>rubli</item>
-            <item>krone</item>
+        <combobox order="5" name="combo2" default="Dollar" fieldname="CURR_TYPE" constraints="span, growx, wrap">
+            <item>Lira</item>
+            <item>Peso</item>
+            <item>Dollar</item>
+            <item>Franc</item>
+        </combobox>
+        <combobox order="6" name="combo3" default="USD" fieldname="CURR_CODE" constraints="span, growx">
+            <item>Lira, ITL</item>
+            <item>Peso, ARP</item>
+            <item>Dollar, USD</item>
+            <item>Franc, CHF</item>
         </combobox>
     </tab>
     <tab order="1" name="tab2" text="Statistics" layout="insets 20 20 20 20, fillx" col="[left][fill][left][fill]">
@@ -27,9 +33,11 @@
         <label order="7" name="label7" text="miles" constraints="gap 40"/>
         <textfield order="8" name="text4" default="" fieldname="SQMI" valuetype="string" constraints="span,growx, wrap"/>
         <label order="9" name="label8" text="landlocked" constraints="gap 10"/>
-        <radiobutton order="10" name="radio1" default="not locked, N" fieldname="LANDLOCKED" constraints="span,growx">
+        <radiobutton order="10" name="radio1" default="N" fieldname="LANDLOCKED" constraints="span,growx">
             <item>locked, Y</item>
             <item>not locked, N</item>
         </radiobutton>
     </tab>
 </form>
+
+

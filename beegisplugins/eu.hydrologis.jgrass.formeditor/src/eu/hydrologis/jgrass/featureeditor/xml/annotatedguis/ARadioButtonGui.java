@@ -106,6 +106,12 @@ public class ARadioButtonGui extends FormGuiElement implements SelectionListener
         // find the button index and select it
         int index = valuesList.indexOf(attributeString);
         if (index == -1) {
+            // set the default value if available
+            if (aRadioButton.defaultText != null && aRadioButton.defaultText.length() > 0) {
+                index = valuesList.indexOf(aRadioButton.defaultText);
+            }
+        }
+        if (index == -1) {
             index = 0;
         }
 

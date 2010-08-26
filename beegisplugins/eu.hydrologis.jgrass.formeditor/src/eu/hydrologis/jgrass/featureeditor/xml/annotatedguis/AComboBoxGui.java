@@ -98,6 +98,12 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener {
 
         int index = valuesList.indexOf(attributeString);
         if (index == -1) {
+            // set the default value if available
+            if (aComboBox.defaultText != null && aComboBox.defaultText.length() > 0) {
+                index = valuesList.indexOf(aComboBox.defaultText);
+            }
+        }
+        if (index == -1) {
             index = 0;
         }
         combo.select(index);
@@ -111,10 +117,10 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener {
         int selectionIndex = combo.getSelectionIndex();
         String comboStr = combo.getItem(selectionIndex);
         Class< ? > binding = feature.getProperty(aComboBox.fieldName).getType().getBinding();
-        
+
         int index = labelList.indexOf(comboStr);
         String valueStr = valuesList.get(index);
-        
+
         Object adapted = adapt(valueStr, binding);
         if (adapted != null) {
             feature.setAttribute(aComboBox.fieldName, adapted);
