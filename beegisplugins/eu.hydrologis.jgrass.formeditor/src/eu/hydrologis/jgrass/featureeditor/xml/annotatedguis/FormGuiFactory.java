@@ -17,15 +17,15 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.CheckBox;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.ComboBox;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Form;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ACheckBox;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.AComboBox;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Label;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.RadioButton;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Separator;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.TextArea;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.TextField;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ALabel;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ARadioButton;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ASeparator;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextArea;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextField;
 
 /**
  * A factory for guis.
@@ -42,30 +42,30 @@ public class FormGuiFactory {
      */
     public static FormGuiElement createFormGui( FormElement formElement ) {
 
-        if (formElement instanceof CheckBox) {
-            CheckBox checkbox = (CheckBox) formElement;
-            return new CheckBoxGui();
-        } else if (formElement instanceof ComboBox) {
-            ComboBox comboBox = (ComboBox) formElement;
-            return new ComboBoxGui(comboBox);
-        } else if (formElement instanceof Label) {
-            Label label = (Label) formElement;
-            return new LabelGui(label);
-        } else if (formElement instanceof RadioButton) {
-            RadioButton radioButton = (RadioButton) formElement;
-            return new RadioButtonGui(radioButton);
-        } else if (formElement instanceof Separator) {
-            Separator separator = (Separator) formElement;
-            return new SeparatorGui(separator);
-        } else if (formElement instanceof Form) {
-            Form form = (Form) formElement;
-            return new FormGui(form);
-        } else if (formElement instanceof TextArea) {
-            TextArea textArea = (TextArea) formElement;
-            return new TextAreaGui();
-        } else if (formElement instanceof TextField) {
-            TextField textField = (TextField) formElement;
-            return new TextFieldGui(textField);
+        if (formElement instanceof ACheckBox) {
+            ACheckBox checkbox = (ACheckBox) formElement;
+            return new ACheckBoxGui();
+        } else if (formElement instanceof AComboBox) {
+            AComboBox comboBox = (AComboBox) formElement;
+            return new AComboBoxGui(comboBox);
+        } else if (formElement instanceof ALabel) {
+            ALabel label = (ALabel) formElement;
+            return new ALabelGui(label);
+        } else if (formElement instanceof ARadioButton) {
+            ARadioButton radioButton = (ARadioButton) formElement;
+            return new ARadioButtonGui(radioButton);
+        } else if (formElement instanceof ASeparator) {
+            ASeparator separator = (ASeparator) formElement;
+            return new ASeparatorGui(separator);
+        } else if (formElement instanceof AForm) {
+            AForm form = (AForm) formElement;
+            return new AFormGui(form);
+        } else if (formElement instanceof ATextArea) {
+            ATextArea textArea = (ATextArea) formElement;
+            return new ATextAreaGui();
+        } else if (formElement instanceof ATextField) {
+            ATextField textField = (ATextField) formElement;
+            return new ATextFieldGui(textField);
         }
 
         throw new IllegalArgumentException();

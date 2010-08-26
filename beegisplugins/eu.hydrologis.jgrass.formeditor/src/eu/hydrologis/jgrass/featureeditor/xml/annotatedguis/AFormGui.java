@@ -33,19 +33,19 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Form;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Tab;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATab;
 
 /**
  * A class representing the main tabbed component gui.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class FormGui extends FormGuiElement {
-    private final Form form;
+public class AFormGui extends FormGuiElement {
+    private final AForm form;
 
-    public FormGui( Form form ) {
+    public AFormGui( AForm form ) {
         this.form = form;
     }
 
@@ -59,9 +59,9 @@ public class FormGui extends FormGuiElement {
         folder.setLayout(new FillLayout());
         
         // for every Tab object create a tab
-        List<Tab> orderedTabs = form.getOrderedTabs();
+        List<ATab> orderedTabs = form.getOrderedTabs();
         boolean first = true;
-        for( Tab orderedTab : orderedTabs ) {
+        for( ATab orderedTab : orderedTabs ) {
 
             // the tabitem
             CTabItem tab = new CTabItem(folder, SWT.NONE);
@@ -97,7 +97,6 @@ public class FormGui extends FormGuiElement {
             // the scroller gets the control of the tab item
             tab.setControl(scroller);
 
-            
             // add things to the tab composite
             List< ? extends FormElement> orderedElements = orderedTab.getOrderedElements();
             for( FormElement orderedGuiElement : orderedElements ) {

@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlRegistry;
 
 @XmlRegistry
 public class ObjectFactory {
-    public Form createForm() {
-        return new Form();
+    public AForm createForm() {
+        return new AForm();
     }
 }

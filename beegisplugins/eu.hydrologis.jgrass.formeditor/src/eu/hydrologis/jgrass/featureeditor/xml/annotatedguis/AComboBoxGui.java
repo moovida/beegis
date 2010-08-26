@@ -18,29 +18,45 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
+import java.util.List;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Label;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.AComboBox;
 
 /**
- * Class representing an swt label gui.
+ * Class representing an swt combobox gui.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class LabelGui extends FormGuiElement {
-    private final Label label;
+public class AComboBoxGui extends FormGuiElement {
+    private final AComboBox comboBox;
 
-    public LabelGui( Label label ) {
-        this.label = label;
+    public AComboBoxGui( AComboBox comboBox ) {
+        this.comboBox = comboBox;
     }
 
-    @Override
     public Control makeGui( Composite parent ) {
-        org.eclipse.swt.widgets.Label swtlabel = new org.eclipse.swt.widgets.Label(parent, SWT.NONE);
-        swtlabel.setLayoutData(label.constraints);
-        swtlabel.setText(label.text);
-        return swtlabel;
+        Combo combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+        combo.setLayoutData(comboBox.constraints);
+
+        List<String> item = comboBox.item;
+        String[] listArray = (String[]) item.toArray(new String[item.size()]);
+        combo.setItems(listArray);
+        if (comboBox.defaultText != null) {
+            int index = 0;
+            for( int i = 0; i < listArray.length; i++ ) {
+                if (listArray[i].equals(comboBox.defaultText)) {
+                    index = i;
+                    break;
+                }
+            }
+            combo.select(index);
+        }
+        return combo;
     }
+
 }

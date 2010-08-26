@@ -21,32 +21,26 @@ package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Text;
 
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.TextField;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ALabel;
 
 /**
- * Class representing an swt textfield gui.
+ * Class representing an swt label gui.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class TextFieldGui extends FormGuiElement {
+public class ALabelGui extends FormGuiElement {
+    private final ALabel label;
 
-    private final TextField textField;
-
-    public TextFieldGui( TextField textField ) {
-        this.textField = textField;
+    public ALabelGui( ALabel label ) {
+        this.label = label;
     }
 
     @Override
     public Control makeGui( Composite parent ) {
-        Text text = new Text(parent, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
-        text.setLayoutData(textField.constraints);
-        if (textField.defaultText != null) {
-            text.setText(textField.defaultText);
-        }
-
-        return text;
+        org.eclipse.swt.widgets.Label swtlabel = new org.eclipse.swt.widgets.Label(parent, SWT.NONE);
+        swtlabel.setLayoutData(label.constraints);
+        swtlabel.setText(label.text);
+        return swtlabel;
     }
-
 }

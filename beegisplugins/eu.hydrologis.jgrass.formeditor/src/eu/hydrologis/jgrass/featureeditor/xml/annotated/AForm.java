@@ -16,20 +16,39 @@
  * along with this library; if not, write to the Free Foundation, Inc., 59
  * Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
+package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.FORM;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Class representing an swt checkbox gui.
+ * The wrapping form class.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class CheckBoxGui extends FormGuiElement {
+@XmlRootElement(name = FORM)
+public class AForm extends FormElement {
+    @XmlElement
+    public List<ATab> tab = new ArrayList<ATab>();
 
-    public Control makeGui( Composite parent ) {
+    public List<ATab> getOrderedTabs() {
+        Collections.sort(tab);
+        return tab;
+    }
 
-        return null;
+    @Override
+    public String getName() {
+        return "ROOT"; //$NON-NLS-1$
+    }
+
+    @Override
+    public int getOrder() {
+        return -1;
     }
 }

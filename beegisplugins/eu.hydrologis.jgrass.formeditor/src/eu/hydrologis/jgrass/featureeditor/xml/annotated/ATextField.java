@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @XmlRootElement(name = TEXTFIELD)
-public class TextField extends FormElement {
+public class ATextField extends FormElement {
 
     /**
      * The attribute's table field name.

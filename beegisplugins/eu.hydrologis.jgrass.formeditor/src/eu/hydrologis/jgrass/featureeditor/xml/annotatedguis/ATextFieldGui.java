@@ -21,31 +21,32 @@ package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Text;
 
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Separator;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextField;
 
 /**
- * Class representing an swt separator label gui.
+ * Class representing an swt textfield gui.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class SeparatorGui extends FormGuiElement {
+public class ATextFieldGui extends FormGuiElement {
 
-    private final Separator separator;
-    public SeparatorGui( Separator separator ) {
-        this.separator = separator;
+    private final ATextField textField;
 
+    public ATextFieldGui( ATextField textField ) {
+        this.textField = textField;
     }
+
     @Override
     public Control makeGui( Composite parent ) {
-        int style = SWT.HORIZONTAL | SWT.SEPARATOR;
-        if (separator.orientation != null && separator.orientation.toLowerCase().startsWith("ver")) {
-            style = SWT.VERTICAL | SWT.SEPARATOR;
+        Text text = new Text(parent, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+        text.setLayoutData(textField.constraints);
+        if (textField.defaultText != null) {
+            text.setText(textField.defaultText);
         }
 
-        org.eclipse.swt.widgets.Label label = new org.eclipse.swt.widgets.Label(parent, style);
-        label.setLayoutData(separator.constraints);
-
-        return label;
+        return text;
     }
+
 }

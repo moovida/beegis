@@ -12,19 +12,19 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Form;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Tab;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATab;
 
 @SuppressWarnings("nls")
 public class FormParser {
 
-    public static Form parseXML( String xml ) {
+    public static AForm parseXML( String xml ) {
         try {
             JAXBContext jc = JAXBContext.newInstance("eu.hydrologis.jgrass.featureeditor.xml.annotated");
             Unmarshaller um = jc.createUnmarshaller();
             StringReader sr = new StringReader(xml);
-            return (Form) um.unmarshal(sr);
+            return (AForm) um.unmarshal(sr);
         } catch (JAXBException e) {
             System.err.println("Exception parsing xml " + xml);
             e.printStackTrace();
@@ -33,9 +33,9 @@ public class FormParser {
         return null;
     }
 
-    public static void writeXML( Form form, File file ) {
+    public static void writeXML( AForm form, File file ) {
         try {
-            JAXBContext jc = JAXBContext.newInstance(Form.class);
+            JAXBContext jc = JAXBContext.newInstance(AForm.class);
             Marshaller marshaller = jc.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true); // pretty print XML
             marshaller.marshal(form, file);
@@ -59,10 +59,10 @@ public class FormParser {
 
         String xmlString = xml.toString();
         System.out.println(xmlString);
-        Form form = parseXML(xmlString);
+        AForm form = parseXML(xmlString);
 
-        List<Tab> tabList = form.getOrderedTabs();
-        for( Tab tab : tabList ) {
+        List<ATab> tabList = form.getOrderedTabs();
+        for( ATab tab : tabList ) {
             System.out.println("tab: " + tab.name);
             List< ? extends FormElement> orderedElements = tab.getOrderedElements();
             for( FormElement orderedElement : orderedElements ) {

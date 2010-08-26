@@ -18,20 +18,34 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ASeparator;
+
 /**
- * Class representing an swt textarea gui.
+ * Class representing an swt separator label gui.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class TextAreaGui extends FormGuiElement {
+public class ASeparatorGui extends FormGuiElement {
 
+    private final ASeparator separator;
+    public ASeparatorGui( ASeparator separator ) {
+        this.separator = separator;
+
+    }
     @Override
     public Control makeGui( Composite parent ) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+        int style = SWT.HORIZONTAL | SWT.SEPARATOR;
+        if (separator.orientation != null && separator.orientation.toLowerCase().startsWith("ver")) {
+            style = SWT.VERTICAL | SWT.SEPARATOR;
+        }
 
+        org.eclipse.swt.widgets.Label label = new org.eclipse.swt.widgets.Label(parent, style);
+        label.setLayoutData(separator.constraints);
+
+        return label;
+    }
 }

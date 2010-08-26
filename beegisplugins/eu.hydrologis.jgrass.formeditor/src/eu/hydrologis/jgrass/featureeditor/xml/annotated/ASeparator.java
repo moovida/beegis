@@ -19,33 +19,21 @@
 package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.CONSTRAINTS;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.DEFAULT;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.FIELDNAME;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.NAME;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORDER;
 import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.ORIENTATION;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.RADIOBUTTON;
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.TEXT;
-
-import java.util.List;
+import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.SEPARATOR;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Class representing an swt combobox.
+ * Class representing an swt separator label.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-@XmlRootElement(name = RADIOBUTTON)
-public class RadioButton extends FormElement {
-
-    /**
-     * The attribute's table field name.
-     */
-    @XmlAttribute(name = FIELDNAME)
-    public final String fieldName = null;
+@XmlRootElement(name = SEPARATOR)
+public class ASeparator extends FormElement {
 
     /**
      * Unique name for the object.
@@ -54,34 +42,16 @@ public class RadioButton extends FormElement {
     public String name = null;
 
     /**
-     * Text for the radiobutton label.
-     */
-    @XmlAttribute(name = TEXT)
-    public String text = null;
-
-    /**
-     * The list of items out of which to make radiobuttons.
-     */
-    @XmlElement
-    public List<String> item = null;
-
-    /**
-     * A default item of the list of radiobuttons to be selected.
-     */
-    @XmlAttribute(name = DEFAULT)
-    public String defaultText = null;
-
-    /**
-     * Orientation of the radiobuttons (horizontal, vertical).
-     */
-    @XmlAttribute(name = ORIENTATION)
-    public String orientation = null;
-
-    /**
      * The widget order.
      */
     @XmlAttribute(name = ORDER)
     public Integer order = null;
+
+    /**
+     * The separator orientation.
+     */
+    @XmlAttribute(name = ORIENTATION)
+    public String orientation = null;
 
     /**
      * The layout constraints.

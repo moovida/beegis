@@ -16,39 +16,22 @@
  * along with this library; if not, write to the Free Foundation, Inc., 59
  * Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package eu.hydrologis.jgrass.featureeditor.xml.annotated;
+package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
-import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstants.FORM;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
- * The wrapping form class
+ * Class representing an swt textarea gui.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-@XmlRootElement(name = FORM)
-public class Form extends FormElement {
-    @XmlElement
-    public List<Tab> tab = new ArrayList<Tab>();
-
-    public List<Tab> getOrderedTabs() {
-        Collections.sort(tab);
-        return tab;
-    }
+public class ATextAreaGui extends FormGuiElement {
 
     @Override
-    public String getName() {
-        return "ROOT";
+    public Control makeGui( Composite parent ) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
-    @Override
-    public int getOrder() {
-        return -1;
-    }
 }

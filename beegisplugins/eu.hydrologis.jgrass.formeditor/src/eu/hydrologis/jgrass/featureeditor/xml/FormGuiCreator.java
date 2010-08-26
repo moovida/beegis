@@ -24,24 +24,24 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Form;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.Tab;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATab;
 import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.FormGuiElement;
 import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.FormGuiFactory;
 
 @SuppressWarnings("nls")
 public class FormGuiCreator {
 
-    private Control makeGui( Composite mainComposite, Form form ) {
+    private Control makeGui( Composite mainComposite, AForm form ) {
         CTabFolder folder = new CTabFolder(mainComposite, SWT.BOTTOM);
         folder.setUnselectedCloseVisible(false);
         // folder.setSimple(false);
         folder.setLayout(new MigLayout("fill"));
         folder.setLayoutData("grow");
 
-        List<Tab> orderedTabs = form.getOrderedTabs();
-        for( Tab tab : orderedTabs ) {
+        List<ATab> orderedTabs = form.getOrderedTabs();
+        for( ATab tab : orderedTabs ) {
             CTabItem item = new CTabItem(folder, SWT.NONE);
             item.setText(tab.text);
 
@@ -73,7 +73,7 @@ public class FormGuiCreator {
         mainComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         mainComposite.setLayout(new MigLayout("fill"));
 
-        Form form = getForm();
+        AForm form = getForm();
         Control c = new FormGuiCreator().makeGui(mainComposite, form);
 
         shell.setSize(400, 400);
@@ -85,12 +85,12 @@ public class FormGuiCreator {
         display.dispose();
     }
 
-    public static Form parseXML( String xml ) {
+    public static AForm parseXML( String xml ) {
         try {
             JAXBContext jc = JAXBContext.newInstance("eu.hydrologis.jgrass.featureeditor.xml.annotated");
             Unmarshaller um = jc.createUnmarshaller();
             StringReader sr = new StringReader(xml);
-            return (Form) um.unmarshal(sr);
+            return (AForm) um.unmarshal(sr);
         } catch (JAXBException e) {
             System.err.println("Exception parsing xml " + xml);
             e.printStackTrace();
@@ -99,7 +99,7 @@ public class FormGuiCreator {
         return null;
     }
 
-    private static Form getForm() throws IOException {
+    private static AForm getForm() throws IOException {
         BufferedReader r = new BufferedReader(
                 new FileReader(
                         "/home/moovida/development/beegis-hg/beegis/beegisplugins/eu.hydrologis.jgrass.formeditor/src/eu/hydrologis/jgrass/featureeditor/test.xml"));
@@ -113,7 +113,7 @@ public class FormGuiCreator {
 
         String xmlString = xml.toString();
         System.out.println(xmlString);
-        Form form = parseXML(xmlString);
+        AForm form = parseXML(xmlString);
         return form;
     }
 

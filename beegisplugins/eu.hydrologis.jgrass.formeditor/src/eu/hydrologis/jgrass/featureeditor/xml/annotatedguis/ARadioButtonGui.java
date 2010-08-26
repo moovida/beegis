@@ -25,17 +25,17 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.RadioButton;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ARadioButton;
 
 /**
  * Class representing an swt combobox gui.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class RadioButtonGui extends FormGuiElement {
-    private final RadioButton radioButton;
+public class ARadioButtonGui extends FormGuiElement {
+    private final ARadioButton radioButton;
 
-    public RadioButtonGui( RadioButton radioButton ) {
+    public ARadioButtonGui( ARadioButton radioButton ) {
         this.radioButton = radioButton;
 
     }
