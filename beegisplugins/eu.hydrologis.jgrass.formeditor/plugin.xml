@@ -47,4 +47,27 @@
            </action>
         </actionSet>
      </extension>
+     <extension
+           point="org.eclipse.ui.viewActions">
+        <viewContribution
+              id="eu.hydrologis.jgrass.featureeditor.views.FormView.Contribution"
+              targetID="eu.hydrologis.jgrass.featureeditor.views.FormView">
+           <action
+                 class="eu.hydrologis.jgrass.featureeditor.views.actions.SaveAction"
+                 icon="icons/save_edit.gif"
+                 id="eu.hydrologis.jgrass.featureeditor.views.FormView.saveaction"
+                 label="Save"
+                 style="push"
+                 tooltip="Save the changes to the feature">
+           </action>
+           <action
+                 class="eu.hydrologis.jgrass.featureeditor.views.actions.ResetAction"
+                 icon="icons/undo_edit.gif"
+                 id="eu.hydrologis.jgrass.featureeditor.views.FormView.resetaction"
+                 label="Reset"
+                 style="push"
+                 tooltip="Reset the form to the original values">
+           </action>
+        </viewContribution>
+     </extension>
 </plugin>
