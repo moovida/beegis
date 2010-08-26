@@ -21,6 +21,8 @@ package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -34,25 +36,26 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class AComboBoxGui extends FormGuiElement {
-    private final AComboBox comboBox;
+public class AComboBoxGui extends FormGuiElement implements SelectionListener{
+    private final AComboBox aComboBox;
     private SimpleFeature feature;
+    private Combo combo;
 
     public AComboBoxGui( AComboBox comboBox ) {
-        this.comboBox = comboBox;
+        this.aComboBox = comboBox;
     }
 
     public Control makeGui( Composite parent ) {
-        Combo combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-        combo.setLayoutData(comboBox.constraints);
+        combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+        combo.setLayoutData(aComboBox.constraints);
 
-        List<String> item = comboBox.item;
+        List<String> item = aComboBox.item;
         String[] listArray = (String[]) item.toArray(new String[item.size()]);
         combo.setItems(listArray);
-        if (comboBox.defaultText != null) {
+        if (aComboBox.defaultText != null) {
             int index = 0;
             for( int i = 0; i < listArray.length; i++ ) {
-                if (listArray[i].equals(comboBox.defaultText)) {
+                if (listArray[i].equals(aComboBox.defaultText)) {
                     index = i;
                     break;
                 }
@@ -64,10 +67,38 @@ public class AComboBoxGui extends FormGuiElement {
     
     public void setFeature( SimpleFeature feature ) {
         this.feature = feature;
+        updateCombo();
+    }
+
+    private void updateCombo() {
+        if (feature == null) {
+            return;
+        }
+        Object attribute = feature.getAttribute(aComboBox.fieldName);
+        String attributeString = attribute.toString();
+        
+        int indexOf = aComboBox.item.indexOf(attributeString);
+        if (indexOf!= -1) {
+            combo.select(indexOf);
+        }
     }
 
     public FormElement getFormElement() {
-        return comboBox;
+        return aComboBox;
+    }
+
+    public void widgetSelected( SelectionEvent e ) {
+        int selectionIndex = combo.getSelectionIndex();
+        String comboStr = combo.getItem(selectionIndex);
+        Class< ? > binding = feature.getProperty(aComboBox.fieldName).getType().getBinding();
+
+        Object adapted = adapt(comboStr, binding);
+        if (adapted != null) {
+            feature.setAttribute(aComboBox.fieldName, adapted);
+        }
+    }
+
+    public void widgetDefaultSelected( SelectionEvent e ) {
     }
 
 }
