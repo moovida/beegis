@@ -18,11 +18,13 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -36,10 +38,12 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class AComboBoxGui extends FormGuiElement implements SelectionListener{
+public class AComboBoxGui extends FormGuiElement implements SelectionListener {
     private final AComboBox aComboBox;
     private SimpleFeature feature;
     private Combo combo;
+    private List<String> labelList;
+    private List<String> valuesList;
 
     public AComboBoxGui( AComboBox comboBox ) {
         this.aComboBox = comboBox;
@@ -49,8 +53,22 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener{
         combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
         combo.setLayoutData(aComboBox.constraints);
 
-        List<String> item = aComboBox.item;
-        String[] listArray = (String[]) item.toArray(new String[item.size()]);
+        labelList = new ArrayList<String>();
+        valuesList = new ArrayList<String>();
+
+        List<String> itemList = aComboBox.item;
+        for( String item : itemList ) {
+            if (item.indexOf(',') != -1) {
+                String[] split = item.split(","); //$NON-NLS-1$
+                labelList.add(split[0].trim());
+                valuesList.add(split[1].trim());
+            } else {
+                labelList.add(item);
+                valuesList.add(item);
+            }
+        }
+
+        String[] listArray = (String[]) labelList.toArray(new String[labelList.size()]);
         combo.setItems(listArray);
         if (aComboBox.defaultText != null) {
             int index = 0;
@@ -62,9 +80,10 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener{
             }
             combo.select(index);
         }
+        combo.addSelectionListener(this);
         return combo;
     }
-    
+
     public void setFeature( SimpleFeature feature ) {
         this.feature = feature;
         updateCombo();
@@ -76,11 +95,12 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener{
         }
         Object attribute = feature.getAttribute(aComboBox.fieldName);
         String attributeString = attribute.toString();
-        
-        int indexOf = aComboBox.item.indexOf(attributeString);
-        if (indexOf!= -1) {
-            combo.select(indexOf);
+
+        int index = valuesList.indexOf(attributeString);
+        if (index == -1) {
+            index = 0;
         }
+        combo.select(index);
     }
 
     public FormElement getFormElement() {
@@ -91,8 +111,11 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener{
         int selectionIndex = combo.getSelectionIndex();
         String comboStr = combo.getItem(selectionIndex);
         Class< ? > binding = feature.getProperty(aComboBox.fieldName).getType().getBinding();
-
-        Object adapted = adapt(comboStr, binding);
+        
+        int index = labelList.indexOf(comboStr);
+        String valueStr = valuesList.get(index);
+        
+        Object adapted = adapt(valueStr, binding);
         if (adapted != null) {
             feature.setAttribute(aComboBox.fieldName, adapted);
         }
