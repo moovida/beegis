@@ -11,6 +11,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -43,7 +44,7 @@ public class FormPropertiesPanel implements KeyListener, ISelectionChangedListen
     public Control createControl( Composite parent ) {
         Composite mainComposite = new Composite(parent, SWT.NONE);
         mainComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        mainComposite.setLayout(new MigLayout("fill"));
+        mainComposite.setLayout(new FillLayout());
 
         FormGuiElement formGui = FormGuiFactory.createFormGui(form);
         Control control = formGui.makeGui(mainComposite);
