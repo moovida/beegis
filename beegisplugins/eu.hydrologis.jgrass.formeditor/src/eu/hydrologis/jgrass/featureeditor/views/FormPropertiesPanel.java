@@ -21,6 +21,7 @@ import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
+import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.AFormGui;
 import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.FormGuiElement;
 import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.FormGuiFactory;
 
@@ -30,11 +31,14 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.FormGuiFactory;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  */
-public class FormPropertiesPanel implements KeyListener, ISelectionChangedListener {
+public class FormPropertiesPanel {
 
     /** Used send commands to the edit blackboard */
     private IToolContext context;
     private final AForm form;
+    private AFormGui formGui;
+    private SimpleFeature editedFeature;
+    private SimpleFeature oldFeature;
 
     public FormPropertiesPanel( AForm form ) {
         this.form = form;
@@ -46,29 +50,10 @@ public class FormPropertiesPanel implements KeyListener, ISelectionChangedListen
         mainComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         mainComposite.setLayout(new FillLayout());
 
-        FormGuiElement formGui = FormGuiFactory.createFormGui(form);
+        formGui = new AFormGui(form);
         Control control = formGui.makeGui(mainComposite);
 
         return control;
-    }
-
-    public void keyPressed( KeyEvent e ) {
-        // do nothing
-    }
-
-    public void keyReleased( KeyEvent e ) {
-        setEnabled(true);
-    }
-
-    private void setEnabled( boolean enabled ) {
-    }
-
-    /** Listen to the viewer */
-    public void selectionChanged( SelectionChangedEvent event ) {
-        IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-
-        Integer value = (Integer) selection.getFirstElement();
-        setEnabled(true);
     }
 
     private void applyChanges() {
@@ -91,54 +76,19 @@ public class FormPropertiesPanel implements KeyListener, ISelectionChangedListen
     }
 
     private void resetChanges() {
-        // setEditFeature(oldFeature, context);
-        // setEnabled(false);
+        setEditFeature(oldFeature, context);
     }
 
-    public void setEditFeature( SimpleFeature newFeature, IToolContext newcontext ) {
-        // this.context = newcontext;
-        // oldFeature = newFeature;
-        // if (oldFeature != null) {
-        // try {
-        // editedFeature = SimpleFeatureBuilder.copy(newFeature);
-        // } catch (IllegalAttributeException e) {
-        // // shouldn't happen
-        // }
-        // } else {
-        // editedFeature = null;
-        // }
-        // if (oldFeature == null) {
-        // gmiCntry.setText("");
-        // colorMap.setSelection(new StructuredSelection());
-        // name.setText("");
-        // } else {
-        // String nameText = (String) oldFeature.getAttribute(NAME);
-        // if (nameText == null)
-        // nameText = "";
-        // name.setText(nameText);
-        //
-        // String gmiText = (String) oldFeature.getAttribute(GMI_CNTRY);
-        // if (gmiText == null)
-        // gmiText = "";
-        // gmiCntry.setText(gmiText);
-        //
-        // String colorText = (String) oldFeature.getAttribute(COLOR_MAP);
-        // if (colorText != null && !colorText.equals("")) {
-        // StructuredSelection selection = new StructuredSelection(new Integer(colorText));
-        // colorMap.setSelection(selection);
-        // } else {
-        // colorMap.setSelection(new StructuredSelection());
-        // }
-        // }
-        setEnabled(false);
+    public void setEditFeature( SimpleFeature featureToEdit, IToolContext newcontext ) {
+        context = newcontext;
+
+        oldFeature = featureToEdit;
+        editedFeature = SimpleFeatureBuilder.copy(featureToEdit);
+        formGui.setFeature(editedFeature);
     }
 
     public void setFocus() {
         // name.setFocus();
     }
 
-    public void updateOnLayer( ILayer selectedLayer ) {
-        // TODO Auto-generated method stub
-
-    }
 }

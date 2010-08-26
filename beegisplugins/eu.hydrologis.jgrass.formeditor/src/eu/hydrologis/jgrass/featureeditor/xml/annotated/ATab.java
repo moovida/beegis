@@ -110,4 +110,8 @@ public class ATab extends FormElement {
     public String getName() {
         return name;
     }
+    
+    public String getFieldName() {
+        return null;
+    }
 }

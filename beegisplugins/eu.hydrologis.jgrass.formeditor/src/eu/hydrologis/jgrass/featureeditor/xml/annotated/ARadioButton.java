@@ -101,4 +101,8 @@ public class ARadioButton extends FormElement {
     public String getName() {
         return name;
     }
+    
+    public String getFieldName() {
+        return fieldName;
+    }
 }

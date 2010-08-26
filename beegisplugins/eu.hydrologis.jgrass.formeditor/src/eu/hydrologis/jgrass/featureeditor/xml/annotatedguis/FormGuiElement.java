@@ -21,6 +21,9 @@ import net.miginfocom.swt.MigLayout;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.opengis.feature.simple.SimpleFeature;
+
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 
 /**
  * A gui element.
@@ -36,5 +39,19 @@ public abstract class FormGuiElement {
      * @return the created control.
      */
     public abstract Control makeGui( Composite parent );
+
+    /**
+     * Set the {@link SimpleFeature feature} on which to act.
+     * 
+     * @param feature the feature to modify.
+     */
+    public abstract void setFeature( SimpleFeature feature );
+
+    /**
+     * Getter for the {@link FormElement} that generated that gui element.
+     * 
+     * @return the {@link FormElement} that generated that gui element.
+     */
+    public abstract FormElement getFormElement();
 
 }

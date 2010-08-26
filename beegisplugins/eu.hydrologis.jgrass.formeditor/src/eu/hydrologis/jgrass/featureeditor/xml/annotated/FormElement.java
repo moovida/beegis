@@ -33,6 +33,13 @@ public abstract class FormElement implements Comparable<FormElement> {
     public abstract String getName();
 
     /**
+     * Getter for the filed name of the element.
+     * 
+     * @return the field name of the element.
+     */
+    public abstract String getFieldName();
+
+    /**
      * Getter for the order of the element.
      * 
      * @return the order of the element.
