@@ -25,6 +25,11 @@ import net.miginfocom.swt.MigLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -46,30 +51,56 @@ public class FormGui extends FormGuiElement {
 
     @Override
     public Control makeGui( Composite parent ) {
-        CTabFolder folder = new CTabFolder(parent, SWT.BOTTOM);
-        folder.setUnselectedCloseVisible(false);
-        // folder.setSimple(false);
-        folder.setLayout(new MigLayout("fill"));
-        folder.setLayoutData("grow");
+        // parent has FillLayout
 
+        // create the tab folder
+        final CTabFolder folder = new CTabFolder(parent, SWT.BOTTOM);
+        folder.setUnselectedCloseVisible(false);
+        folder.setLayout(new FillLayout());
+        
+        // for every Tab object create a tab
         List<Tab> orderedTabs = form.getOrderedTabs();
         boolean first = true;
-        for( Tab tab : orderedTabs ) {
-            CTabItem item = new CTabItem(folder, SWT.NONE);
-            item.setText(tab.text);
+        for( Tab orderedTab : orderedTabs ) {
+
+            // the tabitem
+            CTabItem tab = new CTabItem(folder, SWT.NONE);
+            tab.setText(orderedTab.text);
             if (first) {
-                folder.setSelection(item);
+                // select the first tab
+                folder.setSelection(tab);
                 first = false;
             }
+            
+            // we want the content to scroll
+            final ScrolledComposite scroller = new ScrolledComposite(folder, SWT.V_SCROLL);
+            scroller.setLayout(new FillLayout());
+            
+            // the actual content of the tab
+            Composite tabComposite = new Composite(scroller, SWT.NONE);
+            tabComposite.setLayout(new MigLayout(orderedTab.layoutConstraints, orderedTab.colConstraints));
 
-            Composite tabComposite = new Composite(folder, SWT.NONE);
-            tabComposite.setLayoutData("grow");
-            tabComposite.setLayout(new MigLayout(tab.layoutConstraints, tab.colConstraints));
-            item.setControl(tabComposite);
+            // which goes as content to the scrolled composite
+            scroller.setContent(tabComposite);
+            scroller.setExpandVertical(true);
+            scroller.setExpandHorizontal(true);
+            scroller.setMinHeight(folder.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+            scroller.addControlListener(new ControlAdapter(){
+                public void controlResized( ControlEvent e ) {
+                    // recalculate height in case the resize makes texts 
+                    // wrap or things happen that require it
+                    Rectangle r = scroller.getClientArea();
+                    scroller.setMinHeight(folder.computeSize(SWT.DEFAULT, r.height).y);
+                }
+            });
+            
+            // the scroller gets the control of the tab item
+            tab.setControl(scroller);
 
-            List< ? extends FormElement> orderedElements = tab.getOrderedElements();
+            
+            // add things to the tab composite
+            List< ? extends FormElement> orderedElements = orderedTab.getOrderedElements();
             for( FormElement orderedGuiElement : orderedElements ) {
-
                 FormGuiElement formGui = FormGuiFactory.createFormGui(orderedGuiElement);
                 formGui.makeGui(tabComposite);
             }
