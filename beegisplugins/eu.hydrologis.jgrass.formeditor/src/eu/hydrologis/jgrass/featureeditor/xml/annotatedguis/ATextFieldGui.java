@@ -19,6 +19,8 @@
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
@@ -32,31 +34,57 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class ATextFieldGui extends FormGuiElement {
+public class ATextFieldGui extends FormGuiElement implements FocusListener {
 
-    private final ATextField textField;
+    private final ATextField aTextField;
     private SimpleFeature feature;
+    private Text text;
 
     public ATextFieldGui( ATextField textField ) {
-        this.textField = textField;
+        this.aTextField = textField;
     }
 
     @Override
     public Control makeGui( Composite parent ) {
-        Text text = new Text(parent, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
-        text.setLayoutData(textField.constraints);
-        if (textField.defaultText != null) {
-            text.setText(textField.defaultText);
+        text = new Text(parent, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+        text.setLayoutData(aTextField.constraints);
+        if (aTextField.defaultText != null) {
+            text.setText(aTextField.defaultText);
         }
+        text.addFocusListener(this);
 
         return text;
     }
 
     public void setFeature( SimpleFeature feature ) {
         this.feature = feature;
+        updateTextField();
+    }
+
+    private void updateTextField() {
+        if (feature == null) {
+            return;
+        }
+        Object attribute = feature.getAttribute(aTextField.fieldName);
+        String attributeString = attribute.toString();
+        text.setText(attributeString);
     }
 
     public FormElement getFormElement() {
-        return textField;
+        return aTextField;
     }
+
+    public void focusLost( FocusEvent e ) {
+        String textStr = text.getText();
+        Class< ? > binding = feature.getProperty(aTextField.fieldName).getType().getBinding();
+
+        Object adapted = adapt(textStr, binding);
+        if (adapted != null) {
+            feature.setAttribute(aTextField.fieldName, adapted);
+        }
+    }
+
+    public void focusGained( FocusEvent e ) {
+    }
+
 }
