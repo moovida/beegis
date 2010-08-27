@@ -181,7 +181,7 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
         EventType type = event.getType();
         Object newValue = event.getNewValue();
         Object oldValue = event.getOldValue();
-        if (newValue.equals(oldValue) || type == EventType.EDIT_EVENT) {
+        if (newValue != null && (newValue.equals(oldValue) || type == EventType.EDIT_EVENT)) {
             return;
         }
         if (type == EventType.FILTER) {

@@ -42,9 +42,9 @@ public class FormPropertiesPanel {
         mainComposite.setLayout(new FillLayout());
 
         formGui = new AFormGui(form);
-        Control control = formGui.makeGui(mainComposite);
+        formGui.makeGui(mainComposite);
 
-        return control;
+        return mainComposite;
     }
 
     public void applyChanges() {
