@@ -205,9 +205,14 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
                     new NullProgressMonitor());
             FeatureCollection<SimpleFeatureType, SimpleFeature> features = resource.getFeatures(filter);
             if (!features.isEmpty()) {
-                FeatureIterator<SimpleFeature> featureIterator = features.features();
-                if (featureIterator.hasNext()) {
-                    return featureIterator.next();
+                FeatureIterator<SimpleFeature> featureIterator = null;
+                try {
+                    featureIterator = features.features();
+                    if (featureIterator.hasNext()) {
+                        return featureIterator.next();
+                    }
+                } finally {
+                    features.close(featureIterator);
                 }
             }
             return null;
