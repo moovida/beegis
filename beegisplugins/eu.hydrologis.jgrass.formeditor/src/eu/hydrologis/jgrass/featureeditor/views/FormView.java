@@ -160,8 +160,6 @@ public class FormView extends ViewPart implements ISelectionObserver {
             throw new IllegalArgumentException();
         }
         
-        System.out.println(parentComposite.getChildren().length);
-        
         parentComposite.layout();
         parentComposite.redraw();
     }
