@@ -1,29 +1,20 @@
 package eu.hydrologis.jgrass.featureeditor.views;
 
-import net.miginfocom.swt.MigLayout;
-import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.command.CompositeCommand;
+import net.refractions.udig.project.command.factory.EditCommandFactory;
 import net.refractions.udig.project.ui.tool.IToolContext;
 
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
 import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.AFormGui;
-import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.FormGuiElement;
-import eu.hydrologis.jgrass.featureeditor.xml.annotatedguis.FormGuiFactory;
 
 /**
  * Properties panel adapting to *.form sidecar files.
@@ -57,10 +48,15 @@ public class FormPropertiesPanel {
     }
 
     public void applyChanges() {
+        // Display.getDefault().syncExec(new Runnable(){
+        // public void run() {
         CompositeCommand compComm = new CompositeCommand();
-        compComm.getCommands().add(context.getEditFactory().createSetEditFeatureCommand(editedFeature));
-        compComm.getCommands().add(context.getEditFactory().createWriteEditFeatureCommand());
-        context.sendASyncCommand(compComm);
+        compComm.getCommands().add(EditCommandFactory.getInstance().createSetEditFeatureCommand(editedFeature));
+        compComm.getCommands().add(EditCommandFactory.getInstance().createWriteEditFeatureCommand());
+        // compComm.getCommands().add(EditCommandFactory.getInstance().createCommitCommand());
+        context.getMap().sendCommandSync(compComm);
+        // }
+        // });
     }
 
     public void resetChanges() {
