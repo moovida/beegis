@@ -96,11 +96,22 @@ public class FormView extends ViewPart implements ISelectionObserver {
 
     private void updateGui( Map newMap, final ILayer newLayer, SimpleFeature newFeature ) {
         selectedMap = newMap;
+
+        if (newFeature != null && featurePropertiesPanel != null && newLayer.equals(selectedLayer)) {
+            // layer the same, feature changed
+            ToolContextImpl newcontext = new ToolContextImpl();
+            newcontext.setMapInternal((Map) selectedMap);
+            featurePropertiesPanel.setEditFeature(newFeature, newcontext);
+            return;
+        }
+
+        // every other case has the current control to be disposed
+        if (currentControl != null) {
+            currentControl.dispose();
+        }
+
         if (newFeature == null) {
             selectedLayer = newLayer;
-            if (currentControl != null) {
-                currentControl.dispose();
-            }
             Label noFeatureSelectedLabel = new Label(parentComposite, SWT.NONE);
             noFeatureSelectedLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
             String name = "";
@@ -110,11 +121,7 @@ public class FormView extends ViewPart implements ISelectionObserver {
             noFeatureSelectedLabel.setText("No feature selected on layer " + name);
             currentControl = noFeatureSelectedLabel;
             featurePropertiesPanel = null;
-            parentComposite.layout();
-            parentComposite.redraw();
-            return;
-        }
-        if (newLayer != selectedLayer || featurePropertiesPanel == null) {
+        } else if (newLayer != selectedLayer || featurePropertiesPanel == null) {
             selectedLayer = newLayer;
             ID id = selectedLayer.getGeoResource().getID();
             if (id.isFile()) {
@@ -149,14 +156,14 @@ public class FormView extends ViewPart implements ISelectionObserver {
                 currentControl = noSupportLabel;
                 featurePropertiesPanel = null;
             }
-            parentComposite.layout();
-            parentComposite.redraw();
         } else {
-            // layer the same, feature changed
-            ToolContextImpl newcontext = new ToolContextImpl();
-            newcontext.setMapInternal((Map) selectedMap);
-            featurePropertiesPanel.setEditFeature(newFeature, newcontext);
+            throw new IllegalArgumentException();
         }
+        
+        System.out.println(parentComposite.getChildren().length);
+        
+        parentComposite.layout();
+        parentComposite.redraw();
     }
 
     public void apply() {
