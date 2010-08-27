@@ -105,6 +105,15 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
             ILayer tmpSelectedLayer = map.getEditManager().getSelectedLayer();
             if (tmpSelectedLayer != null) {
                 selectedLayer = tmpSelectedLayer;
+                Filter filter = selectedLayer.getFilter();
+                LayerImpl layerImpl = (LayerImpl) selectedLayer;
+
+                SimpleFeature selectedFeature = getSelectedFeature(layerImpl, filter);
+                if (lastSelectedFeature == null || !lastSelectedFeature.equals(selectedFeature)) {
+                    lastSelectedFeature = selectedFeature;
+                } else {
+                    return;
+                }
             }
         }
         notifySelectionListeners();
@@ -166,6 +175,16 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
             }
             selectedLayer = tmpSelectedLayer;
             selectedLayer.addListener(this);
+            
+            Filter filter = selectedLayer.getFilter();
+            LayerImpl layerImpl = (LayerImpl) selectedLayer;
+
+            SimpleFeature selectedFeature = getSelectedFeature(layerImpl, filter);
+            if (lastSelectedFeature == null || !lastSelectedFeature.equals(selectedFeature)) {
+                lastSelectedFeature = selectedFeature;
+            } else {
+                return;
+            }
 
             notifySelectionListeners();
         }
@@ -209,7 +228,8 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
                 try {
                     featureIterator = features.features();
                     if (featureIterator.hasNext()) {
-                        return featureIterator.next();
+                        SimpleFeature tmpSelectedFeature = featureIterator.next();
+                        return tmpSelectedFeature;
                     }
                 } finally {
                     features.close(featureIterator);
