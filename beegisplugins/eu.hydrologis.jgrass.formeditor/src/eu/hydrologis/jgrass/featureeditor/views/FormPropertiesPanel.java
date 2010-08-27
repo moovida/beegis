@@ -56,26 +56,14 @@ public class FormPropertiesPanel {
         return control;
     }
 
-    private void applyChanges() {
-        // try {
-        // // editedFeature.setAttribute(NAME, name.getText());
-        // // editedFeature.setAttribute(GMI_CNTRY, gmiCntry.getText());
-        // //
-        // // IStructuredSelection selection = (IStructuredSelection) colorMap.getSelection();
-        // // Integer color = (Integer) selection.getFirstElement();
-        // // editedFeature.setAttribute(COLOR_MAP, color.toString());
-        //
-        // } catch (IllegalAttributeException e1) {
-        // // shouldn't happen.
-        // }
-        // CompositeCommand compComm = new CompositeCommand();
-        // compComm.getCommands().add(context.getEditFactory().createSetEditFeatureCommand(editedFeature));
-        // compComm.getCommands().add(context.getEditFactory().createWriteEditFeatureCommand());
-        // context.sendASyncCommand(compComm);
-        // setEnabled(false);
+    public void applyChanges() {
+        CompositeCommand compComm = new CompositeCommand();
+        compComm.getCommands().add(context.getEditFactory().createSetEditFeatureCommand(editedFeature));
+        compComm.getCommands().add(context.getEditFactory().createWriteEditFeatureCommand());
+        context.sendASyncCommand(compComm);
     }
 
-    private void resetChanges() {
+    public void resetChanges() {
         setEditFeature(oldFeature, context);
     }
 

@@ -8,8 +8,8 @@ import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.ILayerListener;
 import net.refractions.udig.project.IMapListener;
 import net.refractions.udig.project.LayerEvent;
-import net.refractions.udig.project.MapEvent;
 import net.refractions.udig.project.LayerEvent.EventType;
+import net.refractions.udig.project.MapEvent;
 import net.refractions.udig.project.internal.Map;
 import net.refractions.udig.project.internal.impl.LayerImpl;
 import net.refractions.udig.project.ui.internal.MapPart;
@@ -25,7 +25,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.geotools.data.FeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.util.NullProgressListener;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -39,7 +38,7 @@ import eu.hydrologis.jgrass.featureeditor.utils.ISelectionObserver;
 public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2, IMapListener, ILayerListener {
 
     // The plug-in ID
-    public static final String PLUGIN_ID = "eu.hydrologis.jgrass.formeditor";
+    public static final String PLUGIN_ID = "eu.hydrologis.jgrass.formeditor"; //$NON-NLS-1$
 
     // The shared instance
     private static FormEditorPlugin plugin;
@@ -178,29 +177,44 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
      * @see net.refractions.udig.project.ILayerListener#refresh(net.refractions.udig.project.LayerEvent)
      */
     public void refresh( LayerEvent event ) {
+        selectedLayer = event.getSource();
         EventType type = event.getType();
+        Object newValue = event.getNewValue();
+        Object oldValue = event.getOldValue();
+        if (newValue.equals(oldValue) || type == EventType.EDIT_EVENT) {
+            return;
+        }
         if (type == EventType.FILTER) {
             Filter filter = selectedLayer.getFilter();
             LayerImpl layerImpl = (LayerImpl) selectedLayer;
-            try {
-                FeatureSource<SimpleFeatureType, SimpleFeature> resource = layerImpl.getResource(FeatureSource.class,
-                        new NullProgressMonitor());
-                FeatureCollection<SimpleFeatureType, SimpleFeature> features = resource.getFeatures(filter);
-                if (!features.isEmpty()) {
-                    FeatureIterator<SimpleFeature> featureIterator = features.features();
-                    if (featureIterator.hasNext()) {
-                        lastSelectedFeature = featureIterator.next();
-                    }
-                } else {
-                    lastSelectedFeature = null;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+
+            SimpleFeature selectedFeature = getSelectedFeature(layerImpl, filter);
+            if (lastSelectedFeature == null || !lastSelectedFeature.equals(selectedFeature)) {
+                lastSelectedFeature = selectedFeature;
+            } else {
+                return;
             }
-        } else {
-            // what here?
         }
         notifySelectionListeners();
+    }
+
+    @SuppressWarnings("unchecked")
+    private SimpleFeature getSelectedFeature( LayerImpl layerImpl, Filter filter ) {
+        try {
+            FeatureSource<SimpleFeatureType, SimpleFeature> resource = layerImpl.getResource(FeatureSource.class,
+                    new NullProgressMonitor());
+            FeatureCollection<SimpleFeatureType, SimpleFeature> features = resource.getFeatures(filter);
+            if (!features.isEmpty()) {
+                FeatureIterator<SimpleFeature> featureIterator = features.features();
+                if (featureIterator.hasNext()) {
+                    return featureIterator.next();
+                }
+            }
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private List<ISelectionObserver> observers = new ArrayList<ISelectionObserver>();
