@@ -19,22 +19,11 @@ package eu.hydrologis.jgrass.featureeditor.views;
 
 import java.io.File;
 
-import net.miginfocom.swt.MigLayout;
 import net.refractions.udig.catalog.ID;
-import net.refractions.udig.project.EditManagerEvent;
-import net.refractions.udig.project.IEditManagerListener;
 import net.refractions.udig.project.ILayer;
-import net.refractions.udig.project.ILayerListener;
 import net.refractions.udig.project.IMap;
-import net.refractions.udig.project.IMapListener;
-import net.refractions.udig.project.LayerEvent;
-import net.refractions.udig.project.LayerEvent.EventType;
-import net.refractions.udig.project.MapEvent;
 import net.refractions.udig.project.internal.Map;
-import net.refractions.udig.project.ui.ApplicationGIS;
-import net.refractions.udig.project.ui.IUDIGView;
 import net.refractions.udig.project.ui.internal.tool.impl.ToolContextImpl;
-import net.refractions.udig.project.ui.tool.IToolContext;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -49,7 +38,6 @@ import org.eclipse.ui.part.ViewPart;
 import org.opengis.feature.simple.SimpleFeature;
 
 import eu.hydrologis.jgrass.featureeditor.utils.ISelectionObserver;
-import eu.hydrologis.jgrass.featureeditor.utils.MapLayerHandler;
 import eu.hydrologis.jgrass.featureeditor.utils.Utilities;
 import eu.hydrologis.jgrass.formeditor.FormEditorPlugin;
 
@@ -60,61 +48,16 @@ import eu.hydrologis.jgrass.formeditor.FormEditorPlugin;
  */
 public class FormView extends ViewPart implements ISelectionObserver {
 
-    // private FormPropertiesPanel panel = null;
     private ILayer selectedLayer;
     private IMap selectedMap;
-    private SimpleFeature selectedFeature;
     private File selectedLayerFormFile;
 
     private Control currentControl = null;
     private Composite parentComposite;
 
     private FormPropertiesPanel featurePropertiesPanel;
-    private Composite parent;
-
-    /**
-     * Check which layer is currently selected and if the selection changed.
-     * 
-     * @return true if the selected layer changed.
-     */
-    // private boolean checkSelectedLayer() {
-    // IMap tmpSelectedMap = ApplicationGIS.getActiveMap();
-    // if (selectedMap == null || tmpSelectedMap.getID().equals(selectedMap.getID())) {
-    // // map changed or init
-    // if (selectedMap != null) {
-    // selectedMap.removeMapListener(this);
-    // }
-    // selectedMap = tmpSelectedMap;
-    // selectedMap.addMapListener(this);
-    // }
-    //
-    // ILayer tmpSelectedLayer = selectedMap.getEditManager().getSelectedLayer();
-    // boolean hasChanged = false;
-    // if (selectedLayer == null || !tmpSelectedLayer.getID().equals(selectedLayer.getID())) {
-    // /*
-    // * layer changed
-    // */
-    // hasChanged = true;
-    // ID id = tmpSelectedLayer.getGeoResource().getID();
-    // if (id.isFile()) {
-    // File file = id.toFile();
-    // selectedLayerFormFile = Utilities.getFormFile(file);
-    // }
-    //
-    // // reset listeners
-    // if (selectedLayer != null) {
-    // selectedLayer.removeListener(this);
-    // }
-    // selectedLayer = tmpSelectedLayer;
-    // selectedLayer.addListener(this);
-    // }
-    //
-    // // panel.updateOnLayer(selectedLayer);
-    // return hasChanged;
-    // }
 
     public void createPartControl( Composite parent ) {
-        this.parent = parent;
         parentComposite = new Composite(parent, SWT.NONE);
         parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         parentComposite.setLayout(new GridLayout(1, true));
@@ -139,20 +82,20 @@ public class FormView extends ViewPart implements ISelectionObserver {
     }
 
     public void setFocus() {
-        System.out.println("focus");
         // panel.setFocus();
     }
 
     @Override
-    public void selectionChanged( Map selectedMap, final ILayer newLayer, final SimpleFeature selectedFeature ) {
+    public void selectionChanged( final Map selectedMap, final ILayer newLayer, final SimpleFeature selectedFeature ) {
         Display.getDefault().syncExec(new Runnable(){
             public void run() {
-                updateGui(newLayer, selectedFeature);
+                updateGui(selectedMap, newLayer, selectedFeature);
             }
         });
     }
 
-    private void updateGui( final ILayer newLayer, SimpleFeature newFeature ) {
+    private void updateGui( Map newMap, final ILayer newLayer, SimpleFeature newFeature ) {
+        selectedMap = newMap;
         if (newFeature == null) {
             selectedLayer = newLayer;
             if (currentControl != null) {
@@ -213,6 +156,18 @@ public class FormView extends ViewPart implements ISelectionObserver {
             ToolContextImpl newcontext = new ToolContextImpl();
             newcontext.setMapInternal((Map) selectedMap);
             featurePropertiesPanel.setEditFeature(newFeature, newcontext);
+        }
+    }
+
+    public void apply() {
+        if (featurePropertiesPanel != null) {
+            featurePropertiesPanel.applyChanges();
+        }
+    }
+
+    public void reset() {
+        if (featurePropertiesPanel != null) {
+            featurePropertiesPanel.resetChanges();
         }
     }
 

@@ -5,24 +5,25 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
+import eu.hydrologis.jgrass.featureeditor.views.FormView;
+
 public class SaveAction implements IViewActionDelegate {
+
+    private IViewPart view;
 
     @Override
     public void run( IAction action ) {
-        // TODO Auto-generated method stub
-
+        FormView formView = (FormView) view;
+        formView.apply();
     }
 
     @Override
     public void selectionChanged( IAction action, ISelection selection ) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void init( IViewPart view ) {
-        // TODO Auto-generated method stub
-
+        this.view = view;
     }
 
 }
