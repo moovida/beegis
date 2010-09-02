@@ -17,25 +17,6 @@
  */
 package eu.hydrologis.jgrass.gpsnmea.gps;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Observer;
-import java.util.Vector;
-
-import net.refractions.udig.project.IMap;
-import net.refractions.udig.project.ui.ApplicationGIS;
-import net.refractions.udig.ui.ExceptionDetailsDialog;
-
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.GeometryFactory;
-
 import eu.hydrologis.jgrass.gpsnmea.GpsActivator;
 import eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants;
 import gnu.io.CommPortIdentifier;
@@ -45,6 +26,22 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Observer;
+
+import net.refractions.udig.project.IMap;
+import net.refractions.udig.project.ui.ApplicationGIS;
+import net.refractions.udig.ui.ExceptionDetailsDialog;
+
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Implementation of a NMEA GPS reader.
@@ -67,7 +64,6 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
     private final String dataBitString;
     private final String stopBitString;
     private final String parityBitString;
-    private final GeometryFactory factory;
     private BufferedReader buffer;
     private InputStreamReader inputStreamReader;
 
@@ -108,8 +104,6 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
         this.stopBitString = (stopBitString == null ? STOPBIT_DEF : stopBitString);
         this.parityBitString = (parityBitString == null ? PARITYBIT_DEF : parityBitString);
         this.isTestmode = isTestmode;
-
-        factory = new GeometryFactory();
 
         prefs = GpsActivator.getDefault().getPreferenceStore();
 
@@ -287,7 +281,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
             observers.remove(o);
     }
 
-    public void notifyObservers() {
+    public synchronized void notifyObservers() {
         IMap activeMap = ApplicationGIS.getActiveMap();
         mapCrs = activeMap.getViewportModel().getCRS();
         GpsPoint returnGpsPoint = null;
@@ -302,8 +296,10 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
             return;
         }
 
-        for( Observer observer : observers ) {
-            observer.update(this, returnGpsPoint);
+        synchronized(observers) {
+            for( Observer observer : observers ) {
+                observer.update(this, returnGpsPoint);
+            }
         }
     }
 
@@ -330,16 +326,16 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
 
             gpsPointsLog.add(returnGpsPoint);
 
-            // notify all listeners
-            notifyObservers();
-
             try {
+                // notify all listeners
+                notifyObservers();
                 Thread.sleep(milliSeconds);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         gpsArtist.clear();
+        gpsIsLogging = false;
     }
 
     private void errorMessage( Exception e ) {
