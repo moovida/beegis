@@ -99,8 +99,7 @@ public class GpsSettingsComposite implements Observer {
                 shell.setLocation(cursorLocation);
                 shell.setLayout(new GridLayout(2, true));
 
-                GridData gridDataList = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL
-                        | GridData.GRAB_VERTICAL);
+                GridData gridDataList = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
                 gridDataList.horizontalSpan = 2;
                 final ListViewer v = new ListViewer(shell, SWT.H_SCROLL | SWT.V_SCROLL);
                 v.setLabelProvider(new LabelProvider());
@@ -141,44 +140,38 @@ public class GpsSettingsComposite implements Observer {
         Group group2 = new Group(parent, SWT.None);
         group2.setText("Start / Stop the Gps connection");
         group2.setLayout(new GridLayout(2, true));
-        GridData gridData2 = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL
-                | GridData.GRAB_VERTICAL);
+        GridData gridData2 = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
         group2.setLayoutData(gridData2);
 
         startButton = new Button(group2, SWT.BORDER | SWT.RADIO);
         startButton.setText("Start Gps");
-        startButton.setImage(AbstractUIPlugin.imageDescriptorFromPlugin(GpsActivator.PLUGIN_ID,
-                "icons/start16.png").createImage()); //$NON-NLS-1$
-        startButton
-                .setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
+        startButton.setImage(AbstractUIPlugin
+                .imageDescriptorFromPlugin(GpsActivator.PLUGIN_ID, "icons/start16.png").createImage()); //$NON-NLS-1$
+        startButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
         startButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
                 try {
-                    PlatformUI.getWorkbench().getProgressService().busyCursorWhile(
-                            new IRunnableWithProgress(){
+                    PlatformUI.getWorkbench().getProgressService().busyCursorWhile(new IRunnableWithProgress(){
 
-                                public void run( IProgressMonitor pm )
-                                        throws InvocationTargetException, InterruptedException {
-                                    if (!GpsActivator.getDefault().isGpsConnected()) {
-                                        pm.beginTask("Starting Gps...", IProgressMonitor.UNKNOWN);
-                                        GpsActivator.getDefault().startGps();
-                                        GpsActivator.getDefault().startGpsLogging();
-                                        isFirst = true;
-                                        gpsIsOn = true;
-                                        pm.done();
+                        public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
+                            if (!GpsActivator.getDefault().isGpsConnected()) {
+                                pm.beginTask("Starting Gps...", IProgressMonitor.UNKNOWN);
+                                GpsActivator.getDefault().startGps();
+                                GpsActivator.getDefault().startGpsLogging();
+                                isFirst = true;
+                                gpsIsOn = true;
+                                pm.done();
 
-                                        // add this as listener to gps
-                                        GpsActivator.getDefault().addObserverToGps(
-                                                GpsSettingsComposite.this);
+                                // add this as listener to gps
+                                GpsActivator.getDefault().addObserverToGps(GpsSettingsComposite.this);
 
-                                    }
-                                }
-                            });
+                            }
+                        }
+                    });
 
                 } catch (Exception e1) {
                     String message = "An error occurred while starting the gps logging.";
-                    ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                            GpsActivator.PLUGIN_ID, e1);
+                    ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e1);
                     e1.printStackTrace();
                 }
             }
@@ -186,38 +179,33 @@ public class GpsSettingsComposite implements Observer {
 
         stopButton = new Button(group2, SWT.BORDER | SWT.RADIO);
         stopButton.setText("Stop Gps");
-        stopButton.setImage(AbstractUIPlugin.imageDescriptorFromPlugin(GpsActivator.PLUGIN_ID,
-                "icons/stop16.png").createImage()); //$NON-NLS-1$
+        stopButton.setImage(AbstractUIPlugin.imageDescriptorFromPlugin(GpsActivator.PLUGIN_ID, "icons/stop16.png").createImage()); //$NON-NLS-1$
         stopButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
         stopButton.setSelection(true);
         stopButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
                 try {
 
-                    PlatformUI.getWorkbench().getProgressService().busyCursorWhile(
-                            new IRunnableWithProgress(){
-                                public void run( IProgressMonitor pm )
-                                        throws InvocationTargetException, InterruptedException {
-                                    pm.beginTask("Stopping Gps...", IProgressMonitor.UNKNOWN);
-                                    if (GpsActivator.getDefault().isGpsConnected())
-                                        GpsActivator.getDefault().stopGps();
-                                    gpsIsOn = false;
-                                    pm.done();
-                                }
-                            });
+                    PlatformUI.getWorkbench().getProgressService().busyCursorWhile(new IRunnableWithProgress(){
+                        public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
+                            pm.beginTask("Stopping Gps...", IProgressMonitor.UNKNOWN);
+                            if (GpsActivator.getDefault().isGpsConnected())
+                                GpsActivator.getDefault().stopGps();
+                            gpsIsOn = false;
+                            pm.done();
+                        }
+                    });
 
                 } catch (Exception e1) {
                     String message = "An error occurred while stopping the gps logging.";
-                    ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                            GpsActivator.PLUGIN_ID, e1);
+                    ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e1);
                     e1.printStackTrace();
                 }
             }
         });
 
         text = new Text(group2, SWT.BORDER | SWT.MULTI);
-        GridData gd = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL
-                | GridData.GRAB_VERTICAL);
+        GridData gd = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
         gd.horizontalSpan = 2;
         text.setLayoutData(gd);
 
@@ -336,7 +324,14 @@ public class GpsSettingsComposite implements Observer {
             NmeaGpsImpl nmeaObs = (NmeaGpsImpl) o;
             final String currentGpsSentence = nmeaObs.getCurrentGpsData();
 
-            if (text.isDisposed()) {
+            final boolean[] isDisposed = {false};
+            Display.getDefault().syncExec(new Runnable(){
+                public void run() {
+                    isDisposed[0] = text.isDisposed();
+                }
+            });
+
+            if (isDisposed[0]) {
                 if (isFirst) {
                     GpsActivator.getDefault().stopGpsLogging();
                     isFirst = false;
@@ -346,13 +341,11 @@ public class GpsSettingsComposite implements Observer {
 
             Display.getDefault().syncExec(new Runnable(){
                 public void run() {
-                    if (currentGpsSentence != null
-                            && currentGpsSentence.startsWith(NmeaGpsPoint.GPGGA)) {
-                        text.setText(currentGpsSentence
-                                + "\n\n This seems to be the right Gps connection port.");
+                    if (currentGpsSentence != null && currentGpsSentence.startsWith(NmeaGpsPoint.GPGGA)) {
+                        text.setText(currentGpsSentence + "\n\n This seems to be the right Gps connection port.");
                     } else {
-                        text
-                                .setText("The selected port doesn't seem to be properly attached to a GPS device.");
+                        text.setText("The selected port doesn't seem to be properly attached to a GPS device.\n\n"
+                                + currentGpsSentence);
                     }
                 }
             });
@@ -364,26 +357,22 @@ public class GpsSettingsComposite implements Observer {
         final List<String> ports = new ArrayList<String>();
         try {
 
-            PlatformUI.getWorkbench().getProgressService().busyCursorWhile(
-                    new IRunnableWithProgress(){
-                        public void run( IProgressMonitor pm ) throws InvocationTargetException,
-                                InterruptedException {
-                            pm.beginTask("Search for available serial ports...",
-                                    IProgressMonitor.UNKNOWN);
-                            String[][] portsStrings = AbstractGps.checkGpsPorts();
+            PlatformUI.getWorkbench().getProgressService().busyCursorWhile(new IRunnableWithProgress(){
+                public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
+                    pm.beginTask("Search for available serial ports...", IProgressMonitor.UNKNOWN);
+                    String[][] portsStrings = AbstractGps.checkGpsPorts();
 
-                            for( String[] strings : portsStrings ) {
-                                ports.add(strings[1]);
-                            }
+                    for( String[] strings : portsStrings ) {
+                        ports.add(strings[1]);
+                    }
 
-                            pm.done();
-                        }
-                    });
+                    pm.done();
+                }
+            });
 
         } catch (Exception e1) {
             String message = "An error occurred whil retrieving the available port.";
-            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID,
-                    e1);
+            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e1);
             e1.printStackTrace();
         }
 

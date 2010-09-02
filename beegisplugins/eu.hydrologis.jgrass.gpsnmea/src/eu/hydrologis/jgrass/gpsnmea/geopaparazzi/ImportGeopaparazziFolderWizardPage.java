@@ -49,7 +49,7 @@ public class ImportGeopaparazziFolderWizardPage extends WizardPage {
         setTitle(pageName); // NON-NLS-1
         setDescription("Import GeoPaparazzi folder into the workspace. The folder will import everything found in the folder: gpslogs, notes and pictures.");
         ImageDescriptor imageDescriptorFromPlugin = AbstractUIPlugin.imageDescriptorFromPlugin(
-                GpsActivator.PLUGIN_ID, "icons/geopaparazzi_large.png");
+                GpsActivator.PLUGIN_ID, "icons/geopaparazzi_small.png");
         setImageDescriptor(imageDescriptorFromPlugin);
     }
 

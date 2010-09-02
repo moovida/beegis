@@ -32,7 +32,8 @@ Bundle-ClassPath: .,
  libs/gt-grassraster-2.7-SNAPSHOT.jar,
  libs/gt-imageio-ext-gdal-2.6-SNAPSHOT.jar,
  libs/imageio-ext-customstreams-1.0.6-1.jar,
- libs/jiffle-1.0.1.jar
+ libs/jiffle-1.0.1.jar,
+ libs/sqlite-jdbc-3.6.16.jar
 Export-Package: Jama,
  Jama.examples,
  Jama.test,
@@ -434,6 +435,7 @@ Export-Package: Jama,
  org.slf4j,
  org.slf4j.helpers,
  org.slf4j.impl,
- org.slf4j.spi
+ org.slf4j.spi,
+ org.sqlite
 Eclipse-BuddyPolicy: global
 Require-Bundle: net.refractions.udig.libs;visibility:=reexport
