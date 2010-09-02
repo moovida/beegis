@@ -23,7 +23,9 @@ import static eu.hydrologis.jgrass.geonotes.GeonoteConstants.PHOTO;
 import static java.lang.Math.PI;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
@@ -82,6 +84,11 @@ public class GeonotesMapGraphic implements MapGraphic {
     public void draw( MapGraphicContext context ) {
 
         ViewportGraphics g = context.getGraphics();
+        Graphics2D graphics = g.getGraphics(Graphics2D.class);
+
+        if (graphics != null) {
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        }
 
         IMap map = context.getMap();
         IBlackboard blackboard = map.getBlackboard();
