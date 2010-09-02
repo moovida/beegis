@@ -235,7 +235,7 @@ public class LayerHandler {
          * geometry, we start from scratch and the geometry has to be replaced.
          */
         IMap map = layer.getMap();
-        if (continueFromLast) {
+        if (continueFromLast && feature.getDefaultGeometry() != null) {
             Geometry geometry = addPointToLineFeature(gpsPoint, feature, geometryType);
 
             UndoableMapCommand cmd1 = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
@@ -318,7 +318,7 @@ public class LayerHandler {
          * geometry, we start from scratch and the geometry has to be replaced.
          */
         IMap map = layer.getMap();
-        if (continueFromLast) {
+        if (continueFromLast  && feature.getDefaultGeometry() != null) {
             Geometry geometry = addPointToPolygonFeature(gpsPoint, feature, geometryType);
 
             UndoableMapCommand cmd1 = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
