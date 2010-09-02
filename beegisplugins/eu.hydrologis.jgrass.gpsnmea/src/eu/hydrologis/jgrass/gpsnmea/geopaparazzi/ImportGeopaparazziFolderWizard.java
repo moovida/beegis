@@ -28,6 +28,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -102,7 +103,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
 
     private boolean canFinish = true;
 
-    private DateTimeFormatter dateTimeFormatterYYYYMMDDHHMM = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+    private DateTimeFormatter dateTimeFormatterYYYYMMDDHHMM = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
     public ImportGeopaparazziFolderWizard() {
         super();
@@ -226,9 +227,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
             double lat = rs.getDouble("lat");
             double lon = rs.getDouble("lon");
             double altim = rs.getDouble("altim");
-            Date date = rs.getDate("ts");
-            DateTime dt = new DateTime(date);
-            String dateTimeString = dt.toString(dateTimeFormatterYYYYMMDDHHMM);
+            String dateTimeString = rs.getString("ts");
             String text = rs.getString("text");
 
             if (lat == 0 || lon == 0) {
@@ -279,14 +278,8 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         while( rs.next() ) {
             long id = rs.getLong("_id");
 
-            Date startts = rs.getDate("startts");
-            DateTime startdt = new DateTime(startts);
-            String startDateTimeString = startdt.toString(dateTimeFormatterYYYYMMDDHHMM);
-
-            Date endts = rs.getDate("startts");
-            DateTime enddt = new DateTime(endts);
-            String endDateTimeString = enddt.toString(dateTimeFormatterYYYYMMDDHHMM);
-
+            String startDateTimeString = rs.getString("startts");
+            String endDateTimeString = rs.getString("endts");
             String text = rs.getString("text");
 
             GpsLog log = new GpsLog();
@@ -320,10 +313,8 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                     double lat = result.getDouble("lat");
                     double lon = result.getDouble("lon");
                     double altim = result.getDouble("altim");
-                    Date date = result.getDate("ts");
-                    DateTime dt = new DateTime(date);
-                    String dateTimeString = dt.toString(dateTimeFormatterYYYYMMDDHHMM);
-
+                    String dateTimeString = result.getString("ts");
+                    
                     GpsPoint gPoint = new GpsPoint();
                     gPoint.lon = lon;
                     gPoint.lat = lat;
