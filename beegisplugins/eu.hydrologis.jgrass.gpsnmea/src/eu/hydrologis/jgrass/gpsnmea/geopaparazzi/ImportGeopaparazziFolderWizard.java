@@ -511,7 +511,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                     double lon = Double.parseDouble(lonString);
 
                     GeonotesHandler geonotesHandler = new GeonotesHandler(lon, lat, name, "Imported from Geopaparazzi", PHOTO,
-                            dateTime, DefaultGeographicCRS.WGS84.toWKT(), azimuth, null, null, null);
+                            dateTime, azimuth, null, null, null);
                     geonotesHandler.addMedia(file, file.getName());
 
                     FieldbookView fieldBookView = GeonotesPlugin.getDefault().getFieldbookView();
