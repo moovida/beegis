@@ -154,7 +154,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                                 /*
                                  * import gps logs as shapefiles, once as lines and once as points
                                  */
-                                gpsLogToShapefiles(geopapDatabaseFile, outputFolderFile, pm);
+                                gpsLogToShapefiles(connection, geopapDatabaseFile, outputFolderFile, pm);
                             } catch (Exception e) {
                                 // if the error message is "out of memory",
                                 // it probably means no database file is found
@@ -262,6 +262,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         }
 
         pm.done();
+        statement.close();
 
         ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
         Map<String, URL> map = Collections.singletonMap("url", outputShapeFile.toURI().toURL());
@@ -275,27 +276,45 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
 
     }
 
-    private void gpsLogToShapefiles( File geopapFolderFile, File outputFolderFile, IProgressMonitor pm ) {
+    private void gpsLogToShapefiles( Connection connection, File geopapDatabaseFile, File outputFolderFile, IProgressMonitor pm ) throws Exception {
         /*
          * first every log to single line of a shapefile
          */
-        File folder = new File(geopapFolderFile, "gpslogs");
-        if (!folder.exists()) {
+        if (!geopapDatabaseFile.exists()) {
             // ignoring non existing things
             return;
         }
         File outputLinesShapeFile = new File(outputFolderFile, "gpslines.shp");
 
-        File[] listLogFiles = folder.listFiles(new FileFilter(){
-            public boolean accept( File pathname ) {
-                String name = pathname.getName();
-                if (name.toUpperCase().startsWith("GPSLOG")) {
-                    return true;
-                }
-                return false;
-            }
-        });
-        Arrays.sort(listLogFiles);
+        Statement statement = connection.createStatement();
+        statement.setQueryTimeout(30); // set timeout to 30 sec.
+
+        List<GpsLog> logsList = new ArrayList<ImportGeopaparazziFolderWizard.GpsLog>();
+        // first get the logs
+        ResultSet rs = statement.executeQuery("select _id, startts, endts, text from gpslogs");
+        int i = 0;
+        while( rs.next() ) {
+            long id = rs.getLong("_id");
+
+            Date startts = rs.getDate("startts");
+            DateTime startdt = new DateTime(startts);
+            String startDateTimeString = startdt.toString(dateTimeFormatterYYYYMMDDHHMM);
+
+            Date endts = rs.getDate("startts");
+            DateTime enddt = new DateTime(endts);
+            String endDateTimeString = enddt.toString(dateTimeFormatterYYYYMMDDHHMM);
+
+            String text = rs.getString("text");
+
+            GpsLog log = new GpsLog();
+            log.id = id;
+            log.startTime = startDateTimeString;
+            log.endTime = endDateTimeString;
+            log.text = text;
+            logsList.add(log);
+        }
+
+        statement.close();
 
         /*
          * first read in all logs and insert them into the 
@@ -303,25 +322,31 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
          */
         Session session = null;
         Transaction transaction = null;
-        LinkedHashMap<String, List<GpsPoint>> logsMap = new LinkedHashMap<String, List<GpsPoint>>();
         try {
             session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
             transaction = session.beginTransaction();
-            for( File file : listLogFiles ) {
+            for( GpsLog log : logsList ) {
+                long logId = log.id;
+                String query = "select lat, lon, altim, ts from gpslog_data where logid = " + logId + " order by ts";
 
-                ArrayList<GpsPoint> pointList = new ArrayList<GpsPoint>();
-                logsMap.put(file.getName(), pointList);
+                Statement newStatement = connection.createStatement();
+                newStatement.setQueryTimeout(30);
+                ResultSet result = newStatement.executeQuery(query);
 
-                BufferedReader bR = new BufferedReader(new FileReader(file));
-                String line = null;
-                while( (line = bR.readLine()) != null ) {
-                    String[] lineSplit = line.split(",");
+                while( result.next() ) {
+                    double lat = result.getDouble("lat");
+                    double lon = result.getDouble("lon");
+                    double altim = result.getDouble("altim");
+                    Date date = result.getDate("ts");
+                    DateTime dt = new DateTime(date);
+                    String dateTimeString = dt.toString(dateTimeFormatterYYYYMMDDHHMM);
+
                     GpsPoint gPoint = new GpsPoint();
-                    gPoint.lon = Double.parseDouble(lineSplit[0]);
-                    gPoint.lat = Double.parseDouble(lineSplit[1]);
-                    gPoint.altim = Double.parseDouble(lineSplit[2]);
-                    gPoint.utctime = lineSplit[3];
-                    pointList.add(gPoint);
+                    gPoint.lon = lon;
+                    gPoint.lat = lat;
+                    gPoint.altim = altim;
+                    gPoint.utctime = dateTimeString;
+                    log.points.add(gPoint);
 
                     GpsLogTable gpsLog = new GpsLogTable();
                     DateTime utcTime = dateTimeFormatterYYYYMMDDHHMM.parseDateTime(gPoint.utctime);
@@ -355,20 +380,21 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         b.add("the_geom", MultiLineString.class);
         b.add("STARTDATE", String.class);
         b.add("ENDDATE", String.class);
+        b.add("DESCR", String.class);
         SimpleFeatureType featureType = b.buildFeatureType();
 
         try {
             MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, mapCrs);
-            pm.beginTask("Import gps to lines...", listLogFiles.length);
+            pm.beginTask("Import gps to lines...", logsList.size());
             FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections.newCollection();
-            Set<String> keySet = logsMap.keySet();
-            for( String name : keySet ) {
-                List<GpsPoint> gpsPointList = logsMap.get(name);
+            int index = 0;
+            for( GpsLog log : logsList ) {
+                List<GpsPoint> points = log.points;
 
                 List<Coordinate> coordList = new ArrayList<Coordinate>();
-                String startDate = gpsPointList.get(0).utctime;
-                String endDate = gpsPointList.get(gpsPointList.size() - 1).utctime;
-                for( GpsPoint gpsPoint : gpsPointList ) {
+                String startDate = log.startTime;
+                String endDate = log.endTime;
+                for( GpsPoint gpsPoint : points ) {
                     Coordinate c = new Coordinate(gpsPoint.lon, gpsPoint.lat);
                     coordList.add(c);
                 }
@@ -381,9 +407,9 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                 MultiLineString multiLineString = gF.createMultiLineString(new LineString[]{reprojectLineString});
 
                 SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
-                Object[] values = new Object[]{multiLineString, startDate, endDate};
+                Object[] values = new Object[]{multiLineString, startDate, endDate, log.text};
                 builder.addAll(values);
-                SimpleFeature feature = builder.buildFeature(featureType.getTypeName() + "." + name);
+                SimpleFeature feature = builder.buildFeature(featureType.getTypeName() + "." + index++);
 
                 newCollection.add(feature);
                 pm.worked(1);
@@ -422,11 +448,11 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         try {
             MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, mapCrs);
 
-            pm.beginTask("Import gps to points...", listLogFiles.length);
+            pm.beginTask("Import gps to points...", logsList.size());
             FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections.newCollection();
-            Set<String> keySet = logsMap.keySet();
-            for( String name : keySet ) {
-                List<GpsPoint> gpsPointList = logsMap.get(name);
+            int index = 0;
+            for( GpsLog log : logsList ) {
+                List<GpsPoint> gpsPointList = log.points;
                 for( GpsPoint gpsPoint : gpsPointList ) {
                     Coordinate c = new Coordinate(gpsPoint.lon, gpsPoint.lat);
                     Point point = gF.createPoint(c);
@@ -436,7 +462,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
 
                     SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
                     builder.addAll(values);
-                    SimpleFeature feature = builder.buildFeature(featureType.getTypeName() + "." + name);
+                    SimpleFeature feature = builder.buildFeature(featureType.getTypeName() + "." + index++);
                     newCollection.add(feature);
                 }
                 pm.worked(1);
@@ -546,11 +572,20 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         }
 
     }
-    private class GpsPoint {
+    private static class GpsPoint {
         public double lat;
         public double lon;
         public double altim;
         public String utctime;
+    }
+
+    private static class GpsLog {
+        public long id;
+        public String startTime;
+        public String endTime;
+        public String text;
+        public List<GpsPoint> points = new ArrayList<GpsPoint>();
+
     }
 
 }
