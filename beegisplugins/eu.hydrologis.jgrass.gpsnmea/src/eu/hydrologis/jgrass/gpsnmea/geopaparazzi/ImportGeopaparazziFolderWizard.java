@@ -231,7 +231,6 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
             String dateTimeString = dt.toString(dateTimeFormatterYYYYMMDDHHMM);
             String text = rs.getString("text");
 
-            // if (time == null || lat == null || lon == null || text == null) {
             if (lat == 0 || lon == 0) {
                 continue;
             }
