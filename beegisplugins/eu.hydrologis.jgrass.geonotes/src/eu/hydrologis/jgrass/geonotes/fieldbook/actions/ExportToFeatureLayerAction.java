@@ -35,7 +35,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.widgets.Display;
 import org.geotools.data.FeatureStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollections;
@@ -112,7 +111,6 @@ public class ExportToFeatureLayerAction extends Action {
 
                         GeonotesHandler geonotesHandler = currentGeonotesSelection.get(i);
                         Coordinate position = geonotesHandler.getPosition();
-                        String crsWkt = geonotesHandler.getCrsWkt();
                         DateTime creationDate = geonotesHandler.getCreationDate();
                         GeonotesTextareaTable geonotesTextareaTable = geonotesHandler.getGeonotesTextareaTable();
                         String text = ""; //$NON-NLS-1$
@@ -121,7 +119,7 @@ public class ExportToFeatureLayerAction extends Action {
                         }
                         String title = geonotesHandler.getTitle();
 
-                        CoordinateReferenceSystem noteCrs = CRS.parseWKT(crsWkt);
+                        CoordinateReferenceSystem noteCrs = geonotesHandler.getCrs();
                         MathTransform transform = CRS.findMathTransform(noteCrs, mapCrs);
 
                         Point point = gF.createPoint(position);

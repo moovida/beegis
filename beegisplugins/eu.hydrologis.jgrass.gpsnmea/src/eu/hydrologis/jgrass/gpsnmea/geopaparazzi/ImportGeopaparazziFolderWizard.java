@@ -94,8 +94,7 @@ import eu.hydrologis.jgrass.gpsnmea.GpsActivator;
  */
 public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWizard {
 
-    private static final String[] GEOPAPARAZZI_NOTES_DESCRIPTIONFIELDS = {"DESCRIPTION",
-            "TIMESTAMP"};
+    private static final String[] GEOPAPARAZZI_NOTES_DESCRIPTIONFIELDS = {"DESCRIPTION", "TIMESTAMP"};
     private static final String GEOPAPARAZZI_NOTES_OUTPUTSHAPEFILENAME = "notes.shp";
     private static final String GEOPAPARAZZI_NOTES_FOLDERNAME = "notes";
 
@@ -103,8 +102,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
     private static GeometryFactory gF = new GeometryFactory();
     private CoordinateReferenceSystem mapCrs;
 
-    private DateTimeFormatter dateTimeFormatterYYYYMMDDHHMM = DateTimeFormat
-            .forPattern("yyyy-MM-dd HH:mm");
+    private DateTimeFormatter dateTimeFormatterYYYYMMDDHHMM = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
 
     public ImportGeopaparazziFolderWizard() {
         super();
@@ -158,8 +156,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
     public void init( IWorkbench workbench, IStructuredSelection selection ) {
         setWindowTitle("Geopaparazzi Import Wizard"); // NON-NLS-1
         setNeedsProgressMonitor(true);
-        mainPage = new ImportGeopaparazziFolderWizardPage("Import GeoPaparazzi Data Folder",
-                selection);
+        mainPage = new ImportGeopaparazziFolderWizardPage("Import GeoPaparazzi Data Folder", selection);
     }
 
     public void addPages() {
@@ -188,8 +185,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         try {
             MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, mapCrs);
             pm.beginTask("Import notes...", listFiles.length);
-            FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections
-                    .newCollection();
+            FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections.newCollection();
             for( int i = 0; i < listFiles.length; i++ ) {
                 File noteFile = listFiles[i];
 
@@ -227,8 +223,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
 
             FeatureUtilities.writeToShapefile(dStore, newCollection);
 
-            FeatureUtilities.addServiceToCatalogAndMap(outputShapeFile.getAbsolutePath(), true,
-                    true, new NullProgressMonitor());
+            FeatureUtilities.addServiceToCatalogAndMap(outputShapeFile.getAbsolutePath(), true, true, new NullProgressMonitor());
 
         } catch (Exception e1) {
             GpsActivator.log(e1.getLocalizedMessage(), e1);
@@ -237,8 +232,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
 
     }
 
-    private void gpsLogToShapefiles( File geopapFolderFile, File outputFolderFile,
-            IProgressMonitor pm ) {
+    private void gpsLogToShapefiles( File geopapFolderFile, File outputFolderFile, IProgressMonitor pm ) {
         /*
          * first every log to single line of a shapefile
          */
@@ -302,8 +296,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         } catch (Exception e) {
             e.printStackTrace();
             String message = "An error occurred while reading the gps logs.";
-            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID,
-                    e);
+            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e);
             return;
         } finally {
             transaction.commit();
@@ -324,8 +317,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         try {
             MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, mapCrs);
             pm.beginTask("Import gps to lines...", listLogFiles.length);
-            FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections
-                    .newCollection();
+            FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections.newCollection();
             Set<String> keySet = logsMap.keySet();
             for( String name : keySet ) {
                 List<GpsPoint> gpsPointList = logsMap.get(name);
@@ -337,21 +329,18 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                     Coordinate c = new Coordinate(gpsPoint.lon, gpsPoint.lat);
                     coordList.add(c);
                 }
-                Coordinate[] coordArray = (Coordinate[]) coordList.toArray(new Coordinate[coordList
-                        .size()]);
+                Coordinate[] coordArray = (Coordinate[]) coordList.toArray(new Coordinate[coordList.size()]);
                 if (coordArray.length < 2) {
                     continue;
                 }
                 LineString lineString = gF.createLineString(coordArray);
                 LineString reprojectLineString = (LineString) JTS.transform(lineString, transform);
-                MultiLineString multiLineString = gF
-                        .createMultiLineString(new LineString[]{reprojectLineString});
+                MultiLineString multiLineString = gF.createMultiLineString(new LineString[]{reprojectLineString});
 
                 SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
                 Object[] values = new Object[]{multiLineString, startDate, endDate};
                 builder.addAll(values);
-                SimpleFeature feature = builder
-                        .buildFeature(featureType.getTypeName() + "." + name);
+                SimpleFeature feature = builder.buildFeature(featureType.getTypeName() + "." + name);
 
                 newCollection.add(feature);
                 pm.worked(1);
@@ -359,16 +348,15 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
             pm.done();
 
             ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
-            Map<String, URL> map = Collections.singletonMap("url", outputLinesShapeFile.toURI()
-                    .toURL());
+            Map<String, URL> map = Collections.singletonMap("url", outputLinesShapeFile.toURI().toURL());
             ShapefileDataStore dStore = (ShapefileDataStore) factory.createNewDataStore(map);
             dStore.createSchema(featureType);
             dStore.forceSchemaCRS(mapCrs);
 
             FeatureUtilities.writeToShapefile(dStore, newCollection);
 
-            FeatureUtilities.addServiceToCatalogAndMap(outputLinesShapeFile.getAbsolutePath(),
-                    true, true, new NullProgressMonitor());
+            FeatureUtilities.addServiceToCatalogAndMap(outputLinesShapeFile.getAbsolutePath(), true, true,
+                    new NullProgressMonitor());
 
         } catch (Exception e1) {
             GpsActivator.log(e1.getLocalizedMessage(), e1);
@@ -392,8 +380,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
             MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, mapCrs);
 
             pm.beginTask("Import gps to points...", listLogFiles.length);
-            FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections
-                    .newCollection();
+            FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections.newCollection();
             Set<String> keySet = logsMap.keySet();
             for( String name : keySet ) {
                 List<GpsPoint> gpsPointList = logsMap.get(name);
@@ -402,13 +389,11 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                     Point point = gF.createPoint(c);
 
                     Point reprojectPoint = (Point) JTS.transform(point, transform);
-                    Object[] values = new Object[]{reprojectPoint, String.valueOf(gpsPoint.altim),
-                            gpsPoint.utctime};
+                    Object[] values = new Object[]{reprojectPoint, String.valueOf(gpsPoint.altim), gpsPoint.utctime};
 
                     SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
                     builder.addAll(values);
-                    SimpleFeature feature = builder.buildFeature(featureType.getTypeName() + "."
-                            + name);
+                    SimpleFeature feature = builder.buildFeature(featureType.getTypeName() + "." + name);
                     newCollection.add(feature);
                 }
                 pm.worked(1);
@@ -416,16 +401,15 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
             pm.done();
 
             ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
-            Map<String, URL> map = Collections.singletonMap("url", outputPointsShapeFile.toURI()
-                    .toURL());
+            Map<String, URL> map = Collections.singletonMap("url", outputPointsShapeFile.toURI().toURL());
             ShapefileDataStore dStore = (ShapefileDataStore) factory.createNewDataStore(map);
             dStore.createSchema(featureType);
             dStore.forceSchemaCRS(mapCrs);
 
             FeatureUtilities.writeToShapefile(dStore, newCollection);
 
-            FeatureUtilities.addServiceToCatalogAndMap(outputPointsShapeFile.getAbsolutePath(),
-                    true, true, new NullProgressMonitor());
+            FeatureUtilities.addServiceToCatalogAndMap(outputPointsShapeFile.getAbsolutePath(), true, true,
+                    new NullProgressMonitor());
 
         } catch (Exception e1) {
             GpsActivator.log(e1.getLocalizedMessage(), e1);
@@ -447,8 +431,8 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         pm.beginTask("Importing pictures...", listFiles.length);
         for( File file : listFiles ) {
             String name = file.getName();
-            if (name.endsWith("jpg") || file.getName().endsWith("JPG")
-                    || file.getName().endsWith("png") || file.getName().endsWith("PNG")) {
+            if (name.endsWith("jpg") || file.getName().endsWith("JPG") || file.getName().endsWith("png")
+                    || file.getName().endsWith("PNG")) {
 
                 try {
                     String[] nameSplit = name.split("[_\\|.]"); //$NON-NLS-1$
@@ -477,9 +461,8 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                     double lat = Double.parseDouble(latString);
                     double lon = Double.parseDouble(lonString);
 
-                    GeonotesHandler geonotesHandler = new GeonotesHandler(lon, lat, name,
-                            "Imported from Geopaparazzi", PHOTO, dateTime,
-                            DefaultGeographicCRS.WGS84.toWKT(), azimuth, null, null, null);
+                    GeonotesHandler geonotesHandler = new GeonotesHandler(lon, lat, name, "Imported from Geopaparazzi", PHOTO,
+                            dateTime, azimuth, null, null, null);
                     geonotesHandler.addMedia(file, file.getName());
 
                     FieldbookView fieldBookView = GeonotesPlugin.getDefault().getFieldbookView();
@@ -514,8 +497,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
             Display.getDefault().asyncExec(new Runnable(){
                 public void run() {
                     Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-                    MessageDialog.openInformation(shell, "Info",
-                            "All photos were successfully imported.");
+                    MessageDialog.openInformation(shell, "Info", "All photos were successfully imported.");
                 }
             });
         }
