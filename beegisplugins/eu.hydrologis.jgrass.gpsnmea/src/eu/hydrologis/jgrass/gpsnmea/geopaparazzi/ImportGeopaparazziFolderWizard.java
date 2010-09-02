@@ -19,11 +19,8 @@ package eu.hydrologis.jgrass.gpsnmea.geopaparazzi;
 
 import static eu.hydrologis.jgrass.geonotes.GeonoteConstants.PHOTO;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
@@ -31,15 +28,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
 import net.refractions.udig.project.ui.ApplicationGIS;
 import net.refractions.udig.ui.ExceptionDetailsDialog;
@@ -73,7 +66,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
@@ -103,7 +95,6 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
 
     private static final String[] GEOPAPARAZZI_NOTES_DESCRIPTIONFIELDS = {"DESCRIPTION", "TIMESTAMP", "ALTIM"};
     private static final String GEOPAPARAZZI_NOTES_OUTPUTSHAPEFILENAME = "notes.shp";
-    private static final String GEOPAPARAZZI_NOTES_FOLDERNAME = "notes";
 
     private ImportGeopaparazziFolderWizardPage mainPage;
     private static GeometryFactory gF = new GeometryFactory();
@@ -144,17 +135,18 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                             Connection connection = null;
                             try {
                                 // create a database connection
-                                connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
+                                connection = DriverManager.getConnection("jdbc:sqlite:" + geopapDatabaseFile.getAbsolutePath());
+                                if (geopapDatabaseFile.exists()) {
+                                    /*
+                                     * import notes as shapefile
+                                     */
+                                    notesToShapefile(connection, outputFolderFile, pm);
 
-                                /*
-                                 * import notes as shapefile
-                                 */
-                                notesToShapefile(connection, geopapDatabaseFile, outputFolderFile, pm);
-
-                                /*
-                                 * import gps logs as shapefiles, once as lines and once as points
-                                 */
-                                gpsLogToShapefiles(connection, geopapDatabaseFile, outputFolderFile, pm);
+                                    /*
+                                     * import gps logs as shapefiles, once as lines and once as points
+                                     */
+                                    gpsLogToShapefiles(connection, outputFolderFile, pm);
+                                }
                             } catch (Exception e) {
                                 // if the error message is "out of memory",
                                 // it probably means no database file is found
@@ -209,12 +201,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         }
     }
 
-    private void notesToShapefile( Connection connection, File geopapDatabaseFile, File outputFolderFile, IProgressMonitor pm )
-            throws Exception {
-        if (!geopapDatabaseFile.exists()) {
-            // ignoring non existing things
-            return;
-        }
+    private void notesToShapefile( Connection connection, File outputFolderFile, IProgressMonitor pm ) throws Exception {
         File outputShapeFile = new File(outputFolderFile, GEOPAPARAZZI_NOTES_OUTPUTSHAPEFILENAME);
 
         SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
@@ -276,14 +263,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
 
     }
 
-    private void gpsLogToShapefiles( Connection connection, File geopapDatabaseFile, File outputFolderFile, IProgressMonitor pm ) throws Exception {
-        /*
-         * first every log to single line of a shapefile
-         */
-        if (!geopapDatabaseFile.exists()) {
-            // ignoring non existing things
-            return;
-        }
+    private void gpsLogToShapefiles( Connection connection, File outputFolderFile, IProgressMonitor pm ) throws Exception {
         File outputLinesShapeFile = new File(outputFolderFile, "gpslines.shp");
 
         Statement statement = connection.createStatement();
@@ -292,7 +272,6 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         List<GpsLog> logsList = new ArrayList<ImportGeopaparazziFolderWizard.GpsLog>();
         // first get the logs
         ResultSet rs = statement.executeQuery("select _id, startts, endts, text from gpslogs");
-        int i = 0;
         while( rs.next() ) {
             long id = rs.getLong("_id");
 
@@ -359,6 +338,8 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
 
                     session.save(gpsLog);
                 }
+
+                newStatement.close();
 
             }
         } catch (Exception e) {
