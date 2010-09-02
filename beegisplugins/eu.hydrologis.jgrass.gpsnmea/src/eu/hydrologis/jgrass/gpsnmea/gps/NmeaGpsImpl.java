@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Observer;
 import java.util.Vector;
@@ -112,7 +113,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
 
         prefs = GpsActivator.getDefault().getPreferenceStore();
 
-        observers = new Vector<Observer>();
+        observers = Collections.synchronizedList(new ArrayList<Observer>());
 
         gpsArtist = new GpsArtist();
     }
@@ -123,8 +124,8 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
             try {
                 CommPortIdentifier portID = CommPortIdentifier.getPortIdentifier(portString);
                 port = (SerialPort) portID.open("JGrass", Integer.parseInt(waitString)); //$NON-NLS-1$
-                port.setSerialPortParams(Integer.parseInt(baudRateString), Integer.parseInt(dataBitString), Integer
-                        .parseInt(stopBitString), Integer.parseInt(parityBitString));
+                port.setSerialPortParams(Integer.parseInt(baudRateString), Integer.parseInt(dataBitString),
+                        Integer.parseInt(stopBitString), Integer.parseInt(parityBitString));
                 port.addEventListener(this);
                 port.notifyOnDataAvailable(true);
 
@@ -300,6 +301,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
             ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e);
             return;
         }
+
         for( Observer observer : observers ) {
             observer.update(this, returnGpsPoint);
         }
@@ -322,7 +324,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
                 return;
             }
 
-             System.out.println(returnGpsPoint.toString());
+            System.out.println(returnGpsPoint.toString());
 
             gpsArtist.blink(returnGpsPoint);
 
