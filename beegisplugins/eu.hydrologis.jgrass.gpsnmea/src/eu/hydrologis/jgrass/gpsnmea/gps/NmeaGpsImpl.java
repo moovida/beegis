@@ -322,7 +322,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
                 return;
             }
 
-            // System.out.println(returnGpsPoint.toString());
+             System.out.println(returnGpsPoint.toString());
 
             gpsArtist.blink(returnGpsPoint);
 
