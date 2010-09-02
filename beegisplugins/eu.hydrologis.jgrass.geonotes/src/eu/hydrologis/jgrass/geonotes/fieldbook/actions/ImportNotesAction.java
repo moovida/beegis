@@ -133,7 +133,7 @@ public class ImportNotesAction extends Action {
                 GeonotesHandler geonotesHandler = new GeonotesHandler(geonotesTable.getEast(),
                         geonotesTable.getNorth(), geonotesTable.getTitle(),
                         geonotesTable.getInfo(), geonotesTable.getType(), geonotesTable
-                                .getCreationDateTime(), geonotesTable.getCrsWkt(), geonotesTable
+                                .getCreationDateTime(), geonotesTable
                                 .getAzimut(), geonotesTable.getColor(), geonotesTable.getWidth(),
                         geonotesTable.getHeight());
                 

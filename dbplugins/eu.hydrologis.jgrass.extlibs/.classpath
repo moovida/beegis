@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="libs/sqlite-jdbc-3.6.16.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/gt-grassraster-2.7-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/gt-imageio-ext-gdal-2.6-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/imageio-ext-customstreams-1.0.6-1.jar"/>
