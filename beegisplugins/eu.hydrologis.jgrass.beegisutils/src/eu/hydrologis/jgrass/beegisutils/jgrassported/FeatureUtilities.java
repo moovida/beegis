@@ -46,6 +46,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
 import org.geotools.data.FileDataStoreFactorySpi;
@@ -83,8 +84,8 @@ public class FeatureUtilities {
      * @param addToActiveMap
      * @param progressMonitor
      */
-    public static synchronized void addServiceToCatalogAndMap( String outputFile,
-            boolean addToCatalog, boolean addToActiveMap, IProgressMonitor progressMonitor ) {
+    public static synchronized void addServiceToCatalogAndMap( String outputFile, boolean addToCatalog, boolean addToActiveMap,
+            IProgressMonitor progressMonitor ) {
         try {
             URL fileUrl = new File(outputFile).toURI().toURL();
             if (addToCatalog) {
@@ -99,10 +100,8 @@ public class FeatureUtilities {
                         List<IResolve> members = service.members(progressMonitor);
                         for( IResolve iRes : members ) {
                             if (iRes.canResolve(IGeoResource.class)) {
-                                IGeoResource geoResource = iRes.resolve(IGeoResource.class,
-                                        progressMonitor);
-                                ApplicationGIS.addLayersToMap(null, Collections
-                                        .singletonList(geoResource), layerNum);
+                                IGeoResource geoResource = iRes.resolve(IGeoResource.class, progressMonitor);
+                                ApplicationGIS.addLayersToMap(null, Collections.singletonList(geoResource), layerNum);
                             }
                         }
                     }
@@ -110,8 +109,7 @@ public class FeatureUtilities {
             }
         } catch (Exception e) {
             String message = "An error occurred while adding the service to the catalog.";
-            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                    BeegisUtilsPlugin.PLUGIN_ID, e);
+            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, BeegisUtilsPlugin.PLUGIN_ID, e);
             e.printStackTrace();
         }
     }
@@ -150,10 +148,8 @@ public class FeatureUtilities {
      * @param features - the vectore of features
      * @return the created featurecollection
      */
-    public static FeatureCollection<SimpleFeatureType, SimpleFeature> createFeatureCollection(
-            SimpleFeature... features ) {
-        FeatureCollection<SimpleFeatureType, SimpleFeature> fcollection = FeatureCollections
-                .newCollection();
+    public static FeatureCollection<SimpleFeatureType, SimpleFeature> createFeatureCollection( SimpleFeature... features ) {
+        FeatureCollection<SimpleFeatureType, SimpleFeature> fcollection = FeatureCollections.newCollection();
 
         for( SimpleFeature feature : features ) {
             fcollection.add(feature);
@@ -185,9 +181,8 @@ public class FeatureUtilities {
      * @throws Exception
      */
     @SuppressWarnings("nls")
-    public static void csvFileToShapeFile( CoordinateReferenceSystem srcCrs,
-            CoordinateReferenceSystem destCrs, String csvPath, String shapePath, boolean is3d,
-            boolean fileHasHeader, String separator, String _classAndFieldNames,
+    public static void csvFileToShapeFile( CoordinateReferenceSystem srcCrs, CoordinateReferenceSystem destCrs, String csvPath,
+            String shapePath, boolean is3d, boolean fileHasHeader, String separator, String _classAndFieldNames,
             boolean addToMapAndCatalog, IProgressMonitor pm ) throws Exception {
 
         if (separator == null) {
@@ -229,8 +224,8 @@ public class FeatureUtilities {
              * complexer geometries
              */
             String[] lineSplit = line.split(separator);
-            cList.add(new Coordinate(Double.parseDouble(lineSplit[0]), Double
-                    .parseDouble(lineSplit[1]), (is3d ? Double.parseDouble(lineSplit[2]) : 0.0)));
+            cList.add(new Coordinate(Double.parseDouble(lineSplit[0]), Double.parseDouble(lineSplit[1]), (is3d ? Double
+                    .parseDouble(lineSplit[2]) : 0.0)));
             if (lineSplit.length == numberOfFiledstoBeLineWithAttributes) {
                 lines.add(lineSplit);
                 coords.add(cList);
@@ -310,8 +305,8 @@ public class FeatureUtilities {
                             j = j + 2;
                         }
                         // create the ring
-                        LinearRing lRing = gf.createLinearRing((Coordinate[]) coordsList
-                                .toArray(new Coordinate[coordsList.size()]));
+                        LinearRing lRing = gf
+                                .createLinearRing((Coordinate[]) coordsList.toArray(new Coordinate[coordsList.size()]));
                         rings.add(lRing);
                         // empty the coords
                         coordsList.removeAll(coordsList);
@@ -326,8 +321,7 @@ public class FeatureUtilities {
                     polygons.add(p);
                 }
                 if (polygons.size() > 0) {
-                    g = gf.createMultiPolygon((Polygon[]) polygons.toArray(new Polygon[polygons
-                            .size()]));
+                    g = gf.createMultiPolygon((Polygon[]) polygons.toArray(new Polygon[polygons.size()]));
                 }
             }
             if (tmp[0].matches(".*Line.*")) {
@@ -384,11 +378,10 @@ public class FeatureUtilities {
      * @param allObjects
      * @return the new created collection
      */
-    private static FeatureCollection<SimpleFeatureType, SimpleFeature> createFeatures(
-            SimpleFeatureType schema, Object[][] allObjects ) {
+    private static FeatureCollection<SimpleFeatureType, SimpleFeature> createFeatures( SimpleFeatureType schema,
+            Object[][] allObjects ) {
 
-        FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections
-                .newCollection();
+        FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections.newCollection();
         // create the feature
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(schema);
         // add the values
@@ -409,8 +402,8 @@ public class FeatureUtilities {
      * @param geometries the array of geometries, wrapped into an Object array
      * @throws Exception
      */
-    public static void reproject( CoordinateReferenceSystem from, CoordinateReferenceSystem to,
-            Object[] geometries ) throws Exception {
+    public static void reproject( CoordinateReferenceSystem from, CoordinateReferenceSystem to, Object[] geometries )
+            throws Exception {
         // if no from crs, use the map's one
         if (from == null) {
             from = ApplicationGIS.getActiveMap().getViewportModel().getCRS();
@@ -430,8 +423,7 @@ public class FeatureUtilities {
      * @param fet the featurecollection for which to create a temporary layer resource
      */
     public static void featureCollectionToTempLayer( FeatureCollection fet ) {
-        IGeoResource resource = CatalogPlugin.getDefault().getLocalCatalog()
-                .createTemporaryResource(fet.getSchema());
+        IGeoResource resource = CatalogPlugin.getDefault().getLocalCatalog().createTemporaryResource(fet.getSchema());
         try {
 
             FeatureStore fStore = resource.resolve(FeatureStore.class, new NullProgressMonitor());
@@ -439,8 +431,7 @@ public class FeatureUtilities {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ApplicationGIS.addLayersToMap(ApplicationGIS.getActiveMap(), Collections
-                .singletonList(resource), -1);
+        ApplicationGIS.addLayersToMap(ApplicationGIS.getActiveMap(), Collections.singletonList(resource), -1);
     }
 
     /**
@@ -453,8 +444,8 @@ public class FeatureUtilities {
      * @return
      */
     @SuppressWarnings("nls")
-    public static synchronized ShapefileDataStore createShapeFileDatastore( String name,
-            String fieldsSpec, CoordinateReferenceSystem crs ) {
+    public static synchronized ShapefileDataStore createShapeFileDatastore( String name, String fieldsSpec,
+            CoordinateReferenceSystem crs ) {
         try {
             // Create the DataStoreFactory
             FileDataStoreFactorySpi factory = new ShapefileDataStoreFactory();
@@ -469,8 +460,7 @@ public class FeatureUtilities {
             // Create a Map object used by our DataStore Factory
             // NOTE: file.toURI().toURL() is used because file.toURL() is
             // deprecated
-            Map<String, Serializable> map = Collections.singletonMap("shapefile url",
-                    (Serializable) file.toURI().toURL());
+            Map<String, Serializable> map = Collections.singletonMap("shapefile url", (Serializable) file.toURI().toURL());
 
             // Create the ShapefileDataStore from our factory based on our Map
             // object
@@ -503,30 +493,20 @@ public class FeatureUtilities {
     /**
      * Writes a featurecollection to a shapefile
      * 
-     * @param data the datastore
+     * @param dataStore the datastore
      * @param collection the featurecollection
      * @throws IOException 
      */
-    public static synchronized void writeToShapefile( ShapefileDataStore data,
+    public static synchronized void writeToShapefile( ShapefileDataStore dataStore,
             FeatureCollection<SimpleFeatureType, SimpleFeature> collection ) throws IOException {
-        String featureName = data.getTypeNames()[0]; // there is only one in
-        // a shapefile
-        FeatureStore<SimpleFeatureType, SimpleFeature> store = null;
+        String featureName = dataStore.getTypeNames()[0];
+        FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = dataStore.getFeatureSource(featureName);
 
-        Transaction transaction = null;
+        Transaction transaction = new DefaultTransaction("create");
         try {
-
-            // Create the DefaultTransaction Object
-            transaction = Transaction.AUTO_COMMIT;
-
-            // Tell it the name of the shapefile it should look for in our
-            // DataStore
-            FeatureSource<SimpleFeatureType, SimpleFeature> source = data
-                    .getFeatureSource(featureName);
-            store = (FeatureStore<SimpleFeatureType, SimpleFeature>) source;
-            store.addFeatures(collection);
-            data.getFeatureWriter(transaction);
-
+            FeatureStore<SimpleFeatureType, SimpleFeature> featureStore = (FeatureStore<SimpleFeatureType, SimpleFeature>) featureSource;
+            featureStore.setTransaction(transaction);
+            featureStore.addFeatures(collection);
             transaction.commit();
         } catch (Exception eek) {
             transaction.rollback();

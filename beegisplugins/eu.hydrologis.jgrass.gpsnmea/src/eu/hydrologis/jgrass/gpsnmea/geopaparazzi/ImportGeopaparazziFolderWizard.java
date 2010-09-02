@@ -21,7 +21,7 @@ import static eu.hydrologis.jgrass.geonotes.GeonoteConstants.PHOTO;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.net.URL;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -29,7 +29,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -251,10 +251,15 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         statement.close();
 
         ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
-        Map<String, URL> map = Collections.singletonMap("url", outputShapeFile.toURI().toURL());
-        ShapefileDataStore dStore = (ShapefileDataStore) factory.createNewDataStore(map);
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put("url", outputShapeFile.toURI().toURL());
+        params.put("create spatial index", Boolean.TRUE);
+        ShapefileDataStore dStore = (ShapefileDataStore) factory.createNewDataStore(params);
         dStore.createSchema(featureType);
         dStore.forceSchemaCRS(mapCrs);
+        
+
+        
 
         FeatureUtilities.writeToShapefile(dStore, newCollection);
 
@@ -397,8 +402,10 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
             pm.done();
 
             ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
-            Map<String, URL> map = Collections.singletonMap("url", outputLinesShapeFile.toURI().toURL());
-            ShapefileDataStore dStore = (ShapefileDataStore) factory.createNewDataStore(map);
+            Map<String, Serializable> params = new HashMap<String, Serializable>();
+            params.put("url", outputLinesShapeFile.toURI().toURL());
+            params.put("create spatial index", Boolean.TRUE);
+            ShapefileDataStore dStore = (ShapefileDataStore) factory.createNewDataStore(params);
             dStore.createSchema(featureType);
             dStore.forceSchemaCRS(mapCrs);
 
@@ -450,8 +457,10 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
             pm.done();
 
             ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
-            Map<String, URL> map = Collections.singletonMap("url", outputPointsShapeFile.toURI().toURL());
-            ShapefileDataStore dStore = (ShapefileDataStore) factory.createNewDataStore(map);
+            Map<String, Serializable> params = new HashMap<String, Serializable>();
+            params.put("url", outputPointsShapeFile.toURI().toURL());
+            params.put("create spatial index", Boolean.TRUE);
+            ShapefileDataStore dStore = (ShapefileDataStore) factory.createNewDataStore(params);
             dStore.createSchema(featureType);
             dStore.forceSchemaCRS(mapCrs);
 
