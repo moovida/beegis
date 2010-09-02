@@ -87,10 +87,9 @@ public class GeonoteAdd extends Action implements IWorkbenchWindowActionDelegate
                 String projectName = ApplicationGIS.getActiveProject().getName();
                 IMap activeMap = ApplicationGIS.getActiveMap();
                 String mapName = activeMap.getName();
-                String crsWkt = activeMap.getViewportModel().getCRS().toWKT();
-                Coordinate reprojected = nextGpsPoint.reproject(null);
-                GeonotesHandler geonotesHandler = new GeonotesHandler(reprojected.x, reprojected.y,
-                        mapName + " - " + projectName, null, GeonoteConstants.GPS, new DateTime(), crsWkt, null, null, null, null);
+                Coordinate gpsCoordLatLong = new Coordinate(nextGpsPoint.longitude, nextGpsPoint.latitude);
+                GeonotesHandler geonotesHandler = new GeonotesHandler(gpsCoordLatLong.x, gpsCoordLatLong.y, mapName + " - "
+                        + projectName, null, GeonoteConstants.GPS, new DateTime(), null, null, null, null);
 
                 GeonotesPlugin.getDefault().getGeonotesLayer();
 

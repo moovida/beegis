@@ -53,6 +53,7 @@ import com.vividsolutions.jts.geom.Point;
 
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTable;
 import eu.hydrologis.jgrass.database.DatabasePlugin;
+import eu.hydrologis.jgrass.geonotes.GeonoteConstants;
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
 import eu.hydrologis.jgrass.geonotes.GeonotesUI;
@@ -101,10 +102,9 @@ public class GeoNoteMoveTool extends AbstractModalTool implements ModalTool {
             for( GeonotesTable dbGeonote : geonotesDbList ) {
                 double east = dbGeonote.getEast();
                 double north = dbGeonote.getNorth();
-                String noteCrsString = dbGeonote.getCrsWkt();
                 Coordinate reprojectedCoordinate = new Coordinate(east, north);
-                if (!mapCrs.toWKT().trim().equals(noteCrsString.trim())) {
-                    CoordinateReferenceSystem noteCrs = CRS.parseWKT(noteCrsString);
+                CoordinateReferenceSystem noteCrs = dbGeonote.getGeonoteCrs();
+                if (!CRS.equalsIgnoreMetadata(noteCrs, mapCrs)) {
                     // transform coordinates before check
                     MathTransform transform = CRS.findMathTransform(noteCrs, mapCrs, true);
                     inverseTransform = CRS.findMathTransform(mapCrs, noteCrs, true);
@@ -134,7 +134,7 @@ public class GeoNoteMoveTool extends AbstractModalTool implements ModalTool {
             Envelope newPointEnv = context.getPixelBoundingBox(point);
             Coordinate centre = newPointEnv.centre();
 
-            Coordinate reprojectedCoordinate= new Coordinate(centre.x, centre.y);
+            Coordinate reprojectedCoordinate = new Coordinate(centre.x, centre.y);
             if (inverseTransform != null) {
                 Point pt = gF.createPoint(reprojectedCoordinate);
                 Geometry targetGeometry = JTS.transform(pt, inverseTransform);
