@@ -23,12 +23,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * The persistent class representing the geonotes table.
@@ -92,13 +93,6 @@ public class GeonotesTable implements Serializable{
      */
     @Column(name = "azimut", nullable = true)
     private Double azimut;
-
-    /**
-     * The coordinate reference system in its WKT form.
-     */
-    @Lob
-    @Column(name = "crswkt", nullable = false)
-    private String crsWkt;
 
     /**
      * The color associated with the Geonote defined as r:g:b:a in integers. 
@@ -186,14 +180,6 @@ public class GeonotesTable implements Serializable{
         return azimut;
     }
 
-    public String getCrsWkt() {
-        return crsWkt;
-    }
-
-    public void setCrsWkt( String crsWkt ) {
-        this.crsWkt = crsWkt;
-    }
-
     public String getColor() {
         return color;
     }
@@ -216,6 +202,10 @@ public class GeonotesTable implements Serializable{
 
     public void setHeight( Integer height ) {
         this.height = height;
+    }
+    
+    public CoordinateReferenceSystem getGeonoteCrs(){
+        return DefaultGeographicCRS.WGS84;
     }
 
 }

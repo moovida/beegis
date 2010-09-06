@@ -107,9 +107,8 @@ public class GeonotesMapGraphic implements MapGraphic {
                 point = new Coordinate(east, north);
 
                 int type = dbGeonote.getType();
-                String crsWKT = dbGeonote.getCrsWkt();
-                if (!mapCrs.toWKT().equals(crsWKT)) {
-                    noteCrs = CRS.parseWKT(crsWKT);
+                noteCrs = dbGeonote.getGeonoteCrs();
+                if (!CRS.equalsIgnoreMetadata(noteCrs, mapCrs)) {
                     // transform coordinates before check
                     MathTransform transform = CRS.findMathTransform(noteCrs, mapCrs, true);
                     // jts geometry

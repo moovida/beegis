@@ -19,9 +19,9 @@ package eu.hydrologis.jgrass.gpsnmea.gps;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Vector;
 
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -38,7 +38,7 @@ public abstract class AbstractGps extends Observable {
     /**
      * the list of {@link Observer} that listen to this Gps Implementation
      */
-    protected Vector<Observer> observers = null;
+    protected List<Observer> observers = null;
 
     /**
      * defines the state of the Gps, true = connected
