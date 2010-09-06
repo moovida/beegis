@@ -57,6 +57,7 @@ import eu.hydrologis.jgrass.geonotes.fieldbook.FieldbookView;
 public class PhotoImportWizard extends Wizard implements IImportWizard {
     private PhotoImportWizardPage mainPage;
     private long shift = 0L;
+    private int intervalMinutes;
 
     public PhotoImportWizard() {
         super();
@@ -66,6 +67,7 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
         final FieldbookView fieldBookView = GeonotesPlugin.getDefault().getFieldbookView();
         final String path = mainPage.getPhotoFolder();
         shift = mainPage.getTime();
+        intervalMinutes = mainPage.getIntervalMinutes();
 
         Display.getDefault().asyncExec(new Runnable(){
             public void run() {
@@ -83,35 +85,35 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
 
                             pm.beginTask("Browsing pictures...", listFiles.length);
                             for( File file : listFiles ) {
-                                String name = file.getName();
-                                if (name.endsWith("jpg") || name.endsWith("JPG") || name.endsWith("png") || name.endsWith("PNG")) {
-                                    // check the date
-                                    long lastModified = file.lastModified();
-                                    // correct with the given shift
-                                    lastModified = lastModified + shift;
-                                    // search for gps points of that timestamp
-                                    DateTime ts = new DateTime(lastModified);
-                                    Coordinate coordinate = null;
-                                    try {
-                                        coordinate = GeonotesHandler.getGpsCoordinateForTimeStamp(ts);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                                try {
+                                    String name = file.getName();
+                                    if (name.endsWith("jpg") || name.endsWith("JPG") || name.endsWith("png")
+                                            || name.endsWith("PNG")) {
+                                        // check the date
+                                        long lastModified = file.lastModified();
+                                        // correct with the given shift
+                                        lastModified = lastModified + shift;
+                                        // search for gps points of that timestamp
+                                        DateTime ts = new DateTime(lastModified);
+                                        Coordinate coordinate = GeonotesHandler.getGpsCoordinateForTimeStamp(ts, intervalMinutes);
 
-                                    if (coordinate == null) {
-                                        // could not find date
-                                        nonTakenFilesList.add(file.getAbsolutePath());
-                                    } else {
-                                        List<File> fileList = imageFiles.get(ts);
-                                        if (fileList == null) {
-                                            fileList = new ArrayList<File>();
-                                            imageFiles.put(ts, fileList);
+                                        if (coordinate == null) {
+                                            // could not find date
+                                            nonTakenFilesList.add(file.getAbsolutePath());
+                                        } else {
+                                            List<File> fileList = imageFiles.get(ts);
+                                            if (fileList == null) {
+                                                fileList = new ArrayList<File>();
+                                                imageFiles.put(ts, fileList);
+                                            }
+                                            fileList.add(file);
+                                            timestamp2Coordinates.put(ts, coordinate);
                                         }
-                                        fileList.add(file);
-                                        timestamp2Coordinates.put(ts, coordinate);
                                     }
+                                    pm.worked(1);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                                pm.worked(1);
                             }
                             pm.done();
 
