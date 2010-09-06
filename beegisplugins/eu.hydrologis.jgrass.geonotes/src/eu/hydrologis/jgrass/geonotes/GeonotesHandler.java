@@ -1084,10 +1084,9 @@ public class GeonotesHandler {
      * @return the coordinate of the nearest time.
      * @throws Exception
      */
-    public static Coordinate getGpsCoordinateForTimeStamp( DateTime dateTime ) throws Exception {
-        // we check in the frame of one hour (1/2 before, 1/2 after)
-        DateTime from = dateTime.minusMinutes(30);
-        DateTime to = dateTime.plusMinutes(30);
+    public static Coordinate getGpsCoordinateForTimeStamp( DateTime dateTime, int minutesThreshold ) throws Exception {
+        DateTime from = dateTime.minusMinutes(minutesThreshold);
+        DateTime to = dateTime.plusMinutes(minutesThreshold);
 
         Session session = null;
         try {
