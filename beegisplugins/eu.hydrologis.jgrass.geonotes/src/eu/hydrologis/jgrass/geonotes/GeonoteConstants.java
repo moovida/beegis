@@ -1,5 +1,8 @@
 package eu.hydrologis.jgrass.geonotes;
 
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesDrawareaTable;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesMediaboxBlobsTable;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTable;
@@ -14,6 +17,7 @@ public class GeonoteConstants {
     public static final int DEFAULT_GEONOTE_HEIGHT = 350;
     public static final String DEFAULT_GEONOTE_TITLE = "new geonote"; //$NON-NLS-1$
     public static final int DEFAULT_GEONOTE_TYPE = 0;
+    public static final CoordinateReferenceSystem DEFAULT_GEONOTE_CRS = DefaultGeographicCRS.WGS84;
 
     /**
      * A generic name used for geonotes. 

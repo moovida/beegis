@@ -18,7 +18,6 @@
 package eu.hydrologis.jgrass.geonotes.fieldbook.actions;
 
 import java.util.List;
-import java.util.Properties;
 
 import net.refractions.udig.project.IMap;
 import net.refractions.udig.project.command.factory.NavigationCommandFactory;
@@ -37,7 +36,6 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
-import eu.hydrologis.jgrass.geonotes.GeonotesUI;
 import eu.hydrologis.jgrass.geonotes.fieldbook.GeonotesListViewer;
 
 public class ZoomToNotesAction extends Action {
@@ -68,9 +66,8 @@ public class ZoomToNotesAction extends Action {
             for( int i = 0; i < currentGeonotesSelection.size(); i++ ) {
                 GeonotesHandler geonoteHandler = currentGeonotesSelection.get(i);
                 Coordinate position = geonoteHandler.getPosition();
-                String noteCrsString = geonoteHandler.getCrsWkt();
-                if (!mapCrs.toWKT().trim().equals(noteCrsString.trim())) {
-                    CoordinateReferenceSystem noteCrs = CRS.parseWKT(noteCrsString);
+                CoordinateReferenceSystem noteCrs = geonoteHandler.getCrs();
+                if (!CRS.equalsIgnoreMetadata(mapCrs, noteCrs)) {
                     // transform coordinates before check
                     MathTransform transform = CRS.findMathTransform(noteCrs, mapCrs, true);
                     // jts geometry

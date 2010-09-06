@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import net.refractions.udig.project.IBlackboard;
 import net.refractions.udig.project.ILayer;
@@ -90,11 +88,11 @@ import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 import eu.hydrologis.jgrass.database.interfaces.IDatabaseEventListener;
 import eu.hydrologis.jgrass.geonotes.GeonoteConstants;
+import eu.hydrologis.jgrass.geonotes.GeonoteConstants.NOTIFICATION;
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
 import eu.hydrologis.jgrass.geonotes.GeonotesObserver;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
 import eu.hydrologis.jgrass.geonotes.GeonotesUI;
-import eu.hydrologis.jgrass.geonotes.GeonoteConstants.NOTIFICATION;
 import eu.hydrologis.jgrass.geonotes.fieldbook.actions.DumpNotesAction;
 import eu.hydrologis.jgrass.geonotes.fieldbook.actions.DumpNotesBinaryAction;
 import eu.hydrologis.jgrass.geonotes.fieldbook.actions.ExportToFeatureLayerAction;
@@ -519,13 +517,12 @@ public class FieldbookView extends ViewPart implements GeonotesObserver, IDataba
             List<GeonotesHandler> toAdd = new ArrayList<GeonotesHandler>();
             for( GeonotesHandler geonote : geonotesList ) {
                 Coordinate position = geonote.getPosition();
-                String crsWkt = geonote.getCrsWkt();
+                noteCrs = geonote.getCrs();
 
                 double east = position.x;
                 double north = position.y;
                 point = new Coordinate(east, north);
-                if (!mapCrs.toWKT().equals(crsWkt)) {
-                    noteCrs = CRS.parseWKT(crsWkt);
+                if (!CRS.equalsIgnoreMetadata(noteCrs, mapCrs)) {
                     // transform coordinates before check
                     MathTransform transform = CRS.findMathTransform(noteCrs, mapCrs, true);
                     // jts geometry
