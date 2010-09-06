@@ -23,12 +23,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.Serializable;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -128,6 +126,12 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                             File geopapFolderFile = new File(geopaparazziFolderPath);
                             File geopapDatabaseFile = new File(geopaparazziFolderPath, "geopaparazzi.db");
 
+                            if (!geopapDatabaseFile.exists()) {
+                                MessageDialog.openError(getShell(), "Missing database",
+                                        "The geopaparazzi database file (geopaparazzi.db) is missing. Check the inserted path.");
+                                return;
+                            }
+
                             String outputFolderPath = mainPage.getOutputFolderPath();
                             File outputFolderFile = new File(outputFolderPath);
 
@@ -148,10 +152,14 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                                      */
                                     gpsLogToShapefiles(connection, outputFolderFile, pm);
                                 }
+                                /*
+                                 * import photos to geonotes if there are some
+                                 */
+                                picturesToGeonotes(geopapFolderFile, pm);
+                                
                             } catch (Exception e) {
-                                // if the error message is "out of memory",
-                                // it probably means no database file is found
-                                System.err.println(e.getMessage());
+                                String message = "An error occurred while importing from geopaparazzi.";
+                                ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e);
                             } finally {
                                 try {
                                     if (connection != null)
@@ -161,11 +169,6 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                                     System.err.println(e);
                                 }
                             }
-
-                            /*
-                             * import photos to geonotes
-                             */
-                            picturesToGeonotes(geopapFolderFile, pm);
 
                         }
 
@@ -217,37 +220,62 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         pm.beginTask("Import notes...", IProgressMonitor.UNKNOWN);
         FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection = FeatureCollections.newCollection();
 
-        Statement statement = connection.createStatement();
-        statement.setQueryTimeout(30); // set timeout to 30 sec.
+        Session session = null;
+        Transaction transaction = null;
+        Statement statement = null;
+        try {
+            session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
+            transaction = session.beginTransaction();
 
-        ResultSet rs = statement.executeQuery("select lat, lon, altim, ts, text from notes");
-        int i = 0;
-        while( rs.next() ) {
+            statement = connection.createStatement();
+            statement.setQueryTimeout(30); // set timeout to 30 sec.
 
-            double lat = rs.getDouble("lat");
-            double lon = rs.getDouble("lon");
-            double altim = rs.getDouble("altim");
-            String dateTimeString = rs.getString("ts");
-            String text = rs.getString("text");
+            ResultSet rs = statement.executeQuery("select lat, lon, altim, ts, text from notes");
+            int i = 0;
+            while( rs.next() ) {
 
-            if (lat == 0 || lon == 0) {
-                continue;
+                double lat = rs.getDouble("lat");
+                double lon = rs.getDouble("lon");
+                double altim = rs.getDouble("altim");
+                String dateTimeString = rs.getString("ts");
+                String text = rs.getString("text");
+
+                if (lat == 0 || lon == 0) {
+                    continue;
+                }
+
+                // save those points also in the database log
+                GpsLogTable gpsLog = new GpsLogTable();
+                DateTime utcTime = dateTimeFormatterYYYYMMDDHHMM.parseDateTime(dateTimeString);
+                gpsLog.setUtcTime(utcTime);
+                gpsLog.setEast(lon);
+                gpsLog.setNorth(lat);
+                gpsLog.setAltimetry(altim);
+                gpsLog.setNumberOfTrackedSatellites(-1);
+                gpsLog.setHorizontalDilutionOfPosition(-1);
+                session.save(gpsLog);
+
+                // and then create the features
+                Coordinate c = new Coordinate(lon, lat);
+                Point point = gF.createPoint(c);
+                Geometry reprojectPoint = JTS.transform(point, transform);
+
+                SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
+                Object[] values = new Object[]{reprojectPoint, text, dateTimeString, String.valueOf(altim)};
+                builder.addAll(values);
+                SimpleFeature feature = builder.buildFeature(featureType.getTypeName() + "." + i++);
+                newCollection.add(feature);
+                pm.worked(1);
             }
-
-            Coordinate c = new Coordinate(lon, lat);
-            Point point = gF.createPoint(c);
-            Geometry reprojectPoint = JTS.transform(point, transform);
-
-            SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
-            Object[] values = new Object[]{reprojectPoint, text, dateTimeString, String.valueOf(altim)};
-            builder.addAll(values);
-            SimpleFeature feature = builder.buildFeature(featureType.getTypeName() + "." + i++);
-            newCollection.add(feature);
-            pm.worked(1);
+        } finally {
+            pm.done();
+            if (statement != null)
+                statement.close();
+            if (transaction != null)
+                transaction.commit();
+            if (session != null)
+                session.close();
         }
-
-        pm.done();
-        statement.close();
 
         ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
         Map<String, Serializable> params = new HashMap<String, Serializable>();
@@ -256,9 +284,6 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         ShapefileDataStore dStore = (ShapefileDataStore) factory.createNewDataStore(params);
         dStore.createSchema(featureType);
         dStore.forceSchemaCRS(mapCrs);
-        
-
-        
 
         FeatureUtilities.writeToShapefile(dStore, newCollection);
 
@@ -314,7 +339,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                     double lon = result.getDouble("lon");
                     double altim = result.getDouble("altim");
                     String dateTimeString = result.getString("ts");
-                    
+
                     GpsPoint gPoint = new GpsPoint();
                     gPoint.lon = lon;
                     gPoint.lat = lat;
@@ -466,7 +491,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         }
     }
 
-    private void picturesToGeonotes( File geopapFolderFile, IProgressMonitor pm ) {
+    private void picturesToGeonotes( File geopapFolderFile, IProgressMonitor pm ) throws Exception {
         File folder = new File(geopapFolderFile, "pictures");
         if (!folder.exists()) {
             // ignoring non existing things
@@ -478,12 +503,18 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMddHHmmss"); //$NON-NLS-1$
         pm.beginTask("Importing pictures...", listFiles.length);
-        for( File file : listFiles ) {
-            String name = file.getName();
-            if (name.endsWith("jpg") || file.getName().endsWith("JPG") || file.getName().endsWith("png")
-                    || file.getName().endsWith("PNG")) {
 
-                try {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
+            transaction = session.beginTransaction();
+
+            for( File file : listFiles ) {
+                String name = file.getName();
+                if (name.endsWith("jpg") || file.getName().endsWith("JPG") || file.getName().endsWith("png")
+                        || file.getName().endsWith("PNG")) {
+
                     String[] nameSplit = name.split("[_\\|.]"); //$NON-NLS-1$
                     String dateString = nameSplit[1];
                     String timeString = nameSplit[2];
@@ -503,13 +534,26 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                     String azimuthString = locationProperties.getProperty("azimuth"); //$NON-NLS-1$
                     String latString = locationProperties.getProperty("latitude"); //$NON-NLS-1$
                     String lonString = locationProperties.getProperty("longitude"); //$NON-NLS-1$
+                    String altimString = locationProperties.getProperty("altim"); //$NON-NLS-1$
 
                     Double azimuth = null;
                     if (azimuthString != null)
                         azimuth = Double.parseDouble(azimuthString);
                     double lat = Double.parseDouble(latString);
                     double lon = Double.parseDouble(lonString);
+                    double altim = Double.parseDouble(altimString);
 
+                    // save those points also in the database log
+                    GpsLogTable gpsLog = new GpsLogTable();
+                    gpsLog.setUtcTime(dateTime);
+                    gpsLog.setEast(lon);
+                    gpsLog.setNorth(lat);
+                    gpsLog.setAltimetry(altim);
+                    gpsLog.setNumberOfTrackedSatellites(-1);
+                    gpsLog.setHorizontalDilutionOfPosition(-1);
+                    session.save(gpsLog);
+
+                    // and then create the photo geonote
                     GeonotesHandler geonotesHandler = new GeonotesHandler(lon, lat, name, "Imported from Geopaparazzi", PHOTO,
                             dateTime, azimuth, null, null, null);
                     geonotesHandler.addMedia(file, file.getName());
@@ -519,15 +563,17 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                         geonotesHandler.addObserver(fieldBookView);
                     }
                     geonotesHandler.notifyObservers(NOTIFICATION.NOTEADDED);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    continue;
-                }
 
+                }
+                pm.worked(1);
             }
-            pm.worked(1);
+        } finally {
+            pm.done();
+            if (transaction != null)
+                transaction.commit();
+            if (session != null)
+                session.close();
         }
-        pm.done();
 
         if (nonTakenFilesList.size() > 0) {
             final StringBuilder sB = new StringBuilder();
