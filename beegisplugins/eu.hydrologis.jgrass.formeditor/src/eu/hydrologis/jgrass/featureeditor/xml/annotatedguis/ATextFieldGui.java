@@ -49,9 +49,6 @@ public class ATextFieldGui extends FormGuiElement implements FocusListener {
     public Control makeGui( Composite parent ) {
         text = new Text(parent, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
         text.setLayoutData(aTextField.constraints);
-        if (aTextField.defaultText != null) {
-            text.setText(aTextField.defaultText);
-        }
         text.addFocusListener(this);
 
         return text;
@@ -74,7 +71,11 @@ public class ATextFieldGui extends FormGuiElement implements FocusListener {
             MessageDialog.openError(text.getShell(), "Missing attribute", "Could not find an attribute with name: "
                     + aTextField.fieldName + " \nCheck your form!");
         }
+        if (attributeString.equals("") && aTextField.defaultText != null) {
+            attributeString = aTextField.defaultText;
+        }
         text.setText(attributeString);
+        focusLost(null);
     }
 
     public FormElement getFormElement() {

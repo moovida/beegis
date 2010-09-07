@@ -72,8 +72,9 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener {
         combo.setItems(listArray);
         if (aComboBox.defaultText != null) {
             int index = 0;
-            for( int i = 0; i < listArray.length; i++ ) {
-                if (listArray[i].equals(aComboBox.defaultText)) {
+            for( int i = 0; i < valuesList.size(); i++ ) {
+                String value = valuesList.get(i);
+                if (value.equals(aComboBox.defaultText)) {
                     index = i;
                     break;
                 }
@@ -107,6 +108,7 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener {
             index = 0;
         }
         combo.select(index);
+        widgetSelected(null);
     }
 
     public FormElement getFormElement() {
