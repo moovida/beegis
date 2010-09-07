@@ -42,15 +42,18 @@ public abstract class FormElement implements Comparable<FormElement> {
     /**
      * Getter for the order of the element.
      * 
+     * <p>The order element is of type float to allow tweaks without 
+     * the need to rewrite whole piles of following order tags.
+     * 
      * @return the order of the element.
      */
-    public abstract int getOrder();
+    public abstract float getOrder();
 
     @Override
     public int compareTo( FormElement o ) {
         // this ordering is not consistent with equals.
-        int thisOrder = this.getOrder();
-        int thatOrder = o.getOrder();
+        float thisOrder = this.getOrder();
+        float thatOrder = o.getOrder();
 
         if (thisOrder < thatOrder) {
             return -1;

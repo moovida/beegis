@@ -168,7 +168,7 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
      */
     public void changed( MapEvent event ) {
         ILayer tmpSelectedLayer = activeMap.getEditManager().getSelectedLayer();
-        if (tmpSelectedLayer != selectedLayer) {
+        if (tmpSelectedLayer != selectedLayer || lastSelectedFeature == null) {
             // layer has changed, reset listeners
             if (selectedLayer != null) {
                 selectedLayer.removeListener(this);

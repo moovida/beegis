@@ -48,7 +48,7 @@ public class AForm extends FormElement {
     }
 
     @Override
-    public int getOrder() {
+    public float getOrder() {
         return -1;
     }
     
