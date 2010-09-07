@@ -30,6 +30,7 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -77,7 +78,7 @@ public class AFormGui {
             }
 
             // we want the content to scroll
-            final ScrolledComposite scroller = new ScrolledComposite(folder, SWT.V_SCROLL);
+            final ScrolledComposite scroller = new ScrolledComposite(folder, SWT.V_SCROLL | SWT.H_SCROLL);
             scroller.setLayout(new FillLayout());
 
             // the actual content of the tab
@@ -88,15 +89,15 @@ public class AFormGui {
             scroller.setContent(tabComposite);
             scroller.setExpandVertical(true);
             scroller.setExpandHorizontal(true);
-            scroller.setMinHeight(folder.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-            scroller.addControlListener(new ControlAdapter(){
-                public void controlResized( ControlEvent e ) {
-                    // recalculate height in case the resize makes texts
-                    // wrap or things happen that require it
-                    Rectangle r = scroller.getClientArea();
-                    scroller.setMinHeight(folder.computeSize(SWT.DEFAULT, r.height).y);
-                }
-            });
+
+//            scroller.addControlListener(new ControlAdapter(){
+//                public void controlResized( ControlEvent e ) {
+//                    // recalculate height in case the resize makes texts
+//                    // wrap or things happen that require it
+//                    Rectangle r = scroller.getClientArea();
+//                    scroller.setMinHeight(folder.computeSize(SWT.DEFAULT, r.height).y);
+//                }
+//            });
 
             // the scroller gets the control of the tab item
             tab.setControl(scroller);
@@ -107,6 +108,10 @@ public class AFormGui {
                 FormGuiElement formGui = formGuiFactory.createFormGui(orderedGuiElement);
                 formGui.makeGui(tabComposite);
             }
+            
+            Point size = folder.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+            scroller.setMinHeight(size.y);
+            scroller.setMinWidth(size.x);
         }
 
         return folder;

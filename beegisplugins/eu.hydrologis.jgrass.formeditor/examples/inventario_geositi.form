@@ -147,7 +147,7 @@
         <label order="27" name="label15" text="Soggettivo" constraints=""/>
         <checkbox order="28" name="check1" default="false" fieldname="soggettivo" constraints="growx, wrap"/>
         <label order="29" name="label16" text="Oggettivo (spiegare)" constraints="aligny top"/>
-        <textarea order="30" name="textarea1" default="" fieldname="oggettivo" constraints="height 150, spanx 5, growx, growy, wrap"/>
+        <textarea order="30" name="textarea1" default="" fieldname="oggettivo" constraints="height 150, spany 3, spanx 5, growx, growy, wrap"/>
         
     </tab>
     <tab order="2" name="tab3" text="Descrizione" layout="insets 20 20 20 20, fillx" col="[fill]">
