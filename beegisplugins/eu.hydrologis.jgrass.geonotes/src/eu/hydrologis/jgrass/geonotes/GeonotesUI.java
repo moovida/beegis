@@ -222,6 +222,7 @@ public class GeonotesUI implements GeonotesObserver {
             item2.setImage(ImageManager.INSTANCE.getTextImage());
             item3.setImage(ImageManager.INSTANCE.getMultimediaImage());
 
+            tabFolder.setSelection(item2);
             tabFolder.setSimple(false);
             tabFolder.setUnselectedImageVisible(false);
             tabFolder.pack();

@@ -18,7 +18,6 @@
 package eu.hydrologis.jgrass.geonotes.fieldbook;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -206,10 +205,9 @@ public class GeonotesListViewer extends TableViewer implements ISelectionChanged
         for( int i = 0; i < selectedNotesList.size(); i++ ) {
             GeonotesHandler geonoteHandler = selectedNotesList.get(i);
             Coordinate position = geonoteHandler.getPosition();
-            String noteCrsString = geonoteHandler.getCrsWkt();
+            CoordinateReferenceSystem noteCrs = geonoteHandler.getCrs();
             try {
-                if (!mapCrs.toWKT().trim().equals(noteCrsString.trim())) {
-                    CoordinateReferenceSystem noteCrs = CRS.parseWKT(noteCrsString);
+                if (!CRS.equalsIgnoreMetadata(noteCrs, mapCrs)) {
                     // transform coordinates before check
                     MathTransform transform = CRS.findMathTransform(noteCrs, mapCrs, true);
                     // jts geometry

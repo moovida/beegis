@@ -22,6 +22,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.GridData;
@@ -48,6 +49,8 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
     private Text gpsTimeText;
     private Text photoTimeText;
     private Text folderText;
+    private int intervalMinutes = 30;
+    private Text intervalText;
 
     public PhotoImportWizardPage( String pageName, IStructuredSelection selection ) {
         super(pageName);
@@ -94,6 +97,27 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
                 }
             }
         });
+        
+        Label intervalLabel = new Label(fileSelectionArea, SWT.NONE);
+        intervalLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+        intervalLabel.setText("Time threshold [min]");
+        intervalLabel.setToolTipText("The time threshold in minutes used to associate a picture to a gps point timestamp");
+
+        intervalText = new Text(fileSelectionArea, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+        intervalText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        intervalText.setText("30");
+        intervalText.addKeyListener(new KeyAdapter(){
+            public void keyReleased( KeyEvent e ) {
+                String intervalStr = intervalText.getText();
+                try{
+                    intervalMinutes = (int) Double.parseDouble(intervalStr);
+                }catch (Exception ex) {
+                    intervalMinutes = 30;
+                }
+            }
+        });
+        
+        new Label(fileSelectionArea, SWT.NONE);
 
         Group timeGroup = new Group(fileSelectionArea, SWT.NONE);
         GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -118,6 +142,10 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
         photoTimeText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         photoTimeText.setText("");
         photoTimeText.addKeyListener(this);
+        
+        
+
+        
 
         setControl(fileSelectionArea);
     }
@@ -131,6 +159,10 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
      */
     public long getTime() {
         return timeShift;
+    }
+    
+    public int getIntervalMinutes() {
+        return intervalMinutes;
     }
 
     public void keyPressed( KeyEvent e ) {

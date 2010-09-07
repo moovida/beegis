@@ -72,7 +72,7 @@ public class ATextField extends FormElement {
      * The widget order.
      */
     @XmlAttribute(name = ORDER)
-    public Integer order = null;
+    public Float order = null;
 
     /**
      * The layout constraints.
@@ -81,9 +81,9 @@ public class ATextField extends FormElement {
     public String constraints = null;
 
     @Override
-    public int getOrder() {
+    public float getOrder() {
         if (order == null) {
-            order = 0;
+            order = 0f;
         }
         return order;
     }

@@ -23,6 +23,7 @@ import java.util.List;
 
 import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.IMap;
+import net.refractions.udig.project.command.CompositeCommand;
 import net.refractions.udig.project.command.UndoableMapCommand;
 import net.refractions.udig.project.command.factory.EditCommandFactory;
 import net.refractions.udig.project.internal.commands.edit.AddFeatureCommand;
@@ -217,7 +218,7 @@ public class LayerHandler {
             feature.setDefaultGeometry(gpsPointGeometry);
         }
         UndoableMapCommand createAddFeatureCommand = EditCommandFactory.getInstance().createAddFeatureCommand(feature, layer);
-        layer.getMap().sendCommandASync(createAddFeatureCommand);
+        layer.getMap().sendCommandSync(createAddFeatureCommand);
     }
 
     /**
@@ -234,15 +235,17 @@ public class LayerHandler {
          * geometry, we start from scratch and the geometry has to be replaced.
          */
         IMap map = layer.getMap();
-        if (continueFromLast) {
+        if (continueFromLast && feature.getDefaultGeometry() != null) {
             Geometry geometry = addPointToLineFeature(gpsPoint, feature, geometryType);
 
-            UndoableMapCommand[] cmds = new UndoableMapCommand[2];
-            cmds[0] = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
-            cmds[1] = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer, geometry);
+            UndoableMapCommand cmd1 = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
+            UndoableMapCommand cmd2 = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer, geometry);
 
-            map.sendCommandASync(cmds[0]);
-            map.sendCommandASync(cmds[1]);
+            CompositeCommand compositeCommand = new CompositeCommand();
+            compositeCommand.addCommand(cmd1);
+            compositeCommand.addCommand(cmd2);
+
+            map.sendCommandSync(compositeCommand);
         } else {
             /*
              * if not continued from the last, there are two possibilities: (1.)
@@ -265,16 +268,19 @@ public class LayerHandler {
                 feature.setDefaultGeometry(geometry);
                 // draw the add vertex position
                 java.awt.Point p = map.getViewportModel().worldToPixel(gpsCoordinate);
-                UndoableMapCommand createStartAnimationCommand = DrawCommandFactory.getInstance().createStartAnimationCommand(
+                UndoableMapCommand cmd1 = DrawCommandFactory.getInstance().createStartAnimationCommand(
                         map.getRenderManager().getMapDisplay(),
                         Collections.singletonList((IAnimation) new AddVertexAnimation(p.x, p.y)));
-                map.sendCommandASync(createStartAnimationCommand);
                 // add the feature to the layer
-                UndoableMapCommand createAddFeatureCommand = EditCommandFactory.getInstance().createAddFeatureCommand(feature,
-                        layer);
-                map.sendCommandSync(createAddFeatureCommand);
+                UndoableMapCommand cmd2 = EditCommandFactory.getInstance().createAddFeatureCommand(feature, layer);
+
+                CompositeCommand compositeCommand = new CompositeCommand();
+                compositeCommand.addCommand(cmd1);
+                compositeCommand.addCommand(cmd2);
+                map.sendCommandSync(compositeCommand);
+
                 // and put it inside the map
-                SimpleFeature newFeatureAdded = ((AddFeatureCommand) createAddFeatureCommand).getNewFeature();
+                SimpleFeature newFeatureAdded = ((AddFeatureCommand) cmd2).getNewFeature();
                 layerLastFeatureMap.put(layer, newFeatureAdded);
 
             } else {
@@ -286,10 +292,14 @@ public class LayerHandler {
                 map.sendCommandASync(createStartAnimationCommand);
                 // add to the new created
                 geometry = addPointToLineFeature(gpsPoint, feature, geometryType);
-                UndoableMapCommand cmd = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
-                map.sendCommandASync(cmd);
-                cmd = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer, geometry);
-                map.sendCommandASync(cmd);
+                UndoableMapCommand cmd1 = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
+                UndoableMapCommand cmd2 = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer, geometry);
+
+                CompositeCommand compositeCommand = new CompositeCommand();
+                compositeCommand.addCommand(cmd1);
+                compositeCommand.addCommand(cmd2);
+                map.sendCommandSync(compositeCommand);
+
             }
         }
     }
@@ -308,15 +318,16 @@ public class LayerHandler {
          * geometry, we start from scratch and the geometry has to be replaced.
          */
         IMap map = layer.getMap();
-        if (continueFromLast) {
+        if (continueFromLast  && feature.getDefaultGeometry() != null) {
             Geometry geometry = addPointToPolygonFeature(gpsPoint, feature, geometryType);
 
-            UndoableMapCommand[] cmds = new UndoableMapCommand[2];
-            cmds[0] = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
-            cmds[1] = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer, geometry);
+            UndoableMapCommand cmd1 = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
+            UndoableMapCommand cmd2 = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer, geometry);
 
-            map.sendCommandASync(cmds[0]);
-            map.sendCommandASync(cmds[1]);
+            CompositeCommand compositeCommand = new CompositeCommand();
+            compositeCommand.addCommand(cmd1);
+            compositeCommand.addCommand(cmd2);
+            map.sendCommandSync(compositeCommand);
         } else {
 
             /*
@@ -343,16 +354,19 @@ public class LayerHandler {
                 feature.setDefaultGeometry(geometry);
                 // draw the add vertex position
                 java.awt.Point p = map.getViewportModel().worldToPixel(gpsCoordinate);
-                UndoableMapCommand createStartAnimationCommand = DrawCommandFactory.getInstance().createStartAnimationCommand(
+                UndoableMapCommand cmd1 = DrawCommandFactory.getInstance().createStartAnimationCommand(
                         map.getRenderManager().getMapDisplay(),
                         Collections.singletonList((IAnimation) new AddVertexAnimation(p.x, p.y)));
-                map.sendCommandASync(createStartAnimationCommand);
                 // add the feature to the layer
-                UndoableMapCommand createAddFeatureCommand = EditCommandFactory.getInstance().createAddFeatureCommand(feature,
-                        layer);
-                map.sendCommandSync(createAddFeatureCommand);
+                UndoableMapCommand cmd2 = EditCommandFactory.getInstance().createAddFeatureCommand(feature, layer);
+
+                CompositeCommand compositeCommand = new CompositeCommand();
+                compositeCommand.addCommand(cmd1);
+                compositeCommand.addCommand(cmd2);
+                map.sendCommandSync(compositeCommand);
+
                 // and put it inside the map
-                SimpleFeature newFeatureAdded = ((AddFeatureCommand) createAddFeatureCommand).getNewFeature();
+                SimpleFeature newFeatureAdded = ((AddFeatureCommand) cmd2).getNewFeature();
                 layerLastFeatureMap.put(layer, newFeatureAdded);
             } else {
                 // draw the add vertex position
@@ -363,10 +377,14 @@ public class LayerHandler {
                 map.sendCommandASync(createStartAnimationCommand);
                 // add to the new created
                 geometry = addPointToPolygonFeature(gpsPoint, feature, geometryType);
-                UndoableMapCommand cmd = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
-                map.sendCommandASync(cmd);
-                cmd = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer, geometry);
-                map.sendCommandASync(cmd);
+                UndoableMapCommand cmd1 = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
+                UndoableMapCommand cmd2 = EditCommandFactory.getInstance().createSetGeomteryCommand(feature, layer, geometry);
+
+                CompositeCommand compositeCommand = new CompositeCommand();
+                compositeCommand.addCommand(cmd1);
+                compositeCommand.addCommand(cmd2);
+                map.sendCommandSync(compositeCommand);
+
             }
 
         }

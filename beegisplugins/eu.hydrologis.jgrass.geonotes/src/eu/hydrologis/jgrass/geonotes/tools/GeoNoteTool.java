@@ -35,7 +35,6 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 import org.joda.time.DateTime;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -49,10 +48,11 @@ import com.vividsolutions.jts.geom.Point;
 
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTable;
 import eu.hydrologis.jgrass.database.DatabasePlugin;
+import eu.hydrologis.jgrass.geonotes.GeonoteConstants;
+import eu.hydrologis.jgrass.geonotes.GeonoteConstants.NOTIFICATION;
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
 import eu.hydrologis.jgrass.geonotes.GeonotesUI;
-import eu.hydrologis.jgrass.geonotes.GeonoteConstants.NOTIFICATION;
 import eu.hydrologis.jgrass.geonotes.fieldbook.FieldbookView;
 
 /**
@@ -132,7 +132,6 @@ public class GeoNoteTool extends AbstractModalTool implements ModalTool {
 
             public void run() {
 
-                CoordinateReferenceSystem noteCrs = null;
                 GeometryFactory gF = new GeometryFactory();
                 List<GeonotesTable> selectedGeonotesTable = new ArrayList<GeonotesTable>();
                 Coordinate point = null;
@@ -143,12 +142,11 @@ public class GeoNoteTool extends AbstractModalTool implements ModalTool {
                     Criteria criteria = session.createCriteria(GeonotesTable.class);
                     List<GeonotesTable> geonotesDbList = criteria.list();
                     for( GeonotesTable dbGeonote : geonotesDbList ) {
+                        CoordinateReferenceSystem noteCrs = dbGeonote.getGeonoteCrs();
                         double east = dbGeonote.getEast();
                         double north = dbGeonote.getNorth();
-                        String noteCrsString = dbGeonote.getCrsWkt();
                         point = new Coordinate(east, north);
-                        if (!mapCrs.toWKT().trim().equals(noteCrsString.trim())) {
-                            noteCrs = CRS.parseWKT(noteCrsString);
+                        if (!CRS.equalsIgnoreMetadata(noteCrs, mapCrs)) {
                             // transform coordinates before check
                             MathTransform transform = CRS.findMathTransform(noteCrs, mapCrs, true);
                             // jts geometry
@@ -165,12 +163,16 @@ public class GeoNoteTool extends AbstractModalTool implements ModalTool {
                     String projectName = ApplicationGIS.getActiveProject().getName();
                     String mapName = ApplicationGIS.getActiveMap().getName();
 
+                    // new notes go into the db as lat/long
+                    MathTransform transform = CRS.findMathTransform(mapCrs, GeonoteConstants.DEFAULT_GEONOTE_CRS, true);
+                    Point pt = gF.createPoint(context.pixelToWorld(e.x, e.y));
+                    Geometry latlongGeometry = JTS.transform(pt, transform);
+                    Coordinate latlongPoint = latlongGeometry.getCoordinate();
+
                     if (selectedGeonotesTable.size() == 0) {
                         // create a new note
-                        point = context.pixelToWorld(e.x, e.y);
-
-                        geonotesHandler = new GeonotesHandler(point.x, point.y, mapName + " - " + projectName, null, null,
-                                new DateTime(), mapCrs.toWKT(), null, null, null, null);
+                        geonotesHandler = new GeonotesHandler(latlongPoint.x, latlongPoint.y, mapName + " - " + projectName,
+                                null, null, new DateTime(), null, null, null, null);
 
                         GeonotesUI geonoteUI = new GeonotesUI(geonotesHandler);
                         geonoteUI.openInShell(null);
@@ -185,13 +187,9 @@ public class GeoNoteTool extends AbstractModalTool implements ModalTool {
                         for( GeonotesTable geonotesTable : selectedGeonotesTable ) {
                             if (geonotesTable != null) {
                                 geonotesHandler = new GeonotesHandler(geonotesTable);
-
                             } else {
-                                point = context.pixelToWorld(e.x, e.y);
-
-                                geonotesHandler = new GeonotesHandler(point.x, point.y, mapName + " - " + projectName, null,
-                                        null, new DateTime(), mapCrs.toWKT(), null, null, null, null);
-
+                                geonotesHandler = new GeonotesHandler(latlongPoint.x, latlongPoint.y, mapName + " - "
+                                        + projectName, null, null, new DateTime(), null, null, null, null);
                             }
 
                             GeonotesUI geonoteUI = new GeonotesUI(geonotesHandler);

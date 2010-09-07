@@ -61,6 +61,7 @@ import org.eclipse.swt.widgets.Display;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Transaction;
@@ -141,8 +142,8 @@ public class GeonotesHandler {
     /**
      * Constructs a new Geonote, making it immediatly persistent to database.
      * 
-     * @param east easting coordinate.
-     * @param north northing coordinate.
+     * @param east easting coordinate in {@link DefaultGeographicCRS#WGS84}.
+     * @param north northing coordinate in {@link DefaultGeographicCRS#WGS84}.
      * @param title a short title for the geonote or <code>null</code>.
      * @param info an information text or <code>null</code>.
      * @param type an id for the note type. Can currently be one of:
@@ -153,14 +154,13 @@ public class GeonotesHandler {
      *                      </ul>
      * @param creationTime the {@link DateTime} of creation of the geonote.
      * @param azimut the azimut value if the geonote has directionality or <code>null</code>.
-     * @param crsWkt the coordinate reference system in its WKT form.
      * @param color a color for the note in format r:g:b:a integers or <code>null</code>.
      * @param width a width for the geonote or <code>null</code>.
      * @param height a height for the geonote or <code>null</code>.
      * @throws Exception
      */
     public GeonotesHandler( Double east, Double north, String title, String info, Integer type, DateTime creationTime,
-            String crsWkt, Double azimut, String color, Integer width, Integer height ) throws Exception {
+            Double azimut, String color, Integer width, Integer height ) throws Exception {
         if (east == null) {
             throw new IllegalArgumentException("The east coordinate is a mandatory parameter to create a geonote.");
         }
@@ -169,9 +169,6 @@ public class GeonotesHandler {
         }
         if (creationTime == null) {
             throw new IllegalArgumentException("The creationtime is a mandatory parameter to create a geonote.");
-        }
-        if (crsWkt == null) {
-            throw new IllegalArgumentException("The crsWkt is a mandatory parameter to create a geonote.");
         }
         if (title == null) {
             title = DEFAULT_GEONOTE_TITLE;
@@ -200,7 +197,6 @@ public class GeonotesHandler {
             geonoteTable = new GeonotesTable();
             geonoteTable.setEast(east);
             geonoteTable.setNorth(north);
-            geonoteTable.setCrsWkt(crsWkt);
             geonoteTable.setType(type);
             geonoteTable.setTitle(title);
             geonoteTable.setInfo(info);
@@ -274,10 +270,6 @@ public class GeonotesHandler {
         return geonoteTable.getAzimut();
     }
 
-    public String getCrsWkt() {
-        return geonoteTable.getCrsWkt();
-    }
-
     public DateTime getCreationDate() {
         return geonoteTable.getCreationDateTime();
     }
@@ -343,6 +335,10 @@ public class GeonotesHandler {
         color = new Color(display, colorRGB[0], colorRGB[1], colorRGB[2]);
 
         notifyObservers(NOTIFICATION.STYLECHANGED);
+    }
+    
+    public CoordinateReferenceSystem getCrs(){
+        return geonoteTable.getGeonoteCrs();
     }
 
     /**
@@ -600,8 +596,7 @@ public class GeonotesHandler {
      * @param srcGeonoteTableId the geonote id from which to take the media file.
      * @throws Exception
      */
-    public void moveMedia( String mediaName, long srcGeonoteTableId)
-            throws Exception {
+    public void moveMedia( String mediaName, long srcGeonoteTableId ) throws Exception {
 
         Session session = openSession();
         Transaction transaction = session.beginTransaction();
@@ -609,10 +604,10 @@ public class GeonotesHandler {
             Criteria criteria = session.createCriteria(GeonotesTable.class);
             criteria.add(Restrictions.eq(GEONOTESTABLE_ID_FIELD, srcGeonoteTableId));
             GeonotesTable srcGeonoteTable = (GeonotesTable) criteria.uniqueResult();
-            if (srcGeonoteTable==null) {
+            if (srcGeonoteTable == null) {
                 throw new IOException("Couldn't retrieve a geonote with id: " + id);
             }
-            
+
             // extract media box
             GeonotesMediaboxTable newMediaBox = new GeonotesMediaboxTable();
             newMediaBox.setGeonotesId(srcGeonoteTable);
@@ -621,7 +616,7 @@ public class GeonotesHandler {
             criteria = session.createCriteria(GeonotesMediaboxTable.class);
             criteria.add(example);
             GeonotesMediaboxTable geonotesMediaboxTable = (GeonotesMediaboxTable) criteria.uniqueResult();
-            
+
             // and simply change its parent
             geonotesMediaboxTable.setGeonotesId(geonoteTable);
 
@@ -742,12 +737,12 @@ public class GeonotesHandler {
     public ReferencedEnvelope getBoundsAsReferenceEnvelope( CoordinateReferenceSystem destinationCrs ) {
 
         Coordinate position = new Coordinate(geonoteTable.getEast(), geonoteTable.getNorth());
-        String crsWkt = geonoteTable.getCrsWkt();
+        CoordinateReferenceSystem noteCrs = geonoteTable.getGeonoteCrs();
 
         Coordinate reprojectedCoordinate = position;
-        if (!destinationCrs.toWKT().equals(crsWkt)) {
+
+        if (!CRS.equalsIgnoreMetadata(noteCrs, destinationCrs)) {
             try {
-                CoordinateReferenceSystem noteCrs = CRS.parseWKT(crsWkt);
                 // transform coordinates before check
                 MathTransform transform = CRS.findMathTransform(noteCrs, destinationCrs, true);
                 // jts geometry
@@ -830,10 +825,6 @@ public class GeonotesHandler {
                         msgBuilder.append(position.x);
                         msgBuilder.append(" / ");
                         msgBuilder.append(position.y);
-                        msgBuilder.append("\n\n");
-                        msgBuilder.append("Geonote Spatial Reference System (ESRI prj file format):\n");
-                        String crsWkt = geonoteTable.getCrsWkt();
-                        msgBuilder.append(crsWkt);
                         msgBuilder.append("\n\n");
                         bW.write(msgBuilder.toString());
                         bW.close();
@@ -1093,10 +1084,9 @@ public class GeonotesHandler {
      * @return the coordinate of the nearest time.
      * @throws Exception
      */
-    public static Coordinate getGpsCoordinateForTimeStamp( DateTime dateTime ) throws Exception {
-        // we check in the frame of one hour (1/2 before, 1/2 after)
-        DateTime from = dateTime.minusMinutes(30);
-        DateTime to = dateTime.plusMinutes(30);
+    public static Coordinate getGpsCoordinateForTimeStamp( DateTime dateTime, int minutesThreshold ) throws Exception {
+        DateTime from = dateTime.minusMinutes(minutesThreshold);
+        DateTime to = dateTime.plusMinutes(minutesThreshold);
 
         Session session = null;
         try {
