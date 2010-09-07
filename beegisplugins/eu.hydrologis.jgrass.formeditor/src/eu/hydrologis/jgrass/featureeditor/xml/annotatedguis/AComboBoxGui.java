@@ -21,6 +21,7 @@ package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -95,7 +96,16 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener {
             return;
         }
         Object attribute = feature.getAttribute(aComboBox.fieldName);
-        String attributeString = attribute.toString();
+        String attributeString = "";
+        if (attribute != null) {
+            attributeString = attribute.toString();
+        } else {
+            MessageDialog.openError(combo.getShell(), "Missing attribute", "Could not find an attribute with name: "
+                    + aComboBox.fieldName + " \nCheck your form!");
+        }
+        if (attributeString.equals("") && aComboBox.defaultText != null) {
+            attributeString = aComboBox.defaultText;
+        }
 
         int index = valuesList.indexOf(attributeString);
         if (index == -1) {
