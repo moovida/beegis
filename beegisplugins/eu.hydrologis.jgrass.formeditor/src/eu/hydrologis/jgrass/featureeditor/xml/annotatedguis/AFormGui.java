@@ -90,15 +90,6 @@ public class AFormGui {
             scroller.setExpandVertical(true);
             scroller.setExpandHorizontal(true);
 
-//            scroller.addControlListener(new ControlAdapter(){
-//                public void controlResized( ControlEvent e ) {
-//                    // recalculate height in case the resize makes texts
-//                    // wrap or things happen that require it
-//                    Rectangle r = scroller.getClientArea();
-//                    scroller.setMinHeight(folder.computeSize(SWT.DEFAULT, r.height).y);
-//                }
-//            });
-
             // the scroller gets the control of the tab item
             tab.setControl(scroller);
 
@@ -108,7 +99,7 @@ public class AFormGui {
                 FormGuiElement formGui = formGuiFactory.createFormGui(orderedGuiElement);
                 formGui.makeGui(tabComposite);
             }
-            
+
             Point size = folder.computeSize(SWT.DEFAULT, SWT.DEFAULT);
             scroller.setMinHeight(size.y);
             scroller.setMinWidth(size.x);

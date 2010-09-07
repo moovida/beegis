@@ -20,8 +20,8 @@ package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
@@ -35,7 +35,7 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class ATextFieldGui extends FormGuiElement implements FocusListener {
+public class ATextFieldGui extends FormGuiElement implements KeyListener {
 
     private final ATextField aTextField;
     private SimpleFeature feature;
@@ -49,7 +49,7 @@ public class ATextFieldGui extends FormGuiElement implements FocusListener {
     public Control makeGui( Composite parent ) {
         text = new Text(parent, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
         text.setLayoutData(aTextField.constraints);
-        text.addFocusListener(this);
+        text.addKeyListener(this);
 
         return text;
     }
@@ -75,14 +75,14 @@ public class ATextFieldGui extends FormGuiElement implements FocusListener {
             attributeString = aTextField.defaultText;
         }
         text.setText(attributeString);
-        focusLost(null);
+        keyReleased(null);
     }
 
     public FormElement getFormElement() {
         return aTextField;
     }
 
-    public void focusLost( FocusEvent e ) {
+    public void keyReleased( KeyEvent e ) {
         String textStr = text.getText();
         Class< ? > binding = feature.getProperty(aTextField.fieldName).getType().getBinding();
 
@@ -92,7 +92,7 @@ public class ATextFieldGui extends FormGuiElement implements FocusListener {
         }
     }
 
-    public void focusGained( FocusEvent e ) {
+    public void keyPressed( KeyEvent e ) {
     }
 
 }
