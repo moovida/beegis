@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: rxtx Plug-in
+Bundle-SymbolicName: eu.hydrologis.jgrass.rxtx
+Bundle-Version: 2.2.2
+Bundle-Vendor: rxtx.org
+Export-Package: gnu.io;version="2.2.2"
