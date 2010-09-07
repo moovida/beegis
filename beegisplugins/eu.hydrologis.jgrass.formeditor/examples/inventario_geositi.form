@@ -61,4 +61,93 @@
         <textfield order="33" name="text13" default="" fieldname="quotamed" valuetype="double" constraints="growx, wrap"/>
         
     </tab>
+    <tab order="1" name="tab2" text="Interesse scientifico" layout="insets 20 20 20 20, fillx" col="[left][fill][left][fill]">
+        <label order="0" name="label0" text="C - Interesse Scientifico" constraints="wrap"/>
+        
+        <label order="1" name="label1" text="Geografico" constraints="growx"/>
+        <combobox order="2" name="combo1" default="" fieldname="geogr" constraints="">
+            <item>Primario, 1</item>
+            <item>Secondario, 2</item>
+        </combobox>
+        <label order="3" name="label2" text="Idrogeologico" constraints="growx"/>
+        <combobox order="4" name="combo2" default="" fieldname="idrogeo" constraints="">
+            <item>Primario, 1</item>
+            <item>Secondario, 2</item>
+        </combobox>
+        <label order="5" name="label3" text="Geologia marina" constraints="growx"/>
+        <combobox order="6" name="combo3" default="" fieldname="geolmar" constraints="wrap">
+            <item>Primario, 1</item>
+            <item>Secondario, 2</item>
+        </combobox>
+        
+        <label order="7" name="label4" text="Mineralogico" constraints="growx"/>
+        <combobox order="8" name="combo4" default="" fieldname="mineral" constraints="">
+            <item>Primario, 1</item>
+            <item>Secondario, 2</item>
+        </combobox>
+        <label order="9" name="label5" text="Geologia Stratigrafica" constraints="growx"/>
+        <combobox order="10" name="combo5" default="" fieldname="geolstrat" constraints="">
+            <item>Primario, 1</item>
+            <item>Secondario, 2</item>
+        </combobox>
+        <label order="11" name="label6" text="Naturalistico" constraints="growx"/>
+        <combobox order="12" name="combo6" default="" fieldname="natural" constraints="wrap">
+            <item>Primario, 1</item>
+            <item>Secondario, 2</item>
+        </combobox>
+        <label order="13" name="label7" text="Geominerario" constraints="growx"/>
+        <combobox order="14" name="combo7" default="" fieldname="geomin" constraints="wrap">
+            <item>Primario, 1</item>
+            <item>Secondario, 2</item>
+        </combobox>
+
+        <separator order="14.1" constraints="span,growx, wrap"/>
+        <separator order="14.2" constraints="span,growx, wrap"/>
+
+        <label order="15" name="label8" text="C1 - Altro Tipo di Interesse" constraints="wrap"/>
+        <label order="16" name="label9" text="Culturale" constraints="growx"/>
+        <combobox order="17" name="combo8" default="" fieldname="cultural" constraints="wrap">
+            <item>Primario, 1</item>
+            <item>Secondario, 2</item>
+        </combobox>
+        <label order="18" name="label10" text="Didattico" constraints="growx"/>
+        <combobox order="19" name="combo9" default="" fieldname="didatt" constraints="wrap">
+            <item>Primario, 1</item>
+            <item>Secondario, 2</item>
+        </combobox>
+        <label order="20" name="label11" text="Escursionistico" constraints="growx"/>
+        <combobox order="21" name="combo10" default="" fieldname="escurs" constraints="wrap">
+            <item>Primario, 1</item>
+            <item>Secondario, 2</item>
+        </combobox>
+
+        <separator order="21.1" constraints="span,growx, wrap"/>
+        <separator order="21.2" constraints="span,growx, wrap"/>
+        
+        <label order="22" name="label12" text="C2 - Valutazione Interesse Scientifico Primario" constraints="span 3"/>
+        <label order="23" name="label13" text="C3 - Grado Interesse Scientifico Primario" constraints="span 3, wrap"/>
+        <combobox order="24" name="combo11" default="" fieldname="intscienp" constraints="span 3">
+            <item>Raro, 1</item>
+            <item>Rappresentativo, 2</item>
+            <item>Esemplif., 3</item>
+        </combobox>
+        <combobox order="25" name="combo12" default="" fieldname="pintscienp" constraints="span 3, wrap">
+            <item>Mondiale, 1</item>
+            <item>Europeo, 2</item>
+            <item>Nazionale, 3</item>
+            <item>Regionale, 4</item>
+            <item>Locale, 5</item>
+        </combobox>
+
+        <separator order="25.1" constraints="span,growx, wrap"/>
+        <separator order="25.2" constraints="span,growx, wrap"/>
+
+
+        <label order="26" name="label14" text="C4 - Il giudizio espresso in C e':" constraints="wrap"/>
+        <label order="27" name="label15" text="Soggettivo" constraints=""/>
+        <checkbox order="28" name="check1" default="false" fieldname="soggettivo" constraints="growx, wrap"/>
+        <label order="29" name="label16" text="Oggettivo (spiegare)" constraints=""/>
+        <textarea order="30" name="textarea1" default="" fieldname="oggettivo" lines="3" constraints="growx, wrap"/>
+        
+    </tab>
 </form>
