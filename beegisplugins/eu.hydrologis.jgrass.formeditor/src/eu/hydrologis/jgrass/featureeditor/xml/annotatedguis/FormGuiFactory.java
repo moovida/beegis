@@ -73,7 +73,7 @@ public class FormGuiFactory {
             guiElement = new ASeparatorGui(separator);
         } else if (formElement instanceof ATextArea) {
             ATextArea textArea = (ATextArea) formElement;
-            guiElement = new ATextAreaGui();
+            guiElement = new ATextAreaGui(textArea);
         } else if (formElement instanceof ATextField) {
             ATextField textField = (ATextField) formElement;
             guiElement = new ATextFieldGui(textField);
