@@ -8,49 +8,56 @@
         <label order="5" name="label5" text="Scheda Collegata" constraints="growx, wrap"/>
         
         <textfield order="6" name="text1" default="ARPA" fieldname="ente" valuetype="string" constraints="skip 1, growx"/>
-        <combobox order="7" name="combo1" default="Rilev." fieldname="acqdati" constraints="growx">
-            <item>Rilev.</item>
-            <item>Bibliogr.</item>
+        <combobox order="7" name="combo1" default="2" fieldname="acqdati" constraints="growx">
+            <item>Rilev., 1</item>
+            <item>Bibliogr., 2</item>
         </combobox>
         <textfield order="8" name="text2" default="E101" fieldname="codscheda" valuetype="string" constraints="growx"/>
         <textfield order="9" name="text3" default="2010-09-07" fieldname="data" valuetype="string" constraints="growx"/>
-        <radiobutton order="10" name="radio1" default="N" fieldname="collegata" constraints="growx, wrap">
-            <item>si, Y</item>
-            <item>no, N</item>
+        <radiobutton order="10" name="radio1" default="1" fieldname="collegata" constraints="growx, wrap">
+            <item>si, 1</item>
+            <item>no, 2</item>
         </radiobutton>
         
-        <separator order="11" orientation="horizontal" constraints="span,growx, wrap"/>
+        <separator order="11" constraints="span,growx, wrap"/>
+        <separator order="11.1" orientation="horizontal" constraints="span,growx, wrap"/>
+        <separator order="11.2" constraints="span,growx, wrap"/>
         
         <label order="12" name="label6" text="A - Nome del geosito" constraints=""/>
-        <textfield order="13" name="text4" default="il loco" fieldname="nomegeos" valuetype="string" constraints="skip 2, growx, wrap"/>
+        <textfield order="13" name="text4" default="il loco" fieldname="nomegeos" valuetype="string" constraints="span 5, growx, wrap"/>
         
-        <separator order="13" orientation="horizontal" constraints="span,growx, wrap"/>
+        <separator order="13.1" constraints="span,growx, wrap"/>
+        <separator order="13.2" orientation="horizontal" constraints="span,growx, wrap"/>
+        <separator order="13.3" constraints="span,growx, wrap"/>
 
-        <label order="14" name="label7" text="B - Ubicazione" constraints="span 3, growx"/>
+        <label order="14" name="label7" text="B - Ubicazione" constraints="span 4, growx"/>
         <label order="15" name="label8" text="Coordinate Geografiche - UTM, Gauss-Boaga" constraints="span 3, growx, wrap"/>
         
-        <label order="16" name="label9" text="Regione" constraints="growx"/>
+        <label order="16" name="label9" text="Regione" constraints="skip 1, growx"/>
         <textfield order="17" name="text5" default="TAA" fieldname="regione" valuetype="string" constraints="growx"/>
+        <label order="17.1" name="label9.1" text="" constraints="growx"/>
         <label order="18" name="label10" text="Longitudine" constraints="growx"/>
         <textfield order="19" name="text6" default="" fieldname="lon" valuetype="double" constraints="growx, wrap"/>
         
-        <label order="20" name="label11" text="Provincia" constraints="growx"/>
+        <label order="20" name="label11" text="Provincia" constraints="skip 1, growx"/>
         <textfield order="21" name="text7" default="BZ" fieldname="provincia" valuetype="string" constraints="growx"/>
+        <label order="21.1" name="label11.1" text="" constraints="growx"/>
         <label order="22" name="label12" text="Latitudine" constraints="growx"/>
         <textfield order="23" name="text8" default="" fieldname="lat" valuetype="double" constraints="growx, wrap"/>
         
-        <label order="24" name="label13" text="Comune" constraints="growx"/>
+        <label order="24" name="label13" text="Comune" constraints="skip 1, growx"/>
         <textfield order="25" name="text9" default="Lagundo" fieldname="comune" valuetype="string" constraints="growx, wrap"/>
         
-        <label order="26" name="label14" text="Toponimo/Localita" constraints="growx"/>
+        <label order="26" name="label14" text="Toponimo/Localita" constraints="skip 1, growx"/>
         <textfield order="27" name="text10" default="Lagundo" fieldname="localita" valuetype="string" constraints="growx"/>
+        <label order="27.1" name="label14.1" text="" constraints="growx"/>
         <label order="28" name="label15" text="Quota Max" constraints="growx"/>
         <textfield order="29" name="text11" default="" fieldname="quotamax" valuetype="double" constraints="growx, wrap"/>
 
-        <label order="30" name="label16" text="Quota Min" constraints="skip 2, growx"/>
+        <label order="30" name="label16" text="Quota Min" constraints="skip 4, growx"/>
         <textfield order="31" name="text12" default="" fieldname="quotamin" valuetype="double" constraints="growx, wrap"/>
 
-        <label order="32" name="label17" text="Quota Media" constraints="skip 2, growx"/>
+        <label order="32" name="label17" text="Quota Media" constraints="skip 4, growx"/>
         <textfield order="33" name="text13" default="" fieldname="quotamed" valuetype="double" constraints="growx, wrap"/>
         
     </tab>

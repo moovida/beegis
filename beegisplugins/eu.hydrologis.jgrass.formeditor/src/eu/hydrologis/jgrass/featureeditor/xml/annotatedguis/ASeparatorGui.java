@@ -34,7 +34,6 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 public class ASeparatorGui extends FormGuiElement {
 
     private final ASeparator separator;
-    private SimpleFeature feature;
     public ASeparatorGui( ASeparator separator ) {
         this.separator = separator;
 
@@ -44,6 +43,8 @@ public class ASeparatorGui extends FormGuiElement {
         int style = SWT.HORIZONTAL | SWT.SEPARATOR;
         if (separator.orientation != null && separator.orientation.toLowerCase().startsWith("ver")) {
             style = SWT.VERTICAL | SWT.SEPARATOR;
+        } else if (separator.orientation == null || separator.orientation.equals("")) {
+            style = SWT.None;
         }
 
         org.eclipse.swt.widgets.Label label = new org.eclipse.swt.widgets.Label(parent, style);
@@ -51,9 +52,8 @@ public class ASeparatorGui extends FormGuiElement {
 
         return label;
     }
-    
+
     public void setFeature( SimpleFeature feature ) {
-        this.feature = feature;
     }
 
     public FormElement getFormElement() {

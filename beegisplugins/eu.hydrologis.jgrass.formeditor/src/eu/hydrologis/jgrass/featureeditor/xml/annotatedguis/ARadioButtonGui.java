@@ -77,11 +77,14 @@ public class ARadioButtonGui extends FormGuiElement implements SelectionListener
             }
         }
 
-        for( String radioText : labelList ) {
+        for( int i = 0; i < labelList.size(); i++ ) {
+            String radioText = labelList.get(i);
+            String value = valuesList.get(i);
+
             Button button = new Button(radioComposite, SWT.RADIO);
             button.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
             button.setText(radioText);
-            if (aRadioButton.defaultText != null && aRadioButton.defaultText.equals(radioText)) {
+            if (aRadioButton.defaultText != null && aRadioButton.defaultText.equals(value)) {
                 button.setSelection(true);
             }
             button.addSelectionListener(this);
@@ -119,6 +122,7 @@ public class ARadioButtonGui extends FormGuiElement implements SelectionListener
             Button button = buttonsList.get(i);
             if (i == index) {
                 button.setSelection(true);
+                updateFeature(button);
             } else {
                 button.setSelection(false);
             }
@@ -133,6 +137,10 @@ public class ARadioButtonGui extends FormGuiElement implements SelectionListener
     public void widgetSelected( SelectionEvent e ) {
         Button source = (Button) e.getSource();
 
+        updateFeature(source);
+    }
+
+    private void updateFeature( Button source ) {
         int index = buttonsList.indexOf(source);
         String value = valuesList.get(index);
         Class< ? > binding = feature.getProperty(aRadioButton.fieldName).getType().getBinding();
