@@ -47,7 +47,7 @@ public class ATextAreaGui extends FormGuiElement implements FocusListener {
 
     @Override
     public Control makeGui( Composite parent ) {
-        text = new Text(parent, SWT.MULTI | SWT.LEAD | SWT.BORDER);
+        text = new Text(parent, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
         text.setLayoutData(aTextArea.constraints);
         text.addFocusListener(this);
 

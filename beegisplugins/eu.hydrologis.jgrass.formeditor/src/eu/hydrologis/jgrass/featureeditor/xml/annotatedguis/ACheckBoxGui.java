@@ -18,10 +18,22 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.opengis.feature.simple.SimpleFeature;
 
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ACheckBox;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ARadioButton;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 
 /**
@@ -29,20 +41,84 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class ACheckBoxGui extends FormGuiElement {
+public class ACheckBoxGui extends FormGuiElement implements SelectionListener {
 
+    private final ACheckBox checkBox;
     private SimpleFeature feature;
+    private Button button;
+
+    public ACheckBoxGui( ACheckBox checkBox ) {
+        this.checkBox = checkBox;
+    }
 
     public Control makeGui( Composite parent ) {
+        button = new Button(parent, SWT.CHECK);
+        button.setLayoutData(checkBox.constraints);
+        // button.setText(checkBox.text);
+        boolean select = false;
+        if (checkBox.defaultText != null) {
+            if (checkBox.defaultText.equals("1")) {
+                select = true;
+            } else if (checkBox.defaultText.equals("0")) {
+                select = false;
+            } else {
+                select = new Boolean(checkBox.defaultText);
+            }
+        }
+        button.setSelection(select);
+        button.addSelectionListener(this);
 
-        return null;
+        return button;
     }
 
     public void setFeature( SimpleFeature feature ) {
         this.feature = feature;
+        updateCheck();
+    }
+
+    private void updateCheck() {
+        if (feature == null) {
+            return;
+        }
+        Object attribute = feature.getAttribute(checkBox.fieldName);
+        String attributeString = "";
+        if (attribute != null) {
+            attributeString = attribute.toString();
+        } else {
+            MessageDialog.openError(button.getShell(), "Missing attribute", "Could not find an attribute with name: "
+                    + checkBox.fieldName + " \nCheck your form!");
+        }
+        if (attributeString.equals("") && checkBox.defaultText != null) {
+            attributeString = checkBox.defaultText;
+        }
+
+        Boolean select = false;
+        if (attributeString.equals("1")) {
+            select = true;
+        } else if (attributeString.equals("0")) {
+            select = false;
+        } else {
+            select = new Boolean(attributeString);
+        }
+
+        button.setSelection(select);
+
     }
 
     public FormElement getFormElement() {
-        return null;
+        return checkBox;
+    }
+
+    public void widgetSelected( SelectionEvent e ) {
+        Class< ? > binding = feature.getProperty(checkBox.fieldName).getType().getBinding();
+
+        boolean selection = button.getSelection();
+        Object adapted = adapt(String.valueOf(selection), binding);
+        if (adapted != null) {
+            feature.setAttribute(checkBox.fieldName, adapted);
+        }
+    }
+
+    public void widgetDefaultSelected( SelectionEvent e ) {
     }
 }

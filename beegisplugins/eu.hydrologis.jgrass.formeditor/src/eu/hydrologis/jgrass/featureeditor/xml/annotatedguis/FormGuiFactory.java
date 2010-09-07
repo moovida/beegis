@@ -58,7 +58,7 @@ public class FormGuiFactory {
         FormGuiElement guiElement = null;
         if (formElement instanceof ACheckBox) {
             ACheckBox checkbox = (ACheckBox) formElement;
-            guiElement = new ACheckBoxGui();
+            guiElement = new ACheckBoxGui(checkbox);
         } else if (formElement instanceof AComboBox) {
             AComboBox comboBox = (AComboBox) formElement;
             guiElement = new AComboBoxGui(comboBox);

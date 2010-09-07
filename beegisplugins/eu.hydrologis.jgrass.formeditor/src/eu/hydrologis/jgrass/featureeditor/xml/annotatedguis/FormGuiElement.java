@@ -70,7 +70,19 @@ public abstract class FormGuiElement {
                 Float parsedFloat = new Float(value);
                 return clazz.cast(parsedFloat);
             } else if (clazz.isAssignableFrom(Integer.class)) {
-                Integer parsedInteger = new Integer(value);
+                Integer parsedInteger = null;
+                try {
+                    parsedInteger = new Integer(value);
+                } catch (Exception e) {
+                    // try also true/false
+                    if (value.toLowerCase().equals("true") || value.toLowerCase().equals("y")) {
+                        parsedInteger = 1;
+                    } else if (value.toLowerCase().equals("false") || value.toLowerCase().equals("n")) {
+                        parsedInteger = 0;
+                    } else {
+                        return null;
+                    }
+                }
                 return clazz.cast(parsedInteger);
             } else if (clazz.isAssignableFrom(Long.class)) {
                 Long parsedLong = new Long(value);

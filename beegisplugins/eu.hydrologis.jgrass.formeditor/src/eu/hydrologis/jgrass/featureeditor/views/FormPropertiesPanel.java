@@ -57,6 +57,8 @@ public class FormPropertiesPanel {
         context.getMap().sendCommandSync(compComm);
         // }
         // });
+        
+        setEditFeature(editedFeature, context);
     }
 
     public void resetChanges() {
