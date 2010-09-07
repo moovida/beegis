@@ -18,6 +18,7 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -66,7 +67,13 @@ public class ATextFieldGui extends FormGuiElement implements FocusListener {
             return;
         }
         Object attribute = feature.getAttribute(aTextField.fieldName);
-        String attributeString = attribute.toString();
+        String attributeString = "";
+        if (attribute != null) {
+            attributeString = attribute.toString();
+        } else {
+            MessageDialog.openError(text.getShell(), "Missing attribute", "Could not find an attribute with name: "
+                    + aTextField.fieldName + " \nCheck your form!");
+        }
         text.setText(attributeString);
     }
 
