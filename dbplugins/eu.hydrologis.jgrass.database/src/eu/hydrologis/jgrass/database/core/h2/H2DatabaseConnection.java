@@ -198,11 +198,11 @@ public class H2DatabaseConnection implements IDatabaseConnection {
      * start the database instance
      */
     private void startTcpserver() {
-        Thread h2WebserverThread = new Thread(){
+        Thread h2TcpThread = new Thread(){
             public void run() {
                 try {
                     if (!dbIsAlive) {
-                        String[] args = {"-tcp", "-tcpPort", port}; //$NON-NLS-1$ //$NON-NLS-2$
+                        String[] args = {"-tcp", "-tcpPort", port, "-tcpAllowOthers",};
                         tcpServer = Server.createTcpServer(args).start();
                         //                        args = new String[]{"-web", "-webPort", String.valueOf(Integer.parseInt(port) + 1)}; //$NON-NLS-1$ //$NON-NLS-2$
                         // webServer = Server.createWebServer(args).start();
@@ -213,7 +213,7 @@ public class H2DatabaseConnection implements IDatabaseConnection {
                 }
             }
         };
-        h2WebserverThread.start();
+        h2TcpThread.start();
     }
 
 
