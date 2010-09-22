@@ -14,7 +14,9 @@
 	<artifact:remoteRepository id="jaitoolsmaven.repository" url="${jaitoolsmaven}" />
 	<artifact:remoteRepository id="geosolutionsmaven.repository" url="${geosolutionsmaven}" />
 	<artifact:remoteRepository id="jgrasstoolsmaven.repository" url="${jgrasstoolsmaven}" />
-
+	<!-- 
+	<artifact:remoteRepository id="hibernatespatial.repository" url="${hibernatespatial}" />
+	-->
 	<target name="clean">
 		<delete dir="${lib}" />
 	</target>
@@ -31,6 +33,9 @@
 			<remoteRepository refid="jaitoolsmaven.repository" />
 			<remoteRepository refid="geosolutionsmaven.repository" />
 			<remoteRepository refid="jgrasstoolsmaven.repository" />
+			<!-- 
+			<remoteRepository refid="hibernatespatial.repository" />
+			-->
 
 			<!-- groovy -->
 			<dependency groupId="org.codehaus.groovy" artifactId="groovy-all" version="1.7.1" />
