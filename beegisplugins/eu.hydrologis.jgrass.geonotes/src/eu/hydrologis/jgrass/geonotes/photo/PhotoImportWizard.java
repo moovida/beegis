@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import net.refractions.udig.ui.ExceptionDetailsDialog;
@@ -39,15 +40,16 @@ import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.IProgressService;
+import org.jgrasstools.gears.utils.time.UtcTimeUtilities;
 import org.joda.time.DateTime;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
-import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
 import eu.hydrologis.jgrass.geonotes.GeonoteConstants.NOTIFICATION;
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
 import eu.hydrologis.jgrass.geonotes.fieldbook.FieldbookView;
+import eu.hydrologis.jgrass.geonotes.util.ExifHandler;
 
 /**
  * Photo import wizard.
@@ -56,8 +58,9 @@ import eu.hydrologis.jgrass.geonotes.fieldbook.FieldbookView;
  */
 public class PhotoImportWizard extends Wizard implements IImportWizard {
     private PhotoImportWizardPage mainPage;
-    private long shift = 0L;
+    private float shift = 0;
     private int intervalMinutes;
+    private boolean doNotImport;
 
     public PhotoImportWizard() {
         super();
@@ -68,6 +71,7 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
         final String path = mainPage.getPhotoFolder();
         shift = mainPage.getTime();
         intervalMinutes = mainPage.getIntervalMinutes();
+        doNotImport = mainPage.getDoNotImport();
 
         Display.getDefault().asyncExec(new Runnable(){
             public void run() {
@@ -89,25 +93,27 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
                                     String name = file.getName();
                                     if (name.endsWith("jpg") || name.endsWith("JPG") || name.endsWith("png")
                                             || name.endsWith("PNG")) {
-                                        // check the date
-                                        long lastModified = file.lastModified();
+
+                                        HashMap<String, String> metaData = ExifHandler.readMetaData(file);
+                                        DateTime creationDatetimeUtc = ExifHandler.getCreationDatetimeUtc(metaData);
                                         // correct with the given shift
-                                        lastModified = lastModified + shift;
+                                        int secShift = (int) (shift * 60f);
+                                        creationDatetimeUtc = creationDatetimeUtc.plusSeconds(secShift);
                                         // search for gps points of that timestamp
-                                        DateTime ts = new DateTime(lastModified);
-                                        Coordinate coordinate = GeonotesHandler.getGpsCoordinateForTimeStamp(ts, intervalMinutes);
+                                        Coordinate coordinate = GeonotesHandler.getGpsCoordinateForTimeStamp(creationDatetimeUtc,
+                                                intervalMinutes);
 
                                         if (coordinate == null) {
                                             // could not find date
                                             nonTakenFilesList.add(file.getAbsolutePath());
                                         } else {
-                                            List<File> fileList = imageFiles.get(ts);
+                                            List<File> fileList = imageFiles.get(creationDatetimeUtc);
                                             if (fileList == null) {
                                                 fileList = new ArrayList<File>();
-                                                imageFiles.put(ts, fileList);
+                                                imageFiles.put(creationDatetimeUtc, fileList);
                                             }
                                             fileList.add(file);
-                                            timestamp2Coordinates.put(ts, coordinate);
+                                            timestamp2Coordinates.put(creationDatetimeUtc, coordinate);
                                         }
                                     }
                                     pm.worked(1);
@@ -117,33 +123,44 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
                             }
                             pm.done();
 
-                            Set<DateTime> timeSet = imageFiles.keySet();
-                            pm.beginTask("Importing matching photos...", timeSet.size());
-                            for( DateTime timestamp : timeSet ) {
+                            Set<Entry<DateTime, List<File>>> timeSet = imageFiles.entrySet();
+                            if (!doNotImport) {
+                                pm.beginTask("Adding EXIF tags and importing matching photos...", timeSet.size());
+                            } else {
+                                pm.beginTask("Adding EXIF tags to matching photos...", timeSet.size());
+                            }
+                            for( Entry<DateTime, List<File>> entry : timeSet ) {
                                 try {
-                                    List<File> fileList = imageFiles.get(timestamp);
+                                    DateTime timestamp = entry.getKey();
+                                    List<File> fileList = entry.getValue();
+
+                                    Coordinate coordinate = timestamp2Coordinates.get(timestamp);
+
+                                    // set gps exif tags
                                     StringBuilder sB = new StringBuilder("");
                                     for( File file : fileList ) {
                                         sB.append(file.getName());
                                         sB.append(" ");
+
+                                        ExifHandler.writeGPSTagsToImage(coordinate.y, coordinate.x, file);
                                     }
 
-                                    Coordinate coordinate = timestamp2Coordinates.get(timestamp);
+                                    if (!doNotImport) {
+                                        String title = sB.toString();
+                                        String info = "Date:" + UtcTimeUtilities.toStringWithMinutes(timestamp) + "\nN:"
+                                                + coordinate.y + "\nE:" + coordinate.x;
 
-                                    String title = sB.toString();
-                                    String info = "Date:" + timestamp.toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM)
-                                            + "\nN:" + coordinate.y + "\nE:" + coordinate.x;
+                                        GeonotesHandler geonotesHandler = new GeonotesHandler(coordinate.x, coordinate.y, title,
+                                                info, PHOTO, timestamp, null, null, null, null);
+                                        for( File mFile : fileList ) {
+                                            geonotesHandler.addMedia(mFile, mFile.getName());
+                                        }
 
-                                    GeonotesHandler geonotesHandler = new GeonotesHandler(coordinate.x, coordinate.y, title,
-                                            info, PHOTO, timestamp, null, null, null, null);
-                                    for( File mFile : fileList ) {
-                                        geonotesHandler.addMedia(mFile, mFile.getName());
+                                        if (fieldBookView != null) {
+                                            geonotesHandler.addObserver(fieldBookView);
+                                        }
+                                        geonotesHandler.notifyObservers(NOTIFICATION.NOTEADDED);
                                     }
-
-                                    if (fieldBookView != null) {
-                                        geonotesHandler.addObserver(fieldBookView);
-                                    }
-                                    geonotesHandler.notifyObservers(NOTIFICATION.NOTEADDED);
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -169,7 +186,12 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
                                 Display.getDefault().asyncExec(new Runnable(){
                                     public void run() {
                                         Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-                                        MessageDialog.openInformation(shell, "Info", "All photos were successfully imported.");
+                                        if (!doNotImport) {
+                                            MessageDialog.openInformation(shell, "Info",
+                                                    "All photos were successfully tagged and imported.");
+                                        } else {
+                                            MessageDialog.openInformation(shell, "Info", "All photos were successfully tagged.");
+                                        }
                                     }
                                 });
                             }
