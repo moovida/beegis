@@ -25,6 +25,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -45,26 +47,26 @@ import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
 public class PhotoImportWizardPage extends WizardPage implements KeyListener {
 
     protected DirectoryFieldEditor editor;
-    private long timeShift = -1;
+    private float timeShift = 0f;
     private Text gpsTimeText;
     private Text photoTimeText;
     private Text folderText;
     private int intervalMinutes = 30;
+    private boolean doNotImport = false;
     private Text intervalText;
 
     public PhotoImportWizardPage( String pageName, IStructuredSelection selection ) {
         super(pageName);
         setTitle(pageName); // NON-NLS-1
         setDescription("Import a folder of photos into the application wrapped as geonotes and syncronised with the gps log present in the embedded database."); // NON-NLS-1
-        ImageDescriptor imageDescriptorFromPlugin = AbstractUIPlugin.imageDescriptorFromPlugin(
-                GeonotesPlugin.PLUGIN_ID, "icons/photo.png");
+        ImageDescriptor imageDescriptorFromPlugin = AbstractUIPlugin.imageDescriptorFromPlugin(GeonotesPlugin.PLUGIN_ID,
+                "icons/photo.png");
         setImageDescriptor(imageDescriptorFromPlugin);
     }
 
     public void createControl( Composite parent ) {
         final Composite fileSelectionArea = new Composite(parent, SWT.NONE);
-        GridData fileSelectionData = new GridData(GridData.GRAB_HORIZONTAL
-                | GridData.FILL_HORIZONTAL);
+        GridData fileSelectionData = new GridData(GridData.GRAB_HORIZONTAL | GridData.FILL_HORIZONTAL);
         fileSelectionArea.setLayoutData(fileSelectionData);
 
         GridLayout fileSelectionLayout = new GridLayout();
@@ -86,8 +88,7 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
         folderButton.setText("...");
         folderButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter(){
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
-                DirectoryDialog fileDialog = new DirectoryDialog(fileSelectionArea.getShell(),
-                        SWT.OPEN);
+                DirectoryDialog fileDialog = new DirectoryDialog(fileSelectionArea.getShell(), SWT.OPEN);
                 fileDialog.setText("Choose photo folder");
                 String path = fileDialog.open();
                 if (path == null || path.length() < 1) {
@@ -97,7 +98,7 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
                 }
             }
         });
-        
+
         Label intervalLabel = new Label(fileSelectionArea, SWT.NONE);
         intervalLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
         intervalLabel.setText("Time threshold [min]");
@@ -109,23 +110,23 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
         intervalText.addKeyListener(new KeyAdapter(){
             public void keyReleased( KeyEvent e ) {
                 String intervalStr = intervalText.getText();
-                try{
+                try {
                     intervalMinutes = (int) Double.parseDouble(intervalStr);
-                }catch (Exception ex) {
+                } catch (Exception ex) {
                     intervalMinutes = 30;
                 }
             }
         });
-        
+
         new Label(fileSelectionArea, SWT.NONE);
 
         Group timeGroup = new Group(fileSelectionArea, SWT.NONE);
         GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
-        gd.horizontalSpan=3;
+        gd.horizontalSpan = 3;
         timeGroup.setLayoutData(gd);
         timeGroup.setLayout(new GridLayout(2, false));
         timeGroup.setText("gps and camera time info for syncronisation");
-        
+
         // time shift between pictures and gps utc time
         Label gpsTimeLabel = new Label(timeGroup, SWT.NONE);
         gpsTimeLabel.setLayoutData(new GridData(SWT.END, SWT.CENTER, false, false));
@@ -134,7 +135,7 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
         gpsTimeText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         gpsTimeText.setText("");
         gpsTimeText.addKeyListener(this);
-        
+
         Label photoTimeLabel = new Label(timeGroup, SWT.NONE);
         photoTimeLabel.setLayoutData(new GridData(SWT.END, SWT.CENTER, false, false));
         photoTimeLabel.setText("camera time [hh:mm]");
@@ -142,10 +143,18 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
         photoTimeText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         photoTimeText.setText("");
         photoTimeText.addKeyListener(this);
-        
-        
 
-        
+        final Button doNotImportButton = new Button(fileSelectionArea, SWT.RADIO);
+        GridData doNotImportButtonGD = new GridData(SWT.BEGINNING, SWT.CENTER, true, false);
+        doNotImportButtonGD.horizontalSpan = 3;
+        doNotImportButton.setLayoutData(doNotImportButtonGD);
+        doNotImportButton.setText("Do not import the pictures, just add the gps exif tags.");
+        doNotImportButton.setSelection(false);
+        doNotImportButton.addSelectionListener(new SelectionAdapter(){
+            public void widgetSelected( SelectionEvent e ) {
+                doNotImport = doNotImportButton.getSelection();
+            }
+        });
 
         setControl(fileSelectionArea);
     }
@@ -155,14 +164,18 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
     }
 
     /**
-     * @return the timeshift in seconds (gps - camera)
+     * @return the timeshift in seconds (gps - camera) or 0.
      */
-    public long getTime() {
+    public float getTime() {
         return timeShift;
     }
-    
+
     public int getIntervalMinutes() {
         return intervalMinutes;
+    }
+
+    public boolean getDoNotImport() {
+        return doNotImport;
     }
 
     public void keyPressed( KeyEvent e ) {
@@ -177,19 +190,17 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
                 String[] gpsSplit = gpsText.split(":");
                 String[] photoSplit = photoText.split(":");
 
-                long gpsTime = Long.parseLong(gpsSplit[0]) * 60 * 60 + Long.parseLong(gpsSplit[1])
-                        * 60;
-                long photoTime = Long.parseLong(photoSplit[0]) * 60 * 60
-                        + Long.parseLong(photoSplit[1]) * 60;
+                long gpsTime = Long.parseLong(gpsSplit[0]) * 60 * 60 + Long.parseLong(gpsSplit[1]) * 60;
+                long photoTime = Long.parseLong(photoSplit[0]) * 60 * 60 + Long.parseLong(photoSplit[1]) * 60;
 
-                timeShift = (gpsTime - photoTime) * 1000;
+                timeShift = (float) (gpsTime - photoTime) * 1000f;
                 System.out.println(timeShift);
             } catch (Exception ex) {
                 // do nothing, just disable time using
-                timeShift = -1;
+                timeShift = 0f;
             }
         } else {
-            timeShift = -1;
+            timeShift = 0f;
         }
     }
 
