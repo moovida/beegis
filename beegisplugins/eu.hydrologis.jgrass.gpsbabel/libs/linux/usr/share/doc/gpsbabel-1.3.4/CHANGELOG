@@ -1,0 +1,1170 @@
+* Wed Jul 11 2007 http://www.gpsbabel.org
+- Fix Google Maps breakage from a URL that includes &blah; parameters. This is not ageneral-purpose fix, but it'll do until they break it again. 
+- Bump version to 1.3.4-beta20070711 for release. 
+- 1.3.4-beta20070711: Bumped version for beta 
+* Mon Jul 09 2007 http://www.gpsbabel.org
+- gbfile: Fix gbfungetc. Thanx to Gabriel Weisz. 
+- alan: Add parameter "b" to open mode. This is necessary for NON-POSIX systems. 
+- Remove shortname from fixed columns. 
+- Include pathname of ini file in error messages involving those files. 
+* Sun Jul 08 2007 http://www.gpsbabel.org
+- gdb: Fix V3 waypoint final bytes (postal code, phone number and country). 
+* Sat Jul 07 2007 http://www.gpsbabel.org
+- magproto: Increase size of some local buffers.Fix endless loop (with corrupted data) in mag_dequote. 
+- gdb: Fix V3 waypoint final bytes (postal code / phone number). 
+- gdb: Add possible output of GDB version 3 format. 
+* Fri Jul 06 2007 http://www.gpsbabel.org
+- unicsv: Add gps fix to writer. Fix mingw problem with indexed parameters. 
+* Thu Jul 05 2007 http://www.gpsbabel.org
+- Tweak doc for garmin_gpi. 
+- Minor doc tweaks in use, preface, build. Try to segment Garmin list intoGPX and GPX-not. 
+- Gerhard Olsson starts adding lap support to Garmin protocol layer. 
+- Gerhard Olsson and Robert Lipe add realtime tracking for XCSV and repair KML tracking. 
+* Wed Jul 04 2007 http://www.gpsbabel.org
+- Remove format readme's from windows package. 
+- Re-use unused decode vector with a pointer to a fallback character set.Very useful for ascii-like character sets. There we don't need to maintain a largeextra (hand-made) conversion table. 
+- Fill cp1250..cp1257 extra table ("Best Fit" non-ascii codes). 
+- Extend extra UCS4 to character conversion table. 
+- Close <para>tags. 
+- Add TRACK_NAME and ROUTE_NAME to XCSV. 
+- Add ISO_TIME_MS to Style formats. 
+* Tue Jul 03 2007 http://www.gpsbabel.org
+- Include time range in KML tracks when available. 
+- Don't write empty folders in KML if we have no tracks or routes. 
+* Mon Jul 02 2007 http://www.gpsbabel.org
+- Upgrade unicsv doc. Extend the list of key words. Add some hints for the writer. 
+- Allow stdin on posix gbser filename. 
+- Add quotations to unicsv output sample. 
+- Add doc for unicsv options 'datum' and 'grid'. 
+- Add doc for option 'location' of raymarine. 
+* Sun Jul 01 2007 http://www.gpsbabel.org
+- Let route simplifier know if it's working on tracks or routes so it knows which list to remove from. 
+- Allow geocache placer to be empty in GPX read. 
+* Fri Jun 29 2007 http://www.gpsbabel.org
+- xmlgeneric: Fix order of 'str_match' parameters. 
+- unicsv: Quote coordinates using grid with seconds. Move function 'strenquote' to common utils. 
+* Thu Jun 28 2007 http://www.gpsbabel.org
+- Let unicsv write something. 
+- Be more liberal with coordinates outsite of -90..90,-180..180. 
+- Allow wildcards [*?] in xml tag list. 
+- Add field separator to "pretty_deg_format". 
+* Tue Jun 26 2007 http://www.gpsbabel.org
+- 6/26/07 Google breakage; they accidentally dropped a </tr> 
+* Sun Jun 24 2007 http://www.gpsbabel.org
+- Change WBT doc to backup tracks before erasing unit. 
+- Break up introductory sentence a bit. 
+* Thu Jun 21 2007 http://www.gpsbabel.org
+- After confirming with Garmin that these should Just Work, I'm adding:Nuvi 600Nuvi 650Nuvi 650FMNuvi 200Nuvi 250Nuvi 270Rhino 520HCxRhino 530HCxeTrex Vista HCx,eTrex Legend HCx,eTrex Summit HC,eTrex Venture HCeTrex HNuvi 200WNuvi 250W 
+* Tue Jun 19 2007 http://www.gpsbabel.org
+- Google makes arbitrary changes to Maps output again. 
+* Mon Jun 18 2007 http://www.gpsbabel.org
+- ozi: Use macros for "flagged" waypoint fields. 
+- nmea: Tweak some forgotten "flagged" waypoint fields. 
+- igc: Stop writing when more than 99 points in task route. 
+- gdb: Tweak some forgotten "flagged" fields. 
+* Thu Jun 07 2007 http://www.gpsbabel.org
+- stmwpp: Fix ZERO-trimming code in stmwpp_write_double. 
+- Hungarian translation finished. Thanx to Sprok Bence. 
+* Wed Jun 06 2007 http://www.gpsbabel.org
+- Welcome "navicache", "html" in the world of gbfile. 
+- Read GISTeq's mangled NMEA. 
+* Tue Jun 05 2007 http://www.gpsbabel.org
+- Adjust time struct before mkgmtime/mktime when date/time buffer doesn't have a date. 
+* Sat Jun 02 2007 http://www.gpsbabel.org
+- unicsv: Add possible fields 'x' (longitude) and 'y' (latitude). 
+- garmin_gpi: Split bounds with a new method. 
+- garmin_gpi: Avoid problems with system time during leaktest. 
+- Nuke clever override for Garmin geocache icons since they're interfering withreal garmin geocache icons. 
+- Add additional sequence (with binary compare) for garmin_gpi. 
+* Fri Jun 01 2007 http://www.gpsbabel.org
+- Track geocache placer ID on read from GPX/PQs. 
+* Fri May 25 2007 http://www.gpsbabel.org
+- Remove proximity and temperature from garmin special data.Extend wpt_flags with members for proximity and temperature.Define macros for easy access to 'flagged' waypoint fields (as GMSD). 
+- Add more supported items to unicsv doc. 
+* Thu May 24 2007 http://www.gpsbabel.org
+- gpsmath: Fix problem with conversion from UTM coordinates in southern hemisphere. 
+- garmin_gpi: Swap red and blue values in color table. 
+- Two google breakages in one day. They must be busy.This is one that wouldn't have been detected by my script, because it only affected the reading of turn names. 
+- Google Maps changed to contain invalid XHTML, again.This time, it was tags of the form <foo bar="xxx"baz="yyy"> (note lack ofwhitespace between attributes.) 
+* Wed May 23 2007 http://www.gpsbabel.org
+- Add support user defined bitmap (BMP file). 
+* Tue May 22 2007 http://www.gpsbabel.org
+- Add support for multiple POI lists to writer code. 
+* Sun May 20 2007 http://www.gpsbabel.org
+- Rename module garmin_poi. New name is now garmin_gpi. 
+- Add support for Garmin POI's (.gpi files). 
+* Tue May 15 2007 http://www.gpsbabel.org
+- csv_util: convert date to local date only when non-zero. 
+- Use description as name source when we don't have notes in maggeo. 
+- Correct test for unknown alt in lowranceusr writer. 
+* Mon May 14 2007 http://www.gpsbabel.org
+- add 'nourl' option to an1 format 
+* Fri May 11 2007 http://www.gpsbabel.org
+- Added xhtmlent.c to define XHTML entities. Currently used by google reader. 
+- - Added the rest of the XHTML entities to the google reader in a slightly more reasonable form. Letting expat do the heavy lifting for entity substitutions.- Replaced ugly O(n^2) string replacement with one that's closer to O(n). The fact that TheDailyWTF just featured code like the code that was here originally is just a coincidence, really. 
+* Thu May 10 2007 http://www.gpsbabel.org
+- handle nbsp in google maps. We probably need a more generic entity handler, but nbsp is the only one I've seen so far 
+- Let IGC reader tolerate blank lines on input. 
+- I'm not convinced this isn't a problem with Xcode on the Mac, but double case the internal longitude conversion for Cetus to avoid integer overflow. 
+* Wed May 09 2007 http://www.gpsbabel.org
+- Accept and handle special header line from SONY-GPS devices. 
+* Tue May 08 2007 http://www.gpsbabel.org
+- Update spanish, german, french, hungarian translations. 
+* Fri May 04 2007 http://www.gpsbabel.org
+- xcsv: Add support for BNG (British National Grid) coordinates. 
+- gdb: Fix V3 reader code (unexpected location of descriptions since MS 6.12.3). 
+- g7towin: Fix reading of waypoint lines with empty (short)names. 
+- Regenerate reference data after wbt-200 changes. 
+* Thu May 03 2007 http://www.gpsbabel.org
+- Fixed google maps route format for May 2007 update 
+- Added multi-leg route support to google maps input format 
+* Mon Apr 30 2007 http://www.gpsbabel.org
+- Patches from Andy to add WBT-201 support. 
+* Sat Apr 21 2007 http://www.gpsbabel.org
+- tef_xml: Add support for "TourExchangeFormat" version 1.5.Try to repair cutted descriptions. Regenerate gpx reference. 
+- bcr: Change handling of DESCRIPTION lines. Regenerate reference files. 
+* Fri Apr 20 2007 http://www.gpsbabel.org
+- raymarine: Limit route names also to 16 characters. Bug-fix - add missing comma (write_route_wpt_cb/items).Change line feeds to fixed CRLF. Add some MapSource icon names to icon mappings.Remove unused column id from icon table. Re-create reference data. 
+- raymarine: Change line feeds to fixed CRLF. Re-create reference data. 
+* Tue Apr 17 2007 http://www.gpsbabel.org
+- Typo fix. 
+- Do not substitute __VERSION__ for non-ambiguous testo results. 
+- Add style sheets tomtom_itn "TomTom Itenaries" and tomtom_asc "TomTom POI ascii files". 
+- Add new field macros LAT_10EX and LON_10EX. The real field namein a style sheet can be i.e. LAT_10E5, which represents latitudemultiplied by "10 power 5". 
+* Mon Apr 16 2007 http://www.gpsbabel.org
+- Make 'install' depend on having the executable itself. 
+- Let KML writer scribble timestamp in the table so it can be seen by user. 
+* Sun Apr 15 2007 http://www.gpsbabel.org
+- waypt: Be more verbose when stopping because of invalid coordinates. 
+- Add new format "g7towin". This format can read data files (.g7t) from G7ToWin. 
+* Tue Mar 27 2007 http://www.gpsbabel.org
+- Fix error message text on invalid longitude. 
+- Enable synthesized GPS fixes for tracks. Without we get a lot of empty NMEA track files. 
+- Add new format "ggv_log". This format supports binary tracklogs used by Geogrid-Viewer. 
+- Add a cross-configure target just so I don't have to remember that awful syntax. 
+* Mon Mar 26 2007 http://www.gpsbabel.org
+- Add new format "ggv_log". This format supports binary tracklogs used by EADS Geogrid Viewer. 
+- Add functions waypt_speed() and waypt_time().waypt_speed calculates the speed between two points (in meters per second).waypt_time returns the creation_time of a waypoint including microseconds in fractional portion. 
+* Fri Mar 23 2007 http://www.gpsbabel.org
+- Jeremy Ehrhardt contributes vitovtt format. 
+* Thu Mar 15 2007 http://www.gpsbabel.org
+- Jon McClinton and Robert Lipe add NMEA realtime tracking output, tweak realtime tracking output for KML, and enhance reliability for Garmin/USB tracking on Linux and Mac. 
+* Wed Mar 14 2007 http://www.gpsbabel.org
+- Typo fix. 
+- Jon McClintlock and Robert Lipe fix bogus free in Linux/Mac USB garmin teardown. 
+- Fix possible endless loop. 
+* Mon Mar 12 2007 http://www.gpsbabel.org
+- Finalize "Multiple URL support" code. Move add_url to waypt.c. Now called 'waypt_add_url'. 
+- Finalize "Multiple URL support" code. 
+- Check in nearly new gdb module. 
+- Add test entry for multiple GPX 1.1 links.Try to fix our handling of schemaLoc in GPX 1.1Make transform-rte and transform-wpt (validated) GPX 1.1 since they came from GPX 1.1. 
+* Sun Mar 11 2007 http://www.gpsbabel.org
+- Add multiple link support for GPX 1.1 on read and write. 
+* Sat Mar 10 2007 http://www.gpsbabel.org
+- Sketch in data structures for multiple URLs in waypoints. Use GDB reader as guinea pig. 
+- Fix icon reads in gpsutil format. 
+* Sun Feb 25 2007 http://www.gpsbabel.org
+- Include Earthcache and Event in cache types for garmin -Sn mode. 
+- Add downloadable Postscript doc. 
+- 1.3.3: GPSBabel 1.3.3 released! 
+* Wed Feb 21 2007 http://www.gpsbabel.org
+- Enhance smartname code to special case 7 digit geocache names in 6 digit receivers. 
+- Add AVMAP EKP-IV Tracks to nmea. This work seems complete, but the requester went quiet. 
+* Tue Feb 20 2007 http://www.gpsbabel.org
+- Remove globalopts.objective dependency (tef_xml). 
+- PCX: Don't create empty tracks (multiple header lines). 
+- Fix gdb v3 error. 
+- Fix discard filter bug. Remove waypt_free() from any_route_del_wpt(). 
+* Thu Feb 15 2007 http://www.gpsbabel.org
+- Don't make "smart" (typ. geocaching) names the default. -N now silently eaten. Add -S. 
+* Wed Feb 14 2007 http://www.gpsbabel.org
+- Convert GPX to handle millisecond timestamps. Regenerate several of ourreference files that happened to be in GPX and used sub-second resolution. 
+- Change max internal resolution from centiseconds to microseconds. 
+* Tue Feb 13 2007 http://www.gpsbabel.org
+- Start sketching in some incomplete D304 send support. 
+- Regenerate garmin icons tables to more closely match Mapsource set. 
+- Nuke trailing whitespace from smart shortnames. 
+- Include instructions in garmin_tables.c to build icon tables. 
+- Complete MapSource symbol names. Add wrapper for combined names like "Blue Diamond" and "Diamond, Blue". 
+- Add reference file with all symbol names used by MapSource. 
+- Add column "utm c" (utm zone character as part of utm coordinates). 
+* Wed Feb 07 2007 http://www.gpsbabel.org
+- Loosen char set for new yellow etrex models. 
+* Tue Feb 06 2007 http://www.gpsbabel.org
+- gdb: Add special code for unknown bytes in waypoints with class GE 8 (calculated points). 
+* Thu Feb 01 2007 http://www.gpsbabel.org
+- Use the newly-public Earth 2.1 XSD in KML writer. 
+* Sun Jan 28 2007 http://www.gpsbabel.org
+- Add new formats to support "Kompass (DAV) files" as kompass_tk and kompass_wp. 
+- Add directive "DATATYPE", which can be WAYPOINT, ROUTE or TRACK, to xcsv format. 
+* Thu Jan 25 2007 http://www.gpsbabel.org
+- Add new GDB format version 3. 
+* Tue Jan 23 2007 http://www.gpsbabel.org
+- Add sample for new GDB format version 3. 
+* Mon Jan 22 2007 http://www.gpsbabel.org
+- Improve Garmin error case for Windows USB exclusive error failure to pointfinger at Spanner and GPSGate-like substances. 
+* Thu Jan 18 2007 http://www.gpsbabel.org
+- Handle leading whitespace in whitespace separated xcsv files again. 
+* Wed Jan 17 2007 http://www.gpsbabel.org
+- Gunar Megger adds support for Alan Map 500 and Holux GM101 as alantrl and alanwpr. 
+* Tue Jan 16 2007 http://www.gpsbabel.org
+- Accept 'lon' and not just 'long' in unicsv header. 
+* Mon Jan 15 2007 http://www.gpsbabel.org
+- Add mapsource #'s for the colored letters and numbers and the Mapsource 6.12 beta icon set. 
+* Thu Jan 11 2007 http://www.gpsbabel.org
+- Add Sony GPS1 
+* Tue Jan 09 2007 http://www.gpsbabel.org
+- Add Zumo 450, Nuvi 670, Nuvi 680, Nuvi 370, StreetPilot C580, and Astro. 
+* Mon Jan 08 2007 http://www.gpsbabel.org
+- Only check for valid timestamps in track filter if really needed.Based on patch from Vladimir Kondratiev. 
+* Sun Dec 31 2006 http://www.gpsbabel.org
+- Add Sirf mode input to NMEA realtime position reader. 
+* Fri Dec 22 2006 http://www.gpsbabel.org
+- Add 38400 to list of potential bit rates. 
+* Tue Dec 19 2006 http://www.gpsbabel.org
+- Magellan files that don't have $ in column zero now rejected instead of crashing. 
+* Wed Dec 13 2006 http://www.gpsbabel.org
+- Add option "grid" and "British National Grid" to supported grids (SimpleFeature req. 1557425). 
+* Sat Dec 02 2006 http://www.gpsbabel.org
+- Force usage of common "GPSBabel file api" (gbfile). 
+- Add option "DATUM" to xcsv format. 
+* Fri Dec 01 2006 http://www.gpsbabel.org
+- Andy Elliott and Ron Parker Improve correctness of position filter. 
+* Mon Nov 27 2006 http://www.gpsbabel.org
+- GPX: Fix a problem made more obvious by GZIP reader involving reads slightly larger than our block size.Util: eliminate use of va_copy. 
+* Sun Nov 26 2006 http://www.gpsbabel.org
+- Paul Tomblin updates CoPilot code.. 
+- Add support for "Raymarine Waypoint File". 
+- 'Tart up' more of the doc. 
+* Wed Nov 22 2006 http://www.gpsbabel.org
+- Enhance PCX reader to handle (some) files from GPSUtil. 
+* Tue Nov 21 2006 http://www.gpsbabel.org
+- GPSDrivetrack is local time, not GMT. 
+- Add workaround for zlib bug "gzread buffer error on empty files". 
+* Fri Nov 17 2006 http://www.gpsbabel.org
+- Fix crash in google reader on multiple files. 
+* Thu Nov 16 2006 http://www.gpsbabel.org
+- Add hint and last found to tabsep format. 
+* Tue Nov 14 2006 http://www.gpsbabel.org
+- Add a -VV option to main so we can more easily see how we were built. 
+* Mon Nov 13 2006 http://www.gpsbabel.org
+- Internal comment on dmtlog elevation oddity. 
+* Fri Nov 10 2006 http://www.gpsbabel.org
+- add PDF target 
+- Do not write "unknown_alt" in dmtfmt. 
+* Thu Nov 09 2006 http://www.gpsbabel.org
+- Use the Windows-proprietary MoveFileEx to rename files in KML writer foratomicity. 
+- Bump tags to gpsbabel_1_3_2-beta20061109 
+* Wed Nov 08 2006 http://www.gpsbabel.org
+- Gratituous whitespace tweaks in bounds tag in GPX. 
+* Tue Nov 07 2006 http://www.gpsbabel.org
+- Update gui after error fixes (radius filter). Store more settings in registry. 
+- Leak and correctness fixes on NMEA reader.  Passed NMEA serial (with valgrind), testo and leaktest. 
+- Fix validation of latitude and longitude (radius filter). 
+* Mon Nov 06 2006 http://www.gpsbabel.org
+- Reduce number of leaks in realtime tracking mode on Garmins to zero. 
+* Sun Nov 05 2006 http://www.gpsbabel.org
+- Memory leaks and stability fixes in KML realtime writer.Allow position reader (Garmin, NMEA) to propogate error up to caller. 
+- 1.3.2: Minor tweaks to build (regen deps, bump number, etc.) to release 1.3.2. 
+* Thu Nov 02 2006 http://www.gpsbabel.org
+- Formatting improvements in Geocaching/KML writer. Include placer. 
+- Allow elapsed time to go negative so that NMEA line reader can detecttimeouts correctly. 
+- Add container size to KML for geocaches. 
+* Tue Oct 31 2006 http://www.gpsbabel.org
+- Track average and extreme heart rate and cadence for KML writer. Whitespace fixes. 
+* Mon Oct 30 2006 http://www.gpsbabel.org
+- Check in new transformation filter "transform". 
+- Add new feature (new option) batch mode (-b). 
+* Thu Oct 26 2006 http://www.gpsbabel.org
+- Improvements in text and html output from Scott Brynen. 
+- Document new text and html options. 
+* Wed Oct 25 2006 http://www.gpsbabel.org
+- Vladimir Nadvornik contributes a the sdistance option to split tracks by distance. 
+- Make Linux usb_set_config error point to web doc. 
+- Add test cases for sdistance option to track splitter. 
+* Mon Oct 23 2006 http://www.gpsbabel.org
+- Add spanish GUI translation. 
+* Sun Oct 22 2006 http://www.gpsbabel.org
+- Use the filename (when available) to disambiguate between routes and waypointsin Magellan file mode. 
+* Fri Oct 20 2006 http://www.gpsbabel.org
+- KML changess: Don't use palettes for icons. That's sooo 2004.Add icons for realtime positioning. Color the auto depending on last position time relative to current time.Tweak reference files for test suite. 
+- Add explict unlink of position for realtime KML. 
+* Thu Oct 19 2006 http://www.gpsbabel.org
+- Move KML track description up one level so it appears in the 'obvious' spot when you click on it. 
+- Fix interpolation when endpoints are same. From Vladimir Nadvornik. 
+* Wed Oct 18 2006 http://www.gpsbabel.org
+- Quote in a CDATA, don't entitize, HTML inside KML. 
+- Let serial (and only serial) NMEA reader accept a 'bad' position, but mark it so that the consumer can know that it's bad. 
+- Change icon type for KML position writer when we don't -really- have a fix. 
+- A whole slew of (mostly busiwork) changes to make the KML more correct. 
+* Tue Oct 17 2006 http://www.gpsbabel.org
+- Fixed problem with 'all' option in position filter 
+- Don't crash if we attempt -T input on a format that doesn't support it. 
+- Change the KML folderization scheme when in realtime tracking mode - don'twrite empty routes folder, don't put position in folder. 
+* Mon Oct 16 2006 http://www.gpsbabel.org
+- Parse alternate datums in compegps. 
+* Sun Oct 15 2006 http://www.gpsbabel.org
+- Propogate USB error in libusb (Linux, Mac) up the stack so realtimepositioning code can error out gracefully.Fix minor mem leak in Garmin USB position read case. 
+* Thu Oct 12 2006 http://www.gpsbabel.org
+- Add wide expat for cross builds. 
+* Sat Oct 07 2006 http://www.gpsbabel.org
+- Teach KML writer more about Geocaching. Write diff/terr, short description, customize icons by cache type. 
+- Paul Fox adapts mergesort for use on our internal linked lists. 
+- Fix altitude in Cambridge format. 
+- Add wheel cadence to XCSV style scheme. 
+- Add prototype for max_position_points option to KML writer. 
+- Add cadence to XCSV. 
+- Add Project Ape and Mega Events to Geocaching reader in GPX. 
+* Fri Oct 06 2006 http://www.gpsbabel.org
+- Special case 'whitespace' in badchars. (Allows "w" in gpsdrive.) 
+* Thu Oct 05 2006 http://www.gpsbabel.org
+- Fix typo in KML writer that resulted in entities not being correctly escaped. 
+* Wed Oct 04 2006 http://www.gpsbabel.org
+- Output cadence in Training Center. 
+- Make xasprintf work sensibly in light of both (sigh) C99 and SUSv1 definitionsof snprintf. Probably needs more abstraction work, but this is more correctin more cases. 
+* Tue Oct 03 2006 http://www.gpsbabel.org
+- Curt makes fixes for NG Topo 4. 
+* Tue Sep 26 2006 http://www.gpsbabel.org
+- Add product ID for Explorist 200. 
+* Fri Sep 22 2006 http://www.gpsbabel.org
+- stop using read64 for doubles; fix .gpl heading/speed 
+- gpl speed is in mph, not m/s 
+- Move endian determination to be compile-time constant determined by configureand conveniently defaulting to LE for our favorite configure-less environment. 
+* Thu Sep 21 2006 http://www.gpsbabel.org
+- Remove extraneous clear of 'is_html' flag in GPX. 
+* Sun Sep 10 2006 http://www.gpsbabel.org
+- Fix longitude in Garmin Training Center writes. 
+* Sat Sep 09 2006 http://www.gpsbabel.org
+- Replace 'times' with 'timesynt' for compat with Solaris. 
+* Fri Sep 08 2006 http://www.gpsbabel.org
+- From Curt: tpo read fixes. 
+* Wed Sep 06 2006 http://www.gpsbabel.org
+- split radius and position filters into separate source files, preparatory to rewriting position filter 
+* Sun Sep 03 2006 http://www.gpsbabel.org
+- Use correct title. It is 'TrackLogs digital mapping'. 
+- Fix cetus time conversion. Use mkgmtime() instead of mktime(). 
+* Sat Sep 02 2006 http://www.gpsbabel.org
+- Raise timeout in WBT for compat with new firmware. 
+- Fix crash on Magellan serial write. 
+- 1.3.1: GPSBabel 1.3.1 released! 
+* Wed Aug 30 2006 http://www.gpsbabel.org
+- Force usage of common gbfile api. 
+* Tue Aug 29 2006 http://www.gpsbabel.org
+- Tweaks to timeStamp and timeSpan handling in KML writer. 
+- Don't crash on null filename.Don't rewrite 'comX' (without colon) or else Win 98 breaks. (Sigh.) 
+- Add support for "Digital Mapping TrackLogs" (.trl) files. 
+* Fri Aug 25 2006 http://www.gpsbabel.org
+- gbser_posix Remove extranous cast for OS X 10.3. 
+- Don't use backslashes in filename. 
+* Thu Aug 24 2006 http://www.gpsbabel.org
+- Tweak time handling in KML writer. 
+- Let arc format read 'human readable' coords. 
+- Add (crude) support for Garmin Training Center as gtrnctr. 
+* Wed Aug 23 2006 http://www.gpsbabel.org
+- Fix Garmin routes with unknown altitudes. Avoids crash on Foretrex 101. 
+* Tue Aug 22 2006 http://www.gpsbabel.org
+- Paul Fox improves stability of sort filter. 
+- AN1 Reader: Trust URL encoded in new format over old encoding. 
+* Sun Aug 13 2006 http://www.gpsbabel.org
+- Various tweaks to restore happiness to the MSVC builds.gbfile: use fatal instead of abort. 
+- Fix crash of certain D108 Garmins when writing routes. 
+- Contribute largely rewritten KML writer. 
+- Add options for KML and NMEA formats. 
+* Sat Aug 12 2006 http://www.gpsbabel.org
+- Magproto: Improve performance on reads by turning off hanshaking. Stability fix on successive transfers. 
+- Add --with-zlib as a tristate for our zlib, system zlib, or no zlib. 
+* Thu Aug 10 2006 http://www.gpsbabel.org
+- Add realtime-tracking infrastructure and readers for Garmin PVT and NMEA. 
+* Tue Aug 08 2006 http://www.gpsbabel.org
+- Andy Armstrong adds support for version 4 of the WBT-200 (adds alt to tracks).Don't compute redundant course data in wbt-bin reader. 
+* Thu Aug 03 2006 http://www.gpsbabel.org
+- Zero struct tm on timestamp read so if time tag is malformed, we don't have hour number 17347896 or whatever else happened to be there. 
+* Mon Jul 31 2006 http://www.gpsbabel.org
+- Fix doc for Garmin 'get_posn' suboption. 
+* Sun Jul 30 2006 http://www.gpsbabel.org
+- Check in new file format 'stmsdf', Suunto Trek Manager .sdf files. 
+* Wed Jul 26 2006 http://www.gpsbabel.org
+- Allow 200, not 199 in maggeo. 
+* Sun Jul 23 2006 http://www.gpsbabel.org
+- Garmin: Correctly implement zero byte write after packet that's a multiple offrame size. 
+* Sat Jul 22 2006 http://www.gpsbabel.org
+- Add new stylesheet 'sportsim' (support for textual trackfiles from zipped Sportsim .ssz archives). 
+* Tue Jul 18 2006 http://www.gpsbabel.org
+- Replace gcdist for improved accuracy overy short distances. 
+- Add unit id to treat Quest II like Quest per JamieZ. 
+* Mon Jul 17 2006 http://www.gpsbabel.org
+- Change TomTom to handle type 3 record like type 2 record until we figure out what those other two bytes/strings/whatevers are 
+- Allow quoted commas in waypoint description when reading Magproto files. 
+- Allow 200 points instead of 199 in maggeo. 
+* Fri Jul 14 2006 http://www.gpsbabel.org
+- From Andy: fix southern hemi for wbt, set baud rate in Brauniger, route excessprecision from computed speed. 
+- Convert Brauniger to new serial scheme. 
+* Thu Jul 13 2006 http://www.gpsbabel.org
+- Olaf eliminates a zillion hardcoded staticly sized buffers and commonizesour ASCII text reader into the new 'textfile' scheme. 
+- Loosen check that insisted that time travels only forward when reading NMEAfiles. From Andy Armstrong. 
+- Andy Armstrong provides new serial layer and refactors magellan to work with it. 
+* Sat Jul 08 2006 http://www.gpsbabel.org
+- Tighten yesterday's fix to work with old and new google data files. 
+- Improvements in xcsv doc. 
+- Hacky fix for Explorist adding filenames inside tracks. 
+- Google reader: Null pointers that have been freed in case we are executed more than once. 
+* Fri Jul 07 2006 http://www.gpsbabel.org
+- Google Earth: Tweak panel reader to look at only the frame containing the turn-by-turns toavoid entity encoding problem of &trade; symbol that was recently introduced. 
+- Fix crash reading tracks on Windows (but, alas, not Wine) when pathnamesdon't have UNIX path separators in them. 
+- Another fix for curfname. Also don't trip over trackname (!) finally present in explorist. 
+* Sun Jul 02 2006 http://www.gpsbabel.org
+- 1.3.0: GPSBabel 1.3.0 has left the building! 
+* Sat Jul 01 2006 http://www.gpsbabel.org
+- Add 103 Garmin symbols to tables and doc from new protocol spec. 
+* Thu Jun 29 2006 http://www.gpsbabel.org
+- Generalize the "comX, X over 10" fix for all the Windows code. Let the Magellan track reader NOT merge tracks across files.Magellan track reader names tracks after file read. 
+- Change category parameter range into '1'..'16'. 
+- Add gpsbabel.ini doc from Olaf. 
+* Thu Jun 22 2006 http://www.gpsbabel.org
+- Improve doc for Garmin protocol module. Enumerate supported serial models. 
+* Mon Jun 19 2006 http://www.gpsbabel.org
+- When converting HTML to space, convert newlines (and successive whitespace) to single space. 
+- Reduce Magellan read timeout to 5 tries. Treat "-" on UNIX as a file, not a serial port. 
+- Andy Armstrong contributes support for Wintec WBT-200. 
+* Tue Jun 06 2006 http://www.gpsbabel.org
+- Add a few hundred ISO decays to ASCII.  Approved by Olaf. 
+- Add Garmin icons appendix. 
+* Thu Jun 01 2006 http://www.gpsbabel.org
+- Geocaching.com loc files actually sometimes are UTF-8. Adjust reader to handle this. 
+* Fri May 26 2006 http://www.gpsbabel.org
+- Fix bug when merging non-image an1 with gpx to make image an1 
+- Add Topo 6 stuff to an1 format, adjust tests for new information 
+* Tue May 23 2006 http://www.gpsbabel.org
+- fixed error where two escaped backslashes in a row would cause havoc in Google reader 
+* Fri May 19 2006 http://www.gpsbabel.org
+- Add write-only support for Franson Software's GPS Simulator format as 'gpssim'. 
+- Add container and cache type to PalmDoc. 
+* Thu May 18 2006 http://www.gpsbabel.org
+- Add container and cache type to HTML and TEXT outputs. 
+* Wed May 17 2006 http://www.gpsbabel.org
+- add route option to interpolate filter 
+- Split TPO into two different formats (tpo2 and tpo3) since they have different capabilities. 
+- Ron Parker does major doc work. 
+* Tue May 16 2006 http://www.gpsbabel.org
+- Fix track read in tpg on big endian systems. 
+* Fri May 12 2006 http://www.gpsbabel.org
+- More pieces of Garmin category support. Don't crash when no -p file given 
+* Sun May 07 2006 http://www.gpsbabel.org
+- Add new module 'axim_gpb', a track reader for Dell Axim Navigation System (.gpb) files. 
+* Sat May 06 2006 http://www.gpsbabel.org
+- Implement workaround for data toggle problem in Garmin USB for Linux and OS X. 
+* Fri May 05 2006 http://www.gpsbabel.org
+- Robert Coup adds options to Mapsend for V4 tracks. 
+- Pasha Phares adds support for Delorme Xmap/Street Atlas 2006 Handheld as 'xmap2006'. 
+- Pasha Phares adds Geoniche usability improvements and fixes for Geoniche v1.40. 
+- NMEA: coalesce trackpoint sentences by time.Invert "noBLAH" options to be "BLAH" options. 
+* Sun Apr 30 2006 http://www.gpsbabel.org
+- Improve the reliability of the libusb module.A) eliminate reset - this avoids a race between us and the host OS stack  discovering devices.B) Call full device close when doing device discovery to drain stray  bulk/intr request packets. 
+- Change the handling of the first three bytes from D109 (D110) protocol. 
+* Sat Apr 29 2006 http://www.gpsbabel.org
+- 127 before. This does have the potential to expose naughtiness ifwe've missed any endian swaps... 
+* Thu Apr 27 2006 http://www.gpsbabel.org
+- Fill in missing pieces to populate cadence from units like Edge 305. 
+* Tue Apr 25 2006 http://www.gpsbabel.org
+- Olaf adds Swedish Kartex format ktf2 and kwf2. 
+* Sat Apr 22 2006 http://www.gpsbabel.org
+- Add support for explorist routes on read and writes. 
+* Thu Apr 20 2006 http://www.gpsbabel.org
+- Make PalmDoc 64-bit compatible. 
+- Bring in more missing pieces for C320, LegendX, 2720, 2x6, x05 . 
+- Added 'gpsbabel -h foo' syntax 
+* Wed Apr 19 2006 http://www.gpsbabel.org
+- Write URL's used by tracks. 
+- Largescale overhaul of the JEEPs interface to:* Vastly widen device support* Provide better independence of serial/usb.* Provide better separation of USB protocol and physical layer.* Provice better independence of the various OS layers. 
+* Tue Apr 18 2006 http://www.gpsbabel.org
+- Don't aggressively toss vowels when we're making waypoint names that aren't really very short anyway. 
+- Clarify Streets & Trips vs. Autoroute in menus. 
+* Sat Apr 15 2006 http://www.gpsbabel.org
+- Sketch in a function to recompute "track things" such as speed and heading. 
+* Fri Apr 14 2006 http://www.gpsbabel.org
+- Geoniche improvements from Pasha Phares. 
+* Tue Apr 11 2006 http://www.gpsbabel.org
+- flush NMEA output file before pausing; makes named pipes much happier 
+- Allow pause to work on waypoints (WPL) in NMEA stream. 
+* Sun Apr 09 2006 http://www.gpsbabel.org
+- The source is now built using autoconf for a `configure' script. 
+* Sat Apr 08 2006 http://www.gpsbabel.org
+- Add readme.xml to rpm package. Add configure statement to spec-file generation. 
+- (Makefile.in, readme.xml): From Ron - Use xsltproc and avoid hardcoded pathnames for doc.config.h.in, configure.in, configure: Add test for sleep. 
+* Fri Apr 07 2006 http://www.gpsbabel.org
+- Added 'pause' option to nmea output 
+- Add fix, course, and speed options to track filter 
+* Thu Apr 06 2006 http://www.gpsbabel.org
+- Warn for unknown options passed to modules and filters. 
+* Wed Apr 05 2006 http://www.gpsbabel.org
+- Use track_add_wpt for all tracks 
+- Test the result of acos() for possible errors (gcdist). 
+- Make garmin_fs dependent changes. 
+- Let Ozi write trackname if we have one available. 
+- Global ini-file depended changes. 
+- Fix stmwpp bug: Empty routes in output files. 
+- Fix calculation of course (diff. between 32- and 64-bit system). 
+- Bring in support for Garmin special data (garmin_fs). 
+- Add new format "garmin_txt".Add support for global GPSBabel ini-file. 
+* Tue Mar 28 2006 http://www.gpsbabel.org
+- test files for interpolate filter 
+- Update stack filter to work with tracks and routes too 
+* Mon Mar 27 2006 http://www.gpsbabel.org
+- Lowranceusr: eliminate nonportable time construct. 
+* Sat Mar 25 2006 http://www.gpsbabel.org
+- add URL option to ShapeFile module 
+- Etienne Tasse contributes reader for Aspecto Software WiFiFoFum 2.0 for Pocket PC as 'wfff'. 
+* Fri Mar 24 2006 http://www.gpsbabel.org
+- Use name option for routes as well 
+* Thu Mar 23 2006 http://www.gpsbabel.org
+- GTM: Icon list is null terminated; don't walk array by size. 
+- Fix gpsdrivetrack for readin' and writin' 
+- Allow "other" and "unknown" on GPX read for geocaches. 
+* Wed Mar 22 2006 http://www.gpsbabel.org
+- Let gdb file format always write all kind of gps data. 
+* Tue Mar 21 2006 http://www.gpsbabel.org
+- Curt makes tpo tread-only for now. 
+* Thu Mar 16 2006 http://www.gpsbabel.org
+- Curt Mills restores TPO track handler. 
+- Claus adds MacGPSBabel.xcodeproj. 
+* Wed Mar 15 2006 http://www.gpsbabel.org
+- Weasel words that the file options may actually not _be_ below. 
+- Let MultiGeometry be optional in tracks. 
+- From Claus Broch. - Updated project file to Xcode - Added Info.plist file - Fixed NSReceiverEvaluationScriptError when reopening windows - Correctly handling resizing of windows - "Filter" button is now correctly reflecting the filter state if the filter window is closed 
+- Commit sample tpo files from Steve Chamberlin from 9-2005. 
+- Add Info.plist from Claus Broch. 
+* Tue Mar 14 2006 http://www.gpsbabel.org
+- Removed three-hour bias from gtm format 
+- Added 'times' option to saroute, to synthesize tracks 
+* Thu Mar 09 2006 http://www.gpsbabel.org
+- Tweak icon for suprise cache type on maggeo write. 
+* Mon Mar 06 2006 http://www.gpsbabel.org
+- Add UTM input to unicsv format options. 
+* Tue Feb 28 2006 http://www.gpsbabel.org
+- Make progress bars behave better when doing character set transformations. 
+- In HTML output, allow utf-8 and correctly close h3 tag. 
+* Mon Feb 27 2006 http://www.gpsbabel.org
+- For Lowrance .usr format, improve handling of unknown alt. Add new ifinder icons. 
+* Sun Feb 26 2006 http://www.gpsbabel.org
+- Make defn for gusb_init make decl in usbfree target. 
+* Fri Feb 24 2006 http://www.gpsbabel.org
+- Last field in routes contains "Route URL link". Remove zero-check. 
+* Wed Feb 22 2006 http://www.gpsbabel.org
+- Optimize arc filter to stop computing distances once a point is close enough 
+* Sun Feb 19 2006 http://www.gpsbabel.org
+- Fix problems with smartnames with really long trailing numbers. Convert trailing words to numbers. 
+- 1.2.8-beta20060219: Recut beta. Apply fix for Garmin/USB on Windows. (This is not the "X series" version...) 
+* Thu Feb 09 2006 http://www.gpsbabel.org
+- 1.2.8-beta20060209: Add concept of optional fields to output in the xSV formats so that unknown fields may be appended if their value is known.  Modify Garmin POI format to take advantage of this to display geocaching info. 
+* Tue Feb 07 2006 http://www.gpsbabel.org
+- Gustavo Niemeyer contributes support for GPS TrackMaker GTM files. 
+- Add new option to sort filter to allow sorting by time. 
+* Sun Jan 29 2006 http://www.gpsbabel.org
+- Improve (debugging) text that announced which xfer protocols are used.Improve several error messages. 
+* Thu Jan 26 2006 http://www.gpsbabel.org
+- For all Garmin receivers not explictly marked for i18n, force ASCII.More aggressively discard clearly bogus altitude. When writing Garmin routes, include route names. Populate lat and long when writing routes in Garmin. 
+* Tue Jan 17 2006 http://www.gpsbabel.org
+- Backslashes are escaped in the new 'Google Map' format. Handle it. 
+* Sat Jan 14 2006 http://www.gpsbabel.org
+- Ensure waypoints are named uniquely when writing Mapsend files. 
+* Thu Jan 12 2006 http://www.gpsbabel.org
+- Add unicsv format to for xsv where first list describes subsequent data. 
+* Wed Jan 11 2006 http://www.gpsbabel.org
+- Add support for SeeYou glider pilot software as 'cup'. http://www.seeyou.ws/ 
+- Add support for Cambridge/Winpilot format. 
+- Add 'modifier' argument to [IO] field in xcsv. Initially define 'absolute" and "no_delim_before". 
+* Tue Jan 10 2006 http://www.gpsbabel.org
+- Vaporize record delimiters from fields when writing Ozi. 
+- Added 'maxcmts' argument to Magellan SD writer. 
+* Thu Dec 22 2005 http://www.gpsbabel.org
+- CET-workarround for gpx files removed. "encoding=UTF-8" for gpx format is standard from now. 
+* Mon Dec 12 2005 http://www.gpsbabel.org
+- Sketch in Yahoo geocode reader. 
+* Tue Dec 06 2005 http://www.gpsbabel.org
+- Added "Inno Setup" script for automized package. 
+* Mon Dec 05 2005 http://www.gpsbabel.org
+- Minor GDB fixes (reference data changed). 
+- Added write sequence for gdb format. 
+- Added flags to waypoint and route structure (CET conversions). 
+* Sat Dec 03 2005 http://www.gpsbabel.org
+- Allow MXF to do it's "characters are both required and disallowed" thing. 
+* Fri Dec 02 2005 http://www.gpsbabel.org
+- Garmin Logbook files have extension of .xml. 
+- Add the 148 official colors so the Fugawi users can specify "lemonchiffon", "mintrose", and "peachpuff" instead of the just the names from the box of 16 crayons in the new wptfgcolor and wptbgcolor options. 
+* Thu Dec 01 2005 http://www.gpsbabel.org
+- Enhance Ozi reader and writer to allow waypoint colors to be preserved across a merge. 
+- Don't create empty link in KML output. 
+* Sun Nov 20 2005 http://www.gpsbabel.org
+- Big gui update:- new dialog for format options- added CET features- added possibility to write data to screen- any "look and feel" changes 
+* Mon Nov 14 2005 http://www.gpsbabel.org
+- Paul Fox and Robert Lipe include tracks and routes in GPX bounds info. 
+* Thu Nov 10 2005 http://www.gpsbabel.org
+- Attempt to perserve and/or merge GPX file-global tags when we can. 
+* Wed Nov 09 2005 http://www.gpsbabel.org
+- Maggeo is WRITE only not READ only. 
+- Add smartname to NMEA WPL output, option to extend waypoint length. 
+- Add cartoexploreur option to pcx so we don't write track and route names that blow it away. 
+* Tue Nov 08 2005 http://www.gpsbabel.org
+- Add reads of MacStumbler. 
+* Mon Nov 07 2005 http://www.gpsbabel.org
+- -^2 output exceeds standard pipe buffer size; now we call CreateNamedPipe with fixed buffersize 0x8000 
+* Fri Nov 04 2005 http://www.gpsbabel.org
+- Add filter 'nuketypes' to discard all waypoints, tracks, or routes from processing. 
+* Thu Nov 03 2005 http://www.gpsbabel.org
+- Add option to position filter to build a route out of the points kept. 
+* Wed Nov 02 2005 http://www.gpsbabel.org
+- Fix timezone in PCX track writer. 
+* Tue Nov 01 2005 http://www.gpsbabel.org
+- New script to generate a RPM compatible ChangeLog from changes.html 
+- Add support for Garmin POI database (garmin_poi) for 27xx, ix and C3xx. 
+* Mon Oct 31 2005 http://www.gpsbabel.org
+- Ozi: Don't do the wierd name splitting thing for multimode input if we're writing to stdout. 
+- Olaf and Robert improve help output. 
+- Make 'bool' output the 0/1 in the help instead of the various strings. 
+- Disable tpo for now. 
+- Change argument types in help to match reality. 
+* Sat Oct 29 2005 http://www.gpsbabel.org
+- Begin migration to docbook with Dave Pawson. 
+* Thu Oct 27 2005 http://www.gpsbabel.org
+- Olaf adds support for CompeGPS data files. 
+* Wed Oct 26 2005 http://www.gpsbabel.org
+- Mike contributes fixes to NMEA reader. 
+* Fri Oct 21 2005 http://www.gpsbabel.org
+- Olaf changes format NMN5 to support Map&Guide (mag_pdb) based products and their Palm/OS export. 
+* Wed Oct 19 2005 http://www.gpsbabel.org
+- Ignore kml, Document, Folder tags to improve read compaitiblity for KMLv2. Also read MultiGeometry/LineStrings as tags. 
+- Added numerous file extensions for benefit of GUIs. 
+* Tue Oct 18 2005 http://www.gpsbabel.org
+- Zmarties makes a number of fixes to the NMEA reader. 
+- Renamed 2 symbols based on feedback from DeLorme forums. 
+* Mon Oct 17 2005 http://www.gpsbabel.org
+- Try to handle PPS fixes in NMEA. 
+* Sun Oct 16 2005 http://www.gpsbabel.org
+- First release of GUI-2 (english, french, german). Requires libexpat.dll, gpsbabel.exe and README. 
+* Sat Oct 15 2005 http://www.gpsbabel.org
+- Fixed segfault with nameless wpts. 
+- Added 'symbol' option to an1 format. 
+- Add 'name' option to .shp 
+* Fri Oct 14 2005 http://www.gpsbabel.org
+- Fix parsing problem due to Google Maps update. 
+* Tue Oct 11 2005 http://www.gpsbabel.org
+- KML: Use url_link_text to build a linky link when we can. 
+* Sun Oct 09 2005 http://www.gpsbabel.org
+- Fix comparison jeeps altitude. 
+* Tue Oct 04 2005 http://www.gpsbabel.org
+- Fix range-check max. value; exit filter, if no more tracks left. 
+- Commonize selection for waypt and trk/rte processing. 
+* Fri Sep 30 2005 http://www.gpsbabel.org
+- Add controls option to saroute, use street names for rtept names at turns. 
+* Thu Sep 29 2005 http://www.gpsbabel.org
+- Fix bug when 4-digit encoded entity ends on a byte offset that's a multiple of 4096-1. 
+* Mon Sep 26 2005 http://www.gpsbabel.org
+- Let GPS_Init run for USB models - lets get_posn work. 
+- Don't squawk about A100[02345]'s for Forerunner. 
+* Tue Sep 20 2005 http://www.gpsbabel.org
+- NMEA: Fix date conversion for timestamps from last century. 
+* Thu Sep 15 2005 http://www.gpsbabel.org
+- Whitespace is OK in shortname for magellanX (with 20 char names), but not magellan (8). 
+- Steve Chamberlin contributes National Geographic Topo format. 
+- Allow Natl Topo to allow override of datums for benefit of users in HI. 
+* Wed Sep 14 2005 http://www.gpsbabel.org
+- Olaf adds Navigon Mobile Navigator 4 (nmn4). 
+- Don't prefer 'notes' on a shortname if we have an empty (but non-null) notes. (Test case: input from a tabsep file...) 
+- Added URL and gc support to an1. 
+* Tue Sep 13 2005 http://www.gpsbabel.org
+- Refactor is_fatal and lrtrim to be common code. 
+- GEO: Populate placer name. 
+- GDB from Olaf: Make sure routes have unique wpt names. 
+- Add option to geo reader to nuke placer name from waypoint. 
+* Mon Sep 12 2005 http://www.gpsbabel.org
+- PCX: Allow tracks to work without -t. Provide default track name if none available. 
+- More space-efficient storage of handles. 
+- Knock sizeof(geocache_data) down from 52 to 40 on IA32. 
+- Don't recalculate length of incoming string on GPX read. Good for 3% speedup. 
+- Allow non-ASCII chars through shortname. (CET protects us.) Optionally allow repeated whitespace. Provide API for changing default name. 
+* Fri Sep 09 2005 http://www.gpsbabel.org
+- Fixed error in documentation for road= option in an1 format. 
+* Thu Sep 08 2005 http://www.gpsbabel.org
+- Add names as best we can to routes read from Google Maps. 
+* Wed Sep 07 2005 http://www.gpsbabel.org
+- Olaf adds reading of CarteSurTable (cst) files. 
+* Tue Sep 06 2005 http://www.gpsbabel.org
+- Add 'floating' suboption to KML writer for pilots. Improve KML doc. 
+* Mon Sep 05 2005 http://www.gpsbabel.org
+- Olaf adds read support for MS Autoroute (msroute). 
+- Leak fixes. 
+* Sat Sep 03 2005 http://www.gpsbabel.org
+- Olaf adds support for Suunto Trek Manager WaypointPlus (stmwpp) format. 
+* Wed Aug 31 2005 http://www.gpsbabel.org
+- mkshort: obey bounds on empty (!) input.csv: Don't use ampm flag if none given. 
+- Vertical bar was a bad choice for an option separator for an1; DeLorme uses them in street names. 
+- Olaf adds support for Geonet. 
+- Olaf adds IGNRando support. 
+- Add maggeo to testsuite, reference. 
+* Tue Aug 30 2005 http://www.gpsbabel.org
+- Make an1 layer type sticky to enable better merges, document 'type' option, add road-type changes. 
+- Jeff Kalikstein adds heart rate support for Forerunner 301. 
+- Honour both style of coordinate conventions when reading PCX. 
+- Add Garmin 301 style (garmin301) for easy export of HRM data. 
+* Mon Aug 29 2005 http://www.gpsbabel.org
+- Bring in Olaf's CET character set transformation work. 
+* Fri Aug 26 2005 http://www.gpsbabel.org
+- 1.2.7: GPSBabel 1.2.7 released! 
+* Tue Aug 23 2005 http://www.gpsbabel.org
+- Don't be hyper about requiring that lines in in CR/NL - the IGC spec apparently says the last line may not. 
+* Mon Aug 15 2005 http://www.gpsbabel.org
+- Update fugawi styles to include timestamps. From Patrick Ohly. 
+- KML: Fix alt on write. Make reader read our own waypoints. 
+* Thu Aug 04 2005 http://www.gpsbabel.org
+- Olaf and Robert fix GDB read/write of URL, symbol visibility, proximity and depth. 
+* Wed Aug 03 2005 http://www.gpsbabel.org
+- Olaf contributes Cetus track reader. 
+- 1.2.6: GPSBabel 1.2.6 released! 
+* Fri Jul 29 2005 http://www.gpsbabel.org
+- Olaf adds writing to GDB. 
+- Olaf adds 'merge' option in trackfilter. 
+* Thu Jul 28 2005 http://www.gpsbabel.org
+- Rename 'dopfilter' (nee 'fix') to 'discard'. 
+- Make TomTom sorts stable when coords are equal in one axis. 
+* Wed Jul 27 2005 http://www.gpsbabel.org
+- Tobias Minich contributes the 'coto' format. 
+- Possible but unobserved-in-the-wild bug where endpoints could get dropped. 
+- Levels are for segments, not for points. Use minimum adjacent level for points. 
+- Fixed more bugs with google route priorities. 
+- Add test for glogbook. 
+* Tue Jul 26 2005 http://www.gpsbabel.org
+- Remove extra pass over track and route queues. 
+- Olaf adds filtering for time ranges in new track filter and the 'move' suboption so that ranges can be time shifted. Makefile: regenerate. 
+- Fix segfault on write of fix data in NMEA. 
+- Allow deselection of certain sentences on write. 
+* Sat Jul 23 2005 http://www.gpsbabel.org
+- Tobias Belgabor contributes filter for selection points based on DOP. 
+* Wed Jul 20 2005 http://www.gpsbabel.org
+- Etienne and Olaf modify track splitter to work in units of days, minutes, hours, or seconds. 
+* Tue Jul 19 2005 http://www.gpsbabel.org
+- Tobias adds hdop, vdop, pdop, satellites, fix, speed and course for xcsv. Adds gpsdrivetrack and openoffice formats. 
+- Andrew adds support for multimode (track/route/waypoint) support for Magellan serial. 
+* Thu Jun 30 2005 http://www.gpsbabel.org
+- Worked around bug in google XML encoding. 
+* Wed Jun 29 2005 http://www.gpsbabel.org
+- Olaf Klein contributes BCR support. 
+- Add ability to read DOP, speed and course from GPX file. 
+* Tue Jun 28 2005 http://www.gpsbabel.org
+- Sketch in HDOP, PDOP, VDOP, COURSE, and Speed into GPX writer to pave the wayfor Vito work. 
+- Olaf Klein contributes Mapsource GDB reader. 
+- Ling Nero updates Lowrance .usr to support tracks and routes. 
+- Fix potential buffer clobber when outputting fields > 1K in CSV formats. Strip bad chars from output. Our mxf.mxf reference file _had_ bad chars in it, so manaully fixed that. 
+* Thu Jun 23 2005 http://www.gpsbabel.org
+- Make commaspace equiv to comma on csv read. 
+* Wed Jun 22 2005 http://www.gpsbabel.org
+- Olaf Klein contributes a new filter for merging and splitting tracks. 
+* Tue Jun 21 2005 http://www.gpsbabel.org
+- From Andrew Kirmse - Optionally output kml linestrings and/or placemarks for tracks and routes.> - Make line color and width command line arguments.> - Use shortname for waypoints. 
+* Mon Jun 20 2005 http://www.gpsbabel.org
+- Etienne TASSE adds ability to read Vito Navigator .SMT (vitosmt) tracks. 
+* Mon Jun 13 2005 http://www.gpsbabel.org
+- Add D303 for Forerunner 301 track support. From David Scott. (dave at reco ildotorg) 
+* Thu Jun 09 2005 http://www.gpsbabel.org
+- Discard GGA data if no fix. 
+* Tue Jun 07 2005 http://www.gpsbabel.org
+- Olaf adds Pathaway support, Mapsource v6 icons, fixes Garmin 202 route reading. 
+- Add 'magellanx' format for Explorist user waypoint (.upt) SD files. 
+* Thu Jun 02 2005 http://www.gpsbabel.org
+- Don't crash if we don't have a placed/found time or a missing 'notes' field. 
+* Mon May 09 2005 http://www.gpsbabel.org
+- Olaf Klein contributes PathAway palm database reader. 
+- GPX: Change placed_by to read owner and not plced by Maggeo: Don't zero pad longitude as Geocache Manager doesn't. 
+* Fri May 06 2005 http://www.gpsbabel.org
+- Olaf fixes fp rounding problem that shows up on AMD64/Linux in testo. 
+- Add Magellan ".gs" format for outputting Geocaches to Explorist over USB. 
+- Add 'maxcount' argument to radius filter to allow user to limit number of points to be passed downstream. (Specifically to stop Magellan's GeocacheManager from hurting itself.) 
+* Thu May 05 2005 http://www.gpsbabel.org
+- Olaf Klein contributes TourExchangeFormat (tef_xml). 
+- Add YYYYMMDD_TIME GEOCACHE_LAST_FOUND GEOCACHE_HINT GEOCACHE_PLACER toth e CSV handlers. 
+- Add GPX parsers for scanning last found from "Found it" logs and finding placer names. Tweak capitalization on cache types for compatibility. 
+- Add 'last found' and 'placer' to geocaching fields. 
+* Tue May 03 2005 http://www.gpsbabel.org
+- Fix leak when first name in token is a vowel. 
+* Sun May 01 2005 http://www.gpsbabel.org
+- Add locationless and benchmark for GSAK, too. (This is the version in 5.5.1 B16) 
+* Fri Apr 29 2005 http://www.gpsbabel.org
+- Add earthcache, cito, letterbox, and locationless to GPX types. 
+* Thu Apr 28 2005 http://www.gpsbabel.org
+- Ron Parker adds TomTom .ov2 (POI) file support. 
+* Sat Apr 16 2005 http://www.gpsbabel.org
+- Honour maxcmts for Magellan SD files, too. (For explorist...) 
+* Mon Apr 11 2005 http://www.gpsbabel.org
+- Fixes for 64 bit systems where 'long' is 64 bits. 
+* Fri Apr 08 2005 http://www.gpsbabel.org
+- Policy change on -N - it now means "don't change fields based on other fields" instead of "no smart icons". (Specifically, don't add diff/terr to garmin and magellan protocols just becuase we happen to know them.) 
+* Wed Apr 06 2005 http://www.gpsbabel.org
+- Fix 'geo' format for names ending in "]". 
+* Fri Apr 01 2005 http://www.gpsbabel.org
+- Fixes for CoastalExplorer route handling. 
+* Fri Mar 25 2005 http://www.gpsbabel.org
+- Ron Parker adds Delorme .an1 support. 
+- Richard Messeder contributes replacement Windows GUI. 
+* Wed Mar 23 2005 http://www.gpsbabel.org
+- Andrew Kirmse contributes "real" KML support, fixes Garmin routes. 
+- 1.2.5: Support keyword expansion in 'CONSTANT' for OFIELDS. 
+* Mon Mar 21 2005 http://www.gpsbabel.org
+- Alphabetize help and -^ displays. 
+* Thu Mar 17 2005 http://www.gpsbabel.org
+- Add 'maxcmts' to Magellan module to limit number of waypoint comments to coddle DirectRoute. 
+* Tue Mar 15 2005 http://www.gpsbabel.org
+- Add (sketchy) support for kml, the Keyhole Markup Language. 
+* Sat Mar 12 2005 http://www.gpsbabel.org
+- Jason Rust contributes Lowrance .usr (SD card) support as lowranceusr. 
+* Tue Feb 22 2005 http://www.gpsbabel.org
+- Fix crash Garmin/USB code if no device present. 
+* Fri Feb 11 2005 http://www.gpsbabel.org
+- Robert Shaw contributes MacGPSBabel fixes. 
+* Thu Feb 10 2005 http://www.gpsbabel.org
+- Ron Parker adds google input type. 
+* Wed Feb 09 2005 http://www.gpsbabel.org
+- Update hiketech capabilities to show that it now writes tracks. 
+- Streets and Trips output includes geocache types when available; uses tabs as field separators to improve life for our Autoroute (Europe) users. 
+- Add smarter description handling to Garmin module if suppressing smart icons. 
+* Fri Feb 04 2005 http://www.gpsbabel.org
+- Garmin custom icon support. Fix typo in custom icon #20. Renumber starting from "Custom 0" instead of "Custom 1" for consistency with Mapsource 6.5. 
+* Mon Jan 31 2005 http://www.gpsbabel.org
+- Frank Hippmann updates hsa_ndv with various XML conformance fixes. 
+* Mon Jan 24 2005 http://www.gpsbabel.org
+- Ensure Garmin waypoint names are unique when sent to the unit. 
+* Sun Jan 23 2005 http://www.gpsbabel.org
+- Jeremy and I contribute Ipod/VCF/Vcard format. 
+- Add Garmin Logbook (glogbook), HikeTech formats. 
+* Thu Jan 20 2005 http://www.gpsbabel.org
+- Write sym in trkseg for GPX format if we have it. 
+* Wed Jan 19 2005 http://www.gpsbabel.org
+- If a trackpoint doesn't have a name on the way in, give it a shortname. 
+* Tue Jan 18 2005 http://www.gpsbabel.org
+- Preserve route number on magellan output if available. 
+* Mon Jan 17 2005 http://www.gpsbabel.org
+- Add support for Garmin D110's. Tested by Drew Commins on Garmin Quest. 
+* Thu Jan 06 2005 http://www.gpsbabel.org
+- Jeremy Atherton and I add Vcard/VCF (a.k.a. "Ipod") support. 
+* Tue Jan 04 2005 http://www.gpsbabel.org
+- Remove O_NDELAYs from all opens - it torments the Linux/USB ttys for no good reason and it's not like the code really does the right thing with O_NDELAY anyway. 
+* Thu Dec 23 2004 http://www.gpsbabel.org
+- Comments can now be 46 characters in Magellan 5.x firmware. 
+* Wed Dec 22 2004 http://www.gpsbabel.org
+- Implement _timeout and _ready for WIN32 to help geriatric garmins that may or may not respond to A001's. 
+- Add preliminary GPX 1.1 support for reading and writing. 
+* Fri Dec 17 2004 http://www.gpsbabel.org
+- Support more formats of lat/lon in DeLorme files. 
+* Sat Dec 04 2004 http://www.gpsbabel.org
+- Add Garmin/USB for Mac OS/X. Unfortunately, requires a fix from Apple not present in 10.3.7. 
+* Fri Dec 03 2004 http://www.gpsbabel.org
+- Bernhard Spinnler improves track support for GPilotS. 
+* Tue Nov 30 2004 http://www.gpsbabel.org
+- Fixes for mps mergout when record size isn't multiple of internal buffer size. From Paul Merchant. 
+* Mon Nov 29 2004 http://www.gpsbabel.org
+- Fixed 'extra dot' problem with file extension for saroute option 
+* Mon Nov 22 2004 http://www.gpsbabel.org
+- A) We were referenceing shortname after we'd freed it. B) If we were using prefer_shortname and had a description we'd free shortname twice, resulting in a process that would never exit becuase of heap corruption on FC2. (Other OSes would surely have similarly entertaing failure modes.) 
+* Tue Nov 16 2004 http://www.gpsbabel.org
+- Suppress zero byte serial writes for benefit of Keyspan USB/Serial adapter. 
+* Thu Nov 11 2004 http://www.gpsbabel.org
+- Add Magellan FX324 and FX324C support. 
+* Tue Nov 09 2004 http://www.gpsbabel.org
+- Justin Broughton adds Coastal Explorer (coastexp) support. 
+- Fix case when source name consists of nothing but spaces. 
+* Mon Nov 01 2004 http://www.gpsbabel.org
+- Improve shortname logic. Retiain leading vowels, suppress duplicate whitespace, nuke leading whitespace. 
+- Add Hiketech format. 
+- Add Garmin Logbook (track) format for Foretracker and Forerunner. 
+- 1.2.5-beta11012004: Beta. 
+* Sun Oct 31 2004 http://www.gpsbabel.org
+- Linux now support Garmin/USB via libusb. 
+* Wed Oct 27 2004 http://www.gpsbabel.org
+- Changes in Garmin waypoint send functions to help older units that crash or misbehave if they see waypoints with NULLs in the name. 
+* Thu Oct 21 2004 http://www.gpsbabel.org
+- Add 'deficon' to garmin modes. 
+* Mon Oct 18 2004 http://www.gpsbabel.org
+- 1.2.4: GPSBabel 1.2.4 released! 
+* Thu Oct 14 2004 http://www.gpsbabel.org
+- Let altitude be a float for benefit of Garmin D108 and D109 protocols to make more immunune from rounding resulting from integer truncation. 
+* Fri Oct 01 2004 http://www.gpsbabel.org
+- Add prototype support (in name only) for Garmin custom icons. 
+* Thu Sep 30 2004 http://www.gpsbabel.org
+- Alex Mottram adds default values handling to xcsv character fields. 
+* Tue Sep 21 2004 http://www.gpsbabel.org
+- Fix memory corruption on Mapsource output of Geocaching PQ. 
+* Mon Sep 20 2004 http://www.gpsbabel.org
+- Added prototype of crude shapefile support. 
+* Thu Sep 16 2004 http://www.gpsbabel.org
+- Mark Bradley contributes a number Mapsource fixes for routes. 
+* Tue Sep 14 2004 http://www.gpsbabel.org
+- Ron Parker adds stack filter. 
+- Improvements for tracks on Forerunner 201 and Quest. 9/21 version reported successful on Forerunner. 
+- Add more Garmin/USB support for 60C,60CS, 76C, 76CS, VistaC, and SummitC. Not all in yet. 
+* Sat Sep 11 2004 http://www.gpsbabel.org
+- Add preliminary handling of new groundspeak "small" container size. 
+* Wed Sep 01 2004 http://www.gpsbabel.org
+- Chris Jones adds Brauniger IQbarograph support as baroiq. 
+* Tue Aug 31 2004 http://www.gpsbabel.org
+- Ron Parker adds support for Street Atlas USA 2005 routes. 
+- Improve packet dumps when debugging Garmin protocols. 
+* Mon Aug 30 2004 http://www.gpsbabel.org
+- Chris Jones adds IGC for flight recorders. 
+* Thu Aug 26 2004 http://www.gpsbabel.org
+- Bernhard Spinnler adds track support + D108 waypoint support to GPilotS. 
+* Wed Aug 25 2004 http://www.gpsbabel.org
+- John Hay added code to NMEA to verify the checksum and discard the line if it doesn't match discard the line if the position fix wasn't valid. Extract date from gprmc if available. 
+* Fri Aug 20 2004 http://www.gpsbabel.org
+- Allow Mapsource icons to be specified by number. 
+- Add track reads of alternate PCX format used by www.radroutenplaner.nrw.de. 
+- Add parsing of GPRMC sentences. From Øyvind Kaurstad (oyvindk). 
+* Thu Aug 12 2004 http://www.gpsbabel.org
+- Add ZDA timestamp parsing to nmea files. 
+* Wed Aug 11 2004 http://www.gpsbabel.org
+- Add HSA Endeavour support as hsandv. From Sven Dowideit. 
+* Mon Aug 09 2004 http://www.gpsbabel.org
+- Ron Parker fixes arc filter. Points that were within range of the start of the arc were being ignored when using the arc filter. 
+* Sat Jul 24 2004 http://www.gpsbabel.org
+- Make both Garmin and and Magellan serial modules on Windows more tolerant of certain serial systems (observed case: MCT USB/serial adapter) that don't correctly implement inter-character timeouts. 
+- Magellan: Add nukewpt suboption, increase serial timeouts, allow Bank as alias for ATM. 
+- Implement '-vs' status display for Garmin and Magellan on waypoint download from the unit. 
+- Don't crash if D103 icon isn't found. 
+- 1.2.4-beta07242004: Add 'nukewpt' suboption to Magellan protocol module. 
+* Fri Jul 23 2004 http://www.gpsbabel.org
+- Ron Parker adds 'points' option to arc filter. 
+* Wed Jul 21 2004 http://www.gpsbabel.org
+- Ron Parker adds HUMAN_READABLE styles to xcsv. 
+* Tue Jul 06 2004 http://www.gpsbabel.org
+- Ron Parker adds turns_only and turns_important to saroute. 
+- Alex Mottram adds track and route handling in position filter. 
+* Thu Jun 24 2004 http://www.gpsbabel.org
+- Handle icons on Garmin 12, II, 38, 45. 
+* Wed Jun 16 2004 http://www.gpsbabel.org
+- John Temples adds Netstumbler support. 
+* Sat Jun 12 2004 http://www.gpsbabel.org
+- Immunize against more undocumented Garmin packet types introduced in Vista 3.60. 
+- Better document Lowrance CSV types. 
+* Wed Jun 09 2004 http://www.gpsbabel.org
+- Allow -w, -t, -r to be specified in any combination for Garmin serial transfers on the same invocation. 
+* Tue Jun 08 2004 http://www.gpsbabel.org
+- Ron Parker adds 'logs' option to text/html/palmdoc. 
+- Add new filter for sorting. 
+* Sun Jun 06 2004 http://www.gpsbabel.org
+- Ignore new mystery packets introduced in Garmin StreetPilot 2.70 firmware. 
+* Fri May 14 2004 http://www.gpsbabel.org
+- Add geocache type and container type to XCSV, allow them as input. 
+* Sun May 02 2004 http://www.gpsbabel.org
+- Fix writes of Delorme GPL tracks. 
+- 1.2.3: GPSBabel 1.2.3 released! 
+* Wed Apr 28 2004 http://www.gpsbabel.org
+- More fixes for D103 Garmins losing short waypoint names. 
+* Wed Apr 21 2004 http://www.gpsbabel.org
+- Work around yet more undocumented Garmin protocol nonsense for 60C's. 
+* Mon Apr 19 2004 http://www.gpsbabel.org
+- Fixed diff/terr usable in CSV style sheets. 
+* Fri Apr 16 2004 http://www.gpsbabel.org
+- Ron Parker fixes saroute for .anr files containing stops and vias. Adds 'encrypt' option to text, html outputs. Adds PalmDoc support. 
+- Mark Bradley fixes more Mapsource weirdness. -t, -r, -w no longer necessarily mutually exclusive. 
+* Wed Apr 14 2004 http://www.gpsbabel.org
+- Add snwhiteopt suboption to Mapsource module. Read enough of the Navicache XML to generate useful cache pages with the new HTML and TEXT outputs. Add webcam handling. 
+* Mon Apr 12 2004 http://www.gpsbabel.org
+- Add support for GPilotS "simulated" Garmin. Bounds check the D108 and D109 packets so excessively long waypoint names no longer crash those units. 
+* Fri Apr 09 2004 http://www.gpsbabel.org
+- Add snlen, snwhite suboptions to Garmin. Map icons by geocache type as with Mapsource. Waypoint comment now contains diff and terr like Magellan. 
+* Thu Apr 08 2004 http://www.gpsbabel.org
+- Don't send NMEAOFF to older Magellans like 315, ColorTrak, and 320. Correctly endian swap altitude in Mapsource to fix problem on Big Endian hosts like Power. Fix geocache icon mappings for GPX files without <sym> tags. 
+* Mon Apr 05 2004 http://www.gpsbabel.org
+- Scott Brynen adds HTML and Text formats. 
+- Rick Richardson enhances Navicache support to include icons, creation time, allow ignoring retired caches. 
+- Fixed support for Magellan ColorTrack. 
+- Correct ordering so we pass SAX2Count -f -valways -n and fix merges of GPX files. 
+* Tue Mar 23 2004 http://www.gpsbabel.org
+- 1.2.2: GPSBabel 1.2.2 released! 
+* Thu Mar 18 2004 http://www.gpsbabel.org
+- Ron Parker adds 'correct' option to duplicate filter. 
+* Wed Mar 17 2004 http://www.gpsbabel.org
+- Ron Parker decrees that points on a polygon vertex are now inside polygon. Bug fix in polygon detector. 
+* Fri Mar 12 2004 http://www.gpsbabel.org
+- Improve support for D103 and D104 Garmins. 
+* Wed Mar 10 2004 http://www.gpsbabel.org
+- Tighten allowed characers in Nationall Geographic Topo. 
+- Enhance geocache icon mappings for Garmin and Magellan map and serial formats. 
+- Add PCX track support. 
+* Mon Mar 08 2004 http://www.gpsbabel.org
+- Ron Parker adds 'all' option to position filter. 
+* Sat Mar 06 2004 http://www.gpsbabel.org
+- Mapsource output now defaults to version 5. 
+* Mon Mar 01 2004 http://www.gpsbabel.org
+- All CSV formats now decompse UTF as gracefully to ASCII as they can to reduce gibberish. 
+* Mon Feb 23 2004 http://www.gpsbabel.org
+- Jim Bensman adds Street Atlas 2004 Plus (saplus) support. 
+* Tue Feb 17 2004 http://www.gpsbabel.org
+- Alex adds auto mode sensing for OziExplorer. 
+* Tue Feb 10 2004 http://www.gpsbabel.org
+- Add NMEA reader. Add '-N' option to suppress smart icon generation. 
+* Fri Feb 06 2004 http://www.gpsbabel.org
+- Zero alt in Mapsend when our altitude is unknown. Corrects problem in Topo 3.0 that doesn't occur on 4.20d or DirectRoute 1.0 
+- Make several formats (tiger, mapsource, mapsend) more robust when faced with internationalized input. 
+- Evan adds support for writing Garmin tracks, improves reads. 
+* Sun Feb 01 2004 http://www.gpsbabel.org
+- Ron Parker, Kjeld Jensen, and Robert Lipe contribute changes to GPX reader and Cetus modules to optimize geocaching experience, including inclusion of cache text and better handling of internationalized character sets. 
+- Jeremy Atherton contributes OS/X GUI !. 
+* Sun Jan 18 2004 http://www.gpsbabel.org
+- Mark Bradley. Signficant route/track enhancements for Mapsource. 
+- 1.2.2-beta01212004: A number of us cooperate to add "multimode" support. A single file might contain any combination of waypoints, tracks, or routes. Currently supported on Mapsend, Mapsource, and GPX. 
+* Fri Jan 16 2004 http://www.gpsbabel.org
+- Fix serial timeouts under Windows. 
+* Tue Jan 13 2004 http://www.gpsbabel.org
+- Mark Bradley adds depth, proximity to Mapsource. 
+* Thu Jan 08 2004 http://www.gpsbabel.org
+- Robert Lipe adds "-" as a file alias for all formats for stdin/stdout. 
+* Mon Jan 05 2004 http://www.gpsbabel.org
+- Alex Mottram adds track and route reading and writing to Ozi. 
+* Sat Jan 03 2004 http://www.gpsbabel.org
+- Add Garmin route support. (Thanks to JoGPS for equipment loan.) 
+* Wed Dec 24 2003 http://www.gpsbabel.org
+- New GPX input parser. Much more determinstic behaviour and easier 
+* Sun Dec 21 2003 http://www.gpsbabel.org
+- Robert Lipe adds gpl format for Delorme track logs. 
+- Robert Lipe adds ability to read routes from Garmin GPS units. 
+* Sat Dec 13 2003 http://www.gpsbabel.org
+- Robert Lipe adds filter to reverse tracks and routes. 
+* Wed Dec 03 2003 http://www.gpsbabel.org
+- Ron Parker adds filter to simplify routes. 
+- 1.2.1: GPSBabel 1.2.1 released! 
+* Tue Dec 02 2003 http://www.gpsbabel.org
+- Ron Parker adds code to deal with defective pocket query GPX files from geocaching.com. 
+* Mon Nov 24 2003 http://www.gpsbabel.org
+- Rick Richardson adds GeoNiche support. 
+* Wed Nov 19 2003 http://www.gpsbabel.org
+- 1.2.0: GPSBabel 1.2.0 released! 
+* Wed Oct 29 2003 http://www.gpsbabel.org
+- Robert Lipe adds support for Magellan Mystic, SporTrak Topo and MobileMapper. 
+* Thu Oct 23 2003 http://www.gpsbabel.org
+- Mark Bradley adds psitrex support. 
+* Mon Oct 20 2003 http://www.gpsbabel.org
+- 1.1.1-beta10082003: Mark Bradley adds track and route handling to Mapsource. 
+* Tue Sep 30 2003 http://www.gpsbabel.org
+- Rick Richardson adds tabsep format. 
+* Fri Sep 26 2003 http://www.gpsbabel.org
+- Ron Parker adds DeLorme route reading via the saroute format. 
+* Mon Sep 22 2003 http://www.gpsbabel.org
+- Robert Lipe adds Navicache support. 
+* Tue Aug 26 2003 http://www.gpsbabel.org
+- Ron Parker adds Delorme route reading. 
+* Tue Aug 12 2003 http://www.gpsbabel.org
+- Alex Mottram contributes Mapoplis Mapconverter output. 
+* Mon Jul 28 2003 http://www.gpsbabel.org
+- Ian Mahuron improves Garmin geocache icon mappings. 
+* Sun Jul 20 2003 http://www.gpsbabel.org
+- Ron Parker adds polygon and arc filters. 
+* Fri Jul 11 2003 http://www.gpsbabel.org
+- Robert Lipe adds centicsecond support to Mapsend and Magellan receiver tracklogs. 
+* Thu Jul 10 2003 http://www.gpsbabel.org
+- Robert Lipe and Bruce Thompson add GPilotS support. 
+* Mon Jun 30 2003 http://www.gpsbabel.org
+- Bruce Thompson adds Quovadis support. 
+* Sat May 17 2003 http://www.gpsbabel.org
+- Rick Richardson adds icon for geocaching.om loc and gpsdrive.style. 
+* Wed May 14 2003 http://www.gpsbabel.org
+- Added EasyGPS binary format based on info from Eric Cloninger. 
+* Mon Apr 28 2003 http://www.gpsbabel.org
+- Alex Mottram adds radius position filter. 
+* Thu Apr 17 2003 http://www.gpsbabel.org
+- Misc Garmin serial fixes. 
+* Thu Apr 10 2003 http://www.gpsbabel.org
+- Add support for Magellan XXX. 
+* Wed Apr 09 2003 http://www.gpsbabel.org
+- Paul Tomblin contribute copilot support. 
+* Fri Apr 04 2003 http://www.gpsbabel.org
+- Alex Mottram contributes position filter filter. 
+* Mon Mar 31 2003 http://www.gpsbabel.org
+- Alex Mottram contributes route handling for GPX, Magellan Serial, Magellan SD, and Mapsend. 
+- Added urlbase option to xsv formats. Several minor fixes to xcsv. 
+* Thu Mar 13 2003 http://www.gpsbabel.org
+- Alex Mottram adds track handling to GPX. 
+* Sun Mar 02 2003 http://www.gpsbabel.org
+- 1.1.1-beta03022003: GPSBabel 1.1.1-beta03022003 released. 
+* Sat Mar 01 2003 http://www.gpsbabel.org
+- Compile-in XCSV style sheets so they show up in help, etc. Replaces many explicitly coded CSV modules. Improves Streets & Trips integration greatly. 
+* Thu Feb 27 2003 http://www.gpsbabel.org
+- Make XML time handle non-Zulu timestamps. Handle new 'exported' tag in GPX. From Ron Parker. 
+* Thu Feb 20 2003 http://www.gpsbabel.org
+- For PCX, we now lookup mapsource icon names from mapsource. Add deficon command line flag for PCX. 
+* Tue Feb 11 2003 http://www.gpsbabel.org
+- Stability improvement; leak less memory. From Ron Parker. 
+* Fri Feb 07 2003 http://www.gpsbabel.org
+- Addded code for Magellan protocol to display Microcaches specially when pulling from data files that contain that information. Added a new 'deficon' option so user can provide their own. 
+* Wed Jan 29 2003 http://www.gpsbabel.org
+- Add new option scheme so that they show up in help. 
+* Tue Jan 28 2003 http://www.gpsbabel.org
+- Alex Mottram contributes filtering infrastructure and filters for suppressing duplicates based on proximity or name similarity. 
+* Tue Jan 21 2003 http://www.gpsbabel.org
+- Added icon mapping to Mapsend, GPX, and GPSDrive. 
+- Addded Geocaching DB . 
+* Mon Jan 20 2003 http://www.gpsbabel.org
+- Added code that makes '-s' output guarantee unique shortname. 
+* Fri Jan 17 2003 http://www.gpsbabel.org
+- 1.1.1-beta01172003: GPSBabel 1.1.1-beta01172003 released. 
+* Fri Jan 10 2003 http://www.gpsbabel.org
+- Robert Lipe adds Garmin Mapsource .mps file format based on information from Ian Cowley. 
+* Wed Jan 08 2003 http://www.gpsbabel.org
+- Alex Mottram rewrites all XSV modules to allow styles, adds Delorme XMapHandHeld Street Atlas USA , and Microsoft Streets and Trips 2003 
+* Tue Jan 07 2003 http://www.gpsbabel.org
+- Various Magellan fixes for serial robustness, esp. on Windows. Correctly parse coords from track messages. 
+* Tue Dec 31 2002 http://www.gpsbabel.org
+- Garmin improvements: Don't lock up a GPS V when sending more than a few hundred waypoints. Track unknown altitude on units like the GPS12 that don't store that information. 
+- GPX now preserves unknown tags on output (allowing merging of files from geocaching.com and encodes entities on output. Preserve URLs in GPX. Ron Parker and Alex Mottram and myself . 
+* Wed Dec 11 2002 http://www.gpsbabel.org
+- When writing Geocaching.com "loc" format, more faithfully mimic the pseudo-XML so that GeoBuddy can cope with our output. 
+* Mon Dec 09 2002 http://www.gpsbabel.org
+- 1.1.0: GPSBabel 1.1.0 released. 
+* Thu Dec 05 2002 http://www.gpsbabel.org
+- Ron Parker adds support for Cetus 1.1b18. 
+* Tue Dec 03 2002 http://www.gpsbabel.org
+- Josh McKee contributes a Win32 graphical front end. 
+- Alan Curry contributes support for GpsDrive . 
+* Wed Nov 20 2002 http://www.gpsbabel.org
+- Add track log support for Garmin. 
+* Sun Nov 17 2002 http://www.gpsbabel.org
+- Add support for Magellan Sportrak. 
+* Wed Nov 13 2002 http://www.gpsbabel.org
+- Garmin D109 support for newer GPS V firmware. Add 20 point waypoint names for V. 
+* Wed Nov 06 2002 http://www.gpsbabel.org
+- Nick Heaphy adds TopoMapPro support. 
+* Thu Oct 17 2002 http://www.gpsbabel.org
+- Ron Parker adds Magellan Navigator support. 
+- Ron Parker adds GPSPilot support. 
+* Wed Oct 16 2002 http://www.gpsbabel.org
+- Recognize Groundspeak Geocaching GPX extensions. Allows protocols to customize icons by cache type, etc. Fix magellan serial under Windows. 
+* Tue Oct 15 2002 http://www.gpsbabel.org
+- Start sketching in (incomplete) route and track code. 
+* Thu Oct 10 2002 http://www.gpsbabel.org
+- Fix bug in Palm/OS formats under Win 2K. 
+- Alex Mottram adds National Geographic Topo! format.. 
+* Sun Oct 06 2002 http://www.gpsbabel.org
+- Fix GPX and GEO parsers that caused waypoint corruption. 
+* Sat Oct 05 2002 http://www.gpsbabel.org
+- Delorme TopoUSA/XMap conduit added. 
+* Wed Oct 02 2002 http://www.gpsbabel.org
+- 1.0.0: GPSBabel 1.0.0 released. 
+* Tue Oct 01 2002 http://www.gpsbabel.org
+- Tim Zickus contributes Navitrak DNA marker format. 
+* Wed Sep 18 2002 http://www.gpsbabel.org
+- Alex Mottram added Ozi Explorer support. 
+* Tue Sep 17 2002 http://www.gpsbabel.org
+- Jochen Becker adds Holux GM-100 format. 
+- Add support for Garmin serial protocol.  Tested with Vista. 
+* Fri Sep 13 2002 http://www.gpsbabel.org
+- Alex Mottram added Maptech .MXF format. 
+* Sun Sep 08 2002 http://www.gpsbabel.org
+- Add '-s' flag so program can "guess" waypoint names. Especially handy for geocaching when you want a cache to have a real name and not a GC number. 
+* Mon Sep 02 2002 http://www.gpsbabel.org
+- Alex Mottram adds PocketStreets 2002 Pushpin file support. 
+* Sun Sep 01 2002 http://www.gpsbabel.org
+- Preliminary Magellan Navigator PDA support added. Help from Ron Parker. 
+- GPSPilot support added. Help from Ron Parker. 
+- Cetus support added. Help from Ron Parker and Kjeld Jensen. 
+- Add ability to read and write files for flash cards in Magellan Meridian product family. 
+* Thu Aug 15 2002 http://www.gpsbabel.org
+- Add a port to Microsoft Windows via the mingw system. 
+* Mon Aug 05 2002 http://www.gpsbabel.org
+- 0.8.1: initial version placed on SourceForge. 

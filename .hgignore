@@ -1,0 +1,7 @@
+syntax: regexp
+
+.jar
+bin
+\.class$
+~$
+.swp$

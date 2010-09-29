@@ -1,0 +1,1894 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="antenna.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.0"
+   sodipodi:docbase="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient3321">
+      <stop
+         style="stop-color:#ff7100;stop-opacity:1;"
+         offset="0"
+         id="stop3323" />
+      <stop
+         id="stop3325"
+         offset="0.48255581"
+         style="stop-color:#004b00;stop-opacity:1;" />
+      <stop
+         style="stop-color:#00a600;stop-opacity:1;"
+         offset="1"
+         id="stop3327" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3295">
+      <stop
+         id="stop3297"
+         offset="0"
+         style="stop-color:#00a600;stop-opacity:0" />
+      <stop
+         style="stop-color:#004b00;stop-opacity:1;"
+         offset="0.5"
+         id="stop3299" />
+      <stop
+         id="stop3301"
+         offset="1"
+         style="stop-color:#00a600;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3285">
+      <stop
+         id="stop3287"
+         offset="0"
+         style="stop-color:#00a600;stop-opacity:1;" />
+      <stop
+         style="stop-color:#004b00;stop-opacity:1;"
+         offset="0.48255581"
+         id="stop3289" />
+      <stop
+         id="stop3291"
+         offset="1"
+         style="stop-color:#00a600;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3233">
+      <stop
+         style="stop-color:#00a600;stop-opacity:1;"
+         offset="0"
+         id="stop3235" />
+      <stop
+         id="stop3237"
+         offset="0.5"
+         style="stop-color:#004b00;stop-opacity:1;" />
+      <stop
+         style="stop-color:#00a600;stop-opacity:1;"
+         offset="1"
+         id="stop3239" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3198">
+      <stop
+         id="stop3200"
+         offset="0"
+         style="stop-color:#ff5858;stop-opacity:1;" />
+      <stop
+         style="stop-color:#ff0000;stop-opacity:1;"
+         offset="0.5"
+         id="stop3204" />
+      <stop
+         id="stop3202"
+         offset="1"
+         style="stop-color:#ff5858;stop-opacity:1;" />
+    </linearGradient>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective16" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3198"
+       id="linearGradient3228"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.4,0,0,1.4,60.900002,-4.4)"
+       spreadMethod="reflect"
+       x1="11.5"
+       y1="8.5"
+       x2="11.5"
+       y2="13.5" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3233"
+       id="linearGradient3231"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.2124356,0,0,1.2124356,2.3193675,-10.546608)"
+       spreadMethod="reflect"
+       x1="7.7373085"
+       y1="9.7626896"
+       x2="12.737309"
+       y2="14.76269" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3233"
+       id="linearGradient3261"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.9899495,0.7000001,-0.9899495,0.7000001,94.005027,-4.7499998)"
+       spreadMethod="reflect"
+       x1="7.7373085"
+       y1="9.7626896"
+       x2="12.737309"
+       y2="14.76269" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3233"
+       id="linearGradient3263"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.9899495,0.7000001,-0.9899495,0.7000001,-5.9949747,-4.7500003)"
+       spreadMethod="reflect"
+       x1="7.7373085"
+       y1="9.7626896"
+       x2="12.737309"
+       y2="14.76269" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3285"
+       id="linearGradient3283"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.9899495,0.7000001,-0.9899495,0.7000001,-5.9949747,-4.7500003)"
+       spreadMethod="reflect"
+       x1="17.586296"
+       y1="-0.086297587"
+       x2="22.586294"
+       y2="4.9137015" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3285"
+       id="linearGradient3310"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.9899495,0.7000001,-0.9899495,0.7000001,-5.9949747,-4.7500003)"
+       spreadMethod="reflect"
+       x1="17.586296"
+       y1="-0.086297587"
+       x2="22.586294"
+       y2="4.9137015" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3285"
+       id="linearGradient3313"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.9899495,0.7000001,-0.9899495,0.7000001,-5.9949747,-4.7500003)"
+       spreadMethod="reflect"
+       x1="17.586296"
+       y1="-0.086297587"
+       x2="22.586294"
+       y2="4.9137015" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3285"
+       id="linearGradient3262"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.9899495,0.7000001,-0.9899495,0.7000001,77.505026,13.5)"
+       spreadMethod="reflect"
+       x1="17.586296"
+       y1="-0.086297587"
+       x2="22.586294"
+       y2="4.9137015" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3198"
+       id="linearGradient3475"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.4,0,0,1.4,30.400001,-37.900001)"
+       spreadMethod="reflect"
+       x1="11.5"
+       y1="8.5"
+       x2="11.5"
+       y2="13.5" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3233"
+       id="linearGradient3503"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.866206,0.7000001,-0.866206,0.7000001,66.504397,-38.25)"
+       spreadMethod="reflect"
+       x1="8.4588451"
+       y1="9.041151"
+       x2="13.458844"
+       y2="14.041151" />
+    <inkscape:perspective
+       id="perspective2605"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2672"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="16.225"
+     inkscape:cx="-35.885589"
+     inkscape:cy="35.858528"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1272"
+     inkscape:window-height="856"
+     inkscape:window-x="378"
+     inkscape:window-y="95"
+     showgrid="true"
+     inkscape:snap-global="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2389"
+       visible="true"
+       enabled="true"
+       spacingx="1px"
+       spacingy="1px" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       y="0"
+       x="66"
+       height="16"
+       width="16"
+       id="rect3206"
+       style="opacity:0;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       transform="matrix(0.7001159,0,0,0.6989247,-192.42157,-319.7951)"
+       id="g3208"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         d="M 370.51972,479.13329 L 378.31623,465.32233"
+         id="path3210"
+         sodipodi:nodetypes="cc" />
+      <path
+         id="path3212"
+         d="M 386.40974,479.13329 L 378.31622,465.32233"
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 371.78201,477.0852 L 381.21207,470.55098"
+         id="path3214" />
+      <path
+         id="path3216"
+         d="M 385.2217,477.0852 L 375.79164,470.55098"
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:type="arc"
+         style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path3218"
+         sodipodi:cx="378.20483"
+         sodipodi:cy="464.31992"
+         sodipodi:rx="1.819185"
+         sodipodi:ry="1.4479227"
+         d="M 380.02402 464.31992 A 1.819185 1.4479227 0 1 1  376.38565,464.31992 A 1.819185 1.4479227 0 1 1  380.02402 464.31992 z"
+         transform="matrix(1.0288979,0,0,1.2325915,-10.824255,-107.53579)" />
+      <path
+         transform="matrix(2.2988039,0,0,2.7539041,-491.10885,-813.91154)"
+         style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.39744279;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 376.71721,465.15318 C 376.50835,464.9175 376.38565,464.63005 376.38565,464.31992 C 376.38565,463.52066 377.20064,462.87199 378.20483,462.87199 C 379.20902,462.87199 380.02402,463.52066 380.02402,464.31992 C 380.02402,464.62303 379.9068,464.90448 379.7065,465.13711"
+         id="path3220"
+         sodipodi:nodetypes="csscs" />
+      <path
+         transform="matrix(3.4490403,0,0,4.1318558,-926.13382,-1453.722)"
+         style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.26489776;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 376.77761,465.2175 C 376.53221,464.97071 376.38565,464.65885 376.38565,464.31992 C 376.38565,463.52066 377.20064,462.87199 378.20483,462.87199 C 379.20902,462.87199 380.02402,463.52066 380.02402,464.31992 C 380.02402,464.63643 379.89621,464.92933 379.67945,465.16768"
+         id="path3222"
+         sodipodi:nodetypes="csscs" />
+    </g>
+    <rect
+       y="7.5"
+       x="73.5"
+       height="7"
+       width="7"
+       id="rect3224"
+       style="opacity:1;fill:url(#linearGradient3228);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       id="path3226"
+       d="M 74.200002,8.2 L 74.200002,13.8 L 79.800002,13.8 L 79.800002,8.2 L 74.200002,8.2 z M 74.900002,8.9 L 79.100002,8.9 L 79.100002,13.1 L 74.900002,13.1 L 74.900002,8.9 z "
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       y="0"
+       x="83.5"
+       height="16"
+       width="16"
+       id="rect3241"
+       style="opacity:0;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <g
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       transform="matrix(0.7001159,0,0,0.6989247,-174.92157,-319.7951)"
+       id="g3243">
+      <path
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         d="M 370.51972,479.13329 L 378.31623,465.32233"
+         id="path3245"
+         sodipodi:nodetypes="cc" />
+      <path
+         id="path3247"
+         d="M 386.40974,479.13329 L 378.31622,465.32233"
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 371.78201,477.0852 L 381.21207,470.55098"
+         id="path3249" />
+      <path
+         id="path3251"
+         d="M 385.2217,477.0852 L 375.79164,470.55098"
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:type="arc"
+         style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path3253"
+         sodipodi:cx="378.20483"
+         sodipodi:cy="464.31992"
+         sodipodi:rx="1.819185"
+         sodipodi:ry="1.4479227"
+         d="M 380.02402 464.31992 A 1.819185 1.4479227 0 1 1  376.38565,464.31992 A 1.819185 1.4479227 0 1 1  380.02402 464.31992 z"
+         transform="matrix(1.0288979,0,0,1.2325915,-10.824255,-107.53579)" />
+      <path
+         transform="matrix(2.2988039,0,0,2.7539041,-491.10885,-813.91154)"
+         style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.39744279;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 376.71721,465.15318 C 376.50835,464.9175 376.38565,464.63005 376.38565,464.31992 C 376.38565,463.52066 377.20064,462.87199 378.20483,462.87199 C 379.20902,462.87199 380.02402,463.52066 380.02402,464.31992 C 380.02402,464.62303 379.9068,464.90448 379.7065,465.13711"
+         id="path3255"
+         sodipodi:nodetypes="csscs" />
+      <path
+         transform="matrix(3.4490403,0,0,4.1318558,-926.13382,-1453.722)"
+         style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.26489776;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 376.77761,465.2175 C 376.53221,464.97071 376.38565,464.65885 376.38565,464.31992 C 376.38565,463.52066 377.20064,462.87199 378.20483,462.87199 C 379.20902,462.87199 380.02402,463.52066 380.02402,464.31992 C 380.02402,464.63643 379.89621,464.92933 379.67945,465.16768"
+         id="path3257"
+         sodipodi:nodetypes="csscs" />
+    </g>
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       sodipodi:nodetypes="ccccccc"
+       id="path3259"
+       d="M 91.000001,7.4999998 L 92.000002,7.5000001 L 98.000001,11 L 92.000001,14.5 L 91.000001,14.5 L 91.000001,11 L 91.000001,7.4999998 z "
+       style="fill:url(#linearGradient3261);fill-opacity:1;fill-rule:evenodd;stroke:#004600;stroke-width:0.40000001;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       transform="matrix(0.99995,0,0,0.99995,-16.249688,0.7502624)"
+       d="M 11,5.25 A 4.75,4.75 0 1 1 1.5,5.25 A 4.75,4.75 0 1 1 11,5.25 z"
+       sodipodi:ry="4.75"
+       sodipodi:rx="4.75"
+       sodipodi:cy="5.25"
+       sodipodi:cx="6.25"
+       id="path3225"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.50049996;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.85895836;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3227"
+       sodipodi:cx="6.25"
+       sodipodi:cy="5.25"
+       sodipodi:rx="4.75"
+       sodipodi:ry="4.75"
+       d="M 11,5.25 A 4.75,4.75 0 1 1 1.5,5.25 A 4.75,4.75 0 1 1 11,5.25 z"
+       transform="matrix(0.5792088,0,0,0.5792088,-13.620056,2.9591538)" />
+    <path
+       transform="matrix(0.2105263,0,0,0.2105263,-11.315789,4.894737)"
+       d="M 11,5.25 A 4.75,4.75 0 1 1 1.5,5.25 A 4.75,4.75 0 1 1 11,5.25 z"
+       sodipodi:ry="4.75"
+       sodipodi:rx="4.75"
+       sodipodi:cy="5.25"
+       sodipodi:cx="6.25"
+       id="path3229"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.4224987;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <rect
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.88391924;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3231"
+       width="6.3137088"
+       height="6.3137088"
+       x="-3.4852819"
+       y="10.656854"
+       transform="matrix(0.7071068,0.7071068,-0.7071068,0.7071068,0,0)" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       y="18.25"
+       x="83.5"
+       height="16"
+       width="16"
+       id="rect3243"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       sodipodi:nodetypes="cc"
+       id="path3246"
+       d="M 84.485177,33.332991 L 89.943638,23.68017"
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:0.69952006pt;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="cc"
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:0.69952006pt;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="M 95.610033,33.332991 L 89.943631,23.68017"
+       id="path3248" />
+    <path
+       id="path3250"
+       d="M 85.368927,31.90153 L 91.971062,27.334603"
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:0.69952006pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:0.69952006pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 94.778267,31.90153 L 88.176133,27.334603"
+       id="path3252" />
+    <path
+       sodipodi:nodetypes="cscsc"
+       id="path3254"
+       d="M 93.65625,26.46875 C 94.321109,25.651451 94.75,24.634907 94.75,23.5 C 94.75,20.878 92.622,18.75 90,18.75 C 87.378,18.75 85.25,20.878 85.25,23.5 C 85.25,24.634907 85.678892,25.651451 86.34375,26.46875"
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.69999999;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       sodipodi:nodetypes="cscsc"
+       id="path3256"
+       d="M 92.4375,25.25 C 92.791847,24.757443 93,24.152659 93,23.5 C 93,21.844 91.656,20.5 90,20.5 C 88.344,20.5 87,21.844 87,23.5 C 87,24.152659 87.208153,24.757443 87.5625,25.25"
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.70000005;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       transform="matrix(0.2105263,0,0,0.2105263,88.684211,22.394737)"
+       d="M 11 5.25 A 4.75 4.75 0 1 1  1.5,5.25 A 4.75 4.75 0 1 1  11 5.25 z"
+       sodipodi:ry="4.75"
+       sodipodi:rx="4.75"
+       sodipodi:cy="5.25"
+       sodipodi:cx="6.25"
+       id="path3258"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.10833347;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       id="path3260"
+       d="M 93.5,25.75 L 93.5,28.25 L 91,28.25 L 91,30.25 L 93.5,30.25 L 93.5,32.75 L 95.5,32.75 L 95.5,30.25 L 98,30.25 L 98,28.25 L 95.5,28.25 L 95.5,25.75 L 93.5,25.75 z "
+       style="opacity:1;fill:url(#linearGradient3262);fill-opacity:1;fill-rule:evenodd;stroke:#004600;stroke-width:0.40000001;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       y="18.5"
+       x="65"
+       height="16"
+       width="16"
+       id="rect3286"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       sodipodi:nodetypes="cc"
+       id="path3288"
+       d="M 67.437572,33.747896 L 72.896033,24.095074"
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:0.69952006pt;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="cc"
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:0.69952006pt;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="M 78.562428,33.747896 L 72.896026,24.095074"
+       id="path3290" />
+    <path
+       id="path3292"
+       d="M 68.321321,32.316435 L 74.923456,27.749507"
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:0.69952006pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:0.69952006pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 77.730662,32.316435 L 71.128527,27.749507"
+       id="path3294" />
+    <path
+       sodipodi:nodetypes="csccsssccsc"
+       id="path3296"
+       d="M 72.9375,19.15625 C 70.3155,19.15625 68.1875,21.28425 68.1875,23.90625 C 68.1875,25.041157 68.616391,26.057701 69.28125,26.875 L 70.5625,25.75 C 70.200229,25.259956 70,24.656827 70,24 C 70,22.344 71.344,21 73,21 C 74.656,21 76,22.344 76,24 C 76,24.636923 75.780081,25.205679 75.4375,25.6875 L 76.59375,26.84375 C 77.249259,26.029935 77.6875,25.031804 77.6875,23.90625 C 77.6875,21.28425 75.5595,19.15625 72.9375,19.15625 z "
+       style="fill:#666666;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.69999999;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       transform="matrix(0.2514627,0,0,0.2514627,71.380753,22.594725)"
+       d="M 11 5.25 A 4.75 4.75 0 1 1  1.5,5.25 A 4.75 4.75 0 1 1  11 5.25 z"
+       sodipodi:ry="4.75"
+       sodipodi:rx="4.75"
+       sodipodi:cy="5.25"
+       sodipodi:cx="6.25"
+       id="path3298"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.10833347;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+       y="-34"
+       x="-10"
+       height="16"
+       width="16"
+       id="rect3391"
+       style="opacity:1;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3393"
+       width="1"
+       height="10.5"
+       x="-3.0000002"
+       y="-29" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+       y="-26"
+       x="-4"
+       height="7.5"
+       width="3"
+       id="rect3395"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3397"
+       width="5"
+       height="5.5"
+       x="-5.0000005"
+       y="-24" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+       y="-22"
+       x="-6.0000005"
+       height="3.5"
+       width="7"
+       id="rect3399"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3401"
+       width="9"
+       height="2"
+       x="-7.0000005"
+       y="-20" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+       style="opacity:1;fill:#ff7100;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M -8.0000003,-24 L -8.0000003,-21 L -6.1298708,-21 L -4.0000003,-21 L -4.0000003,-24 L -6.1298708,-24 L -8.0000003,-24 z"
+       id="path3403"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+       id="path3405"
+       d="M -7.0000003,-22 L -5.0000003,-22 L -5.0000003,-23 L -7.0000003,-23 L -7.0000003,-22 z"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+       sodipodi:nodetypes="cscsc"
+       id="path3411"
+       d="M 1.5003787,-25.556449 C 2.1188777,-26.38545 2.5152777,-27.388916 2.5152777,-28.50184 C 2.5152777,-31.247592 0.28576769,-33.476278 -2.4610004,-33.476278 C -5.2077685,-33.476278 -7.4372783,-31.247592 -7.4372784,-28.50184 C -7.4372784,-27.372263 -7.0250307,-26.359059 -6.3896409,-25.523722"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.04744375;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+       sodipodi:nodetypes="cscsc"
+       id="path3413"
+       d="M 0.03055469,-27.196057 C 0.29175669,-27.623496 0.46918469,-28.099278 0.46918469,-28.631367 C 0.46918469,-30.216666 -0.86027021,-31.501988 -2.5000002,-31.501988 C -4.1397301,-31.501988 -5.4691847,-30.216666 -5.4691846,-28.631367 C -5.4691846,-28.078707 -5.3107318,-27.56902 -5.0305551,-27.130816"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.06163144;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+       transform="matrix(0.3157895,0,0,0.3157895,-4.4736845,-30.157895)"
+       d="M 11,5.25 A 4.75,4.75 0 1 1 1.5,5.25 A 4.75,4.75 0 1 1 11,5.25 z"
+       sodipodi:ry="4.75"
+       sodipodi:rx="4.75"
+       sodipodi:cy="5.25"
+       sodipodi:cx="6.25"
+       id="path3415"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.4224987;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <g
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+       id="g3417"
+       transform="translate(-10,-34)">
+      <path
+         style="opacity:1;fill:#ff7100;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 10,7 L 10,10 L 7,10 L 7,13 L 10,13 L 10,16 L 13,16 L 13,13 L 16,13 L 16,10 L 13,10 L 13,7 L 10,7 z"
+         id="path3419"
+         sodipodi:nodetypes="ccccccccccccc"
+         inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <path
+         id="path3421"
+         d="M 11,8 L 11,11 L 8,11 L 8,12 L 11,12 L 11,15 L 12,15 L 12,12 L 15,12 L 15,11 L 12,11 L 12,8 L 11,8 z"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         sodipodi:nodetypes="ccccccccccccc"
+         inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_add16.png"
+       y="-34"
+       x="13"
+       height="16"
+       width="16"
+       id="rect3423"
+       style="opacity:1;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_add16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3425"
+       width="1"
+       height="10.5"
+       x="20"
+       y="-29" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_add16.png"
+       y="-26"
+       x="19"
+       height="7.5"
+       width="3"
+       id="rect3427"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_add16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3429"
+       width="5"
+       height="5.5"
+       x="18"
+       y="-24" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_add16.png"
+       y="-22"
+       x="17"
+       height="3.5"
+       width="7"
+       id="rect3431"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_add16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3433"
+       width="9"
+       height="2"
+       x="16"
+       y="-20" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_add16.png"
+       sodipodi:nodetypes="cscsc"
+       id="path3435"
+       d="M 24.500379,-25.556449 C 25.118878,-26.38545 25.515278,-27.388916 25.515278,-28.50184 C 25.515278,-31.247592 23.285768,-33.476278 20.539,-33.476278 C 17.792232,-33.476278 15.562722,-31.247592 15.562722,-28.50184 C 15.562722,-27.372263 15.97497,-26.359059 16.610359,-25.523722"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.04744375;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_add16.png"
+       sodipodi:nodetypes="cscsc"
+       id="path3437"
+       d="M 23.030555,-27.196057 C 23.291757,-27.623496 23.469185,-28.099278 23.469185,-28.631367 C 23.469185,-30.216666 22.13973,-31.501988 20.5,-31.501988 C 18.86027,-31.501988 17.530816,-30.216666 17.530816,-28.631367 C 17.530816,-28.078707 17.689269,-27.56902 17.969445,-27.130816"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.06163144;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_add16.png"
+       transform="matrix(0.3157895,0,0,0.3157895,18.526316,-30.157895)"
+       d="M 11,5.25 A 4.75,4.75 0 1 1 1.5,5.25 A 4.75,4.75 0 1 1 11,5.25 z"
+       sodipodi:ry="4.75"
+       sodipodi:rx="4.75"
+       sodipodi:cy="5.25"
+       sodipodi:cx="6.25"
+       id="path3439"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.4224987;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <g
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_add16.png"
+       id="g3441"
+       transform="translate(13,-34)">
+      <path
+         style="opacity:1;fill:#ff7100;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 10,7 L 10,10 L 7,10 L 7,13 L 10,13 L 10,16 L 13,16 L 13,13 L 16,13 L 16,10 L 13,10 L 13,7 L 10,7 z"
+         id="path3443"
+         sodipodi:nodetypes="ccccccccccccc"
+         inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <path
+         id="path3445"
+         d="M 11,8 L 11,11 L 8,11 L 8,12 L 11,12 L 11,15 L 12,15 L 12,12 L 15,12 L 15,11 L 12,11 L 12,8 L 11,8 z"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         sodipodi:nodetypes="ccccccccccccc"
+         inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       y="-34"
+       x="35"
+       height="16"
+       width="16"
+       id="rect3453"
+       style="opacity:1;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3455"
+       width="1"
+       height="10.5"
+       x="42"
+       y="-29.000002" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       y="-26.000002"
+       x="41"
+       height="7.5"
+       width="3"
+       id="rect3457"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3459"
+       width="5"
+       height="5.5"
+       x="40"
+       y="-24.000002" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       y="-22.000002"
+       x="39"
+       height="3.5"
+       width="7"
+       id="rect3461"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3463"
+       width="9"
+       height="2"
+       x="38"
+       y="-20.000002" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       sodipodi:nodetypes="cscsc"
+       id="path3465"
+       d="M 46.500378,-25.55645 C 47.118877,-26.385451 47.515277,-27.388918 47.515277,-28.501841 C 47.515277,-31.247594 45.285767,-33.476279 42.538999,-33.476279 C 39.79223,-33.476279 37.562721,-31.247594 37.562721,-28.501841 C 37.562721,-27.372264 37.974968,-26.359061 38.610358,-25.523723"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.04744375;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       sodipodi:nodetypes="cscsc"
+       id="path3467"
+       d="M 45.030554,-27.196058 C 45.291756,-27.623498 45.469184,-28.099279 45.469184,-28.631369 C 45.469184,-30.216667 44.139729,-31.501989 42.499999,-31.501989 C 40.860269,-31.501989 39.530814,-30.216667 39.530814,-28.631369 C 39.530814,-28.078708 39.689267,-27.569021 39.969444,-27.130817"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.06163144;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       transform="matrix(0.3157895,0,0,0.3157895,40.526315,-30.157896)"
+       d="M 11,5.25 A 4.75,4.75 0 1 1 1.5,5.25 A 4.75,4.75 0 1 1 11,5.25 z"
+       sodipodi:ry="4.75"
+       sodipodi:rx="4.75"
+       sodipodi:cy="5.25"
+       sodipodi:cx="6.25"
+       id="path3469"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.4224987;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <rect
+       y="-26.000002"
+       x="43"
+       height="7"
+       width="7"
+       id="rect3471"
+       style="opacity:1;fill:url(#linearGradient3475);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="cccccccccc"
+       id="path3473"
+       d="M 43.999999,-25.000001 L 43.999999,-20.000001 L 48.999999,-20.000001 L 48.999999,-25.000001 L 43.999999,-25.000001 z M 44.999999,-24.000001 L 47.999999,-24.000001 L 47.999999,-21.000001 L 44.999999,-21.000001 L 44.999999,-24.000001 z"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/stop16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       id="path3481"
+       d="M -10,-24 L -10,-21 L -9.5324676,-21 L -9,-21 L -9,-24 L -9.5324676,-24 L -10,-24 z"
+       style="opacity:1;fill:#ff7100;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/manual_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       y="-34"
+       x="55"
+       height="16"
+       width="16"
+       id="rect3483"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3485"
+       width="1"
+       height="10.5"
+       x="62"
+       y="-29" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       y="-26"
+       x="61"
+       height="7.5"
+       width="3"
+       id="rect3487"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3489"
+       width="5"
+       height="5.5"
+       x="60"
+       y="-24" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       y="-22"
+       x="59"
+       height="3.5"
+       width="7"
+       id="rect3491"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3493"
+       width="9"
+       height="2"
+       x="58"
+       y="-20" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       sodipodi:nodetypes="cscsc"
+       id="path3495"
+       d="M 66.500379,-25.556449 C 67.118878,-26.38545 67.515278,-27.388917 67.515278,-28.50184 C 67.515278,-31.247593 65.285768,-33.476278 62.539,-33.476279 C 59.792232,-33.476279 57.562722,-31.247593 57.562722,-28.50184 C 57.562722,-27.372263 57.974969,-26.35906 58.610359,-25.523722"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.04744375;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       sodipodi:nodetypes="cscsc"
+       id="path3497"
+       d="M 65.030555,-27.196057 C 65.291757,-27.623497 65.469185,-28.099278 65.469185,-28.631368 C 65.469185,-30.216666 64.13973,-31.501989 62.5,-31.501988 C 60.86027,-31.501988 59.530815,-30.216666 59.530816,-28.631368 C 59.530816,-28.078708 59.689268,-27.56902 59.969445,-27.130816"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.06163144;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       transform="matrix(0.3157895,0,0,0.3157895,60.526316,-30.157895)"
+       d="M 11,5.25 A 4.75,4.75 0 1 1 1.5,5.25 A 4.75,4.75 0 1 1 11,5.25 z"
+       sodipodi:ry="4.75"
+       sodipodi:rx="4.75"
+       sodipodi:cy="5.25"
+       sodipodi:cx="6.25"
+       id="path3499"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.4224987;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/start16.png"
+       sodipodi:nodetypes="ccccccc"
+       id="path3501"
+       d="M 63,-26.000001 L 65,-26 L 70,-22.5 L 65,-19 L 63,-19 L 63,-22.5 L 63,-26.000001 z"
+       style="fill:url(#linearGradient3503);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.40000001;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3511"
+       width="16"
+       height="16"
+       x="-30"
+       y="-34"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/centerzoom16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="-29"
+       x="-22.555555"
+       height="10.5"
+       width="1.1111112"
+       id="rect3513"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/centerzoom16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3515"
+       width="3.9999998"
+       height="7.5"
+       x="-24"
+       y="-26"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/centerzoom16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="-24"
+       x="-25"
+       height="5.5"
+       width="6"
+       id="rect3517"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/centerzoom16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3519"
+       width="7.9999995"
+       height="3.5"
+       x="-26"
+       y="-22"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/centerzoom16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="-20"
+       x="-27"
+       height="2"
+       width="10"
+       id="rect3521"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/centerzoom16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.50062287;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3523"
+       sodipodi:cx="6.25"
+       sodipodi:cy="5.25"
+       sodipodi:rx="4.75"
+       sodipodi:ry="4.75"
+       d="M 11,5.25 A 4.75,4.75 0 1 1 1.5,5.25 A 4.75,4.75 0 1 1 11,5.25 z"
+       transform="matrix(1.0526316,0,0,1.0526316,-28.578948,-34.526317)"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/centerzoom16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       transform="matrix(0.6698565,0,0,0.6698565,-26.186603,-32.516748)"
+       d="M 11,5.25 A 4.75,4.75 0 1 1 1.5,5.25 A 4.75,4.75 0 1 1 11,5.25 z"
+       sodipodi:ry="4.75"
+       sodipodi:rx="4.75"
+       sodipodi:cy="5.25"
+       sodipodi:cx="6.25"
+       id="path3525"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.50062287;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/centerzoom16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       transform="matrix(0.2870813,0,0,0.2870813,-23.794259,-30.507178)"
+       d="M 11,5.25 A 4.75,4.75 0 1 1 1.5,5.25 A 4.75,4.75 0 1 1 11,5.25 z"
+       sodipodi:ry="4.75"
+       sodipodi:rx="4.75"
+       sodipodi:cy="5.25"
+       sodipodi:cx="6.25"
+       id="path3527"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.50062287;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/centerzoom16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3529"
+       width="16"
+       height="16"
+       x="77"
+       y="-34"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="-29"
+       x="84"
+       height="10.5"
+       width="1"
+       id="rect3531"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3533"
+       width="3"
+       height="7.5"
+       x="83"
+       y="-26"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="-24"
+       x="82"
+       height="5.5"
+       width="5"
+       id="rect3535"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3537"
+       width="7"
+       height="3.5"
+       x="81"
+       y="-22"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="-20"
+       x="80"
+       height="2"
+       width="9"
+       id="rect3539"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       id="path3541"
+       d="M 79,-24 L 79,-21 L 80.87013,-21 L 83,-21 L 83,-24 L 80.87013,-24 L 79,-24 z"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574000000005;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 80,-22 L 82,-22 L 82,-23 L 80,-23 L 80,-22 z"
+       id="path3543"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.04744375;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 88.50038,-25.556449 C 89.11888,-26.38545 89.51528,-27.388916 89.51528,-28.50184 C 89.51528,-31.247592 87.28577,-33.476278 84.539,-33.476278 C 81.79223,-33.476278 79.56272,-31.247592 79.56272,-28.50184 C 79.56272,-27.372263 79.97497,-26.359059 80.61036,-25.523722"
+       id="path3545"
+       sodipodi:nodetypes="cscsc"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.06163144;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 87.03055,-27.196057 C 87.29176,-27.623496 87.46918,-28.099278 87.46918,-28.631367 C 87.46918,-30.216666 86.13973,-31.501988 84.5,-31.501988 C 82.86027,-31.501988 81.53082,-30.216666 81.53082,-28.631367 C 81.53082,-28.078707 81.68927,-27.56902 81.96944,-27.130816"
+       id="path3547"
+       sodipodi:nodetypes="cscsc"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.4224987;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3549"
+       sodipodi:cx="6.25"
+       sodipodi:cy="5.25"
+       sodipodi:rx="4.75"
+       sodipodi:ry="4.75"
+       d="M 11,5.25 A 4.75,4.75 0 1 1 1.5,5.25 A 4.75,4.75 0 1 1 11,5.25 z"
+       transform="matrix(0.3157895,0,0,0.3157895,82.52632,-30.157895)"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574000000005;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 87,-27 L 87,-24 L 84,-24 L 84,-21 L 87,-21 L 87,-18 L 90,-18 L 90,-21 L 93,-21 L 93,-24 L 90,-24 L 90,-27 L 87,-27 z"
+       id="path3553"
+       sodipodi:nodetypes="ccccccccccccc"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       id="path3555"
+       d="M 88,-26 L 88,-23 L 85,-23 L 85,-22 L 88,-22 L 88,-19 L 89,-19 L 89,-22 L 92,-22 L 92,-23 L 89,-23 L 89,-26 L 88,-26 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:nodetypes="ccccccccccccc"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3557"
+       width="16"
+       height="16"
+       x="100"
+       y="-34"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_add16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="-29"
+       x="107"
+       height="10.5"
+       width="1"
+       id="rect3559"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_add16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3561"
+       width="3"
+       height="7.5"
+       x="106"
+       y="-26"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_add16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="-24"
+       x="105"
+       height="5.5"
+       width="5"
+       id="rect3563"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_add16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3565"
+       width="7"
+       height="3.5"
+       x="104"
+       y="-22"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_add16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="-20"
+       x="103"
+       height="2"
+       width="9"
+       id="rect3567"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_add16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.04744375;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 111.50038,-25.556449 C 112.11888,-26.38545 112.51528,-27.388916 112.51528,-28.50184 C 112.51528,-31.247592 110.28577,-33.476278 107.539,-33.476278 C 104.79223,-33.476278 102.56272,-31.247592 102.56272,-28.50184 C 102.56272,-27.372263 102.97497,-26.359059 103.61036,-25.523722"
+       id="path3569"
+       sodipodi:nodetypes="cscsc"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_add16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.06163144;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 110.03055,-27.196057 C 110.29176,-27.623496 110.46919,-28.099278 110.46919,-28.631367 C 110.46919,-30.216666 109.13973,-31.501988 107.5,-31.501988 C 105.86027,-31.501988 104.53082,-30.216666 104.53082,-28.631367 C 104.53082,-28.078707 104.68927,-27.56902 104.96944,-27.130816"
+       id="path3571"
+       sodipodi:nodetypes="cscsc"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_add16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.4224987;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3573"
+       sodipodi:cx="6.25"
+       sodipodi:cy="5.25"
+       sodipodi:rx="4.75"
+       sodipodi:ry="4.75"
+       d="M 11,5.25 A 4.75,4.75 0 1 1 1.5,5.25 A 4.75,4.75 0 1 1 11,5.25 z"
+       transform="matrix(0.3157895,0,0,0.3157895,105.52632,-30.157895)"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_add16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574000000005;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 110,-27 L 110,-24 L 107,-24 L 107,-21 L 110,-21 L 110,-18 L 113,-18 L 113,-21 L 116,-21 L 116,-24 L 113,-24 L 113,-27 L 110,-27 z"
+       id="path3577"
+       sodipodi:nodetypes="ccccccccccccc"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_add16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       id="path3579"
+       d="M 111,-26 L 111,-23 L 108,-23 L 108,-22 L 111,-22 L 111,-19 L 112,-19 L 112,-22 L 115,-22 L 115,-23 L 112,-23 L 112,-26 L 111,-26 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:nodetypes="ccccccccccccc"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_add16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/automatic_continue16.png"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574000000005;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 77,-24 L 77,-21 L 77.46753,-21 L 78,-21 L 78,-24 L 77.46753,-24 L 77,-24 z"
+       id="path3581"
+       sodipodi:nodetypes="ccccccc" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2321"
+       width="16"
+       height="16"
+       x="0"
+       y="0"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/gpsnote.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="5"
+       x="7"
+       height="10.5"
+       width="1"
+       id="rect2323"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/gpsnote.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2325"
+       width="3"
+       height="7.5"
+       x="6"
+       y="8"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/gpsnote.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="10"
+       x="5"
+       height="5.5"
+       width="5"
+       id="rect2327"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/gpsnote.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2329"
+       width="7"
+       height="3.5"
+       x="4"
+       y="12"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/gpsnote.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="14"
+       x="3"
+       height="2"
+       width="9"
+       id="rect2331"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/gpsnote.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.04744375;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 11.500379,8.443551 C 12.118878,7.61455 12.515278,6.611084 12.515278,5.49816 C 12.515278,2.752408 10.285768,0.523722 7.539,0.523722 C 4.792231,0.523722 2.562722,2.752408 2.562722,5.49816 C 2.562722,6.627737 2.974969,7.640941 3.610359,8.476278"
+       id="path2337"
+       sodipodi:nodetypes="cscsc"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/gpsnote.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.06163144;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 10.030555,6.803943 C 10.291757,6.376504 10.469185,5.900722 10.469185,5.368633 C 10.469185,3.783334 9.13973,2.498012 7.5,2.498012 C 5.86027,2.498012 4.530815,3.783334 4.530815,5.368633 C 4.530815,5.921293 4.689268,6.43098 4.969445,6.869184"
+       id="path2339"
+       sodipodi:nodetypes="cscsc"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/gpsnote.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.4224987;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path2341"
+       sodipodi:cx="6.25"
+       sodipodi:cy="5.25"
+       sodipodi:rx="4.75"
+       sodipodi:ry="4.75"
+       d="M 11 5.25 A 4.75 4.75 0 1 1  1.5,5.25 A 4.75 4.75 0 1 1  11 5.25 z"
+       transform="matrix(0.3157895,0,0,0.3157895,5.526315,3.842105)"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/gpsnote.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       y="-34"
+       x="-48"
+       height="16"
+       width="16"
+       id="rect2371"
+       style="opacity:1;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2373"
+       width="1"
+       height="10.5"
+       x="-41"
+       y="-29" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       y="-26"
+       x="-42"
+       height="7.5"
+       width="3"
+       id="rect2375"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2377"
+       width="5"
+       height="5.5"
+       x="-43"
+       y="-24" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       y="-22"
+       x="-44"
+       height="3.5"
+       width="7"
+       id="rect2379"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2381"
+       width="9"
+       height="2"
+       x="-45"
+       y="-20" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       style="opacity:1;fill:#00a600;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;color:#000000"
+       d="M -46,-24 L -46,-21 L -44.597403,-21 L -43,-21 L -43,-24 L -44.597403,-24 L -46,-24 z "
+       id="path2383"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       id="path2385"
+       d="M -45,-22 L -44,-22 L -44,-23 L -45,-23 L -45,-22 z "
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       sodipodi:nodetypes="cscsc"
+       id="path2387"
+       d="M -36.499621,-25.556449 C -35.881122,-26.38545 -35.484722,-27.388916 -35.484722,-28.50184 C -35.484722,-31.247592 -37.714232,-33.476278 -40.461,-33.476278 C -43.207769,-33.476278 -45.437278,-31.247592 -45.437278,-28.50184 C -45.437278,-27.372263 -45.025031,-26.359059 -44.389641,-25.523722"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.04744375;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       sodipodi:nodetypes="cscsc"
+       id="path2389"
+       d="M -37.969445,-27.196057 C -37.708243,-27.623496 -37.530815,-28.099278 -37.530815,-28.631367 C -37.530815,-30.216666 -38.86027,-31.501988 -40.5,-31.501988 C -42.13973,-31.501988 -43.469185,-30.216666 -43.469185,-28.631367 C -43.469185,-28.078707 -43.310732,-27.56902 -43.030555,-27.130816"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.06163144;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       transform="matrix(0.3157895,0,0,0.3157895,-42.473685,-30.157895)"
+       d="M 11 5.25 A 4.75 4.75 0 1 1  1.5,5.25 A 4.75 4.75 0 1 1  11 5.25 z"
+       sodipodi:ry="4.75"
+       sodipodi:rx="4.75"
+       sodipodi:cy="5.25"
+       sodipodi:cx="6.25"
+       id="path2391"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.4224987;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       id="path2393"
+       d="M -48,-24 L -48,-21 L -47.532468,-21 L -47,-21 L -47,-24 L -47.532468,-24 L -48,-24 z "
+       style="opacity:1;fill:#00a600;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;color:#000000"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       id="path2395"
+       d="M -42,-24 L -42,-21 L -40.597403,-21 L -39,-21 L -39,-24 L -40.597403,-24 L -42,-24 z "
+       style="opacity:1;fill:#00a600;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;color:#000000"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M -41,-22 L -40,-22 L -40,-23 L -41,-23 L -41,-22 z "
+       id="path2397"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       style="opacity:1;fill:#00a600;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;color:#000000"
+       d="M -38,-24 L -38,-21 L -36.597403,-21 L -35,-21 L -35,-24 L -36.597403,-24 L -38,-24 z "
+       id="path2399"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       id="path2401"
+       d="M -37,-22 L -36,-22 L -36,-23 L -37,-23 L -37,-22 z "
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       id="path2403"
+       d="M -34,-24 L -34,-21 L -33.064935,-21 L -32,-21 L -32,-24 L -33.064935,-24 L -34,-24 z "
+       style="opacity:1;fill:#00a600;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M -33,-22 L -32,-22 L -32,-23 L -33,-23 L -33,-22 z "
+       id="path2405"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/togglelogging16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2339"
+       width="16"
+       height="16"
+       x="-66"
+       y="-34"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="-29"
+       x="-59"
+       height="10.5"
+       width="1"
+       id="rect2341"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2343"
+       width="3"
+       height="7.5"
+       x="-60"
+       y="-26"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="-24"
+       x="-61"
+       height="5.5"
+       width="5"
+       id="rect2345"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2347"
+       width="7"
+       height="3.5"
+       x="-62"
+       y="-22"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="-20"
+       x="-63"
+       height="2"
+       width="9"
+       id="rect2349"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       id="path2351"
+       d="M -52,-24 L -52,-21 L -53.402597,-21 L -55,-21 L -55,-24 L -53.402597,-24 L -52,-24 z "
+       style="opacity:1;color:#000000;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M -53,-22 L -54,-22 L -54,-23 L -53,-23 L -53,-22 z "
+       id="path2353"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.04744375;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M -54.499621,-25.556449 C -53.881122,-26.38545 -53.484722,-27.388916 -53.484722,-28.50184 C -53.484722,-31.247592 -55.714232,-33.476278 -58.461,-33.476278 C -61.207769,-33.476278 -63.437278,-31.247592 -63.437278,-28.50184 C -63.437278,-27.372263 -63.025031,-26.359059 -62.389641,-25.523722"
+       id="path2355"
+       sodipodi:nodetypes="cscsc"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.06163144;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M -55.969445,-27.196057 C -55.708243,-27.623496 -55.530815,-28.099278 -55.530815,-28.631367 C -55.530815,-30.216666 -56.86027,-31.501988 -58.5,-31.501988 C -60.13973,-31.501988 -61.469185,-30.216666 -61.469185,-28.631367 C -61.469185,-28.078707 -61.310732,-27.56902 -61.030555,-27.130816"
+       id="path2357"
+       sodipodi:nodetypes="cscsc"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.4224987;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path2359"
+       sodipodi:cx="6.25"
+       sodipodi:cy="5.25"
+       sodipodi:rx="4.75"
+       sodipodi:ry="4.75"
+       d="M 11 5.25 A 4.75 4.75 0 1 1  1.5,5.25 A 4.75 4.75 0 1 1  11 5.25 z"
+       transform="matrix(0.3157895,0,0,0.3157895,-60.473685,-30.157895)"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       style="opacity:1;color:#000000;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M -50,-24 L -50,-21 L -50.467532,-21 L -51,-21 L -51,-24 L -50.467532,-24 L -50,-24 z "
+       id="path2361"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       style="opacity:1;color:#000000;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M -56,-24 L -56,-21 L -57.402597,-21 L -59,-21 L -59,-24 L -57.402597,-24 L -56,-24 z "
+       id="path2363"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       id="path2365"
+       d="M -57,-22 L -58,-22 L -58,-23 L -57,-23 L -57,-22 z "
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       id="path2367"
+       d="M -60,-24 L -60,-21 L -61.402597,-21 L -63,-21 L -63,-24 L -61.402597,-24 L -60,-24 z "
+       style="opacity:1;color:#000000;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M -61,-22 L -62,-22 L -62,-23 L -61,-23 L -61,-22 z "
+       id="path2369"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M -64,-24 L -64,-21 L -64.935065,-21 L -66,-21 L -66,-24 L -64.935065,-24 L -64,-24 z "
+       id="path2371"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/moovida/rcpdevelopment/WORKSPACES/jgrassudig33workspace/eu.hydrologis.jgrass.gpsnmea/icons/toggleloggingon16.png"
+       id="path2373"
+       d="M -65,-22 L -66,-22 L -66,-23 L -65,-23 L -65,-22 z "
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.51428574;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:nodetypes="ccccc" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/settings16.png"
+       y="-34"
+       x="-90"
+       height="16"
+       width="16"
+       id="rect2731"
+       style="opacity:1;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/settings16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2733"
+       width="1"
+       height="10.5"
+       x="-83"
+       y="-29" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/settings16.png"
+       y="-26"
+       x="-84"
+       height="7.5"
+       width="3"
+       id="rect2735"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/settings16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2737"
+       width="5"
+       height="5.5"
+       x="-85"
+       y="-24" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/settings16.png"
+       y="-22"
+       x="-86"
+       height="3.5"
+       width="7"
+       id="rect2739"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/settings16.png"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2741"
+       width="9"
+       height="2"
+       x="-87"
+       y="-20" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/settings16.png"
+       sodipodi:nodetypes="cscsc"
+       id="path2743"
+       d="M -78.499621,-25.556449 C -77.881122,-26.38545 -77.484722,-27.388916 -77.484722,-28.50184 C -77.484722,-31.247592 -79.714232,-33.476278 -82.461,-33.476278 C -85.207769,-33.476278 -87.437278,-31.247592 -87.437278,-28.50184 C -87.437278,-27.372263 -87.025031,-26.359059 -86.389641,-25.523722"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.04744375;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/settings16.png"
+       sodipodi:nodetypes="cscsc"
+       id="path2745"
+       d="M -79.969445,-27.196057 C -79.708243,-27.623496 -79.530815,-28.099278 -79.530815,-28.631367 C -79.530815,-30.216666 -80.86027,-31.501988 -82.5,-31.501988 C -84.13973,-31.501988 -85.469185,-30.216666 -85.469185,-28.631367 C -85.469185,-28.078707 -85.310732,-27.56902 -85.030555,-27.130816"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.06163144;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/settings16.png"
+       transform="matrix(0.3157895,0,0,0.3157895,-84.473685,-30.157895)"
+       d="M 11,5.25 A 4.75,4.75 0 1 1 1.5,5.25 A 4.75,4.75 0 1 1 11,5.25 z"
+       sodipodi:ry="4.75"
+       sodipodi:rx="4.75"
+       sodipodi:cy="5.25"
+       sodipodi:cx="6.25"
+       id="path2747"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.4224987;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:3;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <g
+       transform="translate(-101,-30)"
+       id="g2749"
+       inkscape:export-filename="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.gpsnmea/icons/settings16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         style="opacity:1;fill:#6e4d25;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 19,3 L 19,4 L 19,5 L 20,5 L 20,4 L 21,4 L 21,3 L 19,3 z M 24,3 L 24,4 L 25,4 L 25,5 L 26,5 L 26,4 L 26,3 L 24,3 z M 19,8 L 19,10 L 20,10 L 21,10 L 21,9 L 20,9 L 20,8 L 19,8 z M 25,8 L 25,9 L 24,9 L 24,10 L 25,10 L 26,10 L 26,8 L 25,8 z"
+         id="path2751" />
+      <path
+         style="opacity:1;fill:#543830;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 22,2 L 22,3 L 23,3 L 23,2 L 22,2 z M 23,3 L 23,4 L 24,4 L 24,3 L 23,3 z M 22,3 L 21,3 L 21,4 L 22,4 L 22,3 z M 19,5 L 19,6 L 20,6 L 20,5 L 19,5 z M 19,6 L 18,6 L 18,7 L 19,7 L 19,6 z M 19,7 L 19,8 L 20,8 L 20,7 L 19,7 z M 22,5 L 22,6 L 23,6 L 23,5 L 22,5 z M 23,6 L 23,7 L 24,7 L 24,6 L 23,6 z M 23,7 L 22,7 L 22,8 L 23,8 L 23,7 z M 22,7 L 22,6 L 21,6 L 21,7 L 22,7 z M 25,5 L 25,6 L 26,6 L 26,5 L 25,5 z M 26,6 L 26,7 L 27,7 L 27,6 L 26,6 z M 26,7 L 25,7 L 25,8 L 26,8 L 26,7 z M 21,9 L 21,10 L 22,10 L 22,9 L 21,9 z M 22,10 L 22,11 L 23,11 L 23,10 L 22,10 z M 23,10 L 24,10 L 24,9 L 23,9 L 23,10 z"
+         id="path2753" />
+      <path
+         style="opacity:1;fill:#9c6856;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 21,2 L 21,3 L 22,3 L 22,2 L 21,2 z M 23,2 L 23,3 L 24,3 L 24,2 L 23,2 z M 18,5 L 18,6 L 19,6 L 19,5 L 18,5 z M 26,5 L 26,6 L 27,6 L 27,5 L 26,5 z M 18,7 L 18,8 L 19,8 L 19,7 L 18,7 z M 26,7 L 26,8 L 27,8 L 27,7 L 26,7 z M 21,10 L 21,11 L 22,11 L 22,10 L 21,10 z M 23,10 L 23,11 L 24,11 L 24,10 L 23,10 z"
+         id="path2755" />
+      <path
+         style="opacity:1;fill:#bf9f3f;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 20,4 L 20,5 L 21,5 L 21,4 L 20,4 z M 24,4 L 24,5 L 25,5 L 25,4 L 24,4 z M 20,8 L 20,9 L 21,9 L 21,8 L 20,8 z M 24,8 L 24,9 L 25,9 L 25,8 L 24,8 z"
+         id="path2757" />
+      <path
+         style="opacity:1;fill:#ffdf5f;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 21,4 L 21,5 L 24,5 L 24,4 L 21,4 z M 24,5 L 24,6 L 25,6 L 25,5 L 24,5 z M 21,5 L 20,5 L 20,6 L 21,6 L 21,5 z"
+         id="path2759" />
+      <path
+         style="opacity:1;fill:#ffbf3f;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 19,6 L 19,7 L 20,7 L 20,8 L 21,8 L 21,7 L 21,6 L 19,6 z M 24,6 L 24,7 L 24,8 L 25,8 L 25,7 L 26,7 L 26,6 L 24,6 z"
+         id="path2761" />
+      <path
+         style="opacity:1;fill:#df9f3f;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 21,8 L 21,9 L 22,9 L 22,10 L 23,10 L 23,9 L 24,9 L 24,8 L 21,8 z"
+         id="path2763" />
+      <rect
+         style="opacity:1;fill:#ffff9f;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="rect2765"
+         width="1"
+         height="1"
+         x="22"
+         y="3" />
+      <path
+         style="opacity:1;fill:#9a8d73;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 21,5 L 21,6 L 22,6 L 22,5 L 21,5 z M 23,5 L 23,6 L 24,6 L 24,5 L 23,5 z M 21,7 L 21,8 L 22,8 L 22,7 L 21,7 z M 23,7 L 23,8 L 24,8 L 24,7 L 23,7 z"
+         id="path2767" />
+    </g>
+    <image
+       y="2"
+       x="0"
+       id="image2674"
+       height="16"
+       width="16"
+       sodipodi:absref="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.geonotes/icons/redpin16.png"
+       xlink:href="/Users/moovida/rcpdevelopment/WORKSPACES/eclipseGanimede/eu.hydrologis.jgrass.geonotes/icons/redpin16.png" />
+  </g>
+</svg>
