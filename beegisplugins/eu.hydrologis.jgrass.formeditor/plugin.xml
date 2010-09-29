@@ -4,7 +4,7 @@
      <extension point="org.eclipse.ui.editors">
       <editor name="Form Editor"
               extensions="form"
-              icon="shapes.gif"
+              icon="icons/form_editor.png"
               default="true"
               class="eu.hydrologis.jgrass.formeditor.FormEditor"
               contributorClass="eu.hydrologis.jgrass.formeditor.FormEditorActionBarContributor"
@@ -17,6 +17,7 @@
          point="org.eclipse.ui.views">
       <view
             class="eu.hydrologis.jgrass.featureeditor.views.FormView"
+            icon="icons/form_view.png"
             id="eu.hydrologis.jgrass.featureeditor.views.FormView"
             name="Form View"
             restorable="false">
@@ -33,17 +34,26 @@
      <extension
            point="org.eclipse.ui.actionSets">
         <actionSet
-              id="eu.hydrologis.jgrass.formeditor.actionSet1"
-              label="Form editor"
+              id="eu.hydrologis.jgrass.formeditor.actionSet"
+              label="Forms"
               visible="true">
            <action
-                 class="eu.hydrologis.jgrass.formeditor.OpenFormAction"
-                 icon="icons/connection_d16.gif"
-                 id="eu.hydrologis.jgrass.formeditor.action1"
-                 label="open"
-                 menubarPath="asd"
+                 class="eu.hydrologis.jgrass.formeditor.OpenFormViewAction"
+                 icon="icons/form_view.png"
+                 id="eu.hydrologis.jgrass.formeditor.OpenFormViewAction"
+                 label="Open Form View"
                  style="push"
-                 toolbarPath="asd">
+                 toolbarPath="beegisForms"
+                 tooltip="Opens the Form View">
+           </action>
+           <action
+                 class="eu.hydrologis.jgrass.formeditor.OpenFormEditorAction"
+                 icon="icons/form_editor.png"
+                 id="eu.hydrologis.jgrass.formeditor.OpenFormAction"
+                 label="Open Form Editor"
+                 style="push"
+                 toolbarPath="beegisForms"
+                 tooltip="Opens the Form Editor">
            </action>
         </actionSet>
      </extension>

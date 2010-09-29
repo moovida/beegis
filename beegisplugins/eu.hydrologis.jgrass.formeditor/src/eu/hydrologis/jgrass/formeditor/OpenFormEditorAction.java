@@ -17,7 +17,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 
-public class OpenFormAction implements IWorkbenchWindowActionDelegate {
+public class OpenFormEditorAction implements IWorkbenchWindowActionDelegate {
 
     private IWorkbenchWindow window;
 

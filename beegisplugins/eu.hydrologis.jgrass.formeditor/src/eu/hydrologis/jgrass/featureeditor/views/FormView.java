@@ -47,6 +47,8 @@ import eu.hydrologis.jgrass.formeditor.FormEditorPlugin;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class FormView extends ViewPart implements ISelectionObserver {
+    
+    public static final String ID = "eu.hydrologis.jgrass.featureeditor.views.FormView"; //$NON-NLS-1$
 
     private ILayer selectedLayer;
     private IMap selectedMap;
