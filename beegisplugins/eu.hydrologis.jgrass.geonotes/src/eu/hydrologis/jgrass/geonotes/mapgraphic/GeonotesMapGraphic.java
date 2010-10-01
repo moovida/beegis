@@ -72,12 +72,12 @@ public class GeonotesMapGraphic implements MapGraphic {
     private double deg3radFactor = 2.0 * PI / 360.0;
 
     static {
-        pinImage = ImageManager.INSTANCE.getPinImage30();
+        pinImage = ImageManager.ICON_PIN_30.getAwtImage();
         types.put(NORMAL, pinImage);
-        selectedPinImage = ImageManager.INSTANCE.getSelectedPinImage30();
-        gpsPinImage = ImageManager.INSTANCE.getGpsPinImage30();
+        selectedPinImage = ImageManager.ICON_SELECTED_PIN.getAwtImage();
+        gpsPinImage = ImageManager.ICON_GPS_PIN_30.getAwtImage();
         types.put(GPS, gpsPinImage);
-        photoPinImage = ImageManager.INSTANCE.getPhotoPinImage30();
+        photoPinImage = ImageManager.ICON_PHOTO_PIN.getAwtImage();
         types.put(PHOTO, photoPinImage);
     }
 

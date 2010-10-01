@@ -77,8 +77,6 @@ public class GeonotesUI implements GeonotesObserver {
 
     private DragWidgetListener l;
 
-    private Label titleLabel;
-
     private Composite geonoteWrappingComposite;
 
     private CTabFolder tabFolder;
@@ -114,6 +112,8 @@ public class GeonotesUI implements GeonotesObserver {
      * Defines if the {@link GeonotesUI} has also a shell, or if it is used just as {@link Composite}.
      */
     private boolean isWithShell = false;
+
+    private Composite lowerBarComposite;
 
     public GeonotesUI( GeonotesHandler geonotesHandler ) {
         this.geonotesHandler = geonotesHandler;
@@ -172,23 +172,10 @@ public class GeonotesUI implements GeonotesObserver {
              */
             createTitleLabel(geonoteWrappingComposite, geonoteColor);
 
-            /*
-             * save and closebutton
-             */
-            createSaveAndCloseButton(geonoteWrappingComposite);
-
-            /*
-             * closebutton
-             */
-            if (isWithShell) {
-                createCloseButton(geonoteWrappingComposite);
-            }
-
             stackComposite = new Composite(geonoteWrappingComposite, SWT.None);
             stackLayout = new StackLayout();
             stackComposite.setLayout(stackLayout);
-            GridData gridDataSC = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL
-                    | GridData.GRAB_VERTICAL);
+            GridData gridDataSC = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
             gridDataSC.horizontalSpan = 5;
             stackComposite.setLayoutData(gridDataSC);
 
@@ -201,13 +188,11 @@ public class GeonotesUI implements GeonotesObserver {
 
             CTabItem item1 = new CTabItem(tabFolder, SWT.NONE);
             item1.setText(Messages.getString("GeoNote.draw")); //$NON-NLS-1$
-            GeonotesDrawareaTable geonotesDrawareaTable = geonotesHandler
-                    .getGeonotesDrawareaTable();
+            GeonotesDrawareaTable geonotesDrawareaTable = geonotesHandler.getGeonotesDrawareaTable();
             if (geonotesDrawareaTable != null) {
                 lines = geonotesDrawareaTable.getDrawings();
             }
-            drawArea = new SimpleSWTImageEditor(tabFolder, SWT.None, lines, null, new Point(500,
-                    500), false);
+            drawArea = new SimpleSWTImageEditor(tabFolder, SWT.None, lines, null, new Point(500, 500), false);
             drawArea.setBackgroundColor(geonoteColor);
             item1.setControl(drawArea.getMainControl());
             CTabItem item2 = new CTabItem(tabFolder, SWT.NONE);
@@ -218,16 +203,15 @@ public class GeonotesUI implements GeonotesObserver {
             item3.setText(Messages.getString("GeoNote.media")); //$NON-NLS-1$
             mediaArea = new MediaBoxUI(tabFolder, SWT.None, geonotesHandler);
             item3.setControl(mediaArea.getListViewer().getControl());
-            item1.setImage(ImageManager.INSTANCE.getDrawImage());
-            item2.setImage(ImageManager.INSTANCE.getTextImage());
-            item3.setImage(ImageManager.INSTANCE.getMultimediaImage());
+            item1.setImage(ImageManager.ICON_DRAW.getSwtImage());
+            item2.setImage(ImageManager.ICON_TEXT.getSwtImage());
+            item3.setImage(ImageManager.ICON_MULTIMEDIA.getSwtImage());
 
             tabFolder.setSelection(item2);
             tabFolder.setSimple(false);
             tabFolder.setUnselectedImageVisible(false);
             tabFolder.pack();
-            GridData gridData = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL
-                    | GridData.GRAB_VERTICAL);
+            GridData gridData = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
             tabFolder.setLayoutData(gridData);
             tabFolder.setBackground(geonoteColor);
 
@@ -245,8 +229,7 @@ public class GeonotesUI implements GeonotesObserver {
             /*
              * fill the geonote with stuff, if there is some available
              */
-            GeonotesTextareaTable geonotesTextareaTable = geonotesHandler
-                    .getGeonotesTextareaTable();
+            GeonotesTextareaTable geonotesTextareaTable = geonotesHandler.getGeonotesTextareaTable();
             if (geonotesTextareaTable != null) {
                 textAreaString = geonotesTextareaTable.getText();
                 textArea.getTextArea().setText(textAreaString);
@@ -257,9 +240,7 @@ public class GeonotesUI implements GeonotesObserver {
             // add it to cache
             guiCache.put(geonotesHandler, this);
         } catch (Exception e) {
-            GeonotesPlugin
-                    .log(
-                            "GeonotesPlugin problem: eu.hydrologis.jgrass.geonotes#GeoNote#createNoteComposite", e); //$NON-NLS-1$
+            GeonotesPlugin.log("GeonotesPlugin problem: eu.hydrologis.jgrass.geonotes#GeoNote#createNoteComposite", e); //$NON-NLS-1$
             e.printStackTrace();
         }
     }
@@ -269,8 +250,7 @@ public class GeonotesUI implements GeonotesObserver {
      */
     private void createPropertiesPanel() {
         innerPanel = new Composite(stackComposite, SWT.None);
-        innerPanel.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL
-                | GridData.GRAB_VERTICAL));
+        innerPanel.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
         innerPanel.setLayout(new GridLayout(2, true));
 
         Group group = new Group(innerPanel, SWT.NONE);
@@ -300,19 +280,16 @@ public class GeonotesUI implements GeonotesObserver {
         // postit color
         Label postitColorLabel = new Label(innerPanel, SWT.None);
         postitColorLabel.setText(Messages.getString("GeoNote.backcolor")); //$NON-NLS-1$
-        postitColorLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-                | GridData.GRAB_HORIZONTAL));
+        postitColorLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
         final ColorEditor postitColorEditor = new ColorEditor(innerPanel);
         String[] colorSplit = geonotesHandler.getColorString().split(":");
         int[] pColor = new int[]{Integer.parseInt(colorSplit[0]), Integer.parseInt(colorSplit[1]),
                 Integer.parseInt(colorSplit[2])};
         postitColorEditor.setColorValue(new RGB(pColor[0], pColor[1], pColor[2]));
-        postitColorEditor.getButton().setLayoutData(
-                new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
+        postitColorEditor.getButton().setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
 
         Label filler = new Label(innerPanel, SWT.None);
-        GridData fillGD = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL
-                | GridData.GRAB_VERTICAL);
+        GridData fillGD = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
         fillGD.horizontalSpan = 2;
         filler.setLayoutData(fillGD);
 
@@ -323,20 +300,18 @@ public class GeonotesUI implements GeonotesObserver {
             public void widgetSelected( SelectionEvent e ) {
 
                 RGB colorValue = postitColorEditor.getColorValue();
-                String colorString = colorValue.red + ":" + colorValue.green + ":"
-                        + colorValue.blue + ":255";
+                String colorString = colorValue.red + ":" + colorValue.green + ":" + colorValue.blue + ":255";
                 geonotesHandler.setColor(okButton.getDisplay(), colorString);
                 geonotesHandler.setTitle(titleText.getText());
                 geonotesHandler.notifyObservers(NOTIFICATION.NOTESAVED);
-                
+
                 stackLayout.topControl = tabFolder;
                 stackComposite.layout();
             }
         });
         Button cancelButton = new Button(innerPanel, SWT.PUSH);
         cancelButton.setText(Messages.getString("GeoNote.cancel")); //$NON-NLS-1$
-        cancelButton
-                .setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
+        cancelButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
         cancelButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
                 stackLayout.topControl = tabFolder;
@@ -349,8 +324,7 @@ public class GeonotesUI implements GeonotesObserver {
         dumpButton.setText("Dump geonote to disk");
         dumpButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter(){
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
-                DirectoryDialog directoryDialog = new DirectoryDialog(geonoteWrappingComposite
-                        .getShell(), SWT.OPEN);
+                DirectoryDialog directoryDialog = new DirectoryDialog(geonoteWrappingComposite.getShell(), SWT.OPEN);
                 String path = directoryDialog.open();
 
                 if (path != null && path.length() > 0) {
@@ -359,8 +333,7 @@ public class GeonotesUI implements GeonotesObserver {
                     } catch (Exception e1) {
                         e1.printStackTrace();
                         String message = "An error occurred while saving the note to disk.";
-                        ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                                GeonotesPlugin.PLUGIN_ID, e1);
+                        ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e1);
                     }
                 }
 
@@ -368,23 +341,24 @@ public class GeonotesUI implements GeonotesObserver {
         });
 
         final Button deleteNoteButton = new Button(innerPanel, SWT.BORDER | SWT.PUSH);
-        deleteNoteButton.setImage(ImageManager.INSTANCE.getTrashImage());
+        deleteNoteButton.setImage(ImageManager.ICON_TRASH.getSwtImage());
         deleteNoteButton.setToolTipText(Messages.getString("GeoNote.deletenote")); //$NON-NLS-1$
         deleteNoteButton.setText(Messages.getString("GeoNote.deletenote")); //$NON-NLS-1$
-        deleteNoteButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-                | GridData.GRAB_HORIZONTAL));
+        deleteNoteButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
         deleteNoteButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
                 try {
                     geonotesHandler.deleteNote();
                 } catch (Exception ex) {
                     String message = "An error occurred while removing the Geonote.";
-                    ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                            GeonotesPlugin.PLUGIN_ID, ex);
+                    ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, ex);
                 }
-                GeonotesPlugin.getDefault().getGeonotesLayer().refresh(
-                        geonotesHandler.getBoundsAsReferenceEnvelope(ApplicationGIS.getActiveMap()
-                                .getViewportModel().getCRS()));
+                GeonotesPlugin
+                        .getDefault()
+                        .getGeonotesLayer()
+                        .refresh(
+                                geonotesHandler.getBoundsAsReferenceEnvelope(ApplicationGIS.getActiveMap().getViewportModel()
+                                        .getCRS()));
                 if (shell != null)
                     shell.close();
             }
@@ -398,11 +372,18 @@ public class GeonotesUI implements GeonotesObserver {
      * @param geonoteColor the current geonote color.
      */
     private void createQuickBackColorButtons( Composite parent, Color geonoteColor ) {
-        clrComp = new Composite(parent, SWT.None);
+        lowerBarComposite = new Composite(parent, SWT.NONE);
+        GridData lowerBarCompositeGD = new GridData(SWT.FILL, SWT.BOTTOM, true, false);
+        lowerBarCompositeGD.horizontalSpan = 5;
+        lowerBarComposite.setLayoutData(lowerBarCompositeGD);
+        lowerBarComposite.setLayout(new GridLayout(3, false));
+        lowerBarComposite.setBackground(geonoteColor);
+
+        clrComp = new Composite(lowerBarComposite, SWT.None);
         clrComp.setLayout(new GridLayout(6, true));
         clrComp.setBackground(geonoteColor);
         GridData gridData = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
-        gridData.horizontalSpan = 5;
+        // gridData.horizontalSpan = 5;
         clrComp.setLayoutData(gridData);
         int size = 10;
         for( int i = 0; i < DEFAULTBACKGROUNDCOLORS.length; i++ ) {
@@ -414,49 +395,23 @@ public class GeonotesUI implements GeonotesObserver {
             l.addMouseListener(new MouseAdapter(){
                 public void mouseDown( MouseEvent e ) {
                     Color geonoteColor = l.getBackground();
-                    String geonoteC = geonoteColor.getRed() + ":" + geonoteColor.getGreen() + ":"
-                            + geonoteColor.getBlue() + ":255";
-                    geonotesHandler.setColor(titleLabel.getDisplay(), geonoteC);
+                    String geonoteC = geonoteColor.getRed() + ":" + geonoteColor.getGreen() + ":" + geonoteColor.getBlue()
+                            + ":255";
+                    geonotesHandler.setColor(clrComp.getDisplay(), geonoteC);
                 }
             });
-            GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER
-                    | GridData.VERTICAL_ALIGN_CENTER);
+            GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER | GridData.VERTICAL_ALIGN_CENTER);
             gd.heightHint = size;
             gd.widthHint = size;
             l.setLayoutData(gd);
-
         }
-    }
 
-    /**
-     * Creates the geonote's close button.
-     * 
-     * @param parent the parent composite.
-     */
-    private void createCloseButton( Composite parent ) {
-
-        Button closeItem = new Button(parent, SWT.FLAT);
-        closeItem.setImage(ImageManager.INSTANCE.getCloseImage());
-        closeItem.setToolTipText(Messages.getString("GeoNote.closenosave")); //$NON-NLS-1$
-        closeItem.addSelectionListener(new SelectionAdapter(){
-            public void widgetSelected( SelectionEvent e ) {
-                if (shell != null)
-                    shell.close();
-            }
-        });
-    }
-
-    /**
-     * Creates the geonote's button that closes the note after prior saving.
-     * 
-     * @param parent the parent composite.
-     */
-    private void createSaveAndCloseButton( Composite parent ) {
-
-        Button closeItem = new Button(parent, SWT.FLAT);
-        closeItem.setImage(ImageManager.INSTANCE.getSafeCloseImage());
-        closeItem.setToolTipText(Messages.getString("GeoNote.closesave")); //$NON-NLS-1$
-        closeItem.addSelectionListener(new SelectionAdapter(){
+        // save button on the right side
+        Button saveButton = new Button(lowerBarComposite, SWT.PUSH | SWT.FLAT);
+        saveButton.setLayoutData(new GridData(SWT.END, SWT.BOTTOM, false, false));
+        saveButton.setImage(ImageManager.ICON_SAFECLOSE.getSwtImage());
+        saveButton.setToolTipText(Messages.getString("GeoNote.closesave")); //$NON-NLS-1$
+        saveButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
                 // drawing area
                 List<DressedStroke> drawings = drawArea.getDrawing();
@@ -479,6 +434,18 @@ public class GeonotesUI implements GeonotesObserver {
                     shell.close();
             }
         });
+        // save button on the right side
+        Button configButton = new Button(lowerBarComposite, SWT.FLAT);
+        configButton.setLayoutData(new GridData(SWT.END, SWT.BOTTOM, false, false));
+        configButton.setImage(ImageManager.ICON_CONFIG.getSwtImage());
+        configButton.setToolTipText(Messages.getString("GeoNote.closesave")); //$NON-NLS-1$
+        configButton.addSelectionListener(new SelectionAdapter(){
+            public void widgetSelected( SelectionEvent e ) {
+                stackLayout.topControl = innerPanel;
+                stackComposite.layout();
+            }
+        });
+
     }
 
     /**
@@ -490,39 +457,20 @@ public class GeonotesUI implements GeonotesObserver {
      * @param geonoteColor the current geonote color.
      */
     private void createTitleLabel( Composite parent, Color geonoteColor ) {
-        Label iconLabel = new Label(parent, SWT.None);
         int type = geonotesHandler.getType();
         Image img = null;
         if (type == NORMAL) {
-            img = ImageManager.INSTANCE.getPinImageSWT30();
+            img = ImageManager.ICON_PIN_30.getSwtImage();
         } else if (type == GPS) {
-            img = ImageManager.INSTANCE.getGpsPinImageSWT16();
+            img = ImageManager.ICON_GPS_PIN_16.getSwtImage();
         } else if (type == PHOTO) {
-            img = ImageManager.INSTANCE.getPhotoPinImageSWT30();
+            img = ImageManager.ICON_PHOTO_PIN.getSwtImage();
         }
-        iconLabel.setImage(img);
-        GridData gridDataImg = new GridData(GridData.BEGINNING);
-        iconLabel.setLayoutData(gridDataImg);
-
-        titleLabel = new Label(parent, SWT.None);
-        GridData gridData = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
-        titleLabel.setLayoutData(gridData);
-        titleLabel.setToolTipText(geonotesHandler.getInfo());
-        titleLabel.setText(geonotesHandler.getTitle());
-        shell.setText(geonotesHandler.getTitle());
-        titleLabel.setBackground(geonoteColor);
-        titleLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
-        if (isWithShell) {
-            titleLabel.addListener(SWT.MouseDown, l);
-            titleLabel.addListener(SWT.MouseUp, l);
-            titleLabel.addListener(SWT.MouseMove, l);
+        if (shell != null && !shell.isDisposed()) {
+            shell.setImage(img);
+            shell.setText(geonotesHandler.getTitle());
+            shell.setToolTipText(geonotesHandler.getInfo());
         }
-        titleLabel.addMouseListener(new MouseAdapter(){
-            public void mouseDoubleClick( MouseEvent arg0 ) {
-                stackLayout.topControl = innerPanel;
-                stackComposite.layout();
-            }
-        });
     }
 
     public Image getDrawareaImage() {
@@ -560,20 +508,23 @@ public class GeonotesUI implements GeonotesObserver {
 
             switch( notification ) {
             case SIZECHANGED:
-                shell.setSize(handler.getWidth(), handler.getHeight());
+                if (shell != null && !shell.isDisposed()) {
+                    shell.setSize(handler.getWidth(), handler.getHeight());
+                }
                 break;
             case TITLECHANGED:
-                titleLabel.setText(handler.getTitle());
-                titleLabel.setToolTipText(handler.getInfo());
-                shell.setText(geonotesHandler.getTitle());
+                if (shell != null && !shell.isDisposed()) {
+                    shell.setText(handler.getTitle());
+                    shell.setToolTipText(handler.getInfo());
+                }
                 break;
             case STYLECHANGED:
-                geonoteColor = handler.getColor(titleLabel.getDisplay());
+                geonoteColor = handler.getColor(clrComp.getDisplay());
                 if (shell != null && !shell.isDisposed())
                     shell.setBackground(geonoteColor);
                 geonoteWrappingComposite.setBackground(geonoteColor);
-                titleLabel.setBackground(geonoteColor);
                 clrComp.setBackground(geonoteColor);
+                lowerBarComposite.setBackground(geonoteColor);
                 stackComposite.setBackground(geonoteColor);
                 tabFolder.setBackground(geonoteColor);
                 textArea.getTextArea().setBackground(geonoteColor);
