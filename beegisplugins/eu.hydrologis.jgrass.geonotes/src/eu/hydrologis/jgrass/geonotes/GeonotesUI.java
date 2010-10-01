@@ -127,7 +127,7 @@ public class GeonotesUI implements GeonotesObserver {
      */
     public void openInShell( Point location ) {
         isWithShell = true;
-        shell = new Shell(SWT.RESIZE);
+        shell = new Shell();
         if (geonoteColor == null) {
             geonoteColor = geonotesHandler.getColor(shell.getDisplay());
         }
@@ -509,6 +509,7 @@ public class GeonotesUI implements GeonotesObserver {
         titleLabel.setLayoutData(gridData);
         titleLabel.setToolTipText(geonotesHandler.getInfo());
         titleLabel.setText(geonotesHandler.getTitle());
+        shell.setText(geonotesHandler.getTitle());
         titleLabel.setBackground(geonoteColor);
         titleLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
         if (isWithShell) {
@@ -564,6 +565,7 @@ public class GeonotesUI implements GeonotesObserver {
             case TITLECHANGED:
                 titleLabel.setText(handler.getTitle());
                 titleLabel.setToolTipText(handler.getInfo());
+                shell.setText(geonotesHandler.getTitle());
                 break;
             case STYLECHANGED:
                 geonoteColor = handler.getColor(titleLabel.getDisplay());
