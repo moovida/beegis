@@ -13,8 +13,8 @@ public class GeonoteConstants {
     /*
      * ================= default values ======================
      */
-    public static final int DEFAULT_GEONOTE_WIDTH = 350;
-    public static final int DEFAULT_GEONOTE_HEIGHT = 350;
+    public static final int DEFAULT_GEONOTE_WIDTH = 450;
+    public static final int DEFAULT_GEONOTE_HEIGHT = 450;
     public static final String DEFAULT_GEONOTE_TITLE = "new geonote"; //$NON-NLS-1$
     public static final int DEFAULT_GEONOTE_TYPE = 0;
     public static final CoordinateReferenceSystem DEFAULT_GEONOTE_CRS = DefaultGeographicCRS.WGS84;
