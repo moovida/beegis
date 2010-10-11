@@ -131,10 +131,11 @@ public class SimpleSWTImageEditor {
      * @param backGroundImage a background image to use in the canvas.
      * @param minScroll the minimum dimension for the scrolling.
      * @param doZoom flag that defines if the zoom tools should be added.
+     * @param doRotate flag that defines whether the rotate button has to be turned on.
      */
     @SuppressWarnings("nls")
     public SimpleSWTImageEditor( Composite parent, int style, List<DressedStroke> preloadedLines, Image backGroundImage,
-            Point minScroll, boolean doZoom ) {
+            Point minScroll, boolean doZoom, boolean enableRotate ) {
         if (backGroundImage != null)
             this.backImage = backGroundImage;
         if (preloadedLines == null) {
@@ -145,11 +146,14 @@ public class SimpleSWTImageEditor {
         mainComposite = new Composite(parent, style);
         mainComposite.setLayout(new GridLayout());
         propsComposite = new Composite(mainComposite, style);
-        if (doZoom) {
-            propsComposite.setLayout(new GridLayout(9, false));
-        } else {
-            propsComposite.setLayout(new GridLayout(6, false));
+        int cols = 9;
+        if (!doZoom) {
+            cols = 6;
         }
+        if (!enableRotate) {
+            cols = cols - 1;
+        }
+        propsComposite.setLayout(new GridLayout(cols, false));
         propsComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
         final ImageCombo strokeWidthCombo = new ImageCombo(propsComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
@@ -286,17 +290,19 @@ public class SimpleSWTImageEditor {
             });
 
         }
-        // rotate right
-        Button rotateButton = new Button(propsComposite, SWT.PUSH);
-        rotateButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
-        rotateButton.setImage(ImageCache.getInstance().getImage(ImageCache.ROTATE));
-        rotateButton.setToolTipText("rotate right");
-        rotateButton.addSelectionListener(new SelectionAdapter(){
-            public void widgetSelected( SelectionEvent e ) {
-                doRotate = true;
-                drawArea.redraw();
-            }
-        });
+        if (enableRotate) {
+            // rotate right
+            Button rotateButton = new Button(propsComposite, SWT.PUSH);
+            rotateButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+            rotateButton.setImage(ImageCache.getInstance().getImage(ImageCache.ROTATE));
+            rotateButton.setToolTipText("rotate right");
+            rotateButton.addSelectionListener(new SelectionAdapter(){
+                public void widgetSelected( SelectionEvent e ) {
+                    doRotate = true;
+                    drawArea.redraw();
+                }
+            });
+        }
 
         drawAreaScroller = new ScrolledComposite(mainComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         drawArea = new Canvas(drawAreaScroller, SWT.None);
@@ -370,6 +376,7 @@ public class SimpleSWTImageEditor {
                             // rotation has to be persisted
                             backImage.dispose();
                             backImage = new Image(drawArea.getDisplay(), backImageData);
+                            imgBounds = backImage.getBounds();
                             doRotate = false;
                         }
 
@@ -697,7 +704,7 @@ public class SimpleSWTImageEditor {
         Image img = new Image(display, imgD);
         Shell shell = new Shell(display);
         shell.setLayout(new FillLayout());
-        new SimpleSWTImageEditor(shell, SWT.None, null, img, new Point(600, 400), true);
+        new SimpleSWTImageEditor(shell, SWT.None, null, img, new Point(600, 400), true, true);
         shell.open();
         while( !shell.isDisposed() ) {
             if (!display.readAndDispatch())
