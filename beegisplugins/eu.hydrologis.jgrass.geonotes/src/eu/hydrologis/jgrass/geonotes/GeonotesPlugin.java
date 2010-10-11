@@ -38,6 +38,7 @@ import org.osgi.framework.BundleContext;
 
 import eu.hydrologis.jgrass.geonotes.fieldbook.FieldbookView;
 import eu.hydrologis.jgrass.geonotes.mapgraphic.GeonotesMapGraphic;
+import eu.hydrologis.jgrass.geonotes.util.ImageManager;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -65,6 +66,7 @@ public class GeonotesPlugin extends AbstractUIPlugin {
     }
 
     public void stop( BundleContext context ) throws Exception {
+        ImageManager.disposeSwt();
         plugin = null;
         super.stop(context);
     }
