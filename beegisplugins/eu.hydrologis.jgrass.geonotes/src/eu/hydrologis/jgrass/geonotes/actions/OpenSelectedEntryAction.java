@@ -116,7 +116,8 @@ public class OpenSelectedEntryAction implements IDoubleClickListener {
         final Image img = new Image(shell.getDisplay(), imgD);
         int width = img.getBounds().width;
         int height = img.getBounds().height;
-        simpleSWTImageEditor = new SimpleSWTImageEditor(editorComposite, SWT.None, drawingList, img, new Point(1000, 1000), true);
+        simpleSWTImageEditor = new SimpleSWTImageEditor(editorComposite, SWT.None, drawingList, img, new Point(1000, 1000), true,
+                true);
 
         Composite buttonComposite = new Composite(shell, SWT.None);
         buttonComposite.setLayout(new RowLayout());
@@ -136,10 +137,10 @@ public class OpenSelectedEntryAction implements IDoubleClickListener {
                         } else if (file.getName().toLowerCase().endsWith("png")) {
                             imageLoader.save(tempFile.getAbsolutePath(), SWT.IMAGE_PNG);
                         }
-                        
+
                         geonotesHandler.deleteMedia(name);
                         geonotesHandler.addMedia(tempFile, name);
-                        
+
                         FileUtils.forceDelete(tempFile);
                     }
                     ArrayList<DressedStroke> drawing = (ArrayList<DressedStroke>) simpleSWTImageEditor.getDrawing();
