@@ -25,10 +25,14 @@ import javax.vecmath.Point2f;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.preference.ColorSelector;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -46,6 +50,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -113,8 +118,9 @@ public class SimpleSWTImageEditor {
     private double baseScaleFactor = -1;
     private double scaleFactor = -1;
     private boolean doRotate = false;
-    private Composite buttonsComposite;
-    private Composite strokeComposite;
+    private boolean imageGotRotated = false;
+    private Color fColor;
+    private ImageData rotatedImageData;
 
     /**
      * Constructor for the image editor.
@@ -139,16 +145,17 @@ public class SimpleSWTImageEditor {
         mainComposite = new Composite(parent, style);
         mainComposite.setLayout(new GridLayout());
         propsComposite = new Composite(mainComposite, style);
-        propsComposite.setLayout(new RowLayout());
-        propsComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
+        if (doZoom) {
+            propsComposite.setLayout(new GridLayout(9, false));
+        } else {
+            propsComposite.setLayout(new GridLayout(6, false));
+        }
+        propsComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-        strokeComposite = new Composite(propsComposite, SWT.None);
-        strokeComposite.setLayout(new GridLayout(2, false));
-
-        final ImageCombo strokeWidthCombo = new ImageCombo(strokeComposite, SWT.READ_ONLY);
-        GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-        gridData.widthHint = 30;
-        strokeWidthCombo.setLayoutData(gridData);
+        final ImageCombo strokeWidthCombo = new ImageCombo(propsComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+        GridData strokeWidthComboGD = new GridData(SWT.FILL, SWT.CENTER, false, false);
+        strokeWidthComboGD.widthHint = 30;
+        strokeWidthCombo.setLayoutData(strokeWidthComboGD);
         strokeWidthCombo.add("1", ImageCache.getInstance().getImage(ImageCache.STROKE_WIDTH_1));
         strokeWidthCombo.add("2", ImageCache.getInstance().getImage(ImageCache.STROKE_WIDTH_2));
         strokeWidthCombo.add("3", ImageCache.getInstance().getImage(ImageCache.STROKE_WIDTH_3));
@@ -164,9 +171,10 @@ public class SimpleSWTImageEditor {
         });
 
         // alpha
-        final Combo alphaCombo = new Combo(strokeComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-        GridData gridData2 = new GridData(SWT.FILL, SWT.FILL, true, true);
-        alphaCombo.setLayoutData(gridData2);
+        final Combo alphaCombo = new Combo(propsComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+        GridData alphaComboGD = new GridData(SWT.FILL, SWT.CENTER, false, false);
+        alphaComboGD.widthHint = 30;
+        alphaCombo.setLayoutData(alphaComboGD);
         String[] items = new String[ALPHAS.length];
         for( int i = 0; i < items.length; i++ ) {
             items[i] = ALPHAS[i] + "%";
@@ -182,31 +190,42 @@ public class SimpleSWTImageEditor {
             }
         });
 
-        buttonsComposite = new Composite(propsComposite, SWT.NONE);
-        if (doZoom) {
-            buttonsComposite.setLayout(new GridLayout(7, false));
-        } else {
-            buttonsComposite.setLayout(new GridLayout(4, false));
-        }
-
         // color
-        final ColorSelector cs = new ColorSelector(buttonsComposite);
-        Button csButton = cs.getButton();
-        GridData gridData3 = new GridData(SWT.FILL, SWT.FILL, true, true);
-        gridData3.widthHint = 25;
-        csButton.setLayoutData(gridData3);
-
-        cs.setColorValue(new RGB(strokeRGB[0], strokeRGB[1], strokeRGB[2]));
-        cs.getButton().setToolTipText("stroke color");
-        cs.getButton().addSelectionListener(new SelectionAdapter(){
+        final Button colorButton = new Button(propsComposite, SWT.PUSH);
+        GridData colorButtonGD = new GridData(SWT.FILL, SWT.CENTER, false, false);
+        colorButtonGD.widthHint = 35;
+        colorButton.setLayoutData(colorButtonGD);
+        colorButton.addPaintListener(new PaintListener(){
+            public void paintControl( PaintEvent e ) {
+                GC gc = e.gc;
+                Rectangle c = gc.getClipping();
+                int q = 5;
+                Rectangle r = new Rectangle(c.x + q, c.y + q, c.width - 2 * q, c.height - 2 * q);
+                if (fColor != null) {
+                    fColor.dispose();
+                }
+                fColor = new Color(alphaCombo.getDisplay(), new RGB(strokeRGB[0], strokeRGB[1], strokeRGB[2]));
+                gc.setBackground(fColor);
+                gc.fillRectangle(r);
+            }
+        });
+        colorButton.setToolTipText("stroke color");
+        colorButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
-                RGB rgb = cs.getColorValue();
-                strokeRGB = new int[]{rgb.red, rgb.green, rgb.blue};
+                ColorDialog colorDialog = new ColorDialog(colorButton.getShell());
+                colorDialog.setRGB(new RGB(strokeRGB[0], strokeRGB[1], strokeRGB[2]));
+                RGB rgb = colorDialog.open();
+                if (rgb != null) {
+                    strokeRGB = new int[]{rgb.red, rgb.green, rgb.blue};
+                    colorButton.redraw();
+                }
+
             }
         });
 
         // clear all
-        Button clearButton = new Button(buttonsComposite, SWT.BORDER | SWT.PUSH);
+        Button clearButton = new Button(propsComposite, SWT.PUSH);
+        clearButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
         clearButton.setImage(ImageCache.getInstance().getImage(ImageCache.TRASH));
         clearButton.setToolTipText("clear the area from drawings");
         clearButton.addSelectionListener(new SelectionAdapter(){
@@ -216,7 +235,8 @@ public class SimpleSWTImageEditor {
             }
         });
         // clear shape
-        Button removeButton = new Button(buttonsComposite, SWT.BORDER | SWT.PUSH);
+        Button removeButton = new Button(propsComposite, SWT.PUSH);
+        removeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
         removeButton.setImage(ImageCache.getInstance().getImage(ImageCache.CLOSE));
         removeButton.setToolTipText("remove selected line");
         removeButton.addSelectionListener(new SelectionAdapter(){
@@ -229,7 +249,8 @@ public class SimpleSWTImageEditor {
 
         if (doZoom) {
             // zoom all
-            Button zoomAllButton = new Button(buttonsComposite, SWT.PUSH);
+            Button zoomAllButton = new Button(propsComposite, SWT.PUSH);
+            zoomAllButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
             zoomAllButton.setImage(ImageCache.getInstance().getImage(ImageCache.ZOOM_ALL));
             zoomAllButton.setToolTipText("zoom to the whole extend");
             zoomAllButton.addSelectionListener(new SelectionAdapter(){
@@ -241,7 +262,8 @@ public class SimpleSWTImageEditor {
             });
 
             // zoom in
-            Button zoomInButton = new Button(buttonsComposite, SWT.PUSH);
+            Button zoomInButton = new Button(propsComposite, SWT.PUSH);
+            zoomInButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
             zoomInButton.setImage(ImageCache.getInstance().getImage(ImageCache.ZOOM_IN));
             zoomInButton.setToolTipText("zoom in");
             zoomInButton.addSelectionListener(new SelectionAdapter(){
@@ -252,7 +274,8 @@ public class SimpleSWTImageEditor {
             });
 
             // zoom out
-            Button zoomOutButton = new Button(buttonsComposite, SWT.PUSH);
+            Button zoomOutButton = new Button(propsComposite, SWT.PUSH);
+            zoomOutButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
             zoomOutButton.setImage(ImageCache.getInstance().getImage(ImageCache.ZOOM_OUT));
             zoomOutButton.setToolTipText("zoom out");
             zoomOutButton.addSelectionListener(new SelectionAdapter(){
@@ -264,7 +287,8 @@ public class SimpleSWTImageEditor {
 
         }
         // rotate right
-        Button rotateButton = new Button(buttonsComposite, SWT.PUSH);
+        Button rotateButton = new Button(propsComposite, SWT.PUSH);
+        rotateButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
         rotateButton.setImage(ImageCache.getInstance().getImage(ImageCache.ROTATE));
         rotateButton.setToolTipText("rotate right");
         rotateButton.addSelectionListener(new SelectionAdapter(){
@@ -440,8 +464,7 @@ public class SimpleSWTImageEditor {
                 }
             }
         };
-        
-        
+
         mainComposite.addControlListener(new ControlListener(){
             public void controlResized( ControlEvent e ) {
                 calculateBaseScaleFactor();
@@ -500,8 +523,6 @@ public class SimpleSWTImageEditor {
         propsComposite.setBackground(backgroundColor);
         drawAreaScroller.setBackground(backgroundColor);
         drawArea.setBackground(backgroundColor);
-        buttonsComposite.setBackground(backgroundColor);
-        strokeComposite.setBackground(backgroundColor);
     }
 
     /**
@@ -511,8 +532,9 @@ public class SimpleSWTImageEditor {
      */
     public Image getImage() {
         if (drawnImage != null)
-            return drawnImage;
+            drawnImage.dispose();
 
+        // get drawings bounds
         Rectangle bounds = null;
         int maxStrokeWidth = 1;
         for( int i = 0; i < lines.size(); i = i + 1 ) {
@@ -527,21 +549,24 @@ public class SimpleSWTImageEditor {
                 maxStrokeWidth = width;
             }
         }
+        if (backImage != null) {
+            Rectangle imgBounds = backImage.getBounds();
+            if (bounds != null) {
+                bounds.add(imgBounds);
+            } else {
+                bounds = imgBounds;
+            }
+        }
+
         if (bounds == null)
             return null;
-        bounds = new Rectangle(bounds.x, bounds.y, bounds.width + maxStrokeWidth, bounds.height + maxStrokeWidth);
+        bounds = new Rectangle(bounds.x, bounds.y, bounds.width + 2 * maxStrokeWidth, bounds.height + 2 * maxStrokeWidth);
 
         drawnImage = new Image(drawArea.getDisplay(), bounds);
         GC gcImage = new GC(drawnImage);
-        calculateBaseScaleFactor();
-        scaleFactor = baseScaleFactor;
         // draw the background image
         if (backImage != null) {
-            Rectangle imgBounds = backImage.getBounds();
-            ImageData newImageData = backImage.getImageData().scaledTo((int) Math.round(imgBounds.width * scaleFactor),
-                    (int) Math.round(imgBounds.height * scaleFactor));
-            Image newImage = new Image(drawArea.getDisplay(), newImageData);
-            gcImage.drawImage(newImage, 0, 0);
+            gcImage.drawImage(backImage, 0, 0);
         }
         // draw the lines
         for( int i = 0; i < lines.size(); i = i + 1 ) {
@@ -553,7 +578,7 @@ public class SimpleSWTImageEditor {
             int[] rgb = tmpStroke.getRgb();
             gcImage.setForeground(new Color(drawArea.getDisplay(), rgb[0], rgb[1], rgb[2]));
             gcImage.setAlpha(tmpStroke.getStrokeAlpha());
-            int[] nodes = tmpStroke.getScaledNodes();
+            int[] nodes = tmpStroke.getNodes();
             // at least 4 values to have two points
             if (nodes.length > 3) {
                 Path p = new Path(drawArea.getDisplay());
@@ -566,8 +591,6 @@ public class SimpleSWTImageEditor {
         }
 
         gcImage.dispose();
-
-        scaleFactor = -1;
         return drawnImage;
     }
 
@@ -590,8 +613,8 @@ public class SimpleSWTImageEditor {
         }
         if (imageBound != null) {
             Rectangle mainCompositeBound = mainComposite.getBounds();
-            double scaleFactorX = (double) (mainCompositeBound.width - 30)/ (double) imageBound.width;
-            double scaleFactorY = (double) (mainCompositeBound.height - 30)/ (double) imageBound.height;
+            double scaleFactorX = (double) (mainCompositeBound.width - 30) / (double) imageBound.width;
+            double scaleFactorY = (double) (mainCompositeBound.height - 30) / (double) imageBound.height;
             baseScaleFactor = mainCompositeBound.width < mainCompositeBound.height ? scaleFactorX : scaleFactorY;
         } else {
             baseScaleFactor = 1.0;
@@ -646,8 +669,25 @@ public class SimpleSWTImageEditor {
                 System.arraycopy(srcData.data, srcIndex, newData, destIndex, bytesPerPixel);
             }
         }
-        // destBytesPerLine is used as scanlinePad to ensure that no padding is required
-        return new ImageData(width, height, srcData.depth, srcData.palette, srcData.scanlinePad, newData);
+        imageGotRotated = true;
+        rotatedImageData = new ImageData(width, height, srcData.depth, srcData.palette, srcData.scanlinePad, newData);
+        return rotatedImageData;
+    }
+
+    /**
+     * @return true if a rotation of the background image was requested.
+     */
+    public boolean isImageGotRotated() {
+        return imageGotRotated;
+    }
+
+    /**
+     * Get the rotated image in case it is needed for persistence.
+     * 
+     * @return the rotated image.
+     */
+    public ImageData getRotatedImageData() {
+        return rotatedImageData;
     }
 
     public static void main( String[] args ) {

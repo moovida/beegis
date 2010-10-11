@@ -23,6 +23,7 @@ import java.util.List;
 
 import net.refractions.udig.ui.ExceptionDetailsDialog;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -33,6 +34,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -80,8 +82,7 @@ public class OpenSelectedEntryAction implements IDoubleClickListener {
             if (mediaFile.exists()) {
                 // if it is an image use the own editor
                 String absolutePath = mediaFile.getAbsolutePath();
-                if (absolutePath.toLowerCase().endsWith(MimeTypes.T_JPG)
-                        || absolutePath.toLowerCase().endsWith(MimeTypes.T_PNG)
+                if (absolutePath.toLowerCase().endsWith(MimeTypes.T_JPG) || absolutePath.toLowerCase().endsWith(MimeTypes.T_PNG)
                         || absolutePath.toLowerCase().endsWith(MimeTypes.T_GIF)
                         || absolutePath.toLowerCase().endsWith(MimeTypes.T_TIF)) {
                     openImage(name, geonotesHandler, drawingList, mediaFile);
@@ -92,8 +93,7 @@ public class OpenSelectedEntryAction implements IDoubleClickListener {
             }
         } catch (Exception e) {
             String message = "An error occurred while opening the selected media.";
-            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                    GeonotesPlugin.PLUGIN_ID, e);
+            ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GeonotesPlugin.PLUGIN_ID, e);
             e.printStackTrace();
         }
     }
@@ -103,35 +103,48 @@ public class OpenSelectedEntryAction implements IDoubleClickListener {
      * @param drawingList
      * @param path
      */
-    private void openImage( final String name, final GeonotesHandler geonotesHandler,
-            final List<DressedStroke> drawingList, File file ) {
+    private void openImage( final String name, final GeonotesHandler geonotesHandler, final List<DressedStroke> drawingList,
+            final File file ) {
         final Shell shell = new Shell(SWT.DIALOG_TRIM | SWT.RESIZE);
         shell.setText("Editing of " + name); //$NON-NLS-1$
         shell.setLayout(new GridLayout());
 
         Composite editorComposite = new Composite(shell, SWT.None);
         editorComposite.setLayout(new FillLayout());
-        editorComposite.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL
-                | GridData.GRAB_VERTICAL));
+        editorComposite.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
         ImageData imgD = new ImageData(file.getAbsolutePath());
         final Image img = new Image(shell.getDisplay(), imgD);
         int width = img.getBounds().width;
         int height = img.getBounds().height;
-        simpleSWTImageEditor = new SimpleSWTImageEditor(editorComposite, SWT.None, drawingList,
-                img, new Point(1000, 1000), true);
+        simpleSWTImageEditor = new SimpleSWTImageEditor(editorComposite, SWT.None, drawingList, img, new Point(1000, 1000), true);
 
         Composite buttonComposite = new Composite(shell, SWT.None);
         buttonComposite.setLayout(new RowLayout());
-        buttonComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-                | GridData.GRAB_HORIZONTAL));
+        buttonComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
         Button okButton = new Button(buttonComposite, SWT.BORDER | SWT.PUSH);
         okButton.setText("Save");
         okButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
-                ArrayList<DressedStroke> drawing = (ArrayList<DressedStroke>) simpleSWTImageEditor
-                        .getDrawing();
                 try {
+                    if (simpleSWTImageEditor.isImageGotRotated()) {
+                        ImageData rotatedImage = simpleSWTImageEditor.getRotatedImageData();
+                        ImageLoader imageLoader = new ImageLoader();
+                        imageLoader.data = new ImageData[]{rotatedImage};
+                        File tempFile = File.createTempFile("imageeditor", "");
+                        if (file.getName().toLowerCase().endsWith("jpg")) {
+                            imageLoader.save(tempFile.getAbsolutePath(), SWT.IMAGE_JPEG);
+                        } else if (file.getName().toLowerCase().endsWith("png")) {
+                            imageLoader.save(tempFile.getAbsolutePath(), SWT.IMAGE_PNG);
+                        }
+                        
+                        geonotesHandler.deleteMedia(name);
+                        geonotesHandler.addMedia(tempFile, name);
+                        
+                        FileUtils.forceDelete(tempFile);
+                    }
+                    ArrayList<DressedStroke> drawing = (ArrayList<DressedStroke>) simpleSWTImageEditor.getDrawing();
                     geonotesHandler.setMediaDrawings(drawing, name);
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
