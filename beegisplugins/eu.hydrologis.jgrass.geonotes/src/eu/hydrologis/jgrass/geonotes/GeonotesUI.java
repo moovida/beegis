@@ -192,7 +192,7 @@ public class GeonotesUI implements GeonotesObserver {
             if (geonotesDrawareaTable != null) {
                 lines = geonotesDrawareaTable.getDrawings();
             }
-            drawArea = new SimpleSWTImageEditor(tabFolder, SWT.None, lines, null, new Point(500, 500), false);
+            drawArea = new SimpleSWTImageEditor(tabFolder, SWT.None, lines, null, new Point(500, 500), true);
             drawArea.setBackgroundColor(geonoteColor);
             item1.setControl(drawArea.getMainControl());
             CTabItem item2 = new CTabItem(tabFolder, SWT.NONE);
