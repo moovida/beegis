@@ -89,9 +89,9 @@ public class GeonotesListViewer extends TableViewer implements ISelectionChanged
         super(parent, multi);
         this.related = related;
 
-        geonoteImage = ImageManager.INSTANCE.getPinImageSWT30();
-        geonoteGpsImage = ImageManager.INSTANCE.getGpsPinImageSWT30();
-        geonotePhotoImage = ImageManager.INSTANCE.getPhotoPinImageSWT30();
+        geonoteImage = ImageManager.ICON_PIN_30.getSwtImage();
+        geonoteGpsImage = ImageManager.ICON_GPS_PIN_30.getSwtImage();
+        geonotePhotoImage = ImageManager.ICON_PHOTO_PIN.getSwtImage();
 
         this.addSelectionChangedListener(this);
 

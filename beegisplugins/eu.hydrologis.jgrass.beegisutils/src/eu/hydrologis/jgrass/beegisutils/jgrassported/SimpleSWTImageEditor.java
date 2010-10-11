@@ -25,9 +25,10 @@ import javax.vecmath.Point2f;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.preference.ColorSelector;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -53,9 +54,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
 import eu.hydrologis.jgrass.beegisutils.utils.ImageCache;
 
 /**
@@ -114,7 +113,8 @@ public class SimpleSWTImageEditor {
     private double baseScaleFactor = -1;
     private double scaleFactor = -1;
     private boolean doRotate = false;
-    private final boolean doZoom;
+    private Composite buttonsComposite;
+    private Composite strokeComposite;
 
     /**
      * Constructor for the image editor.
@@ -126,9 +126,9 @@ public class SimpleSWTImageEditor {
      * @param minScroll the minimum dimension for the scrolling.
      * @param doZoom flag that defines if the zoom tools should be added.
      */
+    @SuppressWarnings("nls")
     public SimpleSWTImageEditor( Composite parent, int style, List<DressedStroke> preloadedLines, Image backGroundImage,
             Point minScroll, boolean doZoom ) {
-        this.doZoom = doZoom;
         if (backGroundImage != null)
             this.backImage = backGroundImage;
         if (preloadedLines == null) {
@@ -142,7 +142,7 @@ public class SimpleSWTImageEditor {
         propsComposite.setLayout(new RowLayout());
         propsComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
 
-        Composite strokeComposite = new Composite(propsComposite, SWT.None);
+        strokeComposite = new Composite(propsComposite, SWT.None);
         strokeComposite.setLayout(new GridLayout(2, false));
 
         final ImageCombo strokeWidthCombo = new ImageCombo(strokeComposite, SWT.READ_ONLY);
@@ -182,7 +182,7 @@ public class SimpleSWTImageEditor {
             }
         });
 
-        Composite buttonsComposite = new Composite(propsComposite, SWT.NONE);
+        buttonsComposite = new Composite(propsComposite, SWT.NONE);
         if (doZoom) {
             buttonsComposite.setLayout(new GridLayout(7, false));
         } else {
@@ -234,10 +234,10 @@ public class SimpleSWTImageEditor {
             zoomAllButton.setToolTipText("zoom to the whole extend");
             zoomAllButton.addSelectionListener(new SelectionAdapter(){
                 public void widgetSelected( SelectionEvent e ) {
-                    calculateBaseScaleFactor();
-                    scaleFactor = baseScaleFactor;
+                    applyScale(baseScaleFactor);
                     drawArea.redraw();
                 }
+
             });
 
             // zoom in
@@ -246,7 +246,7 @@ public class SimpleSWTImageEditor {
             zoomInButton.setToolTipText("zoom in");
             zoomInButton.addSelectionListener(new SelectionAdapter(){
                 public void widgetSelected( SelectionEvent e ) {
-                    scaleFactor = scaleFactor * 1.2;
+                    applyScale(scaleFactor * 1.2);
                     drawArea.redraw();
                 }
             });
@@ -257,7 +257,7 @@ public class SimpleSWTImageEditor {
             zoomOutButton.setToolTipText("zoom out");
             zoomOutButton.addSelectionListener(new SelectionAdapter(){
                 public void widgetSelected( SelectionEvent e ) {
-                    scaleFactor = scaleFactor / 1.2;
+                    applyScale(scaleFactor / 1.2);
                     drawArea.redraw();
                 }
             });
@@ -281,8 +281,8 @@ public class SimpleSWTImageEditor {
         drawAreaScroller.setExpandHorizontal(true);
         drawAreaScroller.setExpandVertical(true);
         if (minScroll != null) {
-            drawAreaScroller.setMinWidth(minScroll.x);
-            drawAreaScroller.setMinHeight(minScroll.y);
+            drawAreaScroller.setMinWidth(minScroll.x * 3);
+            drawAreaScroller.setMinHeight(minScroll.y * 3);
         }
         drawAreaScroller.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
 
@@ -301,12 +301,11 @@ public class SimpleSWTImageEditor {
                         DressedStroke stroke = lines.get(i);
                         int x = event.x;
                         int y = event.y;
-                        int[] nodes = stroke.getScaledNodes(baseScaleFactor);
+                        int[] nodes = stroke.getScaledNodes();
                         for( int j = 0; j < nodes.length - 1; j = j + 2 ) {
                             Point2f linePoint = new Point2f(nodes[j], nodes[j + 1]);
                             Point2f clickPoint = new Point2f(x, y);
-                            int threshold = stroke.strokeWidth[0];
-                            threshold = (int) Math.round((double) threshold * baseScaleFactor);
+                            int threshold = stroke.getScaledStrokeWidth();
                             threshold = threshold < 10 ? 10 : threshold;
                             if (clickPoint.distance(linePoint) < threshold) {
                                 lines.remove(i);
@@ -329,7 +328,7 @@ public class SimpleSWTImageEditor {
                  */
                 if (scaleFactor == -1) {
                     calculateBaseScaleFactor();
-                    scaleFactor = baseScaleFactor;
+                    applyScale(baseScaleFactor);
                 }
 
                 switch( event.type ) {
@@ -358,14 +357,14 @@ public class SimpleSWTImageEditor {
                     // draw the lines
                     for( int i = 0; i < lines.size(); i = i + 1 ) {
                         DressedStroke tmpStroke = lines.get(i);
-                        gcImage.setLineWidth((int) Math.round(tmpStroke.strokeWidth[0] * scaleFactor));
+                        gcImage.setLineWidth(tmpStroke.getScaledStrokeWidth());
                         gcImage.setLineCap(SWT.CAP_ROUND);
                         gcImage.setLineJoin(SWT.JOIN_ROUND);
                         gcImage.setLineStyle(SWT.LINE_SOLID);
-                        int[] rgb = tmpStroke.rgb;
+                        int[] rgb = tmpStroke.getRgb();
                         gcImage.setForeground(new Color(drawArea.getDisplay(), rgb[0], rgb[1], rgb[2]));
-                        gcImage.setAlpha(tmpStroke.strokeAlpha);
-                        int[] nodes = tmpStroke.getScaledNodes(scaleFactor);
+                        gcImage.setAlpha(tmpStroke.getStrokeAlpha());
+                        int[] nodes = tmpStroke.getScaledNodes();
                         // at least 4 values to have two points
                         if (nodes.length > 3) {
                             Path p = new Path(drawArea.getDisplay());
@@ -420,22 +419,36 @@ public class SimpleSWTImageEditor {
 
                     lastX = event.x;
                     lastY = event.y;
-                    DressedStroke newLine = new DressedStroke();
-                    newLine.nodes = new int[line.size()];
+                    int[] nodes = new int[line.size()];
                     for( int i = 0; i < line.size(); i++ ) {
-                        newLine.nodes[i] = (int) Math.round((double) line.get(i) / scaleFactor);
+                        nodes[i] = (int) Math.round((double) line.get(i) / scaleFactor);
                     }
-                    newLine.strokeAlpha = strokeAlpha;
-                    newLine.strokeWidth = new int[]{strokeWidth[0]};
-                    newLine.rgb = new int[]{strokeRGB[0], strokeRGB[1], strokeRGB[2]};
+                    DressedStroke newLine = new DressedStroke(nodes);
+                    newLine.setStrokeAlpha(strokeAlpha);
+                    newLine.setStrokeWidth(new int[]{strokeWidth[0]});
+                    newLine.setRgb(new int[]{strokeRGB[0], strokeRGB[1], strokeRGB[2]});
+                    newLine.applyScaleFactor(scaleFactor);
                     lines.add(newLine);
                     line.clear();
                     drawArea.redraw();
+                    calculateBaseScaleFactor();
+                    break;
+                case SWT.Resize:
+                    System.out.println();
                     break;
 
                 }
             }
         };
+        
+        
+        mainComposite.addControlListener(new ControlListener(){
+            public void controlResized( ControlEvent e ) {
+                calculateBaseScaleFactor();
+            }
+            public void controlMoved( ControlEvent e ) {
+            }
+        });
 
         drawArea.addListener(SWT.MouseDown, drawListener);
         drawArea.addListener(SWT.MouseMove, drawListener);
@@ -487,6 +500,8 @@ public class SimpleSWTImageEditor {
         propsComposite.setBackground(backgroundColor);
         drawAreaScroller.setBackground(backgroundColor);
         drawArea.setBackground(backgroundColor);
+        buttonsComposite.setBackground(backgroundColor);
+        strokeComposite.setBackground(backgroundColor);
     }
 
     /**
@@ -507,7 +522,7 @@ public class SimpleSWTImageEditor {
             } else {
                 bounds.add(tmpStroke.getBounds());
             }
-            int width = tmpStroke.strokeWidth[0];
+            int width = tmpStroke.getStrokeWidth();
             if (maxStrokeWidth < width) {
                 maxStrokeWidth = width;
             }
@@ -531,14 +546,14 @@ public class SimpleSWTImageEditor {
         // draw the lines
         for( int i = 0; i < lines.size(); i = i + 1 ) {
             DressedStroke tmpStroke = lines.get(i);
-            gcImage.setLineWidth((int) Math.round(tmpStroke.strokeWidth[0] * scaleFactor));
+            gcImage.setLineWidth(tmpStroke.getStrokeWidth());
             gcImage.setLineCap(SWT.CAP_ROUND);
             gcImage.setLineJoin(SWT.JOIN_ROUND);
             gcImage.setLineStyle(SWT.LINE_SOLID);
-            int[] rgb = tmpStroke.rgb;
+            int[] rgb = tmpStroke.getRgb();
             gcImage.setForeground(new Color(drawArea.getDisplay(), rgb[0], rgb[1], rgb[2]));
-            gcImage.setAlpha(tmpStroke.strokeAlpha);
-            int[] nodes = tmpStroke.getScaledNodes(scaleFactor);
+            gcImage.setAlpha(tmpStroke.getStrokeAlpha());
+            int[] nodes = tmpStroke.getScaledNodes();
             // at least 4 values to have two points
             if (nodes.length > 3) {
                 Path p = new Path(drawArea.getDisplay());
@@ -557,14 +572,44 @@ public class SimpleSWTImageEditor {
     }
 
     private void calculateBaseScaleFactor() {
+        Rectangle imageBound = null;
+        for( DressedStroke line : lines ) {
+            Rectangle bounds = line.getBounds();
+            if (imageBound == null) {
+                imageBound = bounds;
+            } else {
+                imageBound.add(bounds);
+            }
+        }
         if (backImage != null) {
+            if (imageBound == null) {
+                imageBound = backImage.getBounds();
+            } else {
+                imageBound.add(backImage.getBounds());
+            }
+        }
+        if (imageBound != null) {
             Rectangle mainCompositeBound = mainComposite.getBounds();
-            Rectangle imageBound = backImage.getBounds();
-            double scaleFactorX = (double) mainCompositeBound.width / (double) imageBound.width;
-            double scaleFactorY = (double) mainCompositeBound.height / (double) imageBound.height;
+            double scaleFactorX = (double) (mainCompositeBound.width - 30)/ (double) imageBound.width;
+            double scaleFactorY = (double) (mainCompositeBound.height - 30)/ (double) imageBound.height;
             baseScaleFactor = mainCompositeBound.width < mainCompositeBound.height ? scaleFactorX : scaleFactorY;
         } else {
             baseScaleFactor = 1.0;
+        }
+    }
+
+    /**
+     * Apply a certain scale to the drawing.
+     * 
+     * <p>Utility method through which all the scale manipulations
+     * should go, in order to have the lines always updated.
+     * 
+     * @param newScale
+     */
+    private void applyScale( double newScale ) {
+        scaleFactor = newScale;
+        for( DressedStroke line : lines ) {
+            line.applyScaleFactor(scaleFactor);
         }
     }
 
