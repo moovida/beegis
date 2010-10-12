@@ -609,12 +609,9 @@ public class GeonotesHandler {
             }
 
             // extract media box
-            GeonotesMediaboxTable newMediaBox = new GeonotesMediaboxTable();
-            newMediaBox.setGeonotesId(srcGeonoteTable);
-            newMediaBox.setMediaName(mediaName);
-            Example example = Example.create(newMediaBox);
             criteria = session.createCriteria(GeonotesMediaboxTable.class);
-            criteria.add(example);
+            criteria.add(Restrictions.eq(GEONOTESTABLE_EXTERNAL_KEY_ID, srcGeonoteTable));
+            criteria.add(Restrictions.eq(GEONOTESMEDIA_NAME_FIELD, mediaName));
             GeonotesMediaboxTable geonotesMediaboxTable = (GeonotesMediaboxTable) criteria.uniqueResult();
 
             // and simply change its parent
