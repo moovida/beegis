@@ -32,6 +32,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StackLayout;
@@ -452,6 +455,17 @@ public class FieldbookView extends ViewPart implements GeonotesObserver, IDataba
         Transfer[] transferTypes = new Transfer[]{TextTransfer.getInstance(), FileTransfer.getInstance()};
         int dndOperations = DND.DROP_MOVE | DND.DROP_LINK;
         geonotesViewer.addDropSupport(dndOperations, transferTypes, new FileDropListener());
+
+        // open on double click
+        geonotesViewer.addDoubleClickListener(new IDoubleClickListener(){
+            public void doubleClick( DoubleClickEvent event ) {
+                IStructuredSelection sel = (IStructuredSelection) event.getSelection();
+                GeonotesHandler geonotesHandler = (GeonotesHandler) sel.getFirstElement();
+                GeonotesUI geonoteUI = new GeonotesUI(geonotesHandler);
+                geonoteUI.openInShell(null);
+                geonotesHandler.addObserver(FieldbookView.this);
+            }
+        });
 
         // add a close listener
         /*
