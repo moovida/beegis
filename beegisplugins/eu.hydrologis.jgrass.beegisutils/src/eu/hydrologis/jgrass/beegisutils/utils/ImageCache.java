@@ -42,6 +42,8 @@ public class ImageCache {
     public static final String STROKE_WIDTH_5 = "/icons/strokewidth_5.png";
     public static final String TRASH = "icons/trash.gif";
     public static final String CLOSE = "icons/close.gif";
+    public static final String ERASE = "icons/clear_co.gif";
+    public static final String ERASE_ALL = "icons/clear_co_all.gif";
     public static final String ZOOM_ALL = "icons/zoom_all.gif";
     public static final String ZOOM_IN = "icons/zoom_in.gif";
     public static final String ZOOM_OUT = "icons/zoom_out.gif";
