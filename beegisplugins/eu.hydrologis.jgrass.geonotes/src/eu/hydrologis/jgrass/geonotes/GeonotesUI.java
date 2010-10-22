@@ -33,6 +33,7 @@ import net.refractions.udig.project.ui.internal.dialogs.ColorEditor;
 import net.refractions.udig.ui.ExceptionDetailsDialog;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -127,7 +128,12 @@ public class GeonotesUI implements GeonotesObserver {
      */
     public void openInShell( Point location ) {
         isWithShell = true;
-        shell = new Shell();
+        if (Platform.getOS().equals(Platform.OS_WIN32)) {
+            shell = new Shell(SWT.ON_TOP | SWT.SHELL_TRIM);
+        } else {
+            shell = new Shell();
+        }
+
         if (geonoteColor == null) {
             geonoteColor = geonotesHandler.getColor(shell.getDisplay());
         }
