@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="eu.hydrologis.jgrass.database.annotatedclasses">
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.AnnotationsTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesDrawareaTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTextareaTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesMediaboxTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesMediaboxBlobsTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GpsLogTable">
+      </annotatedclass>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="eu.hydrologis.jgrass.beegisutils.database.BeegisTablesUpdater">
+      </startup>
+   </extension>
+      <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="eu.hydrologis.jgrass.database.mainviewcontribution"
+            targetID="eu.hydrologis.jgrass.database.catalogview">
+         <action
+               class="eu.hydrologis.jgrass.beegisutils.actions.StatsAction"
+               icon="icons/stats_db.gif"
+               id="eu.hydrologis.jgrass.database.stats_action"
+               label="%database.view.action.stats"
+               style="push"
+               toolbarPath="dbtoolbar"
+               tooltip="%database.view.action.stats">
+         </action>
+      </viewContribution>
+   </extension>
+
+</plugin>
