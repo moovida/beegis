@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
 
 /**
@@ -89,12 +90,15 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
         folderButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter(){
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
                 DirectoryDialog fileDialog = new DirectoryDialog(fileSelectionArea.getShell(), SWT.OPEN);
+                String lastFolderChosen = BeegisUtilsPlugin.getDefault().getLastFolderChosen();
+                fileDialog.setFilterPath(lastFolderChosen);
                 fileDialog.setText("Choose photo folder");
                 String path = fileDialog.open();
                 if (path == null || path.length() < 1) {
                     folderText.setText("");
                 } else {
                     folderText.setText(path);
+                    BeegisUtilsPlugin.getDefault().setLastFolderChosen(path);
                 }
             }
         });
@@ -144,7 +148,7 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
         photoTimeText.setText("");
         photoTimeText.addKeyListener(this);
 
-        final Button doNotImportButton = new Button(fileSelectionArea, SWT.RADIO);
+        final Button doNotImportButton = new Button(fileSelectionArea, SWT.CHECK);
         GridData doNotImportButtonGD = new GridData(SWT.BEGINNING, SWT.CENTER, true, false);
         doNotImportButtonGD.horizontalSpan = 3;
         doNotImportButton.setLayoutData(doNotImportButtonGD);
