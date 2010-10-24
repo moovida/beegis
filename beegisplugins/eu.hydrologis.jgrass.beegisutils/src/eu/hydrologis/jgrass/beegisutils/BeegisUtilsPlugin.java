@@ -17,8 +17,11 @@
  */
 package eu.hydrologis.jgrass.beegisutils;
 
+import java.io.File;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -37,14 +40,12 @@ public class BeegisUtilsPlugin extends AbstractUIPlugin {
     /**
      * Global formatter for joda datetime (yyyy-MM-dd HH:mm:ss).
      */
-    public static DateTimeFormatter dateTimeFormatterYYYYMMDDHHMMSS = DateTimeFormat
-            .forPattern("yyyy-MM-dd HH:mm:ss"); //$NON-NLS-1$
-    
+    public static DateTimeFormatter dateTimeFormatterYYYYMMDDHHMMSS = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"); //$NON-NLS-1$
+
     /**
      * Global formatter for joda datetime (yyyy-MM-dd HH:mm).
      */
-    public static DateTimeFormatter dateTimeFormatterYYYYMMDDHHMM = DateTimeFormat
-            .forPattern("yyyy-MM-dd HH:mm"); //$NON-NLS-1$
+    public static DateTimeFormatter dateTimeFormatterYYYYMMDDHHMM = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm"); //$NON-NLS-1$
 
     // The shared instance
     private static BeegisUtilsPlugin plugin;
@@ -100,6 +101,39 @@ public class BeegisUtilsPlugin extends AbstractUIPlugin {
             message = ""; //$NON-NLS-1$
         int status = t instanceof Exception || message != null ? IStatus.ERROR : IStatus.WARNING;
         getDefault().getLog().log(new Status(status, PLUGIN_ID, IStatus.OK, message, t));
+    }
+
+    public static final String BEEGIS_LAST_CHOSEN_FOLDER = "beegis_last_chosen_folder";
+    /**
+     * Utility method for file dialogs to retrieve the last folder.
+     * 
+     * @return the path to the last folder chosen or the home folder.
+     */
+    public String getLastFolderChosen() {
+        IPreferenceStore store = getPreferenceStore();
+        String lastFolder = store.getString(BEEGIS_LAST_CHOSEN_FOLDER);
+
+        if (lastFolder != null) {
+            File f = new File(lastFolder);
+            if (f.exists() && f.isDirectory()) {
+                return lastFolder;
+            }
+            if (f.exists() && f.isFile()) {
+                return f.getParent();
+            }
+        }
+
+        return new File(System.getProperty("java.home")).getAbsolutePath();
+    }
+
+    /**
+     * Utility method for file dialogs to set the last folder.
+     * 
+     * @param folderPath
+     */
+    public void setLastFolderChosen( String folderPath ) {
+        IPreferenceStore store = getPreferenceStore();
+        store.putValue(BEEGIS_LAST_CHOSEN_FOLDER, folderPath);
     }
 
 }
