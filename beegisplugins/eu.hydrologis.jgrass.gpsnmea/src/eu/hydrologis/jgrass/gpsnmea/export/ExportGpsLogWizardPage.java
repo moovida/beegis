@@ -17,6 +17,7 @@
  */
 package eu.hydrologis.jgrass.gpsnmea.export;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -39,6 +40,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
 
 public class ExportGpsLogWizardPage extends WizardPage implements KeyListener, SelectionListener {
@@ -67,15 +69,14 @@ public class ExportGpsLogWizardPage extends WizardPage implements KeyListener, S
         super(pageName);
         setTitle(pageName); // NON-NLS-1
         setDescription("Export the embedded database gps log to shapefile."); // NON-NLS-1
-        ImageDescriptor imageDescriptorFromPlugin = AbstractUIPlugin.imageDescriptorFromPlugin(
-                GeonotesPlugin.PLUGIN_ID, "icons/antenna16.png");
+        ImageDescriptor imageDescriptorFromPlugin = AbstractUIPlugin.imageDescriptorFromPlugin(GeonotesPlugin.PLUGIN_ID,
+                "icons/antenna16.png");
         setImageDescriptor(imageDescriptorFromPlugin);
     }
 
     public void createControl( Composite parent ) {
         final Composite fileSelectionArea = new Composite(parent, SWT.NONE);
-        GridData fileSelectionData = new GridData(GridData.GRAB_HORIZONTAL
-                | GridData.FILL_HORIZONTAL);
+        GridData fileSelectionData = new GridData(GridData.GRAB_HORIZONTAL | GridData.FILL_HORIZONTAL);
         fileSelectionArea.setLayoutData(fileSelectionData);
 
         GridLayout fileSelectionLayout = new GridLayout();
@@ -123,7 +124,7 @@ public class ExportGpsLogWizardPage extends WizardPage implements KeyListener, S
         filetypeGroup.setLayoutData(filetypeGD);
         filetypeGroup.setLayout(new GridLayout(1, false));
         filetypeGroup.setText("File type");
-        
+
         shpButton = new Button(filetypeGroup, SWT.RADIO);
         shpButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
         shpButton.setText("export shapefile");
@@ -144,12 +145,21 @@ public class ExportGpsLogWizardPage extends WizardPage implements KeyListener, S
         folderButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter(){
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
                 FileDialog fileDialog = new FileDialog(fileSelectionArea.getShell(), SWT.SAVE);
+                String lastFolderChosen = BeegisUtilsPlugin.getDefault().getLastFolderChosen();
+                fileDialog.setFilterPath(lastFolderChosen);
+                if (shpButton.getSelection()) {
+                    fileDialog.setFilterExtensions(new String[]{"*.shp;*.SHP"});
+                } else if (gpxButton.getSelection()) {
+                    fileDialog.setFilterExtensions(new String[]{"*.gpx;*.GPX"});
+                }
                 fileDialog.setText("Save file");
                 filePath = fileDialog.open();
                 if (filePath == null || filePath.length() < 1) {
                     fileText.setText("");
                 } else {
                     fileText.setText(filePath);
+                    String filterPath = fileDialog.getFilterPath();
+                    BeegisUtilsPlugin.getDefault().setLastFolderChosen(filterPath);
                 }
             }
         });
@@ -222,7 +232,7 @@ public class ExportGpsLogWizardPage extends WizardPage implements KeyListener, S
     public boolean isLine() {
         return isLine;
     }
-    
+
     public boolean isShp() {
         return isShp;
     }
