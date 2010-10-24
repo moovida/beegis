@@ -102,7 +102,9 @@ public class DatabaseManager {
         try {
             Criteria criteria = session.createCriteria(GpsLogTable.class);
             String utcTimeStr = "utcTime";
+            String idStr = "id";
             criteria.add(between(utcTimeStr, from, to));
+            criteria.addOrder(asc(idStr));
             criteria.addOrder(asc(utcTimeStr));
 
             List<GpsLogTable> resultsList = criteria.list();
