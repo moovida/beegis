@@ -20,6 +20,7 @@ package eu.hydrologis.jgrass.geonotes.photo;
 import static eu.hydrologis.jgrass.geonotes.GeonoteConstants.PHOTO;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +43,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.IProgressService;
 import org.jgrasstools.gears.utils.time.UtcTimeUtilities;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
@@ -82,7 +84,11 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
                         public void run( IProgressMonitor pm ) {
 
                             File f = new File(path);
-                            File[] listFiles = f.listFiles();
+                            File[] listFiles = f.listFiles(new FilenameFilter(){
+                                public boolean accept( File dir, String name ) {
+                                    return name.endsWith(".jpg") || name.endsWith(".JPG");
+                                }
+                            });
                             HashMap<DateTime, List<File>> imageFiles = new HashMap<DateTime, List<File>>();
                             HashMap<DateTime, Coordinate> timestamp2Coordinates = new HashMap<DateTime, Coordinate>();
                             List<String> nonTakenFilesList = new ArrayList<String>();
@@ -90,31 +96,28 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
                             pm.beginTask("Browsing pictures...", listFiles.length);
                             for( File file : listFiles ) {
                                 try {
-                                    String name = file.getName();
-                                    if (name.endsWith("jpg") || name.endsWith("JPG") || name.endsWith("png")
-                                            || name.endsWith("PNG")) {
+                                    HashMap<String, String> metaData = ExifHandler.readMetaData(file);
+                                    DateTime creationDatetimeUtc = ExifHandler.getCreationDatetimeUtc(metaData);
+                                    creationDatetimeUtc = creationDatetimeUtc.toDateTime(DateTimeZone.UTC);
 
-                                        HashMap<String, String> metaData = ExifHandler.readMetaData(file);
-                                        DateTime creationDatetimeUtc = ExifHandler.getCreationDatetimeUtc(metaData);
-                                        // correct with the given shift
-                                        int secShift = (int) (shift * 60f);
-                                        creationDatetimeUtc = creationDatetimeUtc.plusSeconds(secShift);
-                                        // search for gps points of that timestamp
-                                        Coordinate coordinate = GeonotesHandler.getGpsCoordinateForTimeStamp(creationDatetimeUtc,
-                                                intervalMinutes);
+                                    // correct with the given shift
+                                    int secShift = (int) (shift * 60f);
+                                    creationDatetimeUtc = creationDatetimeUtc.plusSeconds(secShift);
+                                    // search for gps points of that timestamp
+                                    Coordinate coordinate = GeonotesHandler.getGpsCoordinateForTimeStamp(creationDatetimeUtc,
+                                            intervalMinutes);
 
-                                        if (coordinate == null) {
-                                            // could not find date
-                                            nonTakenFilesList.add(file.getAbsolutePath());
-                                        } else {
-                                            List<File> fileList = imageFiles.get(creationDatetimeUtc);
-                                            if (fileList == null) {
-                                                fileList = new ArrayList<File>();
-                                                imageFiles.put(creationDatetimeUtc, fileList);
-                                            }
-                                            fileList.add(file);
-                                            timestamp2Coordinates.put(creationDatetimeUtc, coordinate);
+                                    if (coordinate == null) {
+                                        // could not find date
+                                        nonTakenFilesList.add(file.getAbsolutePath());
+                                    } else {
+                                        List<File> fileList = imageFiles.get(creationDatetimeUtc);
+                                        if (fileList == null) {
+                                            fileList = new ArrayList<File>();
+                                            imageFiles.put(creationDatetimeUtc, fileList);
                                         }
+                                        fileList.add(file);
+                                        timestamp2Coordinates.put(creationDatetimeUtc, coordinate);
                                     }
                                     pm.worked(1);
                                 } catch (Exception e) {
