@@ -59,11 +59,13 @@ public class ExportGpsLogWizardPage extends WizardPage implements KeyListener, S
      */
     private String startDateStr = "";
     private String endDateStr = "";
+    private String splitIntervalStr = "60";
     private boolean isLine = true;
     private boolean isShp = true;
     private String filePath = null;
     private Button shpButton;
     private Button gpxButton;
+    private Text splitIntervalText;
 
     public ExportGpsLogWizardPage( String pageName, IStructuredSelection selection ) {
         super(pageName);
@@ -100,6 +102,13 @@ public class ExportGpsLogWizardPage extends WizardPage implements KeyListener, S
         endDateText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         endDateText.setText("");
         endDateText.addKeyListener(this);
+        Label splitIntervalLabel = new Label(fileSelectionArea, SWT.NONE);
+        splitIntervalLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+        splitIntervalLabel.setText("Interval in minutes to split lines");
+        splitIntervalText = new Text(fileSelectionArea, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+        splitIntervalText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        splitIntervalText.setText(splitIntervalStr);
+        splitIntervalText.addKeyListener(this);
 
         Group typeGroup = new Group(fileSelectionArea, SWT.NONE);
         GridData tyepGD = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -201,6 +210,21 @@ public class ExportGpsLogWizardPage extends WizardPage implements KeyListener, S
                 }
             }
         }
+        if (source.equals(splitIntervalText)) {
+            // check end date
+            String text = splitIntervalText.getText();
+            if (text.equals("")) {
+                setComplete = true;
+            } else {
+                try {
+                    Integer.parseInt(text);
+                    splitIntervalStr = text;
+                    setComplete = true;
+                } catch (NumberFormatException e1) {
+                    setComplete = false;
+                }
+            }
+        }
 
         setPageComplete(setComplete);
     }
@@ -227,6 +251,10 @@ public class ExportGpsLogWizardPage extends WizardPage implements KeyListener, S
 
     public String getStartDateStr() {
         return startDateStr;
+    }
+    
+    public String getSplitIntervalStr() {
+        return splitIntervalStr;
     }
 
     public boolean isLine() {
