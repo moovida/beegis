@@ -24,6 +24,7 @@ import javax.vecmath.Point2f;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -230,10 +231,17 @@ public class SimpleSWTImageEditor {
         // clear all
         Button clearButton = new Button(propsComposite, SWT.PUSH);
         clearButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
-        clearButton.setImage(ImageCache.getInstance().getImage(ImageCache.TRASH));
+        clearButton.setImage(ImageCache.getInstance().getImage(ImageCache.ERASE_ALL));
         clearButton.setToolTipText("clear the area from drawings");
         clearButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
+                boolean answer = MessageDialog.openQuestion(colorButton.getShell(), "Removal warning",
+                        "Do you really want to clear the drawing area?");
+
+                if (!answer) {
+                    return;
+                }
+
                 lines.clear();
                 drawArea.redraw();
             }
@@ -241,7 +249,7 @@ public class SimpleSWTImageEditor {
         // clear shape
         Button removeButton = new Button(propsComposite, SWT.PUSH);
         removeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
-        removeButton.setImage(ImageCache.getInstance().getImage(ImageCache.CLOSE));
+        removeButton.setImage(ImageCache.getInstance().getImage(ImageCache.ERASE));
         removeButton.setToolTipText("remove selected line");
         removeButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
