@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.IMap;
+import net.refractions.udig.project.IProject;
 import net.refractions.udig.project.ui.ApplicationGIS;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -294,7 +295,13 @@ public class DatabaseView extends ViewPart {
 
         String projectName = databaseName;
         if (projectName == null) {
-            projectName = ApplicationGIS.getActiveProject().getName();
+            IProject activeProject = ApplicationGIS.getActiveProject();
+            if (activeProject != null) {
+                projectName = activeProject.getName();
+            }
+        }
+        if (projectName == null) {
+            projectName = Messages.H2ConnectionFactory__default_db;
         }
         if (projectName != null && projectName.length() != 0) {
             defaultProperties.put(DatabaseConnectionProperties.TITLE, projectName);
