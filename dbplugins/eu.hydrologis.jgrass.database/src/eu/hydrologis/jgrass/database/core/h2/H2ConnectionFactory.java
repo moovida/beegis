@@ -108,14 +108,20 @@ public class H2ConnectionFactory implements IConnectionFactory {
 
     public DatabaseConnectionProperties createDefaultProperties() {
         IProject activeProject = ApplicationGIS.getActiveProject();
-        URI id = activeProject.getID();
-        String projectPath = id.toFileString();
-        File projectFile = new File(projectPath);
-        if (!projectFile.exists()) {
+        File projectFile = null;
+        if (activeProject != null) {
+            URI id = activeProject.getID();
+            String projectPath = id.toFileString();
+            projectFile = new File(projectPath);
+            if (!projectFile.exists()) {
+                String tempdir = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
+                projectFile = new File(tempdir);
+            } else {
+                projectFile = projectFile.getParentFile().getParentFile();
+            }
+        }else{
             String tempdir = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
             projectFile = new File(tempdir);
-        } else {
-            projectFile = projectFile.getParentFile().getParentFile();
         }
         File databaseFolder = new File(projectFile, "databases/defaultdatabase"); //$NON-NLS-1$
         DatabaseConnectionProperties props = new DatabaseConnectionProperties();
