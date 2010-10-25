@@ -284,21 +284,32 @@ public class DatabaseView extends ViewPart {
 
     /**
      * Creates a new default local {@link DatabaseConnectionProperties} and adds it to the list.
+     *
+     * @param databaseFolder the folder into which to create the database or <code>null</code>.
+     * @param databaseName the name for the new database or <code>null</code>.
+     * @return the properties for the new created database definition.
      */
-    public void createNewLocalDatabaseDefinition() {
+    public DatabaseConnectionProperties createNewLocalDatabaseDefinition( String databaseFolder, String databaseName ) {
         DatabaseConnectionProperties defaultProperties = new H2ConnectionFactory().createDefaultProperties();
-        String projectName = ApplicationGIS.getActiveProject().getName();
+
+        String projectName = databaseName;
+        if (projectName == null) {
+            projectName = ApplicationGIS.getActiveProject().getName();
+        }
         if (projectName != null && projectName.length() != 0) {
             defaultProperties.put(DatabaseConnectionProperties.TITLE, projectName);
             defaultProperties.put(DatabaseConnectionProperties.DESCRIPTION, projectName);
         }
-
+        if (databaseFolder != null) {
+            defaultProperties.put(DatabaseConnectionProperties.PATH, databaseFolder);
+        }
         DatabasePlugin.getDefault().checkSameNameDbconnection(defaultProperties);
 
         availableDatabaseConnectionProperties.add(defaultProperties);
         relayout();
 
         setDatabaseSelected(defaultProperties);
+        return defaultProperties;
     }
 
     /**

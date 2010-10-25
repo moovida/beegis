@@ -13,4 +13,5 @@ public class Messages extends NLS {
     }
     public static String StatsAction__db_summary;
     public static String StatsAction__db_summary_text;
+    public static String NewProjectWizardPage_label_databaseDir;
 }

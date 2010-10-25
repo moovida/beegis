@@ -37,7 +37,7 @@ public class CreateNewLocalDatabaseAction implements IViewActionDelegate {
         if (view instanceof DatabaseView) {
             DatabaseView dbView = (DatabaseView) view;
 
-            dbView.createNewLocalDatabaseDefinition();
+            dbView.createNewLocalDatabaseDefinition(null, null);
         }
     }
 

@@ -47,5 +47,26 @@
          </action>
       </viewContribution>
    </extension>
+      <extension
+         id="eu.hydrologis.jgrass.beegis.ui.new"
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            name="%NewBeegisProjectWizard.name"
+            id="eu.hydrologis.jgrass.beegis.project.ui.wizards.newProject"
+            category="net.refractions.udig.project.ui.new"
+            class="eu.hydrologis.jgrass.beegisutils.project.newprojectwizard.NewBeegisProjectWizard"
+            icon="icons/newprj_wiz.gif"
+            finalPerspective="net.refractions.udig.ui.mapPerspective"
+            project="true"
+            helpHref="New Project wizard.html"
+            preferredPerspectives="net.refractions.udig.ui.mapPerspective">
+         <description>
+            %NewBeegisProjectWizard.description
+         </description>
+      </wizard>
+      <primaryWizard
+            id="eu.hydrologis.jgrass.beegis.project.ui.wizards.newProject">
+      </primaryWizard>
+   </extension>
 
 </plugin>
