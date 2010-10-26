@@ -53,6 +53,8 @@ import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.SchemaException;
@@ -420,17 +422,16 @@ public class FeatureUtilities {
     }
 
     /**
-     * @param fet the featurecollection for which to create a temporary layer resource
+     * @param featureCollection the featurecollection for which to create a temporary layer resource
+     * @throws IOException 
      */
-    public static void featureCollectionToTempLayer( FeatureCollection fet ) {
-        IGeoResource resource = CatalogPlugin.getDefault().getLocalCatalog().createTemporaryResource(fet.getSchema());
-        try {
+    public static void featureCollectionToTempLayer( SimpleFeatureCollection featureCollection ) throws IOException {
+        IGeoResource resource = CatalogPlugin.getDefault().getLocalCatalog()
+                .createTemporaryResource(featureCollection.getSchema());
 
-            FeatureStore fStore = resource.resolve(FeatureStore.class, new NullProgressMonitor());
-            fStore.addFeatures(fet);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SimpleFeatureStore fStore = resource.resolve(SimpleFeatureStore.class, new NullProgressMonitor());
+        fStore.addFeatures(featureCollection);
+
         ApplicationGIS.addLayersToMap(ApplicationGIS.getActiveMap(), Collections.singletonList(resource), -1);
     }
 

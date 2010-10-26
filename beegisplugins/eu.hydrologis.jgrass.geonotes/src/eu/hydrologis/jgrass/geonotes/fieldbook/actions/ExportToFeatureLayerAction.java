@@ -20,23 +20,18 @@ package eu.hydrologis.jgrass.geonotes.fieldbook.actions;
 import i18n.geonotes.Messages;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
 import java.util.List;
 
-import net.refractions.udig.catalog.CatalogPlugin;
-import net.refractions.udig.catalog.IGeoResource;
 import net.refractions.udig.project.ui.ApplicationGIS;
 import net.refractions.udig.ui.ExceptionDetailsDialog;
 import net.refractions.udig.ui.PlatformGIS;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.geotools.data.FeatureStore;
-import org.geotools.feature.FeatureCollection;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -56,6 +51,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTextareaTable;
+import eu.hydrologis.jgrass.beegisutils.jgrassported.FeatureUtilities;
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
 import eu.hydrologis.jgrass.geonotes.GeonotesUI;
@@ -70,7 +66,7 @@ public class ExportToFeatureLayerAction extends Action {
 
     private static final String EXPORT_TO_SHAPEFILE = Messages.getString("ExportToFeatureLayerAction__export_to_featurelayer"); //$NON-NLS-1$
     private final GeonotesListViewer geonotesViewer;
-    private FeatureCollection<SimpleFeatureType, SimpleFeature> newCollection;
+    private SimpleFeatureCollection newCollection;
 
     public ExportToFeatureLayerAction( GeonotesListViewer geonotesViewer ) {
         super(EXPORT_TO_SHAPEFILE);
@@ -144,10 +140,7 @@ public class ExportToFeatureLayerAction extends Action {
         };
         PlatformGIS.runInProgressDialog(EXPORT_TO_SHAPEFILE, true, operation, false);
         try {
-            IGeoResource resource = CatalogPlugin.getDefault().getLocalCatalog().createTemporaryResource(
-                    newCollection.getSchema());
-            resource.resolve(FeatureStore.class, new NullProgressMonitor()).addFeatures(newCollection);
-            ApplicationGIS.addLayersToMap(ApplicationGIS.getActiveMap(), Collections.singletonList(resource), -1);
+            FeatureUtilities.featureCollectionToTempLayer(newCollection);
         } catch (Exception e) {
             MessageDialog.openError(geonotesViewer.getTable().getShell(),
                     Messages.getString("ExportToFeatureLayerAction__error"), //$NON-NLS-1$
