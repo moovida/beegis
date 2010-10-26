@@ -65,6 +65,8 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
     private final String dataBitString;
     private final String stopBitString;
     private final String parityBitString;
+    private BufferedReader buffer;
+    private InputStreamReader inputStreamReader;
 
     /**
      * the log of all the points taken from the gps in a session
@@ -73,7 +75,6 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
     private final GpsArtist gpsArtist;
     private CoordinateReferenceSystem mapCrs;
     private DummyNmea dummyNmea;
-    private InputStream commPortInputStream;
 
     /**
      * Implementation of the Nmea Gps.
@@ -122,7 +123,8 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
                 port.addEventListener(this);
                 port.notifyOnDataAvailable(true);
 
-                commPortInputStream = port.getInputStream();
+                inputStreamReader = new InputStreamReader(port.getInputStream());
+                buffer = new BufferedReader(inputStreamReader);
 
                 gpsIsConnected = true;
                 return true;
@@ -155,8 +157,10 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
             return true;
         }
         try {
-            if (commPortInputStream != null)
-                commPortInputStream.close();
+            if (buffer != null)
+                buffer.close();
+            if (inputStreamReader != null)
+                inputStreamReader.close();
             if (port != null) {
                 port.removeEventListener();
                 port.close();
@@ -254,35 +258,15 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
         case SerialPortEvent.DATA_AVAILABLE:
             //System.out.println("DATA_AVAILABLE event"); //$NON-NLS-1$
 
-            if (gpsIsConnected) {
+            String currLine = null;
+            while( gpsIsConnected ) {
                 try {
-                    // byte[] buffer1 = new byte[1024];
-                    // int data;
-                    // try {
-                    // int len1 = 0;
-                    // while( (data = commPortInputStream.read()) > -1 ) {
-                    // if (data == '\n') {
-                    // break;
-                    // }
-                    // buffer1[len1++] = (byte) data;
-                    // }
-                    // String nmea = new String(buffer1, 0, len1);
-                    // } catch (IOException e) {
-                    // e.printStackTrace();
-                    // System.exit(-1);
-                    // }
-
-                    byte[] buffer = new byte[1024];
-                    int len = -1;
-                    StringBuilder sb = new StringBuilder();
-                    while( (len = commPortInputStream.read(buffer)) > -1 ) {
-                        sb.append(new String(buffer, 0, len));
-                    }
-                    String currLine = sb.toString();
-                    if (currLine.startsWith(NmeaGpsPoint.GPRMC)) {
-                        currentGPRMCsentence = currLine;
-                    } else if (currLine.startsWith(NmeaGpsPoint.GPGGA)) {
-                        currentGPGGAsentence = currLine;
+                    if ((currLine = buffer.readLine()) != null) {
+                        if (currLine.startsWith(NmeaGpsPoint.GPRMC)) {
+                            currentGPRMCsentence = currLine;
+                        } else if (currLine.startsWith(NmeaGpsPoint.GPGGA)) {
+                            currentGPGGAsentence = currLine;
+                        }
                     }
                 } catch (IOException e) {
                     // if a line couldn't be read, ignore the event
@@ -295,6 +279,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
 
         }
     }
+    
     public void addObserver( Observer o ) {
         if (!observers.contains(o)) {
             System.out.println("added");
