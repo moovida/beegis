@@ -29,6 +29,7 @@ import gnu.io.UnsupportedCommOperationException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,17 +65,15 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
     private final String dataBitString;
     private final String stopBitString;
     private final String parityBitString;
-    private BufferedReader buffer;
-    private InputStreamReader inputStreamReader;
 
     /**
      * the log of all the points taken from the gps in a session
      */
-    private final List<NmeaGpsPoint> gpsPointsLog = new ArrayList<NmeaGpsPoint>();
     private final IPreferenceStore prefs;
     private final GpsArtist gpsArtist;
     private CoordinateReferenceSystem mapCrs;
     private DummyNmea dummyNmea;
+    private InputStream commPortInputStream;
 
     /**
      * Implementation of the Nmea Gps.
@@ -123,8 +122,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
                 port.addEventListener(this);
                 port.notifyOnDataAvailable(true);
 
-                inputStreamReader = new InputStreamReader(port.getInputStream());
-                buffer = new BufferedReader(inputStreamReader);
+                commPortInputStream = port.getInputStream();
 
                 gpsIsConnected = true;
                 return true;
@@ -134,6 +132,11 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
                 GpsActivator.log("GpsActivator problem: eu.hydrologis.jgrass.gpsnmea.gps#NmeaGpsImpl#startGps", e); //$NON-NLS-1$
                 e.printStackTrace();
                 gpsIsConnected = false;
+
+                if (port != null) {
+                    port.removeEventListener();
+                }
+
                 return false;
             }
         } else {
@@ -152,10 +155,12 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
             return true;
         }
         try {
-            buffer.close();
-            inputStreamReader.close();
-            port.removeEventListener();
-            port.close();
+            if (commPortInputStream != null)
+                commPortInputStream.close();
+            if (port != null) {
+                port.removeEventListener();
+                port.close();
+            }
             gpsIsConnected = false;
             return true;
         } catch (Exception e) {
@@ -249,15 +254,35 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
         case SerialPortEvent.DATA_AVAILABLE:
             //System.out.println("DATA_AVAILABLE event"); //$NON-NLS-1$
 
-            String currLine = null;
-            while( gpsIsConnected ) {
+            if (gpsIsConnected) {
                 try {
-                    if ((currLine = buffer.readLine()) != null) {
-                        if (currLine.startsWith(NmeaGpsPoint.GPRMC)) {
-                            currentGPRMCsentence = currLine;
-                        } else if (currLine.startsWith(NmeaGpsPoint.GPGGA)) {
-                            currentGPGGAsentence = currLine;
-                        }
+                    // byte[] buffer1 = new byte[1024];
+                    // int data;
+                    // try {
+                    // int len1 = 0;
+                    // while( (data = commPortInputStream.read()) > -1 ) {
+                    // if (data == '\n') {
+                    // break;
+                    // }
+                    // buffer1[len1++] = (byte) data;
+                    // }
+                    // String nmea = new String(buffer1, 0, len1);
+                    // } catch (IOException e) {
+                    // e.printStackTrace();
+                    // System.exit(-1);
+                    // }
+
+                    byte[] buffer = new byte[1024];
+                    int len = -1;
+                    StringBuilder sb = new StringBuilder();
+                    while( (len = commPortInputStream.read(buffer)) > -1 ) {
+                        sb.append(new String(buffer, 0, len));
+                    }
+                    String currLine = sb.toString();
+                    if (currLine.startsWith(NmeaGpsPoint.GPRMC)) {
+                        currentGPRMCsentence = currLine;
+                    } else if (currLine.startsWith(NmeaGpsPoint.GPGGA)) {
+                        currentGPGGAsentence = currLine;
                     }
                 } catch (IOException e) {
                     // if a line couldn't be read, ignore the event
@@ -270,15 +295,18 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
 
         }
     }
-
     public void addObserver( Observer o ) {
-        if (!observers.contains(o))
+        if (!observers.contains(o)) {
+            System.out.println("added");
             observers.add(o);
+        }
     }
 
     public void deleteObserver( Observer o ) {
-        if (observers.contains(o))
+        if (observers.contains(o)) {
+            System.out.println("removed");
             observers.remove(o);
+        }
     }
 
     public synchronized void notifyObservers() {
@@ -296,7 +324,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
             return;
         }
 
-        synchronized(observers) {
+        synchronized (observers) {
             for( Observer observer : observers ) {
                 observer.update(this, returnGpsPoint);
             }
@@ -317,14 +345,12 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
                 e.printStackTrace();
                 String message = "An error occurred while retriving the GPS position.";
                 ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e);
-                return;
+                break;
             }
 
             System.out.println(returnGpsPoint.toString());
 
             gpsArtist.blink(returnGpsPoint);
-
-            gpsPointsLog.add(returnGpsPoint);
 
             try {
                 // notify all listeners

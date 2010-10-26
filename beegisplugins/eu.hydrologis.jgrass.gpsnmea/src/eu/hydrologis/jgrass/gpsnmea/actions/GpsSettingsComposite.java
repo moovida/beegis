@@ -193,6 +193,9 @@ public class GpsSettingsComposite implements Observer {
                                 GpsActivator.getDefault().stopGps();
                             gpsIsOn = false;
                             pm.done();
+
+                            // remove this as listener to gps
+                            GpsActivator.getDefault().removeObserverFromGps(GpsSettingsComposite.this);
                         }
                     });
 
@@ -261,6 +264,7 @@ public class GpsSettingsComposite implements Observer {
         okButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
                 savePreferences();
+                GpsActivator.getDefault().removeObserverFromGps(GpsSettingsComposite.this);
                 parent.close();
             }
         });
@@ -269,6 +273,7 @@ public class GpsSettingsComposite implements Observer {
         cancelButton.setText("cancel");
         cancelButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
+                GpsActivator.getDefault().removeObserverFromGps(GpsSettingsComposite.this);
                 parent.close();
             }
         });
@@ -283,6 +288,7 @@ public class GpsSettingsComposite implements Observer {
         if (gpsIsOn) {
             startButton.setSelection(true);
             stopButton.setSelection(false);
+            GpsActivator.getDefault().addObserverToGps(this);
         } else {
             startButton.setSelection(false);
             stopButton.setSelection(true);
