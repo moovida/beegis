@@ -45,6 +45,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.refractions.udig.mapgraphic.MapGraphic;
+import net.refractions.udig.project.IMap;
 import net.refractions.udig.project.ui.ApplicationGIS;
 import net.refractions.udig.ui.ExceptionDetailsDialog;
 import net.refractions.udig.ui.PlatformGIS;
@@ -68,6 +69,7 @@ import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;
+import org.jgrasstools.gears.utils.CrsUtilities;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -817,12 +819,25 @@ public class GeonotesHandler {
                         DateTime creationDateTime = geonoteTable.getCreationDateTime();
                         msgBuilder.append(creationDateTime.toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM));
                         msgBuilder.append("\n\n");
-                        msgBuilder.append("Position: ");
+                        msgBuilder.append("Position (WGS 84 lat/long): ");
                         Coordinate position = new Coordinate(geonoteTable.getEast(), geonoteTable.getNorth());
                         msgBuilder.append(position.x);
                         msgBuilder.append(" / ");
                         msgBuilder.append(position.y);
                         msgBuilder.append("\n\n");
+                        
+                        IMap activeMap = ApplicationGIS.getActiveMap();
+                        if(activeMap != null){
+                            CoordinateReferenceSystem mapCrs = activeMap.getViewportModel().getCRS();
+                            String crsName = mapCrs.getName().toString();
+                            msgBuilder.append("Position ("+crsName+"): ");
+                            MathTransform mathTransform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, mapCrs, true);
+                            Coordinate newPosition = JTS.transform(position, null, mathTransform);
+                            msgBuilder.append(newPosition.x);
+                            msgBuilder.append(" / ");
+                            msgBuilder.append(newPosition.y);
+                            msgBuilder.append("\n\n");
+                        }
                         bW.write(msgBuilder.toString());
                         bW.close();
                         pm.worked(1);
