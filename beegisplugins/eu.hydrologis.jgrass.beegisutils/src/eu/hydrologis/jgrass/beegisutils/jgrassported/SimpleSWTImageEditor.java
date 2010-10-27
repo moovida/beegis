@@ -473,7 +473,6 @@ public class SimpleSWTImageEditor {
                     calculateBaseScaleFactor();
                     break;
                 case SWT.Resize:
-                    System.out.println();
                     break;
 
                 }

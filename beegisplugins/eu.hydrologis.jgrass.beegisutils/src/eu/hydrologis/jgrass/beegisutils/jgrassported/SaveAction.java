@@ -31,17 +31,13 @@ public class SaveAction extends Action {
 
         FileDialog fileDialog = new FileDialog(simpleSWTImageEditor.getMainControl().getShell(),
                 SWT.SAVE);
+        fileDialog.setFilterExtensions(new String[]{"*.jpg"});
         String path = fileDialog.open();
         if (path == null || path.length() < 1) {
             return;
         }
-        if (!path.toLowerCase().endsWith("jpg")) {
-            path = path + ".jpg";
-        }
         final String newpath = path;
-
         try {
-
             IWorkbench wb = PlatformUI.getWorkbench();
             IProgressService ps = wb.getProgressService();
             ps.busyCursorWhile(new IRunnableWithProgress(){
