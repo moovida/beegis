@@ -105,7 +105,7 @@ public class OpenSelectedEntryAction implements IDoubleClickListener {
      */
     private void openImage( final String name, final GeonotesHandler geonotesHandler, final List<DressedStroke> drawingList,
             final File file ) {
-        final Shell shell = new Shell(SWT.DIALOG_TRIM | SWT.RESIZE);
+        final Shell shell = new Shell(SWT.SHELL_TRIM);
         shell.setText("Editing of " + name); //$NON-NLS-1$
         shell.setLayout(new GridLayout());
 
