@@ -1110,6 +1110,7 @@ public class GeonotesHandler {
 
             List<GpsLogTable> resultsList = criteria.list();
             for( int i = 0; i < resultsList.size() - 1; i++ ) {
+                
                 GpsLogTable gpsLog1 = resultsList.get(i);
                 GpsLogTable gpsLog2 = resultsList.get(i + 1);
 

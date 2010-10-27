@@ -98,10 +98,9 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
                                 try {
                                     HashMap<String, String> metaData = ExifHandler.readMetaData(file);
                                     DateTime creationDatetimeUtc = ExifHandler.getCreationDatetimeUtc(metaData);
-                                    creationDatetimeUtc = creationDatetimeUtc.toDateTime(DateTimeZone.UTC);
 
                                     // correct with the given shift
-                                    int secShift = (int) (shift * 60f);
+                                    int secShift = (int) (shift / 1000f);
                                     creationDatetimeUtc = creationDatetimeUtc.plusSeconds(secShift);
                                     // search for gps points of that timestamp
                                     Coordinate coordinate = GeonotesHandler.getGpsCoordinateForTimeStamp(creationDatetimeUtc,
