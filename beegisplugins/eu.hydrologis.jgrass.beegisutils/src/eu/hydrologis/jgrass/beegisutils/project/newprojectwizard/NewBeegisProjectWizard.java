@@ -17,8 +17,6 @@
  */
 package eu.hydrologis.jgrass.beegisutils.project.newprojectwizard;
 
-import i18n.database.Messages;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
