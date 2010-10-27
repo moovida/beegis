@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.importWizards">
+      <category
+            id="eu.hydrologis.beegis.gpsbabel.importwizard.babelcategory"
+            name="GpsBabel Import">
+      </category>
+      <wizard
+            category="eu.hydrologis.beegis.gpsbabel.importwizard.babelcategory"
+            class="eu.hydrologis.jgrass.gpsbabel.importwizard.GpsBabelImportWizard"
+            icon="icons/GPSBabel80x80.gif"
+            id="eu.hydrologis.beegis.gpsbabel.importwizard.GpsBabelImportWizard"
+            name="Import Gps Babel Files">
+         <description>
+            Import a file from the local file system into the workspace.
+         </description>
+      </wizard>
+   </extension>
+
+</plugin>

@@ -1,0 +1,4 @@
+<form>
+	<tab name="tab1" text="generalita'" x="0" y="0"  />
+	<tab name="tab2" text="danni" x="0" y="0" w="400" h="600" />
+</form>

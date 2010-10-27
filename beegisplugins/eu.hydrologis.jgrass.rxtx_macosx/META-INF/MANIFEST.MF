@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Rxtx_macosx
+Bundle-SymbolicName: eu.hydrologis.jgrass.rxtx_macosx
+Bundle-Version: 2.2.2
+Bundle-Vendor: org.rxtx
+Fragment-Host: eu.hydrologis.jgrass.rxtx;bundle-version="2.2.2"
