@@ -20,10 +20,10 @@ package eu.hydrologis.jgrass.gpsnmea.actions;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
+import net.refractions.udig.project.ui.ApplicationGIS;
 import net.refractions.udig.ui.ExceptionDetailsDialog;
+import net.refractions.udig.ui.PlatformGIS;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -53,7 +53,6 @@ import eu.hydrologis.jgrass.gpsnmea.GpsActivator;
 import eu.hydrologis.jgrass.gpsnmea.gps.AbstractGps;
 import eu.hydrologis.jgrass.gpsnmea.gps.GpsPoint;
 import eu.hydrologis.jgrass.gpsnmea.gps.IGpsObserver;
-import eu.hydrologis.jgrass.gpsnmea.gps.NmeaGpsImpl;
 import eu.hydrologis.jgrass.gpsnmea.gps.NmeaGpsPoint;
 import eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants;
 
@@ -75,8 +74,11 @@ public class GpsSettingsComposite implements IGpsObserver {
     private Text intervalText;
     private Text distanceText;
     private Button dummyModeButton;
+	private boolean gpsWasLoggingWhenOpened;
 
     public GpsSettingsComposite( final Shell parent ) {
+    	
+    	gpsWasLoggingWhenOpened = GpsActivator.getDefault().isGpsLogging();
 
         /*
          * Serial ports panel
@@ -152,26 +154,42 @@ public class GpsSettingsComposite implements IGpsObserver {
         startButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
         startButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
-                try {
-                    PlatformUI.getWorkbench().getProgressService().busyCursorWhile(new IRunnableWithProgress(){
+				try {
 
-                        public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
-                            if (!GpsActivator.getDefault().isGpsConnected()) {
-                                pm.beginTask("Starting Gps...", IProgressMonitor.UNKNOWN);
-                                GpsActivator.getDefault().startGps();
-                                GpsActivator.getDefault().startGpsLogging();
-                                isFirst = true;
-                                gpsIsOn = true;
-                                pm.done();
+					PlatformGIS.runInProgressDialog("Starting Gps...", false,
+							new IRunnableWithProgress() {
+								public void run(IProgressMonitor pm)
+										throws InvocationTargetException,
+										InterruptedException {
 
-                                // add this as listener to gps
-                                GpsActivator.getDefault().addObserverToGps(GpsSettingsComposite.this);
+									pm.beginTask(
+											"Connecting to the gps. This might take a minute...",
+											IProgressMonitor.UNKNOWN);
+									try {
+										if (!GpsActivator.getDefault()
+												.isGpsConnected()) {
+											GpsActivator.getDefault()
+													.startGps();
+											GpsActivator.getDefault()
+													.startGpsLogging();
+											isFirst = true;
+											gpsIsOn = true;
+											pm.done();
 
-                            }
-                        }
-                    });
+											// add this as listener to gps
+											GpsActivator
+													.getDefault()
+													.addObserverToGps(
+															GpsSettingsComposite.this);
 
-                } catch (Exception e1) {
+										}
+									} finally {
+										pm.done();
+									}
+								}
+							}, false);
+
+				} catch (Exception e1) {
                     String message = "An error occurred while starting the gps logging.";
                     ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e1);
                     e1.printStackTrace();
@@ -270,7 +288,9 @@ public class GpsSettingsComposite implements IGpsObserver {
             public void widgetSelected( SelectionEvent e ) {
                 savePreferences();
                 GpsActivator.getDefault().removeObserverFromGps(GpsSettingsComposite.this);
-                GpsActivator.getDefault().stopGpsLogging();
+                if (!gpsWasLoggingWhenOpened) {
+                	GpsActivator.getDefault().stopGpsLogging();
+				}
                 parent.close();
             }
         });
@@ -280,7 +300,9 @@ public class GpsSettingsComposite implements IGpsObserver {
         cancelButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
                 GpsActivator.getDefault().removeObserverFromGps(GpsSettingsComposite.this);
-                GpsActivator.getDefault().stopGpsLogging();
+                if (!gpsWasLoggingWhenOpened) {
+                	GpsActivator.getDefault().stopGpsLogging();
+				}
                 parent.close();
             }
         });
