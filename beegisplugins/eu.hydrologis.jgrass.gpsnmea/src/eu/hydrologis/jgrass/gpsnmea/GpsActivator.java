@@ -42,6 +42,7 @@ import eu.hydrologis.jgrass.gpsnmea.actions.ZoomToGps;
 import eu.hydrologis.jgrass.gpsnmea.db.DatabaseManager;
 import eu.hydrologis.jgrass.gpsnmea.gps.AbstractGps;
 import eu.hydrologis.jgrass.gpsnmea.gps.GpsPoint;
+import eu.hydrologis.jgrass.gpsnmea.gps.IGpsObserver;
 import eu.hydrologis.jgrass.gpsnmea.gps.NmeaGpsImpl;
 import eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants;
 import eu.hydrologis.jgrass.gpsnmea.views.GpsView;
@@ -227,13 +228,13 @@ public class GpsActivator extends AbstractUIPlugin {
         return returnGpsPoint;
     }
 
-    public void addObserverToGps( Observer observer ) {
+    public void addObserverToGps( IGpsObserver observer ) {
         if (gpsImpl != null) {
             gpsImpl.addObserver(observer);
         }
     }
 
-    public void removeObserverFromGps( Observer observer ) {
+    public void removeObserverFromGps( IGpsObserver observer ) {
         if (gpsImpl != null) {
             gpsImpl.deleteObserver(observer);
         }

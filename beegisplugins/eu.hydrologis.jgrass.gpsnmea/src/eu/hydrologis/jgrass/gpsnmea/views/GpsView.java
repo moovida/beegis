@@ -37,7 +37,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
 
 import eu.hydrologis.jgrass.gpsnmea.GpsActivator;
+import eu.hydrologis.jgrass.gpsnmea.gps.AbstractGps;
 import eu.hydrologis.jgrass.gpsnmea.gps.GpsPoint;
+import eu.hydrologis.jgrass.gpsnmea.gps.IGpsObserver;
 import eu.hydrologis.jgrass.gpsnmea.gps.NmeaGpsPoint;
 
 /**
@@ -45,7 +47,7 @@ import eu.hydrologis.jgrass.gpsnmea.gps.NmeaGpsPoint;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class GpsView extends ViewPart implements Observer {
+public class GpsView extends ViewPart implements IGpsObserver {
 
     public static final String ID = "eu.hydrologis.jgrass.gps.views.GpsView"; //$NON-NLS-1$
 
@@ -97,20 +99,18 @@ public class GpsView extends ViewPart implements Observer {
     public void setFocus() {
     }
 
-    public void update( Observable o, final Object arg ) {
-
-        Display.getDefault().asyncExec(new Runnable(){
-            public void run() {
-                if (arg instanceof NmeaGpsPoint) {
+    public void updateGpsPoint( AbstractGps gpsEngine, final GpsPoint gpsPoint ) {
+        if (gpsPoint != null) {
+            Display.getDefault().asyncExec(new Runnable(){
+                public void run() {
                     IContentProvider contentProvider = v.getContentProvider();
                     if (contentProvider == null) {
                         return;
                     }
-                    GpsPoint point = (GpsPoint) arg;
-                    v.setInput(point.toTableArray());
+                    v.setInput(gpsPoint.toTableArray());
                 }
-            }
-        });
+            });
+        }
     }
 
     public void dispose() {

@@ -20,10 +20,10 @@ package eu.hydrologis.jgrass.gpsnmea.actions;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
+import net.refractions.udig.project.ui.ApplicationGIS;
 import net.refractions.udig.ui.ExceptionDetailsDialog;
+import net.refractions.udig.ui.PlatformGIS;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -51,7 +51,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import eu.hydrologis.jgrass.gpsnmea.GpsActivator;
 import eu.hydrologis.jgrass.gpsnmea.gps.AbstractGps;
-import eu.hydrologis.jgrass.gpsnmea.gps.NmeaGpsImpl;
+import eu.hydrologis.jgrass.gpsnmea.gps.GpsPoint;
+import eu.hydrologis.jgrass.gpsnmea.gps.IGpsObserver;
 import eu.hydrologis.jgrass.gpsnmea.gps.NmeaGpsPoint;
 import eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants;
 
@@ -60,7 +61,7 @@ import eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class GpsSettingsComposite implements Observer {
+public class GpsSettingsComposite implements IGpsObserver {
 
     private boolean gpsIsOn = false;
     private boolean isFirst = false;
@@ -73,8 +74,11 @@ public class GpsSettingsComposite implements Observer {
     private Text intervalText;
     private Text distanceText;
     private Button dummyModeButton;
+	private boolean gpsWasLoggingWhenOpened;
 
     public GpsSettingsComposite( final Shell parent ) {
+    	
+    	gpsWasLoggingWhenOpened = GpsActivator.getDefault().isGpsLogging();
 
         /*
          * Serial ports panel
@@ -150,26 +154,42 @@ public class GpsSettingsComposite implements Observer {
         startButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
         startButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
-                try {
-                    PlatformUI.getWorkbench().getProgressService().busyCursorWhile(new IRunnableWithProgress(){
+				try {
 
-                        public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
-                            if (!GpsActivator.getDefault().isGpsConnected()) {
-                                pm.beginTask("Starting Gps...", IProgressMonitor.UNKNOWN);
-                                GpsActivator.getDefault().startGps();
-                                GpsActivator.getDefault().startGpsLogging();
-                                isFirst = true;
-                                gpsIsOn = true;
-                                pm.done();
+					PlatformGIS.runInProgressDialog("Starting Gps...", false,
+							new IRunnableWithProgress() {
+								public void run(IProgressMonitor pm)
+										throws InvocationTargetException,
+										InterruptedException {
 
-                                // add this as listener to gps
-                                GpsActivator.getDefault().addObserverToGps(GpsSettingsComposite.this);
+									pm.beginTask(
+											"Connecting to the gps. This might take a minute...",
+											IProgressMonitor.UNKNOWN);
+									try {
+										if (!GpsActivator.getDefault()
+												.isGpsConnected()) {
+											GpsActivator.getDefault()
+													.startGps();
+											GpsActivator.getDefault()
+													.startGpsLogging();
+											isFirst = true;
+											gpsIsOn = true;
+											pm.done();
 
-                            }
-                        }
-                    });
+											// add this as listener to gps
+											GpsActivator
+													.getDefault()
+													.addObserverToGps(
+															GpsSettingsComposite.this);
 
-                } catch (Exception e1) {
+										}
+									} finally {
+										pm.done();
+									}
+								}
+							}, false);
+
+				} catch (Exception e1) {
                     String message = "An error occurred while starting the gps logging.";
                     ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e1);
                     e1.printStackTrace();
@@ -189,8 +209,10 @@ public class GpsSettingsComposite implements Observer {
                     PlatformUI.getWorkbench().getProgressService().busyCursorWhile(new IRunnableWithProgress(){
                         public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
                             pm.beginTask("Stopping Gps...", IProgressMonitor.UNKNOWN);
-                            if (GpsActivator.getDefault().isGpsConnected())
+                            if (GpsActivator.getDefault().isGpsConnected()) {
+                                GpsActivator.getDefault().stopGpsLogging();
                                 GpsActivator.getDefault().stopGps();
+                            }
                             gpsIsOn = false;
                             pm.done();
 
@@ -211,6 +233,7 @@ public class GpsSettingsComposite implements Observer {
         GridData gd = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
         gd.horizontalSpan = 2;
         text.setLayoutData(gd);
+        text.setEditable(false);
 
         /*
          * distance and position preferences
@@ -265,6 +288,9 @@ public class GpsSettingsComposite implements Observer {
             public void widgetSelected( SelectionEvent e ) {
                 savePreferences();
                 GpsActivator.getDefault().removeObserverFromGps(GpsSettingsComposite.this);
+                if (!gpsWasLoggingWhenOpened) {
+                	GpsActivator.getDefault().stopGpsLogging();
+				}
                 parent.close();
             }
         });
@@ -274,6 +300,9 @@ public class GpsSettingsComposite implements Observer {
         cancelButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
                 GpsActivator.getDefault().removeObserverFromGps(GpsSettingsComposite.this);
+                if (!gpsWasLoggingWhenOpened) {
+                	GpsActivator.getDefault().stopGpsLogging();
+				}
                 parent.close();
             }
         });
@@ -325,10 +354,9 @@ public class GpsSettingsComposite implements Observer {
         prefs.setValue(PreferenceConstants.TESTMODE, dummyModeButton.getSelection());
     }
 
-    public void update( Observable o, Object arg ) {
-        if (o instanceof NmeaGpsImpl) {
-            NmeaGpsImpl nmeaObs = (NmeaGpsImpl) o;
-            final String currentGpsSentence = nmeaObs.getCurrentGpsData();
+    public void updateGpsPoint( AbstractGps gpsEngine, GpsPoint gpsPoint ) {
+        if (gpsEngine != null) {
+            final String currentGpsSentence = gpsEngine.getCurrentGpsData();
 
             final boolean[] isDisposed = {false};
             Display.getDefault().syncExec(new Runnable(){
@@ -347,7 +375,9 @@ public class GpsSettingsComposite implements Observer {
 
             Display.getDefault().syncExec(new Runnable(){
                 public void run() {
-                    if (currentGpsSentence != null && currentGpsSentence.startsWith(NmeaGpsPoint.GPGGA)) {
+                    if (currentGpsSentence == null) {
+                        text.setText("Didn't get any valid data from the port yet. Waiting for input...");
+                    } else if (currentGpsSentence != null && currentGpsSentence.startsWith(NmeaGpsPoint.GPGGA)) {
                         text.setText(currentGpsSentence + "\n\n This seems to be the right Gps connection port.");
                     } else {
                         text.setText("The selected port doesn't seem to be properly attached to a GPS device.\n\n"
@@ -356,6 +386,12 @@ public class GpsSettingsComposite implements Observer {
                 }
             });
 
+        } else {
+            Display.getDefault().syncExec(new Runnable(){
+                public void run() {
+                    text.setText("Didn't get any data from the port yet. Waiting for input...");
+                }
+            });
         }
     }
 
