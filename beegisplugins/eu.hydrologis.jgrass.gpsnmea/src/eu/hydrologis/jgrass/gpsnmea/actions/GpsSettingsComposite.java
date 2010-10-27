@@ -189,8 +189,10 @@ public class GpsSettingsComposite implements Observer {
                     PlatformUI.getWorkbench().getProgressService().busyCursorWhile(new IRunnableWithProgress(){
                         public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
                             pm.beginTask("Stopping Gps...", IProgressMonitor.UNKNOWN);
-                            if (GpsActivator.getDefault().isGpsConnected())
-                                GpsActivator.getDefault().stopGps();
+                            if (GpsActivator.getDefault().isGpsConnected()){
+                            	GpsActivator.getDefault().stopGpsLogging();
+                            	GpsActivator.getDefault().stopGps();
+                            }
                             gpsIsOn = false;
                             pm.done();
 
@@ -211,6 +213,7 @@ public class GpsSettingsComposite implements Observer {
         GridData gd = new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
         gd.horizontalSpan = 2;
         text.setLayoutData(gd);
+        text.setEditable(false);
 
         /*
          * distance and position preferences
@@ -265,6 +268,7 @@ public class GpsSettingsComposite implements Observer {
             public void widgetSelected( SelectionEvent e ) {
                 savePreferences();
                 GpsActivator.getDefault().removeObserverFromGps(GpsSettingsComposite.this);
+                GpsActivator.getDefault().stopGpsLogging();
                 parent.close();
             }
         });
@@ -274,6 +278,7 @@ public class GpsSettingsComposite implements Observer {
         cancelButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
                 GpsActivator.getDefault().removeObserverFromGps(GpsSettingsComposite.this);
+                GpsActivator.getDefault().stopGpsLogging();
                 parent.close();
             }
         });
@@ -346,17 +351,28 @@ public class GpsSettingsComposite implements Observer {
             }
 
             Display.getDefault().syncExec(new Runnable(){
-                public void run() {
-                    if (currentGpsSentence != null && currentGpsSentence.startsWith(NmeaGpsPoint.GPGGA)) {
-                        text.setText(currentGpsSentence + "\n\n This seems to be the right Gps connection port.");
-                    } else {
-                        text.setText("The selected port doesn't seem to be properly attached to a GPS device.\n\n"
-                                + currentGpsSentence);
-                    }
-                }
+				public void run() {
+					if (currentGpsSentence == null) {
+						text.setText("Didn't get any valid data from the port yet. Waiting for input...");
+					} else if (currentGpsSentence != null
+							&& currentGpsSentence
+									.startsWith(NmeaGpsPoint.GPGGA)) {
+						text.setText(currentGpsSentence
+								+ "\n\n This seems to be the right Gps connection port.");
+					} else {
+						text.setText("The selected port doesn't seem to be properly attached to a GPS device.\n\n"
+								+ currentGpsSentence);
+					}
+				}
             });
 
-        }
+        }else {
+            Display.getDefault().syncExec(new Runnable(){
+                public void run() {
+                        text.setText("Didn't get any data from the port yet. Waiting for input...");
+                }
+            });
+		}
     }
 
     private String[] getPorts() {
