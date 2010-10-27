@@ -17,8 +17,6 @@
  */
 package eu.hydrologis.jgrass.beegisutils.project.newprojectwizard;
 
-import i18n.database.Messages;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -33,9 +31,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PartInitException;
 
 import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
