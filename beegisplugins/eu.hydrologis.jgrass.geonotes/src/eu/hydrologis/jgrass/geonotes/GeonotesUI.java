@@ -444,7 +444,7 @@ public class GeonotesUI implements GeonotesObserver {
         Button configButton = new Button(lowerBarComposite, SWT.FLAT);
         configButton.setLayoutData(new GridData(SWT.END, SWT.BOTTOM, false, false));
         configButton.setImage(ImageManager.ICON_CONFIG.getSwtImage());
-        configButton.setToolTipText(Messages.getString("GeoNote.closesave")); //$NON-NLS-1$
+        configButton.setToolTipText(Messages.getString("GeoNote.properties")); //$NON-NLS-1$
         configButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
                 stackLayout.topControl = innerPanel;
