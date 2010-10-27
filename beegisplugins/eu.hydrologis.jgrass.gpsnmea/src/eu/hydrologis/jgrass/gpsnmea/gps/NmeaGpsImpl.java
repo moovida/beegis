@@ -107,7 +107,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
 
         prefs = GpsActivator.getDefault().getPreferenceStore();
 
-        observers = Collections.synchronizedList(new ArrayList<Observer>());
+        observers = Collections.synchronizedList(new ArrayList<IGpsObserver>());
 
         gpsArtist = new GpsArtist();
     }
@@ -222,8 +222,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
         if (currentGpsPoint.utcDateTime == null) {
             return null;
         }
-        // log it to database
-        GpsActivator.getDefault().getDatabaseManager().insertGpsPoint(currentGpsPoint);
+
         // reproject it
         if (destinationCrs != null) {
             NmeaGpsPoint clonedGpsPoint = new NmeaGpsPoint(currentGpsPoint);
@@ -280,7 +279,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
         }
     }
 
-    public void addObserver( Observer o ) {
+    public void addObserver( IGpsObserver o ) {
         synchronized (observers) {
             if (!observers.contains(o)) {
                 System.out.println("added");
@@ -289,7 +288,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
         }
     }
 
-    public void deleteObserver( Observer o ) {
+    public void deleteObserver( IGpsObserver o ) {
         synchronized (observers) {
             if (observers.contains(o)) {
                 System.out.println("removed");
@@ -304,8 +303,8 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
         try {
             NmeaGpsPoint returnGpsPoint = getCurrentGpsPoint(mapCrs);
             synchronized (observers) {
-                for( Observer observer : observers ) {
-                    observer.update(this, returnGpsPoint);
+                for( IGpsObserver observer : observers ) {
+                    observer.updateGpsPoint(this, returnGpsPoint);
                 }
             }
         } catch (Exception e) {
@@ -328,6 +327,8 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
                 if (returnGpsPoint != null) {
                     System.out.println(returnGpsPoint.toString());
                     gpsArtist.blink(returnGpsPoint);
+                    // log it to database
+                    GpsActivator.getDefault().getDatabaseManager().insertGpsPoint(returnGpsPoint);
                 } else {
                     System.out.println("GPSPOINT NULL");
                 }

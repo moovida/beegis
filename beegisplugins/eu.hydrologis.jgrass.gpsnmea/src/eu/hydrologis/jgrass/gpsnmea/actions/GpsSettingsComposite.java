@@ -51,6 +51,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import eu.hydrologis.jgrass.gpsnmea.GpsActivator;
 import eu.hydrologis.jgrass.gpsnmea.gps.AbstractGps;
+import eu.hydrologis.jgrass.gpsnmea.gps.GpsPoint;
+import eu.hydrologis.jgrass.gpsnmea.gps.IGpsObserver;
 import eu.hydrologis.jgrass.gpsnmea.gps.NmeaGpsImpl;
 import eu.hydrologis.jgrass.gpsnmea.gps.NmeaGpsPoint;
 import eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants;
@@ -60,7 +62,7 @@ import eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class GpsSettingsComposite implements Observer {
+public class GpsSettingsComposite implements IGpsObserver {
 
     private boolean gpsIsOn = false;
     private boolean isFirst = false;
@@ -189,9 +191,9 @@ public class GpsSettingsComposite implements Observer {
                     PlatformUI.getWorkbench().getProgressService().busyCursorWhile(new IRunnableWithProgress(){
                         public void run( IProgressMonitor pm ) throws InvocationTargetException, InterruptedException {
                             pm.beginTask("Stopping Gps...", IProgressMonitor.UNKNOWN);
-                            if (GpsActivator.getDefault().isGpsConnected()){
-                            	GpsActivator.getDefault().stopGpsLogging();
-                            	GpsActivator.getDefault().stopGps();
+                            if (GpsActivator.getDefault().isGpsConnected()) {
+                                GpsActivator.getDefault().stopGpsLogging();
+                                GpsActivator.getDefault().stopGps();
                             }
                             gpsIsOn = false;
                             pm.done();
@@ -330,10 +332,9 @@ public class GpsSettingsComposite implements Observer {
         prefs.setValue(PreferenceConstants.TESTMODE, dummyModeButton.getSelection());
     }
 
-    public void update( Observable o, Object arg ) {
-        if (o instanceof NmeaGpsImpl) {
-            NmeaGpsImpl nmeaObs = (NmeaGpsImpl) o;
-            final String currentGpsSentence = nmeaObs.getCurrentGpsData();
+    public void updateGpsPoint( AbstractGps gpsEngine, GpsPoint gpsPoint ) {
+        if (gpsEngine != null) {
+            final String currentGpsSentence = gpsEngine.getCurrentGpsData();
 
             final boolean[] isDisposed = {false};
             Display.getDefault().syncExec(new Runnable(){
@@ -351,28 +352,25 @@ public class GpsSettingsComposite implements Observer {
             }
 
             Display.getDefault().syncExec(new Runnable(){
-				public void run() {
-					if (currentGpsSentence == null) {
-						text.setText("Didn't get any valid data from the port yet. Waiting for input...");
-					} else if (currentGpsSentence != null
-							&& currentGpsSentence
-									.startsWith(NmeaGpsPoint.GPGGA)) {
-						text.setText(currentGpsSentence
-								+ "\n\n This seems to be the right Gps connection port.");
-					} else {
-						text.setText("The selected port doesn't seem to be properly attached to a GPS device.\n\n"
-								+ currentGpsSentence);
-					}
-				}
-            });
-
-        }else {
-            Display.getDefault().syncExec(new Runnable(){
                 public void run() {
-                        text.setText("Didn't get any data from the port yet. Waiting for input...");
+                    if (currentGpsSentence == null) {
+                        text.setText("Didn't get any valid data from the port yet. Waiting for input...");
+                    } else if (currentGpsSentence != null && currentGpsSentence.startsWith(NmeaGpsPoint.GPGGA)) {
+                        text.setText(currentGpsSentence + "\n\n This seems to be the right Gps connection port.");
+                    } else {
+                        text.setText("The selected port doesn't seem to be properly attached to a GPS device.\n\n"
+                                + currentGpsSentence);
+                    }
                 }
             });
-		}
+
+        } else {
+            Display.getDefault().syncExec(new Runnable(){
+                public void run() {
+                    text.setText("Didn't get any data from the port yet. Waiting for input...");
+                }
+            });
+        }
     }
 
     private String[] getPorts() {

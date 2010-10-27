@@ -17,28 +17,26 @@
  */
 package eu.hydrologis.jgrass.gpsnmea.gps;
 
+import gnu.io.CommPortIdentifier;
+
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import gnu.io.CommPortIdentifier;
 
 /**
  * The abstraction for Gps
  * 
  * @author Andrea Antonello - www.hydrologis.com
  */
-public abstract class AbstractGps extends Observable {
+public abstract class AbstractGps {
 
     /**
-     * the list of {@link Observer} that listen to this Gps Implementation
+     * the list of {@link IGpsObserver} that listen to this Gps Implementation
      */
-    protected List<Observer> observers = null;
+    protected List<IGpsObserver> observers = null;
 
     /**
      * defines the state of the Gps, true = connected
@@ -138,6 +136,18 @@ public abstract class AbstractGps extends Observable {
         } catch (Exception e) {
             e.printStackTrace();
             return new String[][]{{""}, {""}};
+        }
+    }
+
+    public void addObserver( IGpsObserver observer ) {
+        if (!observers.contains(observer)) {
+            observers.add(observer);
+        }
+    }
+
+    public void deleteObserver( IGpsObserver observer ) {
+        if (observers.contains(observer)) {
+            observers.remove(observer);
         }
     }
 
