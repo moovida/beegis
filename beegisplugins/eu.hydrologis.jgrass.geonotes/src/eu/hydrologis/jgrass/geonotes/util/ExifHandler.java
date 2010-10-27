@@ -36,6 +36,9 @@ import org.apache.sanselan.formats.tiff.constants.TiffConstants;
 import org.apache.sanselan.formats.tiff.write.TiffOutputSet;
 import org.jgrasstools.gears.utils.time.UtcTimeUtilities;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * A class that handles exif operation.
@@ -131,8 +134,13 @@ public class ExifHandler {
         creationDate = creationDate.replaceAll("'", "");
         creationDate = creationDate.replaceFirst(":", "-");
         creationDate = creationDate.replaceFirst(":", "-");
-
-        DateTime dt = UtcTimeUtilities.fromStringWithSeconds(creationDate);
+        
+        String dateTimeFormatterYYYYMMDDHHMMSS_string = "yyyy-MM-dd HH:mm:ss";
+        DateTimeFormatter dateTimeFormatterYYYYMMDDHHMMSS = DateTimeFormat
+                .forPattern(dateTimeFormatterYYYYMMDDHHMMSS_string);
+        
+        DateTime parseDateTime = dateTimeFormatterYYYYMMDDHHMMSS.parseDateTime(creationDate);
+        DateTime dt = parseDateTime.toDateTime(DateTimeZone.UTC);
         return dt;
     }
 

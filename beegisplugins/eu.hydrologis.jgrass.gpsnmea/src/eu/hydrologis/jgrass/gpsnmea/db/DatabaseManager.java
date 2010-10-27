@@ -27,6 +27,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GpsLogTable;
@@ -96,6 +97,9 @@ public class DatabaseManager {
         if (to == null) {
             to = defaultTo;
         }
+
+        from = from.toDateTime(DateTimeZone.UTC);
+        to = to.toDateTime(DateTimeZone.UTC);
 
         Session session = DatabasePlugin.getDefault().getActiveDatabaseConnection().openSession();
         List<GpsPoint> pointsList = new ArrayList<GpsPoint>();

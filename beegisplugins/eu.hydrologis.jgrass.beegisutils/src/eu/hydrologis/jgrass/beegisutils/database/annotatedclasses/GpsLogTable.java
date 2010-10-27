@@ -25,6 +25,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 /**
  * The persistent class representing the gps logs table.
@@ -73,7 +74,8 @@ public class GpsLogTable {
     }
 
     public DateTime getUtcTime() {
-        return utcTime;
+        DateTime dateTimeUtc = utcTime.toDateTime(DateTimeZone.UTC);
+        return dateTimeUtc;
     }
 
     public double getEast() {
