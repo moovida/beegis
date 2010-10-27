@@ -107,7 +107,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
 
         prefs = GpsActivator.getDefault().getPreferenceStore();
 
-        observers = Collections.synchronizedList(new ArrayList<Observer>());
+        observers = Collections.synchronizedList(new ArrayList<IGpsObserver>());
 
         gpsArtist = new GpsArtist();
     }
@@ -222,8 +222,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
         if (currentGpsPoint.utcDateTime == null) {
             return null;
         }
-        // log it to database
-        GpsActivator.getDefault().getDatabaseManager().insertGpsPoint(currentGpsPoint);
+
         // reproject it
         if (destinationCrs != null) {
             NmeaGpsPoint clonedGpsPoint = new NmeaGpsPoint(currentGpsPoint);
@@ -279,64 +278,66 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
 
         }
     }
-    
-    public void addObserver( Observer o ) {
-        if (!observers.contains(o)) {
-            System.out.println("added");
-            observers.add(o);
+
+    public void addObserver( IGpsObserver o ) {
+        synchronized (observers) {
+            if (!observers.contains(o)) {
+                System.out.println("added");
+                observers.add(o);
+            }
         }
     }
 
-    public void deleteObserver( Observer o ) {
-        if (observers.contains(o)) {
-            System.out.println("removed");
-            observers.remove(o);
+    public void deleteObserver( IGpsObserver o ) {
+        synchronized (observers) {
+            if (observers.contains(o)) {
+                System.out.println("removed");
+                observers.remove(o);
+            }
         }
     }
 
     public synchronized void notifyObservers() {
         IMap activeMap = ApplicationGIS.getActiveMap();
         mapCrs = activeMap.getViewportModel().getCRS();
-        GpsPoint returnGpsPoint = null;
         try {
-            returnGpsPoint = getCurrentGpsPoint(mapCrs);
-            if (returnGpsPoint == null)
-                return;
+            NmeaGpsPoint returnGpsPoint = getCurrentGpsPoint(mapCrs);
+            synchronized (observers) {
+                for( IGpsObserver observer : observers ) {
+                    observer.updateGpsPoint(this, returnGpsPoint);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             String message = "An error occurred while retriving the GPS position.";
             ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e);
             return;
         }
-
-        synchronized (observers) {
-            for( Observer observer : observers ) {
-                observer.update(this, returnGpsPoint);
-            }
-        }
     }
 
     public void run() {
+        System.out.println("ENTER LOGGING");
         while( gpsIsLogging && gpsIsConnected ) {
             final int milliSeconds = prefs.getInt(PreferenceConstants.INTERVAL_SECONDS) * 1000;
-            IMap activeMap = ApplicationGIS.getActiveMap();
-            mapCrs = activeMap.getViewportModel().getCRS();
-            NmeaGpsPoint returnGpsPoint = null;
             try {
+                IMap activeMap = ApplicationGIS.getActiveMap();
+                mapCrs = activeMap.getViewportModel().getCRS();
+                NmeaGpsPoint returnGpsPoint = null;
                 returnGpsPoint = getCurrentGpsPoint(mapCrs);
-                if (returnGpsPoint == null)
-                    return;
+                if (returnGpsPoint != null) {
+                    System.out.println(returnGpsPoint.toString());
+                    gpsArtist.blink(returnGpsPoint);
+                    // log it to database
+                    GpsActivator.getDefault().getDatabaseManager().insertGpsPoint(returnGpsPoint);
+                } else {
+                    System.out.println("GPSPOINT NULL");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 String message = "An error occurred while retriving the GPS position.";
                 ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e);
                 break;
             }
-
-            System.out.println(returnGpsPoint.toString());
-
-            gpsArtist.blink(returnGpsPoint);
-
             try {
                 // notify all listeners
                 notifyObservers();
@@ -345,6 +346,7 @@ public class NmeaGpsImpl extends AbstractGps implements SerialPortEventListener,
                 e.printStackTrace();
             }
         }
+        System.out.println("EXIT LOGGING");
         gpsArtist.clear();
         gpsIsLogging = false;
     }

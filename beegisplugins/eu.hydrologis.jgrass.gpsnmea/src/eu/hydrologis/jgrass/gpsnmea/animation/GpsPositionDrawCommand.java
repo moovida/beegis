@@ -59,6 +59,7 @@ public class GpsPositionDrawCommand extends AbstractDrawCommand implements IDraw
     }
 
     public void run( IProgressMonitor monitor ) throws Exception {
+    	if(point==null) return;
         validArea = new Rectangle(point.x, point.y + frame, frame, frame);
 
         /*
