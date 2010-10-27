@@ -69,9 +69,12 @@ public class H2ConnectionFactory implements IConnectionFactory {
      * @throws IOException 
      */
     public DatabaseConnectionProperties createProperties( File dbFile ) throws IOException {
-        if (!dbFile.exists()) {
-            throw new IOException(Messages.H2ConnectionFactory__db_doesnt_exist);
-        }
+		if (!dbFile.exists()) {
+			// try to create it
+			if (!dbFile.mkdirs())
+				throw new IOException(
+						Messages.H2ConnectionFactory__db_doesnt_exist);
+		}
         if (!dbFile.isDirectory()) {
             return null;
         }
