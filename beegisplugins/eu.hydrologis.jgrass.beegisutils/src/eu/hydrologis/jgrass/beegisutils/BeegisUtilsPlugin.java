@@ -37,6 +37,7 @@ public class BeegisUtilsPlugin extends AbstractUIPlugin {
     // The plug-in ID
     public static final String PLUGIN_ID = "eu.hydrologis.jgrass.beegisutils";
 
+    
     /**
      * Global formatter for joda datetime (yyyy-MM-dd HH:mm:ss).
      */
@@ -123,7 +124,7 @@ public class BeegisUtilsPlugin extends AbstractUIPlugin {
             }
         }
 
-        return new File(System.getProperty("java.home")).getAbsolutePath();
+        return new File(System.getProperty("user.home")).getAbsolutePath();
     }
 
     /**
@@ -135,5 +136,5 @@ public class BeegisUtilsPlugin extends AbstractUIPlugin {
         IPreferenceStore store = getPreferenceStore();
         store.putValue(BEEGIS_LAST_CHOSEN_FOLDER, folderPath);
     }
-
+    
 }
