@@ -68,5 +68,20 @@
             id="eu.hydrologis.jgrass.beegis.project.ui.wizards.newProject">
       </primaryWizard>
    </extension>
+      <extension
+            point="org.eclipse.ui.popupMenus">
+         <objectContribution
+               adaptable="false"
+               id="eu.hydrologis.jgrass.beegisutils.triggerenter"
+               objectClass="net.refractions.udig.project.internal.Map">
+            <action
+                  class="eu.hydrologis.jgrass.beegisutils.actions.IssueEnterAction"
+                  id="eu.hydrologis.jgrass.beegisutils.actions.IssueEnterAction"
+                  label="Issue Enter"
+                  style="push"
+                  tooltip="Triggers an Enter button event">
+            </action>
+         </objectContribution>
+      </extension>
 
 </plugin>
