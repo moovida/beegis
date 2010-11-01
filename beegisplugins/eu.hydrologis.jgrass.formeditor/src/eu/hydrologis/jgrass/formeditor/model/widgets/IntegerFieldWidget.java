@@ -24,6 +24,7 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 
 /**
  * A textfield widget.
@@ -35,8 +36,6 @@ public class IntegerFieldWidget extends Widget {
     
     private static final long serialVersionUID = 1;
 
-    /** A 16x16 pictogram of a rectangular shape. */
-    private static final Image TEXTFIELD_ICON = createImage("icons/text_i_icon16.png");
 
     private String defaultValue = "0";
 
@@ -67,7 +66,7 @@ public class IntegerFieldWidget extends Widget {
     }
 
     public Image getIcon() {
-        return TEXTFIELD_ICON;
+        return ImageCache.getInstance().getImage(ImageCache.TEXT_INTEGER_ICON_16);
     }
 
     public String toString() {

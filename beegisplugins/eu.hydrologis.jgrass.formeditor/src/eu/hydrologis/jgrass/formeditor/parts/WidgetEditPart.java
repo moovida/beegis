@@ -12,8 +12,6 @@ package eu.hydrologis.jgrass.formeditor.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.draw2d.ChopboxAnchor;
@@ -31,11 +29,8 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;
 import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.ReconnectRequest;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-import eu.hydrologis.jgrass.formeditor.FormEditorPlugin;
 import eu.hydrologis.jgrass.formeditor.model.Connection;
 import eu.hydrologis.jgrass.formeditor.model.ModelElement;
 import eu.hydrologis.jgrass.formeditor.model.Widget;
@@ -51,6 +46,7 @@ import eu.hydrologis.jgrass.formeditor.model.widgets.RadioButtonWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.WidgetTextFigure;
+import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 
 /**
  * EditPart used for Shape instances (more specific for EllipticalShape and
@@ -65,8 +61,6 @@ class WidgetEditPart extends AbstractGraphicalEditPart
         implements
             PropertyChangeListener,
             NodeEditPart {
-
-    private HashMap<String, Image> imageCache = new HashMap<String, Image>();
 
     private ConnectionAnchor anchor;
 
@@ -144,44 +138,28 @@ class WidgetEditPart extends AbstractGraphicalEditPart
     private IFigure createFigureForModel() {
         Object model = getModel();
         if (model instanceof TextFieldWidget) {
-            Image textImage = imageCache.get(TextFieldWidget.TYPE);
-            if (textImage == null)
-                textImage = createImage("icons/textfield.png");
+            Image textImage = ImageCache.getInstance().getImage(ImageCache.TEXT_ICON_24);
             return new WidgetTextFigure((Widget) model, textImage);
         } else if (model instanceof TextAreaWidget) {
-            Image textAreaImage = imageCache.get(TextAreaWidget.TYPE);
-            if (textAreaImage == null)
-                textAreaImage = createImage("icons/textarea.png");
+            Image textAreaImage = ImageCache.getInstance().getImage(ImageCache.TEXTAREA_ICON_24);
             return new WidgetTextFigure((Widget) model, textAreaImage);
         } else if (model instanceof LabelWidget) {
-            Image labelImage = imageCache.get(LabelWidget.TYPE);
-            if (labelImage == null)
-                labelImage = createImage("icons/label.png");
+            Image labelImage = ImageCache.getInstance().getImage(ImageCache.LABEL_ICON_24);
             return new WidgetTextFigure((Widget) model, labelImage);
         } else if (model instanceof IntegerFieldWidget) {
-            Image integerImage = imageCache.get(IntegerFieldWidget.TYPE);
-            if (integerImage == null)
-                integerImage = createImage("icons/textfield_i.png");
+            Image integerImage = ImageCache.getInstance().getImage(ImageCache.TEXT_INTEGER_ICON_24);
             return new WidgetTextFigure((Widget) model, integerImage);
         } else if (model instanceof DoubleFieldWidget) {
-            Image doubleImage = imageCache.get(DoubleFieldWidget.TYPE);
-            if (doubleImage == null)
-                doubleImage = createImage("icons/textfield_d.png");
+            Image doubleImage = ImageCache.getInstance().getImage(ImageCache.TEXT_DOUBLE_ICON_24);
             return new WidgetTextFigure((Widget) model, doubleImage);
         } else if (model instanceof ComboBoxWidget) {
-            Image comboImage = imageCache.get("combo");
-            if (comboImage == null)
-                comboImage = createImage("icons/combobox.png");
+            Image comboImage = ImageCache.getInstance().getImage(ImageCache.COMBO_ICON_24);
             return new WidgetTextFigure((Widget) model, comboImage);
         } else if (model instanceof CheckBoxWidget) {
-            Image checkImage = imageCache.get("check");
-            if (checkImage == null)
-                checkImage = createImage("icons/checkbox.png");
+            Image checkImage = ImageCache.getInstance().getImage(ImageCache.CHECK_ICON_24);
             return new WidgetTextFigure((Widget) model, checkImage);
         } else if (model instanceof RadioButtonWidget) {
-            Image radioImage = imageCache.get("radio");
-            if (radioImage == null)
-                radioImage = createImage("icons/radiobutton.png");
+            Image radioImage = ImageCache.getInstance().getImage(ImageCache.RADIO_ICON_24);
             return new WidgetTextFigure((Widget) model, radioImage);
         } else {
             // if Shapes gets extended the conditions above must be updated
@@ -189,22 +167,10 @@ class WidgetEditPart extends AbstractGraphicalEditPart
         }
     }
 
-    private static Image createImage( String name ) {
-        ImageDescriptor imageD = AbstractUIPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, name);
-        Image image = imageD.createImage();
-        return image;
-    }
-
     /**
      * Upon deactivation, detach from the model element as a property change listener.
      */
     public void deactivate() {
-        Collection<Image> values = imageCache.values();
-        for( Image image : values ) {
-            image.dispose();
-        }
-        imageCache.clear();
         if (isActive()) {
             super.deactivate();
             ((ModelElement) getModel()).removePropertyChangeListener(this);

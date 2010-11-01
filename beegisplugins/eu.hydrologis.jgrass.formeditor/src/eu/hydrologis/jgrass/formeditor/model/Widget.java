@@ -30,6 +30,7 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 import eu.hydrologis.jgrass.formeditor.FormEditorPlugin;
+import eu.hydrologis.jgrass.formeditor.utils.Constants;
 
 /**
  * Abstract prototype of a widget representer.
@@ -44,7 +45,7 @@ import eu.hydrologis.jgrass.formeditor.FormEditorPlugin;
  */
 public abstract class Widget extends ModelElement {
 
-    private static final int PIXEL_SNAP = 10;
+    
     private static final long serialVersionUID = 1;
     /** 
      * A static array of property descriptors.
@@ -276,16 +277,16 @@ public abstract class Widget extends ModelElement {
         if (newLocation == null) {
             throw new IllegalArgumentException();
         }
-        snap(newLocation);
+        snapLocation(newLocation);
         location.setLocation(newLocation);
         firePropertyChange(LOCATION_PROP, null, location);
     }
 
-    private void snap( Point newLocation ) {
+    private void snapLocation( Point newLocation ) {
         int x = newLocation.x;
         int y = newLocation.y;
-        x = x - (x % PIXEL_SNAP);
-        y = y - (y % PIXEL_SNAP);
+        x = x - (x % Constants.PIXEL_SNAP);
+        y = y - (y % Constants.PIXEL_SNAP);
 
         newLocation.x = x;
         newLocation.y = y;
@@ -306,9 +307,20 @@ public abstract class Widget extends ModelElement {
      */
     public void setSize( Dimension newSize ) {
         if (newSize != null) {
+            snapSize(newSize);
             size.setSize(newSize);
             firePropertyChange(SIZE_PROP, null, size);
         }
+    }
+    
+    private void snapSize( Dimension newLocation ) {
+        int x = newLocation.width;
+        int y = newLocation.height;
+        x = x - (x % Constants.PIXEL_SNAP);
+        y = y - (y % Constants.PIXEL_SNAP);
+
+        newLocation.width = x;
+        newLocation.height = y;
     }
 
     public String getFieldname() {
@@ -321,13 +333,6 @@ public abstract class Widget extends ModelElement {
         }
         fieldname = newName;
         firePropertyChange(FIELDNAME_PROP, null, fieldname);
-    }
-
-    protected static Image createImage( String name ) {
-        ImageDescriptor imageD = AbstractUIPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, name);
-        Image image = imageD.createImage();
-        return image;
     }
 
     protected static synchronized void addIntegerPropertyValidator( PropertyDescriptor descriptor ) {

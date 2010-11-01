@@ -24,6 +24,7 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 
 /**
  * A checkbox widget.
@@ -34,9 +35,6 @@ public class CheckBoxWidget extends Widget {
     public static final String TYPE = "check";
 
     private static final long serialVersionUID = 1;
-
-    /** A 16x16 pictogram of a checkbox. */
-    private static final Image CHECK_ICON = createImage("icons/check_icon16.png");
 
     private String selected = "false";
 
@@ -67,7 +65,7 @@ public class CheckBoxWidget extends Widget {
     }
 
     public Image getIcon() {
-        return CHECK_ICON;
+        return ImageCache.getInstance().getImage(ImageCache.CHECK_ICON_16);
     }
 
     public String toString() {
