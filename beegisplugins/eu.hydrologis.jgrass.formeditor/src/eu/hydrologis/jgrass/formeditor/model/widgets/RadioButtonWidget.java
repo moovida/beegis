@@ -24,6 +24,7 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 
 /**
  * A radio widget.
@@ -36,9 +37,6 @@ public class RadioButtonWidget extends Widget {
     public static final String TYPE = "radio";
     
     private static final long serialVersionUID = 1;
-
-    /** A 16x16 pictogram of a radio. */
-    private static final Image RADIO_ICON = createImage("icons/radio_icon16.png");
 
     private String[] list = new String[]{"a", "b", "c"};
     private String selected = "a";
@@ -72,7 +70,7 @@ public class RadioButtonWidget extends Widget {
     }
 
     public Image getIcon() {
-        return RADIO_ICON;
+        return ImageCache.getInstance().getImage(ImageCache.RADIO_ICON_16);
     }
 
     public String toString() {

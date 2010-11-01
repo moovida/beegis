@@ -24,6 +24,7 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 
 /**
  * A combobox widget.
@@ -34,9 +35,6 @@ public class ComboBoxWidget extends Widget {
     public static final String TYPE = "combo";
     
     private static final long serialVersionUID = 1;
-
-    /** A 16x16 pictogram of a combo. */
-    private static final Image COMBO_ICON = createImage("icons/combo_icon16.png");
 
     private String[] list = new String[]{"a", "b", "c"};
     private String selected = "a";
@@ -73,7 +71,7 @@ public class ComboBoxWidget extends Widget {
     }
 
     public Image getIcon() {
-        return COMBO_ICON;
+        return ImageCache.getInstance().getImage(ImageCache.COMBO_ICON_16);
     }
 
     public String toString() {

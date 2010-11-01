@@ -31,6 +31,7 @@ import org.opengis.filter.Filter;
 import org.osgi.framework.BundleContext;
 
 import eu.hydrologis.jgrass.featureeditor.utils.ISelectionObserver;
+import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -70,6 +71,8 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
     public void stop( BundleContext context ) throws Exception {
         plugin = null;
         page.removePartListener(this);
+        
+        ImageCache.getInstance().dispose();
         super.stop(context);
     }
 

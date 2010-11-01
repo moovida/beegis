@@ -24,6 +24,7 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 
 /**
  * A label widget.
@@ -35,9 +36,6 @@ public class LabelWidget extends Widget {
     public static final String TYPE = "label";
 
     private static final long serialVersionUID = 1;
-
-    /** A 16x16 pictogram of a rectangular shape. */
-    private static final Image LABEL_ICON = createImage("icons/label_icon16.png");
 
     private String textValue = "";
 
@@ -67,15 +65,11 @@ public class LabelWidget extends Widget {
     }
 
     public Image getIcon() {
-        return LABEL_ICON;
+        return ImageCache.getInstance().getImage(ImageCache.LABEL_ICON_16);
     }
 
     public String toString() {
         return "Label " + hashCode();
-    }
-
-    public void setSize( Dimension newSize ) {
-        // fixed size widgets
     }
 
     public String getTextValue() {
