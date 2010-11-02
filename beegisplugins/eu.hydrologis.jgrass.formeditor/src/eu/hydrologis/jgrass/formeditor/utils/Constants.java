@@ -45,6 +45,11 @@ public class Constants {
     public static final String TEXT_PROP = "WidgetText";
 
     /** 
+     * Property ID to use for name. 
+     */
+    public static final String NAME_PROP = "WidgetName";
+
+    /** 
      * Property ID to use for the default value. 
      */
     public static final String DEFAULT_PROP = "WidgetDefault";
@@ -78,4 +83,14 @@ public class Constants {
      * Property ID to use when the list of incoming connections is modified. 
      */
     public static final String TARGET_CONNECTIONS_PROP = "WidgetTargetConn";
+    
+    
+    
+    public static final String LABELS_FIELDNAME = "fieldname";
+    public static final String LABELS_NAME = "name";
+    public static final String LABELS_TEXT = "text";
+    public static final String LABELS_LAYOUT_X = "layout X";
+    public static final String LABELS_LAYOUT_Y = "layout Y";
+    public static final String LABELS_LAYOUT_W = "layout width";
+    public static final String LABELS_LAYOUT_H = "layout height";
 }

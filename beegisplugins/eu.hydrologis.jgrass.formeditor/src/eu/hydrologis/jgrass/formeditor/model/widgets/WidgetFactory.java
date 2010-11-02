@@ -12,7 +12,7 @@ public class WidgetFactory {
 
     public static AWidget createWidget( Properties properties ) {
         String type = properties.getProperty(TYPE_PROP);
-        String fieldName = properties.getProperty(FIELDNAME_PROP);
+        String fieldName = properties.getProperty(NAME_PROP);
         String sizeString = properties.getProperty(SIZE_PROP);
         String[] sizeSplit = sizeString.split(",");
         int width = Integer.parseInt(sizeSplit[0].trim());
@@ -53,7 +53,7 @@ public class WidgetFactory {
         }
 
         // add common attributes
-        widget.setFieldname(fieldName);
+        widget.setName(fieldName);
         Point point = new Point(x, y);
         widget.setLocation(point);
         Dimension dim = new Dimension(width, height);

@@ -128,7 +128,7 @@ public class ComboBoxWidget extends AWidget {
     }
     
     public String toDumpString() {
-        String tmpName = getFieldname().replaceAll("\\s+", "_");
+        String tmpName = getName().replaceAll("\\s+", "_");
         Dimension tmpSize = getSize();
         Point tmpLocation = getLocation();
         String tmpList = getList();
