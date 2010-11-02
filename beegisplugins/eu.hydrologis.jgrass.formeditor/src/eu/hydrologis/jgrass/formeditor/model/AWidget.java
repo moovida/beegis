@@ -221,8 +221,8 @@ public abstract class AWidget extends AModelElement {
     private void snapLocation( Point newLocation ) {
         int x = newLocation.x;
         int y = newLocation.y;
-        x = x - (x % Constants.PIXEL_SNAP);
-        y = y - (y % Constants.PIXEL_SNAP);
+        x = x - (x % Constants.LOCATION_PIXEL_SNAP);
+        y = y - (y % Constants.LOCATION_PIXEL_SNAP);
 
         newLocation.x = x;
         newLocation.y = y;
@@ -252,11 +252,11 @@ public abstract class AWidget extends AModelElement {
     private void snapSize( Dimension newLocation ) {
         int x = newLocation.width;
         int y = newLocation.height;
-        x = x - (x % Constants.PIXEL_SNAP);
-        y = y - (y % Constants.PIXEL_SNAP);
+        x = x - (x % Constants.DIMENSION_PIXEL_SNAP);
+        y = y - (y % Constants.DIMENSION_PIXEL_SNAP);
 
-        newLocation.width = x > 0 ? x : Constants.PIXEL_SNAP;
-        newLocation.height = y > 0 ? y : Constants.PIXEL_SNAP;
+        newLocation.width = x > 0 ? x : Constants.DIMENSION_PIXEL_SNAP;
+        newLocation.height = y > 0 ? y : Constants.DIMENSION_PIXEL_SNAP;
     }
 
     public String getFieldname() {

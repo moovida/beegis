@@ -1,5 +1,6 @@
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.ImageFigure;
 import org.eclipse.draw2d.LineBorder;
@@ -17,17 +18,17 @@ public class WidgetTextFigure extends ImageFigure {
         super(image, PositionConstants.NORTH_WEST);
         this.widget = widget;
         
-        
-        LineBorder border = new LineBorder(2);
-        setBorder(border);
+        setBorder(new LineBorder(ColorConstants.black, 1));
+        setForegroundColor(ColorConstants.black);
     }
 
     protected void paintFigure( Graphics graphics ) {
         super.paintFigure(graphics);
+
         Rectangle area = getClientArea();
         int x = area.x + Constants.FIELDNAME_OFFSET_X;
-        int y = area.y + 5;
-
+        int y = area.y + Constants.FIELDNAME_OFFSET_Y;
+        
         String fieldname = widget.getFieldname();
         graphics.drawText(fieldname, x, y);
     }
