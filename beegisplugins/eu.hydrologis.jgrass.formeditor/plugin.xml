@@ -46,7 +46,6 @@
                  toolbarPath="beegisForms"
                  tooltip="Opens the Form View">
            </action>
-           <!--
            <action
                  class="eu.hydrologis.jgrass.formeditor.OpenFormEditorAction"
                  icon="icons/form_editor.png"
@@ -56,7 +55,6 @@
                  toolbarPath="beegisForms"
                  tooltip="Opens the Form Editor">
            </action>
-           -->
         </actionSet>
      </extension>
      <extension
