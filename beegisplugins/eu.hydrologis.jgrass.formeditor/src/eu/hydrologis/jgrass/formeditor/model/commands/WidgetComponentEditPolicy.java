@@ -1,20 +1,20 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package eu.hydrologis.jgrass.formeditor.model.commands;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.ComponentEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
 
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
 
 /**
@@ -31,8 +31,8 @@ public class WidgetComponentEditPolicy extends ComponentEditPolicy {
     protected Command createDeleteCommand( GroupRequest deleteRequest ) {
         Object parent = getHost().getParent().getModel();
         Object child = getHost().getModel();
-        if (parent instanceof WidgetsDiagram && child instanceof Widget) {
-            return new WidgetDeleteCommand((WidgetsDiagram) parent, (Widget) child);
+        if (parent instanceof WidgetsDiagram && child instanceof AWidget) {
+            return new WidgetDeleteCommand((WidgetsDiagram) parent, (AWidget) child);
         }
         return super.createDeleteCommand(deleteRequest);
     }

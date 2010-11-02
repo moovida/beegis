@@ -23,15 +23,16 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 
 /**
  * A combobox widget.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class ComboBoxWidget extends Widget {
+public class ComboBoxWidget extends AWidget {
     public static final String TYPE = "combo";
     
     private static final long serialVersionUID = 1;

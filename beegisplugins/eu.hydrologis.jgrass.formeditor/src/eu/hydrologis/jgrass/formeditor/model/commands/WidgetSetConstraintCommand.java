@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package eu.hydrologis.jgrass.formeditor.model.commands;
 
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -16,7 +16,7 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 
 /**
  * A command to resize and/or move a shape.
@@ -32,7 +32,7 @@ public class WidgetSetConstraintCommand extends Command {
     private final ChangeBoundsRequest request;
 
     /** Shape to manipulate. */
-    private final Widget widget;
+    private final AWidget widget;
 
     /**
      * Create a command that can resize and/or move a shape. 
@@ -41,7 +41,7 @@ public class WidgetSetConstraintCommand extends Command {
      * @param newBounds the new size and location
      * @throws IllegalArgumentException if any of the parameters is null
      */
-    public WidgetSetConstraintCommand( Widget widget, ChangeBoundsRequest req, Rectangle newBounds ) {
+    public WidgetSetConstraintCommand( AWidget widget, ChangeBoundsRequest req, Rectangle newBounds ) {
         if (widget == null || req == null || newBounds == null) {
             throw new IllegalArgumentException();
         }

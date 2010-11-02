@@ -23,16 +23,16 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
-
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 /**
  * A label widget.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @SuppressWarnings("nls")
-public class LabelWidget extends Widget {
+public class LabelWidget extends AWidget {
     public static final String TYPE = "label";
 
     private static final long serialVersionUID = 1;

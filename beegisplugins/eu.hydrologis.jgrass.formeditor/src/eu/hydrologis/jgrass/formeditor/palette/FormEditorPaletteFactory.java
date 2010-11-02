@@ -37,6 +37,7 @@ import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.RadioButtonWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
+import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 
 public final class FormEditorPaletteFactory {
 
@@ -44,81 +45,75 @@ public final class FormEditorPaletteFactory {
     private static PaletteContainer createWidgetsDrawer() {
         PaletteDrawer componentsDrawer = new PaletteDrawer("Widgets");
 
-        ImageDescriptor labelId = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/label_icon16.png");
-        ImageDescriptor labelId24 = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/label_icon24.png");
+        ImageDescriptor labelId = FormEditorPlugin
+                .imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID, ImageCache.LABEL_ICON_16);
+        ImageDescriptor labelId24 = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
+                ImageCache.LABEL_ICON_24);
 
-        CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry("Label",
-                "Create a label", LabelWidget.class, new SimpleFactory(LabelWidget.class), labelId,
-                labelId24);
+        CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry("Label", "Create a label", LabelWidget.class,
+                new SimpleFactory(LabelWidget.class), labelId, labelId24);
         componentsDrawer.add(component);
 
-        ImageDescriptor textId = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/text_icon16.png");
-        ImageDescriptor textId24 = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/text_icon24.png");
+        ImageDescriptor textId = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID, ImageCache.TEXT_ICON_16);
+        ImageDescriptor textId24 = FormEditorPlugin
+                .imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID, ImageCache.TEXT_ICON_24);
 
-        component = new CombinedTemplateCreationEntry("Textfield", "Create an text field",
-                TextFieldWidget.class, new SimpleFactory(TextFieldWidget.class), textId, textId24);
+        component = new CombinedTemplateCreationEntry("Textfield", "Create an text field", TextFieldWidget.class,
+                new SimpleFactory(TextFieldWidget.class), textId, textId24);
         componentsDrawer.add(component);
 
-        ImageDescriptor textAreaId = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/textarea_icon16.png");
-        ImageDescriptor textAreaId24 = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/textarea_icon24.png");
+        ImageDescriptor textAreaId = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
+                ImageCache.TEXTAREA_ICON_16);
+        ImageDescriptor textAreaId24 = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
+                ImageCache.TEXTAREA_ICON_24);
 
-        component = new CombinedTemplateCreationEntry("Textarea", "Create a textarea",
-                TextAreaWidget.class, new SimpleFactory(TextAreaWidget.class), textAreaId,
-                textAreaId24);
+        component = new CombinedTemplateCreationEntry("Textarea", "Create a textarea", TextAreaWidget.class, new SimpleFactory(
+                TextAreaWidget.class), textAreaId, textAreaId24);
         componentsDrawer.add(component);
 
-        ImageDescriptor textIntId = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/text_i_icon16.png");
-        ImageDescriptor textIntId24 = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/text_i_icon24.png");
+        ImageDescriptor textIntId = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
+                ImageCache.TEXT_INTEGER_ICON_16);
+        ImageDescriptor textIntId24 = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
+                ImageCache.TEXT_INTEGER_ICON_24);
 
-        component = new CombinedTemplateCreationEntry("Integerfield", "Create an integer field",
-                IntegerFieldWidget.class, new SimpleFactory(IntegerFieldWidget.class), textIntId,
-                textIntId24);
+        component = new CombinedTemplateCreationEntry("Integerfield", "Create an integer field", IntegerFieldWidget.class,
+                new SimpleFactory(IntegerFieldWidget.class), textIntId, textIntId24);
         componentsDrawer.add(component);
 
-        ImageDescriptor textDoubleId = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/text_d_icon16.png");
-        ImageDescriptor textDoubleId24 = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/text_d_icon24.png");
+        ImageDescriptor textDoubleId = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
+                ImageCache.TEXT_DOUBLE_ICON_16);
+        ImageDescriptor textDoubleId24 = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
+                ImageCache.TEXT_DOUBLE_ICON_24);
 
-        component = new CombinedTemplateCreationEntry("Doublefield", "Create an double field",
-                DoubleFieldWidget.class, new SimpleFactory(DoubleFieldWidget.class), textDoubleId,
-                textDoubleId24);
+        component = new CombinedTemplateCreationEntry("Doublefield", "Create an double field", DoubleFieldWidget.class,
+                new SimpleFactory(DoubleFieldWidget.class), textDoubleId, textDoubleId24);
         componentsDrawer.add(component);
 
-        ImageDescriptor comboId = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/combo_icon16.png");
-        ImageDescriptor comboId24 = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/combo_icon24.png");
+        ImageDescriptor comboId = FormEditorPlugin
+                .imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID, ImageCache.COMBO_ICON_16);
+        ImageDescriptor comboId24 = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
+                ImageCache.COMBO_ICON_24);
 
-        component = new CombinedTemplateCreationEntry("Combobox", "Create a combo",
-                ComboBoxWidget.class, new SimpleFactory(ComboBoxWidget.class), comboId, comboId24);
+        component = new CombinedTemplateCreationEntry("Combobox", "Create a combo", ComboBoxWidget.class, new SimpleFactory(
+                ComboBoxWidget.class), comboId, comboId24);
         componentsDrawer.add(component);
 
-        ImageDescriptor checkId = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/check_icon16.png");
-        ImageDescriptor checkId24 = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/check_icon24.png");
+        ImageDescriptor checkId = FormEditorPlugin
+                .imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID, ImageCache.CHECK_ICON_16);
+        ImageDescriptor checkId24 = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
+                ImageCache.CHECK_ICON_24);
 
-        component = new CombinedTemplateCreationEntry("Checkbox", "Create a check",
-                CheckBoxWidget.class, new SimpleFactory(CheckBoxWidget.class), checkId, checkId24);
+        component = new CombinedTemplateCreationEntry("Checkbox", "Create a check", CheckBoxWidget.class, new SimpleFactory(
+                CheckBoxWidget.class), checkId, checkId24);
         componentsDrawer.add(component);
 
-        ImageDescriptor radioId = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/radio_icon16.png");
-        ImageDescriptor radioId24 = FormEditorPlugin.imageDescriptorFromPlugin(
-                FormEditorPlugin.PLUGIN_ID, "icons/radio_icon24.png");
+        ImageDescriptor radioId = FormEditorPlugin
+                .imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID, ImageCache.RADIO_ICON_16);
+        ImageDescriptor radioId24 = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
+                ImageCache.RADIO_ICON_24);
 
-        component = new CombinedTemplateCreationEntry("Radio", "Create a radio button",
-                RadioButtonWidget.class, new SimpleFactory(RadioButtonWidget.class), radioId,
-                radioId24);
+        component = new CombinedTemplateCreationEntry("Radio", "Create a radio button", RadioButtonWidget.class,
+                new SimpleFactory(RadioButtonWidget.class), radioId, radioId24);
         componentsDrawer.add(component);
 
         return componentsDrawer;

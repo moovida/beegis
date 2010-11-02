@@ -23,8 +23,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 
 /**
  * A radio widget.
@@ -33,7 +34,7 @@ import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class RadioButtonWidget extends Widget {
+public class RadioButtonWidget extends AWidget {
     public static final String TYPE = "radio";
     
     private static final long serialVersionUID = 1;

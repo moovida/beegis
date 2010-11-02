@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package eu.hydrologis.jgrass.formeditor.model.commands;
 
 import java.util.Iterator;
@@ -15,7 +15,7 @@ import java.util.Iterator;
 import org.eclipse.gef.commands.Command;
 
 import eu.hydrologis.jgrass.formeditor.model.Connection;
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 
 /**
  * A command to create a connection between two shapes.
@@ -44,9 +44,9 @@ public class ConnectionCreateCommand extends Command {
     private final int lineStyle;
 
     /** Start endpoint for the connection. */
-    private final Widget source;
+    private final AWidget source;
     /** Target endpoint for the connection. */
-    private Widget target;
+    private AWidget target;
 
     /**
      *	Instantiate a command that can create a connection between two shapes.
@@ -55,7 +55,7 @@ public class ConnectionCreateCommand extends Command {
      * @throws IllegalArgumentException if source is null
      * @see Connection#setLineStyle(int)
      */
-    public ConnectionCreateCommand( Widget source, int lineStyle ) {
+    public ConnectionCreateCommand( AWidget source, int lineStyle ) {
         if (source == null) {
             throw new IllegalArgumentException();
         }
@@ -104,7 +104,7 @@ public class ConnectionCreateCommand extends Command {
      * @param target that target endpoint (a non-null Widget instance)
      * @throws IllegalArgumentException if target is null
      */
-    public void setTarget( Widget target ) {
+    public void setTarget( AWidget target ) {
         if (target == null) {
             throw new IllegalArgumentException();
         }

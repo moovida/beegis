@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package eu.hydrologis.jgrass.formeditor.model.commands;
 
 import java.util.Iterator;
@@ -15,7 +15,7 @@ import java.util.Iterator;
 import org.eclipse.gef.commands.Command;
 
 import eu.hydrologis.jgrass.formeditor.model.Connection;
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 
 /**
  * A command to reconnect a connection to a different start point or end point.
@@ -45,13 +45,13 @@ public class ConnectionReconnectCommand extends Command {
     /** The connection instance to reconnect. */
     private Connection connection;
     /** The new source endpoint. */
-    private Widget newSource;
+    private AWidget newSource;
     /** The new target endpoint. */
-    private Widget newTarget;
+    private AWidget newTarget;
     /** The original source endpoint. */
-    private final Widget oldSource;
+    private final AWidget oldSource;
     /** The original target endpoint. */
-    private final Widget oldTarget;
+    private final AWidget oldTarget;
 
     /**
      * Instantiate a command that can reconnect a Connection instance to a different source
@@ -146,7 +146,7 @@ public class ConnectionReconnectCommand extends Command {
      * @param connectionSource a non-null Widget instance, to be used as a new source endpoint
      * @throws IllegalArgumentException if connectionSource is null
      */
-    public void setNewSource( Widget connectionSource ) {
+    public void setNewSource( AWidget connectionSource ) {
         if (connectionSource == null) {
             throw new IllegalArgumentException();
         }
@@ -167,7 +167,7 @@ public class ConnectionReconnectCommand extends Command {
      * @param connectionTarget a non-null Widget instance, to be used as a new target endpoint
      * @throws IllegalArgumentException if connectionTarget is null
      */
-    public void setNewTarget( Widget connectionTarget ) {
+    public void setNewTarget( AWidget connectionTarget ) {
         if (connectionTarget == null) {
             throw new IllegalArgumentException();
         }
