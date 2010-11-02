@@ -25,12 +25,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Map.Entry;
+
+import net.refractions.udig.catalog.ID;
+import net.refractions.udig.catalog.IGeoResource;
+import net.refractions.udig.project.ILayer;
+import net.refractions.udig.project.IMap;
+import net.refractions.udig.project.ui.ApplicationGIS;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IStorage;
@@ -71,6 +78,8 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.geotools.data.FeatureSource;
+import org.opengis.feature.type.AttributeDescriptor;
 
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
@@ -90,12 +99,30 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
 
     /** This is the root of the editor's model. */
     private WidgetsDiagram diagram;
+
+    /**
+     * The formEditor is a singleton, this var is set when it is opened and made accessible.
+     * 
+     * <p>This is a hack, should be designed better.
+     */
+    private static List<AttributeDescriptor> attributeDescriptors = new ArrayList<AttributeDescriptor>();
+    private static  String[] fieldNamesArrays;
+
     /** Palette component, holding the tools and shapes. */
     private static PaletteRoot PALETTE_MODEL;
+
 
     /** Create a new ShapesEditor instance. This is called by the Workspace. */
     public FormEditor() {
         setEditDomain(new DefaultEditDomain(this));
+    }
+    
+    public static List<AttributeDescriptor> getAttributeDescriptors() {
+        return attributeDescriptors;
+    }
+    
+    public static String[] getFieldNamesArrays() {
+        return fieldNamesArrays;
     }
 
     /**
@@ -115,8 +142,7 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
         viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer));
 
         // configure the context menu provider
-        ContextMenuProvider cmProvider = new FormEditorContextMenuProvider(viewer,
-                getActionRegistry());
+        ContextMenuProvider cmProvider = new FormEditorContextMenuProvider(viewer, getActionRegistry());
         viewer.setContextMenu(cmProvider);
         getSite().registerContextMenu(cmProvider, viewer);
     }
@@ -317,6 +343,21 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
     protected void setInput( IEditorInput input ) {
         super.setInput(input);
         try {
+            IMap activeMap = ApplicationGIS.getActiveMap();
+            if (activeMap != null) {
+                ILayer selectedLayer = activeMap.getEditManager().getSelectedLayer();
+                if (selectedLayer.hasResource(FeatureSource.class)) {
+                    attributeDescriptors = selectedLayer.getSchema().getAttributeDescriptors();
+
+                    fieldNamesArrays = new String[attributeDescriptors.size()];
+                    for( int i = 0; i < attributeDescriptors.size(); i++ ) {
+                        AttributeDescriptor attributeDescriptor = attributeDescriptors.get(i);
+                        String localName = attributeDescriptor.getLocalName();
+                        fieldNamesArrays[i] = localName;
+                    }
+                }
+            }
+
             loadFromProperties(input);
         } catch (IOException e) {
             e.printStackTrace();
@@ -411,11 +452,10 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
             viewer.setEditDomain(getEditDomain());
             viewer.setEditPartFactory(new WidgetsTreeEditPartFactory());
             // configure & add context menu to viewer
-            ContextMenuProvider cmProvider = new FormEditorContextMenuProvider(viewer,
-                    getActionRegistry());
+            ContextMenuProvider cmProvider = new FormEditorContextMenuProvider(viewer, getActionRegistry());
             viewer.setContextMenu(cmProvider);
-            getSite().registerContextMenu("org.eclipse.gef.examples.shapes.outline.contextmenu",
-                    cmProvider, getSite().getSelectionProvider());
+            getSite().registerContextMenu("org.eclipse.gef.examples.shapes.outline.contextmenu", cmProvider,
+                    getSite().getSelectionProvider());
             // hook outline viewer
             getSelectionSynchronizer().addViewer(viewer);
             // initialize outline viewer with model
