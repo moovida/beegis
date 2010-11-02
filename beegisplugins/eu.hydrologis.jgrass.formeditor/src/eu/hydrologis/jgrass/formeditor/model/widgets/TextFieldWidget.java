@@ -23,15 +23,16 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 
 /**
  * A textfield widget.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class TextFieldWidget extends Widget {
+public class TextFieldWidget extends AWidget {
     public static final String TYPE = "text";
     
     private static final long serialVersionUID = 1;
@@ -70,10 +71,6 @@ public class TextFieldWidget extends Widget {
 
     public String toString() {
         return "Textfield " + hashCode();
-    }
-
-    public void setSize( Dimension newSize ) {
-        // fixed size widgets
     }
 
     public String getDefaultValue() {

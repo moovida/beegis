@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package eu.hydrologis.jgrass.formeditor.model;
 
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
@@ -19,7 +19,7 @@ import org.eclipse.draw2d.Graphics;
  * A connection between two distinct shapes.
  * @author Elias Volanakis
  */
-public class Connection extends ModelElement {
+public class Connection extends AModelElement {
     /** 
      * Used for indicating that a Connection with solid line style should be created.
      * @see org.eclipse.gef.WidgetEditPart.shapes.parts.ShapeEditPart#createEditPolicies() 
@@ -42,9 +42,9 @@ public class Connection extends ModelElement {
     /** Line drawing style for this connection. */
     private int lineStyle = Graphics.LINE_SOLID;
     /** Connection's source endpoint. */
-    private Widget source;
+    private AWidget source;
     /** Connection's target endpoint. */
-    private Widget target;
+    private AWidget target;
 
     static {
         descriptors[0] = new ComboBoxPropertyDescriptor(LINESTYLE_PROP, LINESTYLE_PROP,
@@ -58,7 +58,7 @@ public class Connection extends ModelElement {
      * @throws IllegalArgumentException if any of the parameters are null or source == target
      * @see #setLineStyle(int) 
      */
-    public Connection( Widget source, Widget target ) {
+    public Connection( AWidget source, AWidget target ) {
         reconnect(source, target);
     }
 
@@ -108,7 +108,7 @@ public class Connection extends ModelElement {
      * Returns the source endpoint of this connection.
      * @return a non-null Shape instance
      */
-    public Widget getSource() {
+    public AWidget getSource() {
         return source;
     }
 
@@ -116,7 +116,7 @@ public class Connection extends ModelElement {
      * Returns the target endpoint of this connection.
      * @return a non-null Shape instance
      */
-    public Widget getTarget() {
+    public AWidget getTarget() {
         return target;
     }
 
@@ -140,7 +140,7 @@ public class Connection extends ModelElement {
      * @param newTarget a new target endpoint for this connection (non null)
      * @throws IllegalArgumentException if any of the paramers are null or newSource == newTarget
      */
-    public void reconnect( Widget newSource, Widget newTarget ) {
+    public void reconnect( AWidget newSource, AWidget newTarget ) {
         if (newSource == null || newTarget == null || newSource == newTarget) {
             throw new IllegalArgumentException();
         }

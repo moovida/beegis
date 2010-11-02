@@ -23,8 +23,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 
 /**
  * A textfield widget.
@@ -32,7 +33,7 @@ import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @SuppressWarnings("nls")
-public class TextAreaWidget extends Widget {
+public class TextAreaWidget extends AWidget {
     public static final String TYPE = "textarea";
     
     private static final long serialVersionUID = 1;

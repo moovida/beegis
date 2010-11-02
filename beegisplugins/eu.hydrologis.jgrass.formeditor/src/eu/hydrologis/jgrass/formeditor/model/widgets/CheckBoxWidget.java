@@ -17,21 +17,30 @@
  */
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.FIELDNAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.SELECTION_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.TYPE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
+
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
-
 /**
  * A checkbox widget.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class CheckBoxWidget extends Widget {
+public class CheckBoxWidget extends AWidget {
     public static final String TYPE = "check";
 
     private static final long serialVersionUID = 1;
@@ -54,8 +63,7 @@ public class CheckBoxWidget extends Widget {
         TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, "Width");
         TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, "Height");
         TextPropertyDescriptor fieldName = new TextPropertyDescriptor(FIELDNAME_PROP, "Field Name");
-        TextPropertyDescriptor selected = new TextPropertyDescriptor(SELECTION_PROP,
-                "Default selection");
+        TextPropertyDescriptor selected = new TextPropertyDescriptor(SELECTION_PROP, "Default selection");
         descriptors = new IPropertyDescriptor[]{fieldName, x, y, w, h, selected};
 
         addIntegerPropertyValidator(x);

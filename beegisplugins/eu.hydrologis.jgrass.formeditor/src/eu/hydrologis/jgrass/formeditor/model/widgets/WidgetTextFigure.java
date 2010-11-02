@@ -7,13 +7,13 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Image;
 
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.utils.Constants;
 
 public class WidgetTextFigure extends ImageFigure {
-    private final Widget widget;
+    private final AWidget widget;
 
-    public WidgetTextFigure( Widget widget, Image image ) {
+    public WidgetTextFigure( AWidget widget, Image image ) {
         super(image, PositionConstants.NORTH_WEST);
         this.widget = widget;
         

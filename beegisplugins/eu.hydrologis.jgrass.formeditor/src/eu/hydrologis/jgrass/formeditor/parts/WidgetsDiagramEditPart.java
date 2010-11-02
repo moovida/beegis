@@ -33,8 +33,8 @@ import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
-import eu.hydrologis.jgrass.formeditor.model.ModelElement;
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AModelElement;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
 import eu.hydrologis.jgrass.formeditor.model.commands.WidgetCreateCommand;
 import eu.hydrologis.jgrass.formeditor.model.commands.WidgetSetConstraintCommand;
@@ -68,7 +68,7 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
     public void activate() {
         if (!isActive()) {
             super.activate();
-            ((ModelElement) getModel()).addPropertyChangeListener(this);
+            ((AModelElement) getModel()).addPropertyChangeListener(this);
         }
     }
 
@@ -105,7 +105,7 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
     public void deactivate() {
         if (isActive()) {
             super.deactivate();
-            ((ModelElement) getModel()).removePropertyChangeListener(this);
+            ((AModelElement) getModel()).removePropertyChangeListener(this);
         }
     }
 
@@ -116,7 +116,7 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
     /* (non-Javadoc)
      * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
      */
-    protected List<Widget> getModelChildren() {
+    protected List<AWidget> getModelChildren() {
         return getCastedModel().getChildren(); // return a list of shapes
     }
 
@@ -148,7 +148,7 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
                 EditPart child, Object constraint ) {
             if (child instanceof WidgetEditPart && constraint instanceof Rectangle) {
                 // return a command that can move and/or resize a Shape
-                return new WidgetSetConstraintCommand((Widget) child.getModel(), request,
+                return new WidgetSetConstraintCommand((AWidget) child.getModel(), request,
                         (Rectangle) constraint);
             }
             return super.createChangeConstraintCommand(request, child, constraint);
@@ -172,7 +172,7 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
                     || childClass == DoubleFieldWidget.class || childClass == ComboBoxWidget.class
                     || childClass == CheckBoxWidget.class || childClass == RadioButtonWidget.class) {
                 // return a command that can add a Shape to a ShapesDiagram
-                return new WidgetCreateCommand((Widget) request.getNewObject(),
+                return new WidgetCreateCommand((AWidget) request.getNewObject(),
                         (WidgetsDiagram) getHost().getModel(),
                         (Rectangle) getConstraintFor(request));
             }

@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package eu.hydrologis.jgrass.formeditor.parts;
 
 import java.beans.PropertyChangeEvent;
@@ -24,7 +24,7 @@ import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
 
 import eu.hydrologis.jgrass.formeditor.model.Connection;
-import eu.hydrologis.jgrass.formeditor.model.ModelElement;
+import eu.hydrologis.jgrass.formeditor.model.AModelElement;
 import eu.hydrologis.jgrass.formeditor.model.commands.ConnectionDeleteCommand;
 
 /**
@@ -42,7 +42,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
     public void activate() {
         if (!isActive()) {
             super.activate();
-            ((ModelElement) getModel()).addPropertyChangeListener(this);
+            ((AModelElement) getModel()).addPropertyChangeListener(this);
         }
     }
 
@@ -77,7 +77,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
     public void deactivate() {
         if (isActive()) {
             super.deactivate();
-            ((ModelElement) getModel()).removePropertyChangeListener(this);
+            ((AModelElement) getModel()).removePropertyChangeListener(this);
         }
     }
 

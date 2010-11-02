@@ -32,8 +32,8 @@ import org.eclipse.gef.requests.ReconnectRequest;
 import org.eclipse.swt.graphics.Image;
 
 import eu.hydrologis.jgrass.formeditor.model.Connection;
-import eu.hydrologis.jgrass.formeditor.model.ModelElement;
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AModelElement;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.commands.ConnectionCreateCommand;
 import eu.hydrologis.jgrass.formeditor.model.commands.ConnectionReconnectCommand;
 import eu.hydrologis.jgrass.formeditor.model.commands.WidgetComponentEditPolicy;
@@ -47,6 +47,7 @@ import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.WidgetTextFigure;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 
 /**
  * EditPart used for Shape instances (more specific for EllipticalShape and
@@ -57,10 +58,7 @@ import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
  * 
  * @author Elias Volanakis
  */
-class WidgetEditPart extends AbstractGraphicalEditPart
-        implements
-            PropertyChangeListener,
-            NodeEditPart {
+class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChangeListener, NodeEditPart {
 
     private ConnectionAnchor anchor;
 
@@ -70,7 +68,7 @@ class WidgetEditPart extends AbstractGraphicalEditPart
     public void activate() {
         if (!isActive()) {
             super.activate();
-            ((ModelElement) getModel()).addPropertyChangeListener(this);
+            ((AModelElement) getModel()).addPropertyChangeListener(this);
         }
     }
 
@@ -85,14 +83,14 @@ class WidgetEditPart extends AbstractGraphicalEditPart
              */
             protected Command getConnectionCompleteCommand( CreateConnectionRequest request ) {
                 ConnectionCreateCommand cmd = (ConnectionCreateCommand) request.getStartCommand();
-                cmd.setTarget((Widget) getHost().getModel());
+                cmd.setTarget((AWidget) getHost().getModel());
                 return cmd;
             }
             /* (non-Javadoc)
              * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#getConnectionCreateCommand(org.eclipse.gef.requests.CreateConnectionRequest)
              */
             protected Command getConnectionCreateCommand( CreateConnectionRequest request ) {
-                Widget source = (Widget) getHost().getModel();
+                AWidget source = (AWidget) getHost().getModel();
                 int style = ((Integer) request.getNewObjectType()).intValue();
                 ConnectionCreateCommand cmd = new ConnectionCreateCommand(source, style);
                 request.setStartCommand(cmd);
@@ -103,7 +101,7 @@ class WidgetEditPart extends AbstractGraphicalEditPart
              */
             protected Command getReconnectSourceCommand( ReconnectRequest request ) {
                 Connection conn = (Connection) request.getConnectionEditPart().getModel();
-                Widget newSource = (Widget) getHost().getModel();
+                AWidget newSource = (AWidget) getHost().getModel();
                 ConnectionReconnectCommand cmd = new ConnectionReconnectCommand(conn);
                 cmd.setNewSource(newSource);
                 return cmd;
@@ -113,7 +111,7 @@ class WidgetEditPart extends AbstractGraphicalEditPart
              */
             protected Command getReconnectTargetCommand( ReconnectRequest request ) {
                 Connection conn = (Connection) request.getConnectionEditPart().getModel();
-                Widget newTarget = (Widget) getHost().getModel();
+                AWidget newTarget = (AWidget) getHost().getModel();
                 ConnectionReconnectCommand cmd = new ConnectionReconnectCommand(conn);
                 cmd.setNewTarget(newTarget);
                 return cmd;
@@ -139,28 +137,28 @@ class WidgetEditPart extends AbstractGraphicalEditPart
         Object model = getModel();
         if (model instanceof TextFieldWidget) {
             Image textImage = ImageCache.getInstance().getImage(ImageCache.TEXT_ICON_24);
-            return new WidgetTextFigure((Widget) model, textImage);
+            return new WidgetTextFigure((AWidget) model, textImage);
         } else if (model instanceof TextAreaWidget) {
             Image textAreaImage = ImageCache.getInstance().getImage(ImageCache.TEXTAREA_ICON_24);
-            return new WidgetTextFigure((Widget) model, textAreaImage);
+            return new WidgetTextFigure((AWidget) model, textAreaImage);
         } else if (model instanceof LabelWidget) {
             Image labelImage = ImageCache.getInstance().getImage(ImageCache.LABEL_ICON_24);
-            return new WidgetTextFigure((Widget) model, labelImage);
+            return new WidgetTextFigure((AWidget) model, labelImage);
         } else if (model instanceof IntegerFieldWidget) {
             Image integerImage = ImageCache.getInstance().getImage(ImageCache.TEXT_INTEGER_ICON_24);
-            return new WidgetTextFigure((Widget) model, integerImage);
+            return new WidgetTextFigure((AWidget) model, integerImage);
         } else if (model instanceof DoubleFieldWidget) {
             Image doubleImage = ImageCache.getInstance().getImage(ImageCache.TEXT_DOUBLE_ICON_24);
-            return new WidgetTextFigure((Widget) model, doubleImage);
+            return new WidgetTextFigure((AWidget) model, doubleImage);
         } else if (model instanceof ComboBoxWidget) {
             Image comboImage = ImageCache.getInstance().getImage(ImageCache.COMBO_ICON_24);
-            return new WidgetTextFigure((Widget) model, comboImage);
+            return new WidgetTextFigure((AWidget) model, comboImage);
         } else if (model instanceof CheckBoxWidget) {
             Image checkImage = ImageCache.getInstance().getImage(ImageCache.CHECK_ICON_24);
-            return new WidgetTextFigure((Widget) model, checkImage);
+            return new WidgetTextFigure((AWidget) model, checkImage);
         } else if (model instanceof RadioButtonWidget) {
             Image radioImage = ImageCache.getInstance().getImage(ImageCache.RADIO_ICON_24);
-            return new WidgetTextFigure((Widget) model, radioImage);
+            return new WidgetTextFigure((AWidget) model, radioImage);
         } else {
             // if Shapes gets extended the conditions above must be updated
             throw new IllegalArgumentException();
@@ -173,12 +171,12 @@ class WidgetEditPart extends AbstractGraphicalEditPart
     public void deactivate() {
         if (isActive()) {
             super.deactivate();
-            ((ModelElement) getModel()).removePropertyChangeListener(this);
+            ((AModelElement) getModel()).removePropertyChangeListener(this);
         }
     }
 
-    private Widget getCastedModel() {
-        return (Widget) getModel();
+    private AWidget getCastedModel() {
+        return (AWidget) getModel();
     }
 
     protected ConnectionAnchor getConnectionAnchor() {
@@ -259,12 +257,11 @@ class WidgetEditPart extends AbstractGraphicalEditPart
      */
     public void propertyChange( PropertyChangeEvent evt ) {
         String prop = evt.getPropertyName();
-        if (Widget.SIZE_PROP.equals(prop) || Widget.LOCATION_PROP.equals(prop)
-                || Widget.FIELDNAME_PROP.equals(prop)) {
+        if (SIZE_PROP.equals(prop) || LOCATION_PROP.equals(prop) || FIELDNAME_PROP.equals(prop)) {
             refreshVisuals();
-        } else if (Widget.SOURCE_CONNECTIONS_PROP.equals(prop)) {
+        } else if (SOURCE_CONNECTIONS_PROP.equals(prop)) {
             refreshSourceConnections();
-        } else if (Widget.TARGET_CONNECTIONS_PROP.equals(prop)) {
+        } else if (TARGET_CONNECTIONS_PROP.equals(prop)) {
             refreshTargetConnections();
         }
     }

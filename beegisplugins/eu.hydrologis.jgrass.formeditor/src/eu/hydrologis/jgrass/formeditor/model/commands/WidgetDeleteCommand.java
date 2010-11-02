@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package eu.hydrologis.jgrass.formeditor.model.commands;
 
 import java.util.Iterator;
@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.gef.commands.Command;
 
 import eu.hydrologis.jgrass.formeditor.model.Connection;
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
 
 /**
@@ -26,7 +26,7 @@ import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
  */
 public class WidgetDeleteCommand extends Command {
     /** Shape to remove. */
-    private final Widget child;
+    private final AWidget child;
 
     /** ShapeDiagram to remove from. */
     private final WidgetsDiagram parent;
@@ -43,7 +43,7 @@ public class WidgetDeleteCommand extends Command {
      * @param child    the Shape to remove
      * @throws IllegalArgumentException if any parameter is null
      */
-    public WidgetDeleteCommand( WidgetsDiagram parent, Widget child ) {
+    public WidgetDeleteCommand( WidgetsDiagram parent, AWidget child ) {
         if (parent == null || child == null) {
             throw new IllegalArgumentException();
         }

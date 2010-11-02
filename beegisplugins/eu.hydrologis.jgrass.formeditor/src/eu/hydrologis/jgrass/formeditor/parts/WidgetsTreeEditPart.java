@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package eu.hydrologis.jgrass.formeditor.parts;
 
 import java.beans.PropertyChangeEvent;
@@ -17,8 +17,8 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.swt.graphics.Image;
 
-import eu.hydrologis.jgrass.formeditor.model.ModelElement;
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AModelElement;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.commands.WidgetComponentEditPolicy;
 
 /**
@@ -36,7 +36,7 @@ class WidgetsTreeEditPart extends AbstractTreeEditPart implements PropertyChange
      * Create a new instance of this edit part using the given model element.
      * @param model a non-null Shapes instance
      */
-    WidgetsTreeEditPart( Widget model ) {
+    WidgetsTreeEditPart( AWidget model ) {
         super(model);
     }
 
@@ -46,7 +46,7 @@ class WidgetsTreeEditPart extends AbstractTreeEditPart implements PropertyChange
     public void activate() {
         if (!isActive()) {
             super.activate();
-            ((ModelElement) getModel()).addPropertyChangeListener(this);
+            ((AModelElement) getModel()).addPropertyChangeListener(this);
         }
     }
 
@@ -64,12 +64,12 @@ class WidgetsTreeEditPart extends AbstractTreeEditPart implements PropertyChange
     public void deactivate() {
         if (isActive()) {
             super.deactivate();
-            ((ModelElement) getModel()).removePropertyChangeListener(this);
+            ((AModelElement) getModel()).removePropertyChangeListener(this);
         }
     }
 
-    private Widget getCastedModel() {
-        return (Widget) getModel();
+    private AWidget getCastedModel() {
+        return (AWidget) getModel();
     }
 
     /* (non-Javadoc)

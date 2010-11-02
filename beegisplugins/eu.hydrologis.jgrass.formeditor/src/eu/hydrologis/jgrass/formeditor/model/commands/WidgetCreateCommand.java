@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package eu.hydrologis.jgrass.formeditor.model.commands;
 
 import org.eclipse.draw2d.geometry.Dimension;
@@ -15,7 +15,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.commands.Command;
 
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
 
 /**
@@ -26,7 +26,7 @@ import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
 public class WidgetCreateCommand extends Command {
 
     /** The new shape. */
-    private Widget newWidget;
+    private AWidget newWidget;
     /** ShapeDiagram to add to. */
     private final WidgetsDiagram parent;
     /** The bounds of the new Shape. */
@@ -40,7 +40,7 @@ public class WidgetCreateCommand extends Command {
      * @throws IllegalArgumentException if any parameter is null, or the request
      * 						  does not provide a new Shape instance
      */
-    public WidgetCreateCommand( Widget newWidget, WidgetsDiagram parent, Rectangle bounds ) {
+    public WidgetCreateCommand( AWidget newWidget, WidgetsDiagram parent, Rectangle bounds ) {
         this.newWidget = newWidget;
         this.parent = parent;
         this.bounds = bounds;

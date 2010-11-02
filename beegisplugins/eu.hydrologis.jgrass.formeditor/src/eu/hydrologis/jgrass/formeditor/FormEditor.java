@@ -7,7 +7,7 @@
  *
  * Contributors:
  * Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½*******************************************************************************/
 package eu.hydrologis.jgrass.formeditor;
 
 import java.io.BufferedReader;
@@ -72,7 +72,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import eu.hydrologis.jgrass.formeditor.model.Widget;
+import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.WidgetFactory;
@@ -186,9 +186,9 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
                 throw new IllegalArgumentException();
             }
 
-            List<Widget> widgets = diagram.getChildren();
+            List<AWidget> widgets = diagram.getChildren();
 
-            for( Widget widget : widgets ) {
+            for( AWidget widget : widgets ) {
                 String dumpString = widget.toDumpString();
                 bW.write(dumpString);
             }
@@ -360,7 +360,7 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
         for( Entry<String, Properties> entry : entrySet ) {
             Properties properties = entry.getValue();
 
-            Widget widget = WidgetFactory.createWidget(properties);
+            AWidget widget = WidgetFactory.createWidget(properties);
 
             diagram.addChild(widget);
         }
@@ -405,20 +405,21 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
          */
         public void createControl( Composite parent ) {
             // create outline viewer page
-            getViewer().createControl(parent);
+            EditPartViewer viewer = getViewer();
+            viewer.createControl(parent);
             // configure outline viewer
-            getViewer().setEditDomain(getEditDomain());
-            getViewer().setEditPartFactory(new WidgetsTreeEditPartFactory());
+            viewer.setEditDomain(getEditDomain());
+            viewer.setEditPartFactory(new WidgetsTreeEditPartFactory());
             // configure & add context menu to viewer
-            ContextMenuProvider cmProvider = new FormEditorContextMenuProvider(getViewer(),
+            ContextMenuProvider cmProvider = new FormEditorContextMenuProvider(viewer,
                     getActionRegistry());
-            getViewer().setContextMenu(cmProvider);
+            viewer.setContextMenu(cmProvider);
             getSite().registerContextMenu("org.eclipse.gef.examples.shapes.outline.contextmenu",
                     cmProvider, getSite().getSelectionProvider());
             // hook outline viewer
-            getSelectionSynchronizer().addViewer(getViewer());
+            getSelectionSynchronizer().addViewer(viewer);
             // initialize outline viewer with model
-            getViewer().setContents(getModel());
+            viewer.setContents(getModel());
             // show outline viewer
         }
 
