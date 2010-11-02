@@ -12,41 +12,15 @@ package eu.hydrologis.jgrass.formeditor.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.draw2d.AncestorListener;
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.ConnectionLayer;
-import org.eclipse.draw2d.CoordinateListener;
-import org.eclipse.draw2d.EventDispatcher;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureListener;
-import org.eclipse.draw2d.FocusEvent;
-import org.eclipse.draw2d.FocusListener;
-import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IClippingStrategy;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.KeyEvent;
-import org.eclipse.draw2d.KeyListener;
-import org.eclipse.draw2d.LayoutListener;
-import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.MouseEvent;
-import org.eclipse.draw2d.MouseListener;
-import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.ShortestPathConnectionRouter;
-import org.eclipse.draw2d.TreeSearch;
-import org.eclipse.draw2d.UpdateManager;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.geometry.Translatable;
-
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
@@ -57,9 +31,6 @@ import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.Font;
 
 import eu.hydrologis.jgrass.formeditor.model.AModelElement;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
@@ -198,8 +169,9 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
                     || childClass == ComboBoxWidget.class || childClass == CheckBoxWidget.class
                     || childClass == RadioButtonWidget.class) {
                 // return a command that can add a Shape to a ShapesDiagram
-                return new WidgetCreateCommand((AWidget) request.getNewObject(), (WidgetsDiagram) getHost().getModel(),
-                        (Rectangle) getConstraintFor(request));
+                AWidget aWidget = (AWidget) request.getNewObject();
+                WidgetsDiagram widgetsDiagram = (WidgetsDiagram) getHost().getModel();
+                return new WidgetCreateCommand(aWidget, widgetsDiagram, (Rectangle) getConstraintFor(request));
             }
             return null;
         }

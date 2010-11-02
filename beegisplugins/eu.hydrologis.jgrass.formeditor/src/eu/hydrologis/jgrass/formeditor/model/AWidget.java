@@ -36,6 +36,7 @@ import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
+import org.opengis.feature.type.AttributeDescriptor;
 
 import eu.hydrologis.jgrass.formeditor.utils.Constants;
 
@@ -149,6 +150,9 @@ public abstract class AWidget extends AModelElement {
         if (WIDTH_PROP.equals(propertyId)) {
             return Integer.toString(size.width);
         }
+        if (NAME_PROP.equals(propertyId)) {
+            return getName();
+        }
         return super.getPropertyValue(propertyId);
     }
 
@@ -173,6 +177,8 @@ public abstract class AWidget extends AModelElement {
         } else if (WIDTH_PROP.equals(propertyId)) {
             int width = Integer.parseInt((String) value);
             setSize(new Dimension(width, size.height));
+        } else if (NAME_PROP.equals(propertyId)) {
+            setName((String) value);
         } else {
             super.setPropertyValue(propertyId, value);
         }
@@ -294,6 +300,7 @@ public abstract class AWidget extends AModelElement {
             }
         });
     }
+
 
     public abstract String toDumpString();
 }

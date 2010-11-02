@@ -1,14 +1,16 @@
 package eu.hydrologis.jgrass.formeditor.utils;
 
+import org.eclipse.draw2d.geometry.Dimension;
+
 @SuppressWarnings("nls")
 public class Constants {
     public static final int LOCATION_PIXEL_SNAP = 20;
     public static final int DIMENSION_PIXEL_SNAP = 20;
-    
+
     public static final int INSETS = 5;
     public static final int FIELDNAME_OFFSET_X = 30;
     public static final int FIELDNAME_OFFSET_Y = 5;
-    
+
     /** 
      * ID for the widget type.  
      */
@@ -43,6 +45,11 @@ public class Constants {
      * Property ID to use for text. 
      */
     public static final String TEXT_PROP = "WidgetText";
+
+    /** 
+     * Property ID to use for text type. 
+     */
+    public static final String TEXT_TYPE_PROP = "WidgetTextType";
 
     /** 
      * Property ID to use for name. 
@@ -83,14 +90,17 @@ public class Constants {
      * Property ID to use when the list of incoming connections is modified. 
      */
     public static final String TARGET_CONNECTIONS_PROP = "WidgetTargetConn";
-    
-    
-    
+
     public static final String LABELS_FIELDNAME = "fieldname";
     public static final String LABELS_NAME = "name";
     public static final String LABELS_TEXT = "text";
+    public static final String LABELS_TEXT_TYPE = "text type";
     public static final String LABELS_LAYOUT_X = "layout X";
     public static final String LABELS_LAYOUT_Y = "layout Y";
     public static final String LABELS_LAYOUT_W = "layout width";
     public static final String LABELS_LAYOUT_H = "layout height";
+    public static final String LABELS_DEFAULT = "default value";
+
+    public static final Dimension DEFAULT_DIMENSION = new Dimension(340, 40);
+    public static final String[] TEXT_TYPES = {"string", "integer", "double"};
 }

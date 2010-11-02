@@ -13,6 +13,8 @@ package eu.hydrologis.jgrass.formeditor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opengis.feature.type.AttributeDescriptor;
+
 /**
  * A container for multiple shapes.
  * This is the "root" of the model data structure.
@@ -26,6 +28,15 @@ public class WidgetsDiagram extends AModelElement {
     public static final String CHILD_REMOVED_PROP = "WidgetsDiagram.ChildRemoved";
     private static final long serialVersionUID = 1;
     private List<AWidget> widgetsList = new ArrayList<AWidget>();
+    private List<AttributeDescriptor> attributeDescriptors = new ArrayList<AttributeDescriptor>();
+
+    public void setAttributeDescriptors( List<AttributeDescriptor> attributeDescriptors ) {
+        this.attributeDescriptors = attributeDescriptors;
+    }
+
+    public List<AttributeDescriptor> getAttributeDescriptors() {
+        return attributeDescriptors;
+    }
 
     /** 
      * Add a shape to this diagram.

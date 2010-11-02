@@ -1,9 +1,11 @@
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
+import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
+import org.opengis.feature.type.AttributeDescriptor;
 
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;

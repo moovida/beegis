@@ -17,13 +17,20 @@
  */
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
+import java.util.List;
+
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
+import org.opengis.feature.type.AttributeDescriptor;
 
+import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
+import eu.hydrologis.jgrass.formeditor.utils.Constants;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 
@@ -34,15 +41,18 @@ import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
  */
 public class TextFieldWidget extends AWidget {
     public static final String TYPE = "text";
-    
+
     private static final long serialVersionUID = 1;
 
     private String defaultValue = "";
+    private int typeValue = 0;
+    private int fieldNameValue = 0;
 
     public TextFieldWidget() {
         super();
+
         location = new Point(0, 0);
-        size = new Dimension(341, 41);
+        size = Constants.DEFAULT_DIMENSION.getCopy();
         initDescriptors();
     }
 
@@ -50,19 +60,33 @@ public class TextFieldWidget extends AWidget {
      * Initializes the property descriptors array.
      */
     private void initDescriptors() {
-        TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, "X");
-        TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, "Y");
-        TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, "Width");
-        TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, "Height");
-        TextPropertyDescriptor fieldName = new TextPropertyDescriptor(FIELDNAME_PROP, "Field Name");
-        TextPropertyDescriptor defaultValue = new TextPropertyDescriptor(DEFAULT_PROP,
-                "Default value");
-        descriptors = new IPropertyDescriptor[]{fieldName, x, y, w, h, defaultValue};
+        ComboBoxPropertyDescriptor fields = new ComboBoxPropertyDescriptor(FIELDNAME_PROP, LABELS_FIELDNAME,
+                FormEditor.getFieldNamesArrays());
+        fields.setLabelProvider(new FieldNamesLabelProvider());
+        TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, LABELS_LAYOUT_X);
+        TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, LABELS_LAYOUT_Y);
+        TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, LABELS_LAYOUT_W);
+        TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, LABELS_LAYOUT_H);
+        TextPropertyDescriptor nameValue = new TextPropertyDescriptor(NAME_PROP, LABELS_NAME);
+        TextPropertyDescriptor defaultValue = new TextPropertyDescriptor(DEFAULT_PROP, LABELS_DEFAULT);
+        ComboBoxPropertyDescriptor types = new ComboBoxPropertyDescriptor(TEXT_TYPE_PROP, LABELS_TEXT_TYPE, Constants.TEXT_TYPES);
+        types.setLabelProvider(new TypesLabelProvider());
+        descriptors = new IPropertyDescriptor[]{x, y, w, h, fields, nameValue, defaultValue, types};
 
         addIntegerPropertyValidator(x);
         addIntegerPropertyValidator(y);
         addIntegerPropertyValidator(w);
         addIntegerPropertyValidator(h);
+    }
+    static private class TypesLabelProvider extends LabelProvider {
+        public String getText( Object element ) {
+            return Constants.TEXT_TYPES[((Integer) element).intValue()];
+        }
+    }
+    static private class FieldNamesLabelProvider extends LabelProvider {
+        public String getText( Object element ) {
+            return FormEditor.getFieldNamesArrays()[((Integer) element).intValue()];
+        }
     }
 
     public Image getIcon() {
@@ -71,6 +95,30 @@ public class TextFieldWidget extends AWidget {
 
     public String toString() {
         return "Textfield " + hashCode();
+    }
+
+    public Object getPropertyValue( Object propertyId ) {
+        if (DEFAULT_PROP.equals(propertyId)) {
+            return getDefaultValue();
+        } else if (TEXT_TYPE_PROP.equals(propertyId)) {
+            return getTypeValue();
+        } else if (FIELDNAME_PROP.equals(propertyId)) {
+            return getFieldnameValue();
+        }
+        return super.getPropertyValue(propertyId);
+    }
+
+    public void setPropertyValue( Object propertyId, Object value ) {
+        if (DEFAULT_PROP.equals(propertyId)) {
+            String defValue = (String) value;
+            setDefaultValue(defValue);
+        } else if (TEXT_TYPE_PROP.equals(propertyId)) {
+            setTypeValue((Integer) value);
+        } else if (FIELDNAME_PROP.equals(propertyId)) {
+            setFieldnameValue((Integer) value);
+        } else {
+            super.setPropertyValue(propertyId, value);
+        }
     }
 
     public String getDefaultValue() {
@@ -85,20 +133,22 @@ public class TextFieldWidget extends AWidget {
         firePropertyChange(DEFAULT_PROP, null, defaultValue);
     }
 
-    public Object getPropertyValue( Object propertyId ) {
-        if (DEFAULT_PROP.equals(propertyId)) {
-            return getDefaultValue();
-        }
-        return super.getPropertyValue(propertyId);
+    public int getTypeValue() {
+        return typeValue;
     }
 
-    public void setPropertyValue( Object propertyId, Object value ) {
-        if (DEFAULT_PROP.equals(propertyId)) {
-            String defValue = (String) value;
-            setDefaultValue(defValue);
-        } else {
-            super.setPropertyValue(propertyId, value);
-        }
+    public void setTypeValue( int typeValue ) {
+        this.typeValue = typeValue;
+        firePropertyChange(TEXT_TYPE_PROP, null, typeValue);
+    }
+
+    public int getFieldnameValue() {
+        return fieldNameValue;
+    }
+
+    public void setFieldnameValue( int fieldNameValue ) {
+        this.fieldNameValue = fieldNameValue;
+        firePropertyChange(FIELDNAME_PROP, null, fieldNameValue);
     }
 
     public String toDumpString() {

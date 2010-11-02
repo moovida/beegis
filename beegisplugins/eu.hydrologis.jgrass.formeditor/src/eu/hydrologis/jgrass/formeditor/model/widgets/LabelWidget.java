@@ -24,6 +24,7 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
+import eu.hydrologis.jgrass.formeditor.utils.Constants;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 /**
@@ -42,7 +43,7 @@ public class LabelWidget extends AWidget {
     public LabelWidget() {
         super();
         location = new Point(0, 0);
-        size = new Dimension(340, 40);
+        size = Constants.DEFAULT_DIMENSION.getCopy();
         initDescriptors();
     }
 
