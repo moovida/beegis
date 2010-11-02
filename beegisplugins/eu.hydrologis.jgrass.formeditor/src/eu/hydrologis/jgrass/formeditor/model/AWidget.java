@@ -17,9 +17,9 @@
  */
 package eu.hydrologis.jgrass.formeditor.model;
 
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.FIELDNAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.SOURCE_CONNECTIONS_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.TARGET_CONNECTIONS_PROP;
@@ -62,8 +62,9 @@ public abstract class AWidget extends AModelElement {
      */
     protected IPropertyDescriptor[] descriptors;
 
+    private static int index = 0;
     /** Name of the widget. */
-    protected String fieldname = "enter fieldname";
+    protected String widgetName = "widget_" + index++; //$NON-NLS-1$
     /** Location of this widget. */
     protected Point location = new Point(0, 0);
     /** Size of this widget. */
@@ -136,9 +137,6 @@ public abstract class AWidget extends AModelElement {
      * @see #getPropertyDescriptors()
      */
     public Object getPropertyValue( Object propertyId ) {
-        if (FIELDNAME_PROP.equals(propertyId)) {
-            return getFieldname();
-        }
         if (XPOS_PROP.equals(propertyId)) {
             return Integer.toString(location.x);
         }
@@ -175,8 +173,6 @@ public abstract class AWidget extends AModelElement {
         } else if (WIDTH_PROP.equals(propertyId)) {
             int width = Integer.parseInt((String) value);
             setSize(new Dimension(width, size.height));
-        } else if (FIELDNAME_PROP.equals(propertyId)) {
-            setFieldname((String) value);
         } else {
             super.setPropertyValue(propertyId, value);
         }
@@ -259,16 +255,16 @@ public abstract class AWidget extends AModelElement {
         newLocation.height = y > 0 ? y : Constants.DIMENSION_PIXEL_SNAP;
     }
 
-    public String getFieldname() {
-        return fieldname;
+    public String getName() {
+        return widgetName;
     }
 
-    public void setFieldname( String newName ) {
+    public void setName( String newName ) {
         if (newName == null) {
             throw new IllegalArgumentException();
         }
-        fieldname = newName;
-        firePropertyChange(FIELDNAME_PROP, null, fieldname);
+        widgetName = newName;
+        firePropertyChange(NAME_PROP, null, widgetName);
     }
 
     protected static synchronized void addIntegerPropertyValidator( PropertyDescriptor descriptor ) {

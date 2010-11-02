@@ -257,7 +257,7 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
      */
     public void propertyChange( PropertyChangeEvent evt ) {
         String prop = evt.getPropertyName();
-        if (SIZE_PROP.equals(prop) || LOCATION_PROP.equals(prop) || FIELDNAME_PROP.equals(prop)) {
+        if (SIZE_PROP.equals(prop) || LOCATION_PROP.equals(prop) || FIELDNAME_PROP.equals(prop) || NAME_PROP.equals(prop)) {
             refreshVisuals();
         } else if (SOURCE_CONNECTIONS_PROP.equals(prop)) {
             refreshSourceConnections();

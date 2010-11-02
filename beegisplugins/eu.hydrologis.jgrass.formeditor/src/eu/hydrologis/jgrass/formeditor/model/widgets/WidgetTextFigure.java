@@ -29,7 +29,7 @@ public class WidgetTextFigure extends ImageFigure {
         int x = area.x + Constants.FIELDNAME_OFFSET_X;
         int y = area.y + Constants.FIELDNAME_OFFSET_Y;
         
-        String fieldname = widget.getFieldname();
-        graphics.drawText(fieldname, x, y);
+        String name = widget.getName();
+        graphics.drawText(name, x, y);
     }
 }

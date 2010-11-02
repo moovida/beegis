@@ -42,7 +42,7 @@ public class LabelWidget extends AWidget {
     public LabelWidget() {
         super();
         location = new Point(0, 0);
-        size = new Dimension(341, 41);
+        size = new Dimension(340, 40);
         initDescriptors();
     }
 
@@ -50,13 +50,13 @@ public class LabelWidget extends AWidget {
      * Initializes the property descriptors array.
      */
     private void initDescriptors() {
-        TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, "X");
-        TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, "Y");
-        TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, "Width");
-        TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, "Height");
-        TextPropertyDescriptor fieldName = new TextPropertyDescriptor(FIELDNAME_PROP, "Field Name");
-        TextPropertyDescriptor textValue = new TextPropertyDescriptor(TEXT_PROP, "Text");
-        descriptors = new IPropertyDescriptor[]{fieldName, x, y, w, h, textValue};
+        TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, LABELS_LAYOUT_X);
+        TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, LABELS_LAYOUT_Y);
+        TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, LABELS_LAYOUT_W);
+        TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, LABELS_LAYOUT_H);
+        TextPropertyDescriptor textValue = new TextPropertyDescriptor(TEXT_PROP, LABELS_TEXT);
+        TextPropertyDescriptor nameValue = new TextPropertyDescriptor(NAME_PROP, LABELS_NAME);
+        descriptors = new IPropertyDescriptor[]{x, y, w, h, textValue, nameValue};
 
         addIntegerPropertyValidator(x);
         addIntegerPropertyValidator(y);
@@ -75,7 +75,7 @@ public class LabelWidget extends AWidget {
     public String getTextValue() {
         return textValue;
     }
-    
+
     public void setTextValue( String textValue ) {
         if (textValue == null) {
             throw new IllegalArgumentException();
@@ -87,6 +87,8 @@ public class LabelWidget extends AWidget {
     public Object getPropertyValue( Object propertyId ) {
         if (TEXT_PROP.equals(propertyId)) {
             return getTextValue();
+        } else if (NAME_PROP.equals(propertyId)) {
+            return getName();
         }
         return super.getPropertyValue(propertyId);
     }
@@ -95,13 +97,16 @@ public class LabelWidget extends AWidget {
         if (TEXT_PROP.equals(propertyId)) {
             String defValue = (String) value;
             setTextValue(defValue);
+        }else if (NAME_PROP.equals(propertyId)) {
+            String defValue = (String) value;
+            setName(defValue);
         } else {
             super.setPropertyValue(propertyId, value);
         }
     }
 
     public String toDumpString() {
-        String tmpName = getFieldname().replaceAll("\\s+", "_");
+        String tmpName = getName().replaceAll("\\s+", "_");
         Dimension tmpSize = getSize();
         Point tmpLocation = getLocation();
         String tmpTextValue = getTextValue();
