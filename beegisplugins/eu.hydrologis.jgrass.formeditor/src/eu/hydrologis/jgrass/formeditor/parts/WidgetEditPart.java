@@ -43,6 +43,7 @@ import eu.hydrologis.jgrass.formeditor.model.widgets.DoubleFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.IntegerFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.RadioButtonWidget;
+import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.WidgetTextFigure;
@@ -144,6 +145,9 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
         } else if (model instanceof LabelWidget) {
             Image labelImage = ImageCache.getInstance().getImage(ImageCache.LABEL_ICON_24);
             return new WidgetTextFigure((AWidget) model, labelImage);
+        } else if (model instanceof SeparatorWidget) {
+            Image separatorImage = ImageCache.getInstance().getImage(ImageCache.SEPARATOR_ICON_24);
+            return new WidgetTextFigure((AWidget) model, separatorImage);
         } else if (model instanceof IntegerFieldWidget) {
             Image integerImage = ImageCache.getInstance().getImage(ImageCache.TEXT_INTEGER_ICON_24);
             return new WidgetTextFigure((AWidget) model, integerImage);
@@ -186,6 +190,8 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
             else if (getModel() instanceof TextAreaWidget)
                 anchor = new ChopboxAnchor(getFigure());
             else if (getModel() instanceof LabelWidget)
+                anchor = new ChopboxAnchor(getFigure());
+            else if (getModel() instanceof SeparatorWidget)
                 anchor = new ChopboxAnchor(getFigure());
             else if (getModel() instanceof IntegerFieldWidget)
                 anchor = new ChopboxAnchor(getFigure());

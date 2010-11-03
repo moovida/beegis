@@ -38,6 +38,7 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextField;
 import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
+import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
 
 @SuppressWarnings("nls")
@@ -161,6 +162,15 @@ public class FormContentSaveHelper {
                         textField.constraints = constraintsSb.toString();
                         textfields.add(textField);
                         currentWidget.setMarked(true);
+                    } else if (currentWidget instanceof SeparatorWidget) {
+                        SeparatorWidget separatorWidget = (SeparatorWidget) currentWidget;
+                        ASeparator separator = new ASeparator();
+                        separator.name = separatorWidget.getName();
+                        separator.order = widgetIndex++;
+                        separator.orientation = Constants.ORIENTATION_TYPES[separatorWidget.getTypeValue()];
+                        separator.constraints = constraintsSb.toString();
+                        separators.add(separator);
+                        currentWidget.setMarked(true);
                     }
 
                 }
@@ -169,7 +179,7 @@ public class FormContentSaveHelper {
 
             form.tab.add(tab);
         }
-        
+
         for( AWidget widget : widgets ) {
             widget.setMarked(false);
         }

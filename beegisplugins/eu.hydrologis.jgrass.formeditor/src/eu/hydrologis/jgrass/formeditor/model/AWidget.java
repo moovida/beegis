@@ -361,5 +361,4 @@ public abstract class AWidget extends AModelElement {
         });
     }
 
-    public abstract String toDumpString();
 }

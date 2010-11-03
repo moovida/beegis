@@ -42,6 +42,8 @@ public class ImageCache {
     public static final String COMBO_ICON_24 = "icons/combo_icon24.png";
     public static final String LABEL_ICON_16 = "icons/label_icon16.png";
     public static final String LABEL_ICON_24 = "icons/label_icon24.png";
+    public static final String SEPARATOR_ICON_16 = "icons/separator_icon16.png";
+    public static final String SEPARATOR_ICON_24 = "icons/separator_icon24.png";
     public static final String RADIO_ICON_16 = "icons/radio_icon16.png";
     public static final String RADIO_ICON_24 = "icons/radio_icon24.png";
     public static final String TEXT_ICON_16 = "icons/text_icon16.png";
