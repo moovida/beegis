@@ -42,13 +42,13 @@ public class ATextField extends FormElement {
      * The attribute's table field name.
      */
     @XmlAttribute(name = FIELDNAME)
-    public final String fieldName = null;
+    public String fieldName = null;
 
     /**
      * Field type: string, integer, double.
      */
     @XmlAttribute(name = VALUETYPE)
-    public final String valueType = null;
+    public String valueType = null;
 
     /**
      * Unique name for the object.
@@ -92,7 +92,7 @@ public class ATextField extends FormElement {
     public String getName() {
         return name;
     }
-    
+
     public String getFieldName() {
         return fieldName;
     }

@@ -17,7 +17,7 @@
  */
 package eu.hydrologis.jgrass.formeditor.model;
 
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
@@ -90,6 +90,7 @@ public abstract class AWidget extends AModelElement {
     private List<Connection> sourceConnections = new ArrayList<Connection>();
     /** List of incoming Connections. */
     private List<Connection> targetConnections = new ArrayList<Connection>();
+    private boolean isMarked;
 
     /**
      * Add an incoming or outgoing connection to this shape.
@@ -239,8 +240,8 @@ public abstract class AWidget extends AModelElement {
     private void snapLocation( Point newLocation ) {
         int x = newLocation.x;
         int y = newLocation.y;
-        x = x - (x % Constants.LOCATION_PIXEL_SNAP);
-        y = y - (y % Constants.LOCATION_PIXEL_SNAP);
+        x = x - (x % LOCATION_PIXEL_SNAP);
+        y = y - (y % LOCATION_PIXEL_SNAP);
 
         newLocation.x = x > 0 ? x : 0;
         newLocation.y = y > 0 ? y : 0;
@@ -270,11 +271,11 @@ public abstract class AWidget extends AModelElement {
     private void snapSize( Dimension newLocation ) {
         int x = newLocation.width;
         int y = newLocation.height;
-        x = x - (x % Constants.DIMENSION_PIXEL_SNAP);
-        y = y - (y % Constants.DIMENSION_PIXEL_SNAP);
+        x = x - (x % DIMENSION_PIXEL_SNAP);
+        y = y - (y % DIMENSION_PIXEL_SNAP);
 
-        newLocation.width = x > 0 ? x : Constants.DIMENSION_PIXEL_SNAP;
-        newLocation.height = y > 0 ? y : Constants.DIMENSION_PIXEL_SNAP;
+        newLocation.width = x > 0 ? x : DIMENSION_PIXEL_SNAP;
+        newLocation.height = y > 0 ? y : DIMENSION_PIXEL_SNAP;
     }
 
     public String getName() {
@@ -296,6 +297,40 @@ public abstract class AWidget extends AModelElement {
     public void setTab( String widgetTab ) {
         this.widgetTab = widgetTab;
         firePropertyChange(TAB_PROP, null, widgetTab);
+    }
+
+    /**
+     * Returns the start and end row of the widget.
+     * 
+     * @return an array containing the start and end rows.
+     */
+    public int[] getRowBounds() {
+        Point location = getLocation();
+        int startRow = location.y / LOCATION_PIXEL_SNAP;
+        Dimension size = getSize();
+        int endRow = startRow + size.height / DIMENSION_PIXEL_SNAP - 1;
+        return new int[]{startRow, endRow};
+    }
+
+    /**
+     * Returns the start and end col of the widget.
+     * 
+     * @return an array containing the start and end cols.
+     */
+    public int[] getColBounds() {
+        Point location = getLocation();
+        int startCol = location.x / LOCATION_PIXEL_SNAP;
+        Dimension size = getSize();
+        int endCol = startCol + size.width / DIMENSION_PIXEL_SNAP - 1;
+        return new int[]{startCol, endCol};
+    }
+
+    public void setMarked( boolean isMarked ) {
+        this.isMarked = isMarked;
+    }
+
+    public boolean isMarked() {
+        return isMarked;
     }
 
     protected static synchronized void addIntegerPropertyValidator( PropertyDescriptor descriptor ) {
