@@ -71,12 +71,14 @@ public class TextFieldWidget extends AWidget {
         TextPropertyDescriptor defaultValue = new TextPropertyDescriptor(DEFAULT_PROP, LABELS_DEFAULT);
         ComboBoxPropertyDescriptor types = new ComboBoxPropertyDescriptor(TEXT_TYPE_PROP, LABELS_TEXT_TYPE, Constants.TEXT_TYPES);
         types.setLabelProvider(new TypesLabelProvider());
-        descriptors = new IPropertyDescriptor[]{x, y, w, h, fields, nameValue, defaultValue, types};
+        TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
+        descriptors = new IPropertyDescriptor[]{x, y, w, h, fields, nameValue, defaultValue, types, tabValue};
 
         addIntegerPropertyValidator(x);
         addIntegerPropertyValidator(y);
         addIntegerPropertyValidator(w);
         addIntegerPropertyValidator(h);
+        addIntegerPropertyValidator(tabValue);
     }
     static private class TypesLabelProvider extends LabelProvider {
         public String getText( Object element ) {

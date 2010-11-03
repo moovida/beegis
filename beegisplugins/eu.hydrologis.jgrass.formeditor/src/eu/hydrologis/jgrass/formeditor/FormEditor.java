@@ -37,6 +37,7 @@ import net.refractions.udig.catalog.ID;
 import net.refractions.udig.catalog.IGeoResource;
 import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.IMap;
+import net.refractions.udig.project.internal.SetDefaultStyleProcessor;
 import net.refractions.udig.project.ui.ApplicationGIS;
 
 import org.eclipse.core.resources.IFile;
@@ -218,6 +219,7 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
                 String dumpString = widget.toDumpString();
                 bW.write(dumpString);
             }
+            
         } finally {
             bW.close();
         }

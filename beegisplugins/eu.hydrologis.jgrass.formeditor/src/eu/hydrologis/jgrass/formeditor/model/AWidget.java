@@ -22,6 +22,7 @@ import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.SOURCE_CONNECTIONS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.TARGET_CONNECTIONS_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
@@ -36,7 +37,6 @@ import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
-import org.opengis.feature.type.AttributeDescriptor;
 
 import eu.hydrologis.jgrass.formeditor.utils.Constants;
 
@@ -63,14 +63,30 @@ public abstract class AWidget extends AModelElement {
      */
     protected IPropertyDescriptor[] descriptors;
 
-    private static int index = 0;
-    /** Name of the widget. */
-    protected String widgetName = "widget_" + index++; //$NON-NLS-1$
-    /** Location of this widget. */
+    /**
+     * A static number to propose the default widget name.
+     */
+    private static int widgetIndex = 0;
+
+    /** 
+     * The tab in which the widget will finish. 
+     */
+    protected String widgetTab = "0";
+    /** 
+     * The name of the widget. 
+     */
+    protected String widgetName = "widget_" + widgetIndex++; //$NON-NLS-1$
+    /** 
+     * Location of this widget. 
+     */
     protected Point location = new Point(0, 0);
-    /** Size of this widget. */
+    /** 
+     * Size of this widget. 
+     */
     protected Dimension size = new Dimension(345, 47);
-    /** List of outgoing Connections. */
+    /** 
+     * List of outgoing Connections. 
+     */
     private List<Connection> sourceConnections = new ArrayList<Connection>();
     /** List of incoming Connections. */
     private List<Connection> targetConnections = new ArrayList<Connection>();
@@ -140,18 +156,16 @@ public abstract class AWidget extends AModelElement {
     public Object getPropertyValue( Object propertyId ) {
         if (XPOS_PROP.equals(propertyId)) {
             return Integer.toString(location.x);
-        }
-        if (YPOS_PROP.equals(propertyId)) {
+        } else if (YPOS_PROP.equals(propertyId)) {
             return Integer.toString(location.y);
-        }
-        if (HEIGHT_PROP.equals(propertyId)) {
+        } else if (HEIGHT_PROP.equals(propertyId)) {
             return Integer.toString(size.height);
-        }
-        if (WIDTH_PROP.equals(propertyId)) {
+        } else if (WIDTH_PROP.equals(propertyId)) {
             return Integer.toString(size.width);
-        }
-        if (NAME_PROP.equals(propertyId)) {
+        } else if (NAME_PROP.equals(propertyId)) {
             return getName();
+        } else if (TAB_PROP.equals(propertyId)) {
+            return getTab();
         }
         return super.getPropertyValue(propertyId);
     }
@@ -179,6 +193,8 @@ public abstract class AWidget extends AModelElement {
             setSize(new Dimension(width, size.height));
         } else if (NAME_PROP.equals(propertyId)) {
             setName((String) value);
+        } else if (TAB_PROP.equals(propertyId)) {
+            setTab((String) value);
         } else {
             super.setPropertyValue(propertyId, value);
         }
@@ -273,6 +289,15 @@ public abstract class AWidget extends AModelElement {
         firePropertyChange(NAME_PROP, null, widgetName);
     }
 
+    public String getTab() {
+        return widgetTab;
+    }
+
+    public void setTab( String widgetTab ) {
+        this.widgetTab = widgetTab;
+        firePropertyChange(TAB_PROP, null, widgetTab);
+    }
+
     protected static synchronized void addIntegerPropertyValidator( PropertyDescriptor descriptor ) {
         descriptor.setValidator(new ICellEditorValidator(){
             public String isValid( Object value ) {
@@ -300,7 +325,6 @@ public abstract class AWidget extends AModelElement {
             }
         });
     }
-
 
     public abstract String toDumpString();
 }
