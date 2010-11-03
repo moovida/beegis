@@ -132,7 +132,7 @@ public class FormContentSaveHelper {
                         AWidget previousWidget = onThisRow.get(j - 1);
                         int[] colBounds2 = previousWidget.getColBounds();
                         int previousEndCol = colBounds2[1];
-                        constraintsSb.append("skip ").append(scol - previousEndCol).append(", ");
+                        constraintsSb.append("skip ").append(scol - previousEndCol - 1).append(", ");
                     }
                     int spanRow = erow - srow + 1;
                     int spanCol = ecol - scol + 1;
