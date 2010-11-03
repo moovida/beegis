@@ -242,8 +242,8 @@ public abstract class AWidget extends AModelElement {
         x = x - (x % Constants.LOCATION_PIXEL_SNAP);
         y = y - (y % Constants.LOCATION_PIXEL_SNAP);
 
-        newLocation.x = x;
-        newLocation.y = y;
+        newLocation.x = x > 0 ? x : 0;
+        newLocation.y = y > 0 ? y : 0;
     }
 
     /**
