@@ -35,6 +35,7 @@ import eu.hydrologis.jgrass.formeditor.model.widgets.DoubleFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.IntegerFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.RadioButtonWidget;
+import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
@@ -45,12 +46,21 @@ public final class FormEditorPaletteFactory {
     private static PaletteContainer createWidgetsDrawer() {
         PaletteDrawer componentsDrawer = new PaletteDrawer("Widgets");
 
+        ImageDescriptor separatorId = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
+                ImageCache.SEPARATOR_ICON_16);
+        ImageDescriptor separatorId24 = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
+                ImageCache.SEPARATOR_ICON_24);
+
+        CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry("Separator", "Create a spacer or separator",
+                SeparatorWidget.class, new SimpleFactory(SeparatorWidget.class), separatorId, separatorId24);
+        componentsDrawer.add(component);
+
         ImageDescriptor labelId = FormEditorPlugin
                 .imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID, ImageCache.LABEL_ICON_16);
         ImageDescriptor labelId24 = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
                 ImageCache.LABEL_ICON_24);
 
-        CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry("Label", "Create a label", LabelWidget.class,
+        component = new CombinedTemplateCreationEntry("Label", "Create a label", LabelWidget.class,
                 new SimpleFactory(LabelWidget.class), labelId, labelId24);
         componentsDrawer.add(component);
 

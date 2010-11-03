@@ -62,7 +62,7 @@ public class TextFieldWidget extends AWidget {
     private void initDescriptors() {
         ComboBoxPropertyDescriptor fields = new ComboBoxPropertyDescriptor(FIELDNAME_PROP, LABELS_FIELDNAME,
                 FormEditor.getFieldNamesArrays());
-        fields.setLabelProvider(new FieldNamesLabelProvider());
+        fields.setLabelProvider(new CustomLabelProviders.FieldNamesLabelProvider());
         TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, LABELS_LAYOUT_X);
         TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, LABELS_LAYOUT_Y);
         TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, LABELS_LAYOUT_W);
@@ -70,7 +70,7 @@ public class TextFieldWidget extends AWidget {
         TextPropertyDescriptor nameValue = new TextPropertyDescriptor(NAME_PROP, LABELS_NAME);
         TextPropertyDescriptor defaultValue = new TextPropertyDescriptor(DEFAULT_PROP, LABELS_DEFAULT);
         ComboBoxPropertyDescriptor types = new ComboBoxPropertyDescriptor(TEXT_TYPE_PROP, LABELS_TEXT_TYPE, Constants.TEXT_TYPES);
-        types.setLabelProvider(new TypesLabelProvider());
+        types.setLabelProvider(new CustomLabelProviders.TypesLabelProvider());
         TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
         descriptors = new IPropertyDescriptor[]{x, y, w, h, fields, nameValue, defaultValue, types, tabValue};
 
@@ -79,16 +79,6 @@ public class TextFieldWidget extends AWidget {
         addIntegerPropertyValidator(w);
         addIntegerPropertyValidator(h);
         addIntegerPropertyValidator(tabValue);
-    }
-    static private class TypesLabelProvider extends LabelProvider {
-        public String getText( Object element ) {
-            return Constants.TEXT_TYPES[((Integer) element).intValue()];
-        }
-    }
-    static private class FieldNamesLabelProvider extends LabelProvider {
-        public String getText( Object element ) {
-            return FormEditor.getFieldNamesArrays()[((Integer) element).intValue()];
-        }
     }
 
     public Image getIcon() {

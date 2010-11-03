@@ -57,6 +57,11 @@ public class Constants {
     public static final String TEXT_TYPE_PROP = "WidgetTextType";
 
     /** 
+     * Property ID to use for orientation type. 
+     */
+    public static final String ORIENTATION_TYPE_PROP = "WidgetOrientationType";
+
+    /** 
      * Property ID to use for name. 
      */
     public static final String NAME_PROP = "WidgetName";
@@ -106,7 +111,9 @@ public class Constants {
     public static final String LABELS_LAYOUT_W = "layout width";
     public static final String LABELS_LAYOUT_H = "layout height";
     public static final String LABELS_DEFAULT = "default value";
+    public static final String LABELS_ORIENTATION = "orientation";
 
     public static final Dimension DEFAULT_DIMENSION = new Dimension(300, 30);
     public static final String[] TEXT_TYPES = {"string", "integer", "double"};
+    public static final String[] ORIENTATION_TYPES = {"", "vertical", "horizontal"};
 }

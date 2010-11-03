@@ -43,6 +43,7 @@ import eu.hydrologis.jgrass.formeditor.model.widgets.DoubleFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.IntegerFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.RadioButtonWidget;
+import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
 import eu.hydrologis.jgrass.formeditor.utils.Constants;
@@ -165,9 +166,9 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
         protected Command getCreateCommand( CreateRequest request ) {
             Object childClass = request.getNewObjectType();
             if (childClass == TextFieldWidget.class || childClass == TextAreaWidget.class || childClass == LabelWidget.class
-                    || childClass == IntegerFieldWidget.class || childClass == DoubleFieldWidget.class
-                    || childClass == ComboBoxWidget.class || childClass == CheckBoxWidget.class
-                    || childClass == RadioButtonWidget.class) {
+                    || childClass == SeparatorWidget.class || childClass == IntegerFieldWidget.class
+                    || childClass == DoubleFieldWidget.class || childClass == ComboBoxWidget.class
+                    || childClass == CheckBoxWidget.class || childClass == RadioButtonWidget.class) {
                 // return a command that can add a Shape to a ShapesDiagram
                 AWidget aWidget = (AWidget) request.getNewObject();
                 WidgetsDiagram widgetsDiagram = (WidgetsDiagram) getHost().getModel();

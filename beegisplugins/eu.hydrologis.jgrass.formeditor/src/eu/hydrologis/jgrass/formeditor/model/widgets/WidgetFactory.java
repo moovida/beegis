@@ -35,6 +35,9 @@ public class WidgetFactory {
         } else if (type.equals(LabelWidget.TYPE)) {
             widget = new LabelWidget();
             addLabelAttributes((LabelWidget) widget, properties);
+        } else if (type.equals(SeparatorWidget.TYPE)) {
+            widget = new SeparatorWidget();
+            addSeparatorAttributes((SeparatorWidget) widget, properties);
         } else if (type.equals(IntegerFieldWidget.TYPE)) {
             widget = new IntegerFieldWidget();
             addIntegerFieldAttributes((IntegerFieldWidget) widget, properties);
@@ -96,6 +99,11 @@ public class WidgetFactory {
     private static void addLabelAttributes( LabelWidget widget, Properties properties ) {
         String textString = properties.getProperty(TEXT_PROP);
         widget.setTextValue(textString);
+    }
+
+    private static void addSeparatorAttributes( SeparatorWidget widget, Properties properties ) {
+        // String textString = properties.getProperty(TEXT_PROP);
+        // widget.setTextValue(textString);
     }
 
     private static void addDoubleFieldAttributes( DoubleFieldWidget widget, Properties properties ) {
