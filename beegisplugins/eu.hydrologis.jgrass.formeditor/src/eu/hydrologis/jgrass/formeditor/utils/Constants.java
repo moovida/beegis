@@ -4,8 +4,8 @@ import org.eclipse.draw2d.geometry.Dimension;
 
 @SuppressWarnings("nls")
 public class Constants {
-    public static final int LOCATION_PIXEL_SNAP = 20;
-    public static final int DIMENSION_PIXEL_SNAP = 20;
+    public static final int LOCATION_PIXEL_SNAP = 30;
+    public static final int DIMENSION_PIXEL_SNAP = 30;
 
     public static final int INSETS = 5;
     public static final int FIELDNAME_OFFSET_X = 30;
@@ -107,6 +107,6 @@ public class Constants {
     public static final String LABELS_LAYOUT_H = "layout height";
     public static final String LABELS_DEFAULT = "default value";
 
-    public static final Dimension DEFAULT_DIMENSION = new Dimension(340, 40);
+    public static final Dimension DEFAULT_DIMENSION = new Dimension(300, 30);
     public static final String[] TEXT_TYPES = {"string", "integer", "double"};
 }

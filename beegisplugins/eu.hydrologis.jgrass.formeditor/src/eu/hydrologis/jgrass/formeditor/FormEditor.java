@@ -82,6 +82,8 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.geotools.data.FeatureSource;
 import org.opengis.feature.type.AttributeDescriptor;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
@@ -89,6 +91,7 @@ import eu.hydrologis.jgrass.formeditor.model.widgets.WidgetFactory;
 import eu.hydrologis.jgrass.formeditor.palette.FormEditorPaletteFactory;
 import eu.hydrologis.jgrass.formeditor.parts.WidgetEditPartFactory;
 import eu.hydrologis.jgrass.formeditor.parts.WidgetsTreeEditPartFactory;
+import eu.hydrologis.jgrass.formeditor.utils.FormContentSaveHelper;
 
 /**
  * A graphical editor with flyout palette that can edit .shapes files.
@@ -107,21 +110,20 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
      * <p>This is a hack, should be designed better.
      */
     private static List<AttributeDescriptor> attributeDescriptors = new ArrayList<AttributeDescriptor>();
-    private static  String[] fieldNamesArrays;
+    private static String[] fieldNamesArrays;
 
     /** Palette component, holding the tools and shapes. */
     private static PaletteRoot PALETTE_MODEL;
-
 
     /** Create a new ShapesEditor instance. This is called by the Workspace. */
     public FormEditor() {
         setEditDomain(new DefaultEditDomain(this));
     }
-    
+
     public static List<AttributeDescriptor> getAttributeDescriptors() {
         return attributeDescriptors;
     }
-    
+
     public static String[] getFieldNamesArrays() {
         return fieldNamesArrays;
     }
@@ -198,31 +200,35 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
     public void doSave( IProgressMonitor monitor ) {
         try {
             saveToProperties();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         // saveSerializing();
     }
 
-    private void saveToProperties() throws IOException {
+    private void saveToProperties() throws Exception {
         File file = new File(((FileStoreEditorInput) getEditorInput()).getURI());
-        BufferedWriter bW = new BufferedWriter(new FileWriter(file));
-        try {
-            if (diagram == null) {
-                throw new IllegalArgumentException();
-            }
 
-            List<AWidget> widgets = diagram.getChildren();
+        FormContentSaveHelper saveHelper = new FormContentSaveHelper(file, diagram.getChildren());
+        saveHelper.save();
 
-            for( AWidget widget : widgets ) {
-                String dumpString = widget.toDumpString();
-                bW.write(dumpString);
-            }
-            
-        } finally {
-            bW.close();
-        }
+        // BufferedWriter bW = new BufferedWriter(new FileWriter(file));
+        // try {
+        // if (diagram == null) {
+        // throw new IllegalArgumentException();
+        // }
+        //
+        // List<AWidget> widgets = diagram.getChildren();
+        //
+        // for( AWidget widget : widgets ) {
+        // String dumpString = widget.toDumpString();
+        // bW.write(dumpString);
+        // }
+        //
+        // } finally {
+        // bW.close();
+        // }
     }
 
     private void saveSerializing() {
@@ -350,13 +356,17 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
                 ILayer selectedLayer = activeMap.getEditManager().getSelectedLayer();
                 if (selectedLayer.hasResource(FeatureSource.class)) {
                     attributeDescriptors = selectedLayer.getSchema().getAttributeDescriptors();
-
-                    fieldNamesArrays = new String[attributeDescriptors.size()];
+                    List<String> fieldNamesList = new ArrayList<String>();
                     for( int i = 0; i < attributeDescriptors.size(); i++ ) {
                         AttributeDescriptor attributeDescriptor = attributeDescriptors.get(i);
+                        Class< ? > binding = attributeDescriptor.getType().getBinding();
+                        if (Geometry.class.isAssignableFrom(binding)) {
+                            continue;
+                        }
                         String localName = attributeDescriptor.getLocalName();
-                        fieldNamesArrays[i] = localName;
+                        fieldNamesList.add(localName);
                     }
+                    fieldNamesArrays = (String[]) fieldNamesList.toArray(new String[fieldNamesList.size()]);
                 }
             }
 
