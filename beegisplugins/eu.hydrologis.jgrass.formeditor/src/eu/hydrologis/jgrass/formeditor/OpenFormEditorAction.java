@@ -29,6 +29,8 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.geotools.data.FeatureSource;
 import org.opengis.feature.type.AttributeDescriptor;
 
+import eu.hydrologis.jgrass.featureeditor.utils.Utilities;
+
 public class OpenFormEditorAction implements IWorkbenchWindowActionDelegate {
 
     private IWorkbenchWindow window;
@@ -54,18 +56,21 @@ public class OpenFormEditorAction implements IWorkbenchWindowActionDelegate {
                     if (activeMap != null) {
                         ILayer selectedLayer = activeMap.getEditManager().getSelectedLayer();
                         if (selectedLayer.hasResource(FeatureSource.class)) {
-
                             IGeoResource geoResource = selectedLayer.getGeoResource();
                             ID id = geoResource.getID();
-                            List<AttributeDescriptor> attributeDescriptors = selectedLayer.getSchema().getAttributeDescriptors();
-
                             boolean isFile = id.isFile();
                             if (isFile) {
                                 File f = id.toFile();
-                                String baseName = FilenameUtils.getBaseName(f.getName());
 
-                                File newF = new File(f.getParentFile(), baseName + ".form");
-                                if (!newF.exists()) {
+                                File newF = Utilities.getFormFile(f);
+                                if (newF != null && !newF.exists()) {
+                                    newF.createNewFile();
+                                } else if (newF == null) {
+                                    // ask use for file position
+                                    FileDialog fileDialog = new FileDialog(window.getShell(), SWT.SAVE);
+                                    fileDialog.setFilterExtensions(new String[]{"*.form"});
+                                    String path = fileDialog.open();
+                                    newF = new File(path);
                                     newF.createNewFile();
                                 }
 
@@ -77,7 +82,7 @@ public class OpenFormEditorAction implements IWorkbenchWindowActionDelegate {
 
                                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                                         .showView("org.eclipse.ui.views.PropertySheet");
-                                
+
                                 return;
                             }
 
