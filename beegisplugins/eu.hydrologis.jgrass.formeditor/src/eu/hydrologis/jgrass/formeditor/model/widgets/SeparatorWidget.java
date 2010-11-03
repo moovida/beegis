@@ -74,7 +74,7 @@ public class SeparatorWidget extends AWidget {
         TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
         ComboBoxPropertyDescriptor orientationTypes = new ComboBoxPropertyDescriptor(ORIENTATION_TYPE_PROP, LABELS_ORIENTATION,
                 Constants.ORIENTATION_TYPES);
-        orientationTypes.setLabelProvider(new CustomLabelProviders.TypesLabelProvider());
+        orientationTypes.setLabelProvider(new CustomLabelProviders.OrientationTypesLabelProvider());
         descriptors = new IPropertyDescriptor[]{x, y, w, h, orientationTypes, nameValue, tabValue};
 
         addIntegerPropertyValidator(x);

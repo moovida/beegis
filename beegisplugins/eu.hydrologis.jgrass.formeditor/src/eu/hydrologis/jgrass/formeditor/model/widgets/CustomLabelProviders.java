@@ -34,6 +34,11 @@ public class CustomLabelProviders {
             return Constants.TEXT_TYPES[((Integer) element).intValue()];
         }
     }
+    static class OrientationTypesLabelProvider extends LabelProvider {
+        public String getText( Object element ) {
+            return Constants.ORIENTATION_TYPES[((Integer) element).intValue()];
+        }
+    }
     static class FieldNamesLabelProvider extends LabelProvider {
         public String getText( Object element ) {
             return FormEditor.getFieldNamesArrays()[((Integer) element).intValue()];
