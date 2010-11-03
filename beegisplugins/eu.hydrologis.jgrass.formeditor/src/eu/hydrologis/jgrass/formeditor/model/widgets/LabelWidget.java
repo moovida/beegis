@@ -57,12 +57,14 @@ public class LabelWidget extends AWidget {
         TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, LABELS_LAYOUT_H);
         TextPropertyDescriptor textValue = new TextPropertyDescriptor(TEXT_PROP, LABELS_TEXT);
         TextPropertyDescriptor nameValue = new TextPropertyDescriptor(NAME_PROP, LABELS_NAME);
-        descriptors = new IPropertyDescriptor[]{x, y, w, h, textValue, nameValue};
+        TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
+        descriptors = new IPropertyDescriptor[]{x, y, w, h, textValue, nameValue, tabValue};
 
         addIntegerPropertyValidator(x);
         addIntegerPropertyValidator(y);
         addIntegerPropertyValidator(w);
         addIntegerPropertyValidator(h);
+        addIntegerPropertyValidator(tabValue);
     }
 
     public Image getIcon() {

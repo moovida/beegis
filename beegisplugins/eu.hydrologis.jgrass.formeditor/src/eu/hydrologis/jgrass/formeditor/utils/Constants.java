@@ -17,6 +17,11 @@ public class Constants {
     public static final String TYPE_PROP = "WidgetType";
 
     /** 
+     * ID for the tab number property value.  
+     */
+    public static final String TAB_PROP = "WidgetTab";
+
+    /** 
      * ID for the field name property value.  
      */
     public static final String FIELDNAME_PROP = "WidgetFieldname";
@@ -91,6 +96,7 @@ public class Constants {
      */
     public static final String TARGET_CONNECTIONS_PROP = "WidgetTargetConn";
 
+    public static final String LABELS_TAB = "tab";
     public static final String LABELS_FIELDNAME = "fieldname";
     public static final String LABELS_NAME = "name";
     public static final String LABELS_TEXT = "text";
