@@ -97,4 +97,8 @@ public class ATextField extends FormElement {
         return fieldName;
     }
 
+    public String getConstraints() {
+        return constraints;
+    }
+
 }

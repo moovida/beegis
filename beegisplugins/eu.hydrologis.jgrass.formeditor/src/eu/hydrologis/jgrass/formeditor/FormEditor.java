@@ -79,6 +79,7 @@ import eu.hydrologis.jgrass.formeditor.model.widgets.WidgetFactory;
 import eu.hydrologis.jgrass.formeditor.palette.FormEditorPaletteFactory;
 import eu.hydrologis.jgrass.formeditor.parts.WidgetEditPartFactory;
 import eu.hydrologis.jgrass.formeditor.parts.WidgetsTreeEditPartFactory;
+import eu.hydrologis.jgrass.formeditor.utils.FormContentLoadHelper;
 import eu.hydrologis.jgrass.formeditor.utils.FormContentSaveHelper;
 
 /**
@@ -87,7 +88,7 @@ import eu.hydrologis.jgrass.formeditor.utils.FormContentSaveHelper;
  * @author Elias Volanakis
  */
 public class FormEditor extends GraphicalEditorWithFlyoutPalette {
-    public static String ID = "eu.hydrologis.jgrass.formeditor.FormEditor";
+    public static String ID = "eu.hydrologis.jgrass.formeditor.FormEditor"; //$NON-NLS-1$
 
     /** This is the root of the editor's model. */
     private WidgetsDiagram diagram;
@@ -284,52 +285,18 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
             }
 
             loadFromProperties(input);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void loadFromProperties( IEditorInput input ) throws IOException {
+    private void loadFromProperties( IEditorInput input ) throws Exception {
         File file = new File(((FileStoreEditorInput) input).getURI());
-
-        HashMap<String, Properties> name2PropertiesMap = new HashMap<String, Properties>();
-
-        BufferedReader bR = new BufferedReader(new FileReader(file));
-        String line = null;
-        while( (line = bR.readLine()) != null ) {
-            if (!line.contains("=") || line.startsWith("#")) {
-                continue;
-            }
-
-            String[] split = line.split("\\.");
-            String fieldName = split[0];
-
-            Properties properties = name2PropertiesMap.get(fieldName);
-            if (properties == null) {
-                properties = new Properties();
-                name2PropertiesMap.put(fieldName, properties);
-            }
-
-            line = line.replaceFirst(fieldName + "\\.", "");
-            String[] propSplit = line.split("=");
-            String name = propSplit[0].trim();
-            String value = "";
-            if (propSplit.length > 1) {
-                value = propSplit[1].trim();
-            }
-            properties.put(name, value);
-        }
 
         diagram = new WidgetsDiagram();
 
-        Set<Entry<String, Properties>> entrySet = name2PropertiesMap.entrySet();
-        for( Entry<String, Properties> entry : entrySet ) {
-            Properties properties = entry.getValue();
-
-            AWidget widget = WidgetFactory.createWidget(properties);
-
-            diagram.addChild(widget);
-        }
+        FormContentLoadHelper loadHelper = new FormContentLoadHelper(file, diagram);
+        loadHelper.load();
 
     }
 
