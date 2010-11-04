@@ -17,22 +17,39 @@
  */
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
-import java.util.List;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.DEFAULT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.FIELDNAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_DEFAULT;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_FIELDNAME;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_H;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_W;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_X;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_Y;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_NAME;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TAB;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TEXT_TYPE;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.TEXT_TYPE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.TYPE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-import org.opengis.feature.type.AttributeDescriptor;
 
 import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.utils.Constants;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 
 /**
  * A textfield widget.

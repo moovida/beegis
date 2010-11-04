@@ -17,7 +17,9 @@
  */
 package eu.hydrologis.jgrass.formeditor.model;
 
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.DIMENSION_PIXEL_SNAP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PIXEL_SNAP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
@@ -37,8 +39,6 @@ import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
-
-import eu.hydrologis.jgrass.formeditor.utils.Constants;
 
 /**
  * Abstract prototype of a widget representer.
