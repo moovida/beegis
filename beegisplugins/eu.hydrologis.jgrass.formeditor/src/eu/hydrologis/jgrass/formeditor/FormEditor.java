@@ -10,22 +10,16 @@
 �*******************************************************************************/
 package eu.hydrologis.jgrass.formeditor;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.EventObject;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
 
 import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.IMap;
@@ -73,9 +67,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
-import eu.hydrologis.jgrass.formeditor.model.widgets.WidgetFactory;
 import eu.hydrologis.jgrass.formeditor.palette.FormEditorPaletteFactory;
 import eu.hydrologis.jgrass.formeditor.parts.WidgetEditPartFactory;
 import eu.hydrologis.jgrass.formeditor.parts.WidgetsTreeEditPartFactory;
@@ -172,7 +164,7 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
     private TransferDropTargetListener createTransferDropTargetListener() {
         return new TemplateTransferDropTargetListener(getGraphicalViewer()){
             protected CreationFactory getFactory( Object template ) {
-                return new SimpleFactory((Class) template);
+                return new SimpleFactory((Class<?>) template);
             }
         };
     }
@@ -229,6 +221,7 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public Object getAdapter( Class type ) {
         if (type == IContentOutlinePage.class)
             return new ShapesOutlinePage(new TreeViewer());

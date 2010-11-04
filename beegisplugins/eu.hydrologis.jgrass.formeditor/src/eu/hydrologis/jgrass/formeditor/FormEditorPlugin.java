@@ -235,7 +235,7 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
                         return tmpSelectedFeature;
                     }
                 } finally {
-                    features.close(featureIterator);
+                    featureIterator.close();
                 }
             }
             return null;
