@@ -142,16 +142,19 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
             return figure;
         } else if (model instanceof TextAreaWidget) {
             Image textAreaImage = ImageCache.getInstance().getImage(ImageCache.TEXTAREA_ICON_24);
-            return new WidgetTextFigure((AWidget) model, textAreaImage);
+            WidgetTextFigure figure = new WidgetTextFigure((AWidget) model, textAreaImage);
+            figure.setOpaque(true);
+            figure.setBackgroundColor(ColorConstants.green);
+            return figure;
         } else if (model instanceof LabelWidget) {
             Image labelImage = ImageCache.getInstance().getImage(ImageCache.LABEL_ICON_24);
-            WidgetTextFigure figure = new WidgetTextFigure((AWidget) model, labelImage);
+            IFigure figure = new WidgetTextFigure((AWidget) model, labelImage);
             figure.setOpaque(true);
             figure.setBackgroundColor(ColorConstants.yellow);
             return figure;
         } else if (model instanceof SeparatorWidget) {
             Image separatorImage = ImageCache.getInstance().getImage(ImageCache.SEPARATOR_ICON_24);
-            WidgetTextFigure figure = new WidgetTextFigure((AWidget) model, separatorImage);
+            IFigure figure = new WidgetTextFigure((AWidget) model, separatorImage);
             figure.setOpaque(false);
             figure.setBackgroundColor(ColorConstants.lightGray);
             return figure;

@@ -29,17 +29,13 @@ import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_Y;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_NAME;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TAB;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TEXT_TYPE;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.TEXT_TYPE_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TYPE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
 
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
@@ -158,27 +154,6 @@ public class TextFieldWidget extends AWidget {
     public void setFieldnameValue( int fieldNameValue ) {
         this.fieldNameValue = fieldNameValue;
         firePropertyChange(FIELDNAME_PROP, null, fieldNameValue);
-    }
-
-    public String toDumpString() {
-        String tmpName = getName().replaceAll("\\s+", "_");
-        Dimension tmpSize = getSize();
-        Point tmpLocation = getLocation();
-        String tmpDefaultValue = getDefaultValue();
-
-        StringBuilder sB = new StringBuilder();
-        sB.append(tmpName).append(".").append(TYPE_PROP).append("=");
-        sB.append(TYPE).append("\n");
-        sB.append(tmpName).append(".").append(FIELDNAME_PROP).append("=");
-        sB.append(tmpName).append("\n");
-        sB.append(tmpName).append(".").append(SIZE_PROP).append("=");
-        sB.append(tmpSize.width).append(",").append(tmpSize.height).append("\n");
-        sB.append(tmpName).append(".").append(LOCATION_PROP).append("=");
-        sB.append(tmpLocation.x).append(",").append(tmpLocation.y).append("\n");
-        sB.append(tmpName).append(".").append(DEFAULT_PROP).append("=");
-        sB.append(tmpDefaultValue).append("\n");
-
-        return sB.toString();
     }
 
 }

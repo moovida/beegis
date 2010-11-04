@@ -38,6 +38,7 @@ import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
+import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
 
 /**
@@ -139,6 +140,17 @@ public class FormContentSaveHelper {
                     textField.constraints = "cell " + widgetStartCol + " " + widgetStartRow + " "
                             + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx";
                     textfields.add(textField);
+                } else if (widget instanceof TextAreaWidget) {
+                    TextAreaWidget textAreaWidget = (TextAreaWidget) widget;
+                    ATextArea textArea = new ATextArea();
+                    textArea.name = textAreaWidget.getName();
+                    // textField.text = textFieldWidget.getTextValue();
+                    textArea.defaultText = textAreaWidget.getDefaultValue();
+                    textArea.fieldName = fieldNamesArrays[textAreaWidget.getFieldnameValue()];
+                    textArea.order = widgetIndex++;
+                    textArea.constraints = "cell " + widgetStartCol + " " + widgetStartRow + " "
+                            + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx";
+                    textareas.add(textArea);
                 } else if (widget instanceof SeparatorWidget) {
                     SeparatorWidget separatorWidget = (SeparatorWidget) widget;
                     ASeparator separator = new ASeparator();

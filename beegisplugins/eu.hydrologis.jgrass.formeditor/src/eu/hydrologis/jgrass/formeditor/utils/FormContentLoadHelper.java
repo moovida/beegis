@@ -31,6 +31,7 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ALabel;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ASeparator;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATab;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextArea;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextField;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 import eu.hydrologis.jgrass.formeditor.FormEditor;
@@ -38,6 +39,7 @@ import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
+import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
 
 /**
@@ -84,6 +86,9 @@ public class FormContentLoadHelper {
                 } else if (formElement instanceof ATextField) {
                     TextFieldWidget textFieldWidget = createTextFieldWidget(tabNum, formElement);
                     diagram.addChild(textFieldWidget);
+                } else if (formElement instanceof ATextArea) {
+                    TextAreaWidget textAreaWidget = createTextAreaWidget(tabNum, formElement);
+                    diagram.addChild(textAreaWidget);
                 } else if (formElement instanceof ASeparator) {
                     SeparatorWidget separatorWidget = createSeparatorWidget(tabNum, formElement);
                     diagram.addChild(separatorWidget);
@@ -112,6 +117,24 @@ public class FormContentLoadHelper {
         textFieldWidget.setLocation(newLocation);
         textFieldWidget.setSize(newSize);
         return textFieldWidget;
+    }
+
+    private TextAreaWidget createTextAreaWidget( int tabNum, FormElement formElement ) {
+        ATextArea textArea = (ATextArea) formElement;
+
+        TextAreaWidget textAreaWidget = new TextAreaWidget();
+        textAreaWidget.setTab(String.valueOf(tabNum));
+        textAreaWidget.setName(textArea.name);
+        textAreaWidget.setDefaultValue(textArea.defaultText);
+        textAreaWidget.setFieldnameValue(fieldIndexFromName(textArea.fieldName));
+
+        int[] xywh = findLocationAndSize(textArea.constraints);
+        Point newLocation = new Point(xywh[0], xywh[1]);
+        Dimension newSize = new Dimension(xywh[2], xywh[3]);
+
+        textAreaWidget.setLocation(newLocation);
+        textAreaWidget.setSize(newSize);
+        return textAreaWidget;
     }
 
     private SeparatorWidget createSeparatorWidget( int tabNum, FormElement formElement ) {
