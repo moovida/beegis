@@ -125,8 +125,6 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
      */
     protected IFigure createFigure() {
         IFigure f = createFigureForModel();
-        f.setOpaque(true); // non-transparent figure
-        f.setBackgroundColor(ColorConstants.lightGray);
         return f;
     }
 
@@ -138,16 +136,25 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
         Object model = getModel();
         if (model instanceof TextFieldWidget) {
             Image textImage = ImageCache.getInstance().getImage(ImageCache.TEXT_ICON_24);
-            return new WidgetTextFigure((AWidget) model, textImage);
+            IFigure figure = new WidgetTextFigure((AWidget) model, textImage);
+            figure.setOpaque(true);
+            figure.setBackgroundColor(ColorConstants.lightGreen);
+            return figure;
         } else if (model instanceof TextAreaWidget) {
             Image textAreaImage = ImageCache.getInstance().getImage(ImageCache.TEXTAREA_ICON_24);
             return new WidgetTextFigure((AWidget) model, textAreaImage);
         } else if (model instanceof LabelWidget) {
             Image labelImage = ImageCache.getInstance().getImage(ImageCache.LABEL_ICON_24);
-            return new WidgetTextFigure((AWidget) model, labelImage);
+            WidgetTextFigure figure = new WidgetTextFigure((AWidget) model, labelImage);
+            figure.setOpaque(true);
+            figure.setBackgroundColor(ColorConstants.yellow);
+            return figure;
         } else if (model instanceof SeparatorWidget) {
             Image separatorImage = ImageCache.getInstance().getImage(ImageCache.SEPARATOR_ICON_24);
-            return new WidgetTextFigure((AWidget) model, separatorImage);
+            WidgetTextFigure figure = new WidgetTextFigure((AWidget) model, separatorImage);
+            figure.setOpaque(false);
+            figure.setBackgroundColor(ColorConstants.lightGray);
+            return figure;
         } else if (model instanceof IntegerFieldWidget) {
             Image integerImage = ImageCache.getInstance().getImage(ImageCache.TEXT_INTEGER_ICON_24);
             return new WidgetTextFigure((AWidget) model, integerImage);
