@@ -149,7 +149,7 @@ public class FormContentSaveHelper {
                     textArea.fieldName = fieldNamesArrays[textAreaWidget.getFieldnameValue()];
                     textArea.order = widgetIndex++;
                     textArea.constraints = "cell " + widgetStartCol + " " + widgetStartRow + " "
-                            + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx";
+                            + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx, growy";
                     textareas.add(textArea);
                 } else if (widget instanceof SeparatorWidget) {
                     SeparatorWidget separatorWidget = (SeparatorWidget) widget;
