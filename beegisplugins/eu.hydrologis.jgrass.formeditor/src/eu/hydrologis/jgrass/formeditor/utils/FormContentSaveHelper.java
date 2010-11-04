@@ -158,30 +158,4 @@ public class FormContentSaveHelper {
         Utilities.writeXML(form, file);
     }
 
-    private int[] getRowColBounds( List<AWidget> widgetList ) {
-        int minRow = Integer.MAX_VALUE;
-        int maxRow = Integer.MIN_VALUE;
-        int minCol = Integer.MAX_VALUE;
-        int maxCol = Integer.MIN_VALUE;
-
-        for( AWidget aWidget : widgetList ) {
-            int[] rowBounds = aWidget.getRowBounds();
-            int[] colBounds = aWidget.getColBounds();
-
-            if (rowBounds[0] < minRow) {
-                minRow = rowBounds[0];
-            }
-            if (rowBounds[1] > maxRow) {
-                maxRow = rowBounds[1];
-            }
-            if (colBounds[0] < minCol) {
-                minCol = colBounds[0];
-            }
-            if (colBounds[1] < maxCol) {
-                maxCol = colBounds[1];
-            }
-        }
-        return new int[]{minRow, minCol, maxRow, maxCol};
-    }
-
 }
