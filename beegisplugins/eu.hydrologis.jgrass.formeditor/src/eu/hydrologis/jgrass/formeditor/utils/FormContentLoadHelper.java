@@ -21,7 +21,6 @@ import static eu.hydrologis.jgrass.formeditor.utils.Constants.DIMENSION_PIXEL_SN
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PIXEL_SNAP;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
@@ -52,7 +51,6 @@ public class FormContentLoadHelper {
 
     private final File file;
     private final WidgetsDiagram diagram;
-    private List<AWidget> addedWidgetsPerTab;
 
     /**
      * Constructor.
@@ -79,51 +77,25 @@ public class FormContentLoadHelper {
             int tabNum = Integer.parseInt(orderedTab.text);
             List< ? extends FormElement> orderedElements = orderedTab.getOrderedElements();
 
-            addedWidgetsPerTab = new ArrayList<AWidget>();
-
-            int rowIndex = 0;
-            int index = 0;
-            int safeIndex = 0;
-            while( index != orderedElements.size() || safeIndex++ == 1000 ) {
-                List<FormElement> elementsInRow = new ArrayList<FormElement>();
-                for( int i = index; i < orderedElements.size(); i++ ) {
-                    FormElement formElement = orderedElements.get(i);
-                    elementsInRow.add(formElement);
-                    if (formElement.getConstraints().toLowerCase().contains("wrap")) {
-                        // last in row
-                        index = i + 1;
-                        break;
-                    }
+            for( FormElement formElement : orderedElements ) {
+                if (formElement instanceof ALabel) {
+                    LabelWidget labelWidget = createLabelWidget(tabNum, formElement);
+                    diagram.addChild(labelWidget);
+                } else if (formElement instanceof ATextField) {
+                    TextFieldWidget textFieldWidget = createTextFieldWidget(tabNum, formElement);
+                    diagram.addChild(textFieldWidget);
+                } else if (formElement instanceof ASeparator) {
+                    SeparatorWidget separatorWidget = createSeparatorWidget(tabNum, formElement);
+                    diagram.addChild(separatorWidget);
                 }
 
-                // handle the row
-                AWidget previous = null;
-                for( int i = 0; i < elementsInRow.size(); i++ ) {
-                    FormElement formElement = elementsInRow.get(i);
-                    if (formElement instanceof ALabel) {
-                        LabelWidget labelWidget = createLabelWidget(tabNum, rowIndex, previous, formElement);
-                        diagram.addChild(labelWidget);
-                        addedWidgetsPerTab.add(labelWidget);
-                        previous = labelWidget;
-                    } else if (formElement instanceof ATextField) {
-                        TextFieldWidget textFieldWidget = createTextFieldWidget(tabNum, rowIndex, previous, formElement);
-                        diagram.addChild(textFieldWidget);
-                        addedWidgetsPerTab.add(textFieldWidget);
-                        previous = textFieldWidget;
-                    } else if (formElement instanceof ASeparator) {
-                        SeparatorWidget separatorWidget = createSeparatorWidget(tabNum, rowIndex, previous, formElement);
-                        diagram.addChild(separatorWidget);
-                        addedWidgetsPerTab.add(separatorWidget);
-                        previous = separatorWidget;
-                    }
-                }
-                rowIndex++;
             }
+
         }
 
     }
 
-    private TextFieldWidget createTextFieldWidget( int tabNum, int rowIndex, AWidget previous, FormElement formElement ) {
+    private TextFieldWidget createTextFieldWidget( int tabNum, FormElement formElement ) {
         ATextField textField = (ATextField) formElement;
 
         TextFieldWidget textFieldWidget = new TextFieldWidget();
@@ -133,7 +105,7 @@ public class FormContentLoadHelper {
         textFieldWidget.setFieldnameValue(fieldIndexFromName(textField.fieldName));
         textFieldWidget.setTypeValue(textfieldTypeFromName(textField.valueType));
 
-        int[] xywh = findLocationAndSIze(rowIndex, previous, textField.constraints);
+        int[] xywh = findLocationAndSize(textField.constraints);
         Point newLocation = new Point(xywh[0], xywh[1]);
         Dimension newSize = new Dimension(xywh[2], xywh[3]);
 
@@ -142,7 +114,7 @@ public class FormContentLoadHelper {
         return textFieldWidget;
     }
 
-    private SeparatorWidget createSeparatorWidget( int tabNum, int rowIndex, AWidget previous, FormElement formElement ) {
+    private SeparatorWidget createSeparatorWidget( int tabNum, FormElement formElement ) {
         ASeparator separator = (ASeparator) formElement;
 
         SeparatorWidget separatorWidget = new SeparatorWidget();
@@ -150,7 +122,7 @@ public class FormContentLoadHelper {
         separatorWidget.setName(separator.name);
         separatorWidget.setTypeValue(orientationFromName(separator.orientation));
 
-        int[] xywh = findLocationAndSIze(rowIndex, previous, separator.constraints);
+        int[] xywh = findLocationAndSize(separator.constraints);
         Point newLocation = new Point(xywh[0], xywh[1]);
         Dimension newSize = new Dimension(xywh[2], xywh[3]);
 
@@ -159,7 +131,7 @@ public class FormContentLoadHelper {
         return separatorWidget;
     }
 
-    private LabelWidget createLabelWidget( int tabNum, int rowIndex, AWidget previous, FormElement formElement ) {
+    private LabelWidget createLabelWidget( int tabNum, FormElement formElement ) {
         ALabel label = (ALabel) formElement;
 
         LabelWidget labelWidget = new LabelWidget();
@@ -167,7 +139,7 @@ public class FormContentLoadHelper {
         labelWidget.setName(label.name);
         labelWidget.setTextValue(label.text);
 
-        int[] xywh = findLocationAndSIze(rowIndex, previous, label.constraints);
+        int[] xywh = findLocationAndSize(label.constraints);
         Point newLocation = new Point(xywh[0], xywh[1]);
         Dimension newSize = new Dimension(xywh[2], xywh[3]);
 
@@ -205,82 +177,36 @@ public class FormContentLoadHelper {
     }
 
     /**
-     * Extracts location and size from the constraint and the previous widget.
+     * Extracts location and size from the constraint.
      * 
-     * @param rowIndex the current row index.
-     * @param previous the prvious widget in position.
      * @param constraints the constraint string.
      * @return the array of x, y, width, height.
      */
-    private int[] findLocationAndSIze( int rowIndex, AWidget previous, String constraints ) {
-        int[] skipSpanxSpany = constraintToSkipSpanxSpany(constraints);
-        int startRow = rowIndex;
-        int heightRows = skipSpanxSpany[2];
-        int startCol = skipSpanxSpany[0];
-        int widthCols = skipSpanxSpany[1];
+    private int[] findLocationAndSize( String constraints ) {
+        int startCol = 0;
+        int startRow = 0;
+        int widthCols = 0;
+        int heightRows = 0;
+
+        String[] constraintsArray = constraints.split(",");
+        for( String constraint : constraintsArray ) {
+            constraint = constraint.trim();
+            if (constraint.toLowerCase().startsWith("cell")) {
+                String[] split = constraint.split("\\s+");
+                startCol = Integer.parseInt(split[1]);
+                startRow = Integer.parseInt(split[2]);
+                widthCols = Integer.parseInt(split[3]);
+                heightRows = Integer.parseInt(split[4]);
+            }
+        }
 
         int x = startCol * LOCATION_PIXEL_SNAP;
         int y = startRow * LOCATION_PIXEL_SNAP;
         int width = widthCols * DIMENSION_PIXEL_SNAP;
         int height = heightRows * DIMENSION_PIXEL_SNAP;
 
-        // int filledCols = 0;
-        // for( AWidget widget : addedWidgetsPerTab ) {
-        // /*
-        // * if one is in line before this shift,
-        // * then for sure it was added before,
-        // * since they are ordered. So it is safe
-        // * to move by the previous objects
-        // */
-        // int[] rowBounds = widget.getRowBounds();
-        // if (rowBounds[0] <= rowIndex && rowBounds[1] >= rowIndex) {
-        // int[] colBounds = widget.getColBounds();
-        // if (colBounds[1] > filledCols) {
-        // filledCols = colBounds[1];
-        // }
-        // }
-        // }
-        // x = x + (filledCols + 1) * LOCATION_PIXEL_SNAP;
-        if (previous != null) {
-            Point location = previous.getLocation();
-            Dimension size = previous.getSize();
-            x = x + location.x + size.width;
-        }
         int[] xywh = new int[]{x, y, width, height};
         return xywh;
-    }
-
-    /**
-     * Converts a constraint to an array containing:
-     * <ul>
-     * <li>skip</li>
-     * <li>spanx</li>
-     * <li>spany</li>
-     * </ul>
-     * 
-     * @param constraints the constraint string.
-     * @return the array of skip, spanx, spany.
-     */
-    private int[] constraintToSkipSpanxSpany( String constraints ) {
-        String[] constraintsArray = constraints.split(",");
-        int skip = 0;
-        int spanx = 1;
-        int spany = 1;
-        for( String constraint : constraintsArray ) {
-            constraint = constraint.trim();
-            if (constraint.length() == 0) {
-                continue;
-            }
-            if (constraint.toLowerCase().startsWith("skip")) {
-                String[] split = constraint.split("\\s+");
-                skip = Integer.parseInt(split[1]);
-            } else if (constraint.toLowerCase().startsWith("span")) {
-                String[] split = constraint.split("\\s+");
-                spanx = Integer.parseInt(split[1]);
-                spany = Integer.parseInt(split[2]);
-            }
-        }
-        return new int[]{skip, spanx, spany};
     }
 
 }
