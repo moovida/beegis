@@ -98,4 +98,8 @@ public class AComboBox extends FormElement {
     public String getFieldName() {
         return fieldName;
     }
+    
+    public String getConstraints() {
+        return constraints;
+    }
 }

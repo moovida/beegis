@@ -41,17 +41,33 @@ import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
 
+/**
+ * The class that takes care of dumping the {@link AWidget widgets} to disk in proper XML format.
+ * 
+ * @author Andrea Antonello (www.hydrologis.com)
+ */
 @SuppressWarnings("nls")
 public class FormContentSaveHelper {
 
     private final List<AWidget> widgets;
     private final File file;
 
+    /**
+     * Constructor.
+     * 
+     * @param file the file to which to save the widgets.
+     * @param widgets the widgets to dump.
+     */
     public FormContentSaveHelper( File file, List<AWidget> widgets ) {
         this.file = file;
         this.widgets = widgets;
     }
 
+    /**
+     * Converts the {@link AWidget widgets} to XML and dumps it to file.
+     * 
+     * @throws Exception
+     */
     public void save() throws Exception {
         // divide by tab
         TreeMap<String, List<AWidget>> widgets4Tab = new TreeMap<String, List<AWidget>>();

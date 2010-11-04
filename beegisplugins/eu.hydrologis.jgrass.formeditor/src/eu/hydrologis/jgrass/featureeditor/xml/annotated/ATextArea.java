@@ -96,5 +96,9 @@ public class ATextArea extends FormElement {
     public String getFieldName() {
         return fieldName;
     }
+    
+    public String getConstraints() {
+        return constraints;
+    }
 
 }

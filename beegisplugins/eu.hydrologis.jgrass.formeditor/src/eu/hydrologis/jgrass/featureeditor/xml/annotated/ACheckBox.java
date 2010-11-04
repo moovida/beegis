@@ -87,5 +87,9 @@ public class ACheckBox extends FormElement {
     public String getFieldName() {
         return fieldName;
     }
+    
+    public String getConstraints() {
+        return constraints;
+    }
 
 }
