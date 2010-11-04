@@ -11,17 +11,11 @@
 package eu.hydrologis.jgrass.formeditor;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -29,19 +23,15 @@ import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Map.Entry;
 
-import net.refractions.udig.catalog.ID;
-import net.refractions.udig.catalog.IGeoResource;
 import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.IMap;
-import net.refractions.udig.project.internal.SetDefaultStyleProcessor;
 import net.refractions.udig.project.ui.ApplicationGIS;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -71,7 +61,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
@@ -86,7 +75,6 @@ import com.vividsolutions.jts.geom.Geometry;
 
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
-import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.WidgetFactory;
 import eu.hydrologis.jgrass.formeditor.palette.FormEditorPaletteFactory;
 import eu.hydrologis.jgrass.formeditor.parts.WidgetEditPartFactory;
@@ -113,7 +101,7 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
     private static String[] fieldNamesArrays;
 
     /** Palette component, holding the tools and shapes. */
-    private static PaletteRoot PALETTE_MODEL;
+    private static PaletteRoot paletteModel;
 
     /** Create a new ShapesEditor instance. This is called by the Workspace. */
     public FormEditor() {
@@ -150,9 +138,6 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
         getSite().registerContextMenu(cmProvider, viewer);
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.gef.ui.parts.GraphicalEditor#commandStackChanged(java.util.EventObject)
-     */
     public void commandStackChanged( EventObject event ) {
         firePropertyChange(IEditorPart.PROP_DIRTY);
         super.commandStackChanged(event);
@@ -164,9 +149,6 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
         oos.close();
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#createPaletteViewerProvider()
-     */
     protected PaletteViewerProvider createPaletteViewerProvider() {
         return new PaletteViewerProvider(getEditDomain()){
             protected void configurePaletteViewer( PaletteViewer viewer ) {
@@ -194,70 +176,16 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
         };
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.ISaveablePart#doSave(org.eclipse.core.runtime.IProgressMonitor)
-     */
     public void doSave( IProgressMonitor monitor ) {
         try {
-            saveToProperties();
+            File file = new File(((FileStoreEditorInput) getEditorInput()).getURI());
+            FormContentSaveHelper saveHelper = new FormContentSaveHelper(file, diagram.getChildren());
+            saveHelper.save();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // saveSerializing();
     }
 
-    private void saveToProperties() throws Exception {
-        File file = new File(((FileStoreEditorInput) getEditorInput()).getURI());
-
-        FormContentSaveHelper saveHelper = new FormContentSaveHelper(file, diagram.getChildren());
-        saveHelper.save();
-
-        // BufferedWriter bW = new BufferedWriter(new FileWriter(file));
-        // try {
-        // if (diagram == null) {
-        // throw new IllegalArgumentException();
-        // }
-        //
-        // List<AWidget> widgets = diagram.getChildren();
-        //
-        // for( AWidget widget : widgets ) {
-        // String dumpString = widget.toDumpString();
-        // bW.write(dumpString);
-        // }
-        //
-        // } finally {
-        // bW.close();
-        // }
-    }
-
-    private void saveSerializing() {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try {
-            createOutputStream(out);
-            File file = new File(((FileStoreEditorInput) getEditorInput()).getURI());
-            FileOutputStream fOs = new FileOutputStream(file);
-            fOs.write(out.toByteArray());
-            fOs.close();
-
-            // file.setContents(new ByteArrayInputStream(out.toByteArray()), true, // keep saving,
-            // even
-            // // if IFile is out
-            // // of sync with the
-            // // Workspace
-            // false, // dont keep history
-            // monitor); // progress monitor
-            getCommandStack().markSaveLocation();
-            // } catch (CoreException ce) {
-            // ce.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.ISaveablePart#doSaveAs()
-     */
     public void doSaveAs() {
         // Show a SaveAs dialog
         Shell shell = getSite().getWorkbenchWindow().getShell();
@@ -310,19 +238,10 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
         return diagram;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#getPaletteRoot()
-     */
     protected PaletteRoot getPaletteRoot() {
-        if (PALETTE_MODEL == null)
-            PALETTE_MODEL = FormEditorPaletteFactory.createPalette();
-        return PALETTE_MODEL;
-    }
-
-    private void handleLoadException( Exception e ) {
-        System.err.println("** Load failed. Using default model. **");
-        e.printStackTrace();
-        diagram = new WidgetsDiagram();
+        if (paletteModel == null)
+            paletteModel = FormEditorPaletteFactory.createPalette();
+        return paletteModel;
     }
 
     /**
@@ -338,16 +257,10 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
         viewer.addDropTargetListener(createTransferDropTargetListener());
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.ISaveablePart#isSaveAsAllowed()
-     */
     public boolean isSaveAsAllowed() {
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.EditorPart#setInput(org.eclipse.ui.IEditorInput)
-     */
     protected void setInput( IEditorInput input ) {
         super.setInput(input);
         try {
@@ -420,26 +333,6 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
 
     }
 
-    private void loadSerialized( IEditorInput input ) {
-        try {
-            File file = new File(((FileStoreEditorInput) input).getURI());
-            if (file != null) {
-                FileInputStream fIs = new FileInputStream(file);
-                ObjectInputStream in = new ObjectInputStream(fIs);
-                diagram = (WidgetsDiagram) in.readObject();
-                in.close();
-                setPartName(file.getName());
-            } else {
-                setPartName("test");
-                diagram = new WidgetsDiagram();
-            }
-        } catch (IOException e) {
-            handleLoadException(e);
-        } catch (ClassNotFoundException e) {
-            handleLoadException(e);
-        }
-    }
-
     /**
      * Creates an outline pagebook for this editor.
      */
@@ -453,9 +346,6 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
             super(viewer);
         }
 
-        /* (non-Javadoc)
-         * @see org.eclipse.ui.part.IPage#createControl(org.eclipse.swt.widgets.Composite)
-         */
         public void createControl( Composite parent ) {
             // create outline viewer page
             EditPartViewer viewer = getViewer();
@@ -475,9 +365,6 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
             // show outline viewer
         }
 
-        /* (non-Javadoc)
-         * @see org.eclipse.ui.part.IPage#dispose()
-         */
         public void dispose() {
             // unhook outline viewer
             getSelectionSynchronizer().removeViewer(getViewer());
@@ -485,16 +372,10 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
             super.dispose();
         }
 
-        /* (non-Javadoc)
-         * @see org.eclipse.ui.part.IPage#getControl()
-         */
         public Control getControl() {
             return getViewer().getControl();
         }
 
-        /**
-         * @see org.eclipse.ui.part.IPageBookViewPage#init(org.eclipse.ui.part.IPageSite)
-         */
         public void init( IPageSite pageSite ) {
             super.init(pageSite);
             ActionRegistry registry = getActionRegistry();
