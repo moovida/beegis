@@ -61,16 +61,9 @@ public class OpenFormEditorAction implements IWorkbenchWindowActionDelegate {
                             boolean isFile = id.isFile();
                             if (isFile) {
                                 File f = id.toFile();
-
-                                File newF = Utilities.getFormFile(f);
-                                if (newF != null && !newF.exists()) {
-                                    newF.createNewFile();
-                                } else if (newF == null) {
-                                    // ask use for file position
-                                    FileDialog fileDialog = new FileDialog(window.getShell(), SWT.SAVE);
-                                    fileDialog.setFilterExtensions(new String[]{"*.form"});
-                                    String path = fileDialog.open();
-                                    newF = new File(path);
+                                String baseName = FilenameUtils.getBaseName(f.getName());
+                                File newF = new File(f.getParentFile(), baseName + ".form");
+                                if (!newF.exists()) {
                                     newF.createNewFile();
                                 }
 
