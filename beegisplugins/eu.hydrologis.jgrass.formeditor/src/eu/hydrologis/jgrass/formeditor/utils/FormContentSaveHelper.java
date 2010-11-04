@@ -19,7 +19,6 @@ package eu.hydrologis.jgrass.formeditor.utils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -35,7 +34,6 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.ASeparator;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATab;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextArea;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextField;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
@@ -110,110 +108,48 @@ public class FormContentSaveHelper {
             List<ATextArea> textareas = tab.textarea;
             List<ATextField> textfields = tab.textfield;
 
-            int[] rowColBounds = getRowColBounds(widgetList);
-            int startRow = rowColBounds[0];
-            int endRow = rowColBounds[2];
-
             // now define who is on which row
             float widgetIndex = 0f;
-            for( int i = startRow; i < endRow + 1; i++ ) {
-                List<AWidget> onThisRow = new ArrayList<AWidget>();
-                for( AWidget widget : widgetList ) {
-                    int[] rowBounds = widget.getRowBounds();
-                    int widgetStartRow = rowBounds[0];
-                    int widgetEndRow = rowBounds[1];
-                    if (i >= widgetStartRow && i <= widgetEndRow) {
-                        onThisRow.add(widget);
-                    }
-                }
+            for( AWidget widget : widgetList ) {
+                int[] rowBounds = widget.getRowBounds();
+                int[] colBounds = widget.getColBounds();
+                int widgetStartRow = rowBounds[0];
+                int widgetEndRow = rowBounds[1];
+                int widgetStartCol = colBounds[0];
+                int widgetEndCol = colBounds[1];
 
-                Collections.sort(onThisRow, new WidgetColSorter());
-
-                FormElement lastInRow = null;
-                for( int j = 0; j < onThisRow.size(); j++ ) {
-                    AWidget currentWidget = onThisRow.get(j);
-
-                    if (currentWidget.isMarked()) {
-                        // TODO check how miglayout behaves
-                        continue;
-                    }
-
-                    int[] colBounds = currentWidget.getColBounds();
-                    int scol = colBounds[0];
-                    int ecol = colBounds[1];
-                    int[] rowBounds = currentWidget.getRowBounds();
-                    int srow = rowBounds[0];
-                    int erow = rowBounds[1];
-
-                    StringBuilder constraintsSb = new StringBuilder();
-                    if (j == 0) {
-                        constraintsSb.append("skip ").append(scol).append(", ");
-                    } else {
-                        AWidget previousWidget = onThisRow.get(j - 1);
-                        int[] colBounds2 = previousWidget.getColBounds();
-                        int previousEndCol = colBounds2[1];
-                        constraintsSb.append("skip ").append(scol - previousEndCol - 1).append(", ");
-                    }
-                    int spanRow = erow - srow + 1;
-                    int spanCol = ecol - scol + 1;
-                    constraintsSb.append("span ").append(spanCol).append(" ").append(spanRow);
-
-                    if (currentWidget instanceof LabelWidget) {
-                        LabelWidget labelWidget = (LabelWidget) currentWidget;
-                        ALabel label = new ALabel();
-                        label.name = labelWidget.getName();
-                        label.text = labelWidget.getTextValue();
-                        label.order = widgetIndex++;
-                        label.constraints = constraintsSb.toString();
-                        labels.add(label);
-                        currentWidget.setMarked(true);
-                        lastInRow = label;
-                    } else if (currentWidget instanceof TextFieldWidget) {
-                        TextFieldWidget textFieldWidget = (TextFieldWidget) currentWidget;
-                        ATextField textField = new ATextField();
-                        textField.name = textFieldWidget.getName();
-                        // textField.text = textFieldWidget.getTextValue();
-                        textField.defaultText = textFieldWidget.getDefaultValue();
-                        textField.fieldName = fieldNamesArrays[textFieldWidget.getFieldnameValue()];
-                        textField.valueType = Constants.TEXT_TYPES[textFieldWidget.getTypeValue()];
-                        textField.order = widgetIndex++;
-                        textField.constraints = constraintsSb.toString();
-                        textfields.add(textField);
-                        currentWidget.setMarked(true);
-                        lastInRow = textField;
-                    } else if (currentWidget instanceof SeparatorWidget) {
-                        SeparatorWidget separatorWidget = (SeparatorWidget) currentWidget;
-                        ASeparator separator = new ASeparator();
-                        separator.name = separatorWidget.getName();
-                        separator.order = widgetIndex++;
-                        separator.orientation = Constants.ORIENTATION_TYPES[separatorWidget.getTypeValue()];
-                        separator.constraints = constraintsSb.toString();
-                        separators.add(separator);
-                        currentWidget.setMarked(true);
-                        lastInRow = separator;
-                    }
-
-                }
-
-                if (lastInRow != null) {
-                    // at the end of every row, add the wrap to the constraint to the last added
-                    lastInRow.closeConstraints();
-                } else {
-                    // if there is nothing in the row it might be empty or filled with spanned
+                if (widget instanceof LabelWidget) {
+                    LabelWidget labelWidget = (LabelWidget) widget;
+                    ALabel label = new ALabel();
+                    label.name = labelWidget.getName();
+                    label.text = labelWidget.getTextValue();
+                    label.order = widgetIndex++;
+                    label.constraints = "cell " + widgetStartCol + " " + widgetStartRow + " "
+                            + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx";
+                    labels.add(label);
+                } else if (widget instanceof TextFieldWidget) {
+                    TextFieldWidget textFieldWidget = (TextFieldWidget) widget;
+                    ATextField textField = new ATextField();
+                    textField.name = textFieldWidget.getName();
+                    // textField.text = textFieldWidget.getTextValue();
+                    textField.defaultText = textFieldWidget.getDefaultValue();
+                    textField.fieldName = fieldNamesArrays[textFieldWidget.getFieldnameValue()];
+                    textField.valueType = Constants.TEXT_TYPES[textFieldWidget.getTypeValue()];
+                    textField.order = widgetIndex++;
+                    textField.constraints = "cell " + widgetStartCol + " " + widgetStartRow + " "
+                            + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx";
+                    textfields.add(textField);
+                } else if (widget instanceof SeparatorWidget) {
+                    SeparatorWidget separatorWidget = (SeparatorWidget) widget;
                     ASeparator separator = new ASeparator();
-                    separator.name = "sep_row_" + i;
+                    separator.name = separatorWidget.getName();
                     separator.order = widgetIndex++;
-                    separator.orientation = "";
-                    if (onThisRow.size() == 0) {
-                        // empty, but in a separator
-                        separator.constraints = "span 1 1, growx, wrap";
-                    } else {
-                        AWidget lastWidget = onThisRow.get(onThisRow.size() - 1);
-                        int col = lastWidget.getColBounds()[1] + 1;
-                        separator.constraints = "skip " + col + ",span 1 1, growx, wrap";
-                    }
+                    separator.orientation = Constants.ORIENTATION_TYPES[separatorWidget.getTypeValue()];
+                    separator.constraints = "cell " + widgetStartCol + " " + widgetStartRow + " "
+                            + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx";
                     separators.add(separator);
                 }
+
             }
 
             form.tab.add(tab);
