@@ -35,6 +35,7 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.ASeparator;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATab;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextArea;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextField;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
@@ -81,6 +82,8 @@ public class FormContentSaveHelper {
             }
 
             list.add(widget);
+            // also clean them
+            widget.setMarked(false);
         }
 
         String[] fieldNamesArrays = FormEditor.getFieldNamesArrays();
@@ -126,6 +129,7 @@ public class FormContentSaveHelper {
 
                 Collections.sort(onThisRow, new WidgetColSorter());
 
+                FormElement lastInRow = null;
                 for( int j = 0; j < onThisRow.size(); j++ ) {
                     AWidget currentWidget = onThisRow.get(j);
 
@@ -153,9 +157,6 @@ public class FormContentSaveHelper {
                     int spanRow = erow - srow + 1;
                     int spanCol = ecol - scol + 1;
                     constraintsSb.append("span ").append(spanCol).append(" ").append(spanRow);
-                    if (j == onThisRow.size() - 1) {
-                        constraintsSb.append(", growx, wrap");
-                    }
 
                     if (currentWidget instanceof LabelWidget) {
                         LabelWidget labelWidget = (LabelWidget) currentWidget;
@@ -166,6 +167,7 @@ public class FormContentSaveHelper {
                         label.constraints = constraintsSb.toString();
                         labels.add(label);
                         currentWidget.setMarked(true);
+                        lastInRow = label;
                     } else if (currentWidget instanceof TextFieldWidget) {
                         TextFieldWidget textFieldWidget = (TextFieldWidget) currentWidget;
                         ATextField textField = new ATextField();
@@ -178,6 +180,7 @@ public class FormContentSaveHelper {
                         textField.constraints = constraintsSb.toString();
                         textfields.add(textField);
                         currentWidget.setMarked(true);
+                        lastInRow = textField;
                     } else if (currentWidget instanceof SeparatorWidget) {
                         SeparatorWidget separatorWidget = (SeparatorWidget) currentWidget;
                         ASeparator separator = new ASeparator();
@@ -187,17 +190,33 @@ public class FormContentSaveHelper {
                         separator.constraints = constraintsSb.toString();
                         separators.add(separator);
                         currentWidget.setMarked(true);
+                        lastInRow = separator;
                     }
 
                 }
 
+                if (lastInRow != null) {
+                    // at the end of every row, add the wrap to the constraint to the last added
+                    lastInRow.closeConstraints();
+                } else {
+                    // if there is nothing in the row it might be empty or filled with spanned
+                    ASeparator separator = new ASeparator();
+                    separator.name = "sep_row_" + i;
+                    separator.order = widgetIndex++;
+                    separator.orientation = "";
+                    if (onThisRow.size() == 0) {
+                        // empty, but in a separator
+                        separator.constraints = "span 1 1, growx, wrap";
+                    } else {
+                        AWidget lastWidget = onThisRow.get(onThisRow.size() - 1);
+                        int col = lastWidget.getColBounds()[1] + 1;
+                        separator.constraints = "skip " + col + ",span 1 1, growx, wrap";
+                    }
+                    separators.add(separator);
+                }
             }
 
             form.tab.add(tab);
-        }
-
-        for( AWidget widget : widgets ) {
-            widget.setMarked(false);
         }
 
         Utilities.writeXML(form, file);

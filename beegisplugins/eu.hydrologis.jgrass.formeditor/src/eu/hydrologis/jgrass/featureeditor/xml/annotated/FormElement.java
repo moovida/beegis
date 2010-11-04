@@ -56,6 +56,11 @@ public abstract class FormElement implements Comparable<FormElement> {
      */
     public abstract String getConstraints();
 
+    /**
+     * Closes a row.
+     */
+    public abstract void closeConstraints();
+
     @Override
     public int compareTo( FormElement o ) {
         // this ordering is not consistent with equals.
