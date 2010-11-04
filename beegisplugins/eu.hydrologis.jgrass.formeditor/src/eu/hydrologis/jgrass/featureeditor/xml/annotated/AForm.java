@@ -27,6 +27,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.hydrologis.jgrass.formeditor.utils.Constants;
+
 /**
  * The wrapping form class.
  * 
@@ -60,5 +62,6 @@ public class AForm extends FormElement {
         return null;
     }
     
-    
+    public void closeConstraints() {
+    }
 }

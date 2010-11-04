@@ -52,6 +52,7 @@ public class FormContentLoadHelper {
 
     private final File file;
     private final WidgetsDiagram diagram;
+    private List<AWidget> addedWidgetsPerTab;
 
     /**
      * Constructor.
@@ -78,6 +79,8 @@ public class FormContentLoadHelper {
             int tabNum = Integer.parseInt(orderedTab.text);
             List< ? extends FormElement> orderedElements = orderedTab.getOrderedElements();
 
+            addedWidgetsPerTab = new ArrayList<AWidget>();
+
             int rowIndex = 0;
             int index = 0;
             int safeIndex = 0;
@@ -100,14 +103,17 @@ public class FormContentLoadHelper {
                     if (formElement instanceof ALabel) {
                         LabelWidget labelWidget = createLabelWidget(tabNum, rowIndex, previous, formElement);
                         diagram.addChild(labelWidget);
+                        addedWidgetsPerTab.add(labelWidget);
                         previous = labelWidget;
                     } else if (formElement instanceof ATextField) {
                         TextFieldWidget textFieldWidget = createTextFieldWidget(tabNum, rowIndex, previous, formElement);
                         diagram.addChild(textFieldWidget);
+                        addedWidgetsPerTab.add(textFieldWidget);
                         previous = textFieldWidget;
                     } else if (formElement instanceof ASeparator) {
                         SeparatorWidget separatorWidget = createSeparatorWidget(tabNum, rowIndex, previous, formElement);
                         diagram.addChild(separatorWidget);
+                        addedWidgetsPerTab.add(separatorWidget);
                         previous = separatorWidget;
                     }
                 }
@@ -217,6 +223,24 @@ public class FormContentLoadHelper {
         int y = startRow * LOCATION_PIXEL_SNAP;
         int width = widthCols * DIMENSION_PIXEL_SNAP;
         int height = heightRows * DIMENSION_PIXEL_SNAP;
+
+        // int filledCols = 0;
+        // for( AWidget widget : addedWidgetsPerTab ) {
+        // /*
+        // * if one is in line before this shift,
+        // * then for sure it was added before,
+        // * since they are ordered. So it is safe
+        // * to move by the previous objects
+        // */
+        // int[] rowBounds = widget.getRowBounds();
+        // if (rowBounds[0] <= rowIndex && rowBounds[1] >= rowIndex) {
+        // int[] colBounds = widget.getColBounds();
+        // if (colBounds[1] > filledCols) {
+        // filledCols = colBounds[1];
+        // }
+        // }
+        // }
+        // x = x + (filledCols + 1) * LOCATION_PIXEL_SNAP;
         if (previous != null) {
             Point location = previous.getLocation();
             Dimension size = previous.getSize();
