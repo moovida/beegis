@@ -295,8 +295,11 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
 
         diagram = new WidgetsDiagram();
 
-        FormContentLoadHelper loadHelper = new FormContentLoadHelper(file, diagram);
-        loadHelper.load();
+        long length = file.length();
+        if (length > 0) {
+            FormContentLoadHelper loadHelper = new FormContentLoadHelper(file, diagram);
+            loadHelper.load();
+        }
 
     }
 
