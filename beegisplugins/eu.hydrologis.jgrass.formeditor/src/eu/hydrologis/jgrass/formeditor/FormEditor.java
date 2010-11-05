@@ -108,6 +108,14 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
     public static String[] getFieldNamesArrays() {
         return fieldNamesArrays;
     }
+    
+    private static String lastTabNameInserted = "0";
+    public static String getLastTabNameInserted() {
+        return lastTabNameInserted;
+    }
+    public static void setLastTabNameInserted( String newlastTabNameInserted ) {
+        lastTabNameInserted = newlastTabNameInserted;
+    }
 
     /**
      * Configure the graphical viewer before it receives contents.

@@ -40,6 +40,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
+import eu.hydrologis.jgrass.formeditor.FormEditor;
+
 /**
  * Abstract prototype of a widget representer.
  * 
@@ -71,7 +73,7 @@ public abstract class AWidget extends AModelElement {
     /** 
      * The tab in which the widget will finish. 
      */
-    protected String widgetTab = "0";
+    protected String widgetTab;
     /** 
      * The name of the widget. 
      */
@@ -291,12 +293,20 @@ public abstract class AWidget extends AModelElement {
     }
 
     public String getTab() {
+        if (widgetTab == null) {
+            widgetTab = FormEditor.getLastTabNameInserted();
+        }
         return widgetTab;
+    }
+
+    public String getText() {
+        return "";
     }
 
     public void setTab( String widgetTab ) {
         this.widgetTab = widgetTab;
         firePropertyChange(TAB_PROP, null, widgetTab);
+        FormEditor.setLastTabNameInserted(widgetTab);
     }
 
     /**

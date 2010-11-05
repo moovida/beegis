@@ -166,7 +166,7 @@ public class FormContentLoadHelper {
         LabelWidget labelWidget = new LabelWidget();
         labelWidget.setTab(tabName);
         labelWidget.setName(label.name);
-        labelWidget.setTextValue(label.text);
+        labelWidget.setText(label.text);
 
         int[] xywh = findLocationAndSize(label.constraints);
         Point newLocation = new Point(xywh[0], xywh[1]);

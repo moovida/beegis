@@ -74,11 +74,11 @@ public class LabelWidget extends AWidget {
         return "Label " + hashCode();
     }
 
-    public String getTextValue() {
+    public String getText() {
         return textValue;
     }
 
-    public void setTextValue( String textValue ) {
+    public void setText( String textValue ) {
         if (textValue == null) {
             throw new IllegalArgumentException();
         }
@@ -88,7 +88,7 @@ public class LabelWidget extends AWidget {
 
     public Object getPropertyValue( Object propertyId ) {
         if (TEXT_PROP.equals(propertyId)) {
-            return getTextValue();
+            return getText();
         } else if (NAME_PROP.equals(propertyId)) {
             return getName();
         }
@@ -98,7 +98,7 @@ public class LabelWidget extends AWidget {
     public void setPropertyValue( Object propertyId, Object value ) {
         if (TEXT_PROP.equals(propertyId)) {
             String defValue = (String) value;
-            setTextValue(defValue);
+            setText(defValue);
         }else if (NAME_PROP.equals(propertyId)) {
             String defValue = (String) value;
             setName(defValue);
@@ -111,7 +111,7 @@ public class LabelWidget extends AWidget {
         String tmpName = getName().replaceAll("\\s+", "_");
         Dimension tmpSize = getSize();
         Point tmpLocation = getLocation();
-        String tmpTextValue = getTextValue();
+        String tmpTextValue = getText();
 
         StringBuilder sB = new StringBuilder();
         sB.append(tmpName).append(".").append(TYPE_PROP).append("=");
