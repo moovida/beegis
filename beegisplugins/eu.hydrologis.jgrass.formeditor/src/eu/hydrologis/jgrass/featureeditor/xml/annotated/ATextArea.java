@@ -30,8 +30,6 @@ import static eu.hydrologis.jgrass.featureeditor.xml.annotated.AnnotationConstan
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.hydrologis.jgrass.formeditor.utils.Constants;
-
 /**
  * Class representing an swt textarea.
  * 
@@ -103,8 +101,4 @@ public class ATextArea extends FormElement {
         return constraints;
     }
     
-    public void closeConstraints() {
-        constraints = constraints + Constants.LINECLOSE;
-    }
-
 }

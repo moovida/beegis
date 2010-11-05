@@ -21,13 +21,12 @@ import java.util.HashMap;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ACheckBox;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.AComboBox;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ALabel;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ARadioButton;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ASeparator;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextArea;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextField;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 
 /**
  * A factory for guis.
