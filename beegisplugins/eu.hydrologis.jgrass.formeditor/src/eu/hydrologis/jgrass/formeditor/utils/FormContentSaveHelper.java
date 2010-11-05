@@ -125,7 +125,7 @@ public class FormContentSaveHelper {
                     LabelWidget labelWidget = (LabelWidget) widget;
                     ALabel label = new ALabel();
                     label.name = labelWidget.getName();
-                    label.text = labelWidget.getTextValue();
+                    label.text = labelWidget.getText();
                     label.order = widgetIndex++;
                     label.constraints = "cell " + widgetStartCol + " " + widgetStartRow + " "
                             + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx";

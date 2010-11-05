@@ -124,7 +124,7 @@ public class WidgetFactory {
 
     private static void addLabelAttributes( LabelWidget widget, Properties properties ) {
         String textString = properties.getProperty(TEXT_PROP);
-        widget.setTextValue(textString);
+        widget.setText(textString);
     }
 
     private static void addSeparatorAttributes( SeparatorWidget widget, Properties properties ) {
