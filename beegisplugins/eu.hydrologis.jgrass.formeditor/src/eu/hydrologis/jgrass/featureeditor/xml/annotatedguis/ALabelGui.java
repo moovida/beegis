@@ -33,7 +33,6 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
  */
 public class ALabelGui extends FormGuiElement {
     private final ALabel label;
-    private SimpleFeature feature;
 
     public ALabelGui( ALabel label ) {
         this.label = label;
@@ -48,7 +47,6 @@ public class ALabelGui extends FormGuiElement {
     }
     
     public void setFeature( SimpleFeature feature ) {
-        this.feature = feature;
     }
 
     public FormElement getFormElement() {

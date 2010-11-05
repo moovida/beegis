@@ -89,6 +89,7 @@ public class FormContentSaveHelper {
 
         AForm form = new AForm();
 
+        float tabIndex = 0;
         Set<Entry<String, List<AWidget>>> entrySet = widgets4Tab.entrySet();
         for( Entry<String, List<AWidget>> tabEntry : entrySet ) {
             String tabName = tabEntry.getKey();
@@ -97,7 +98,7 @@ public class FormContentSaveHelper {
             ATab tab = new ATab();
             tab.name = tabName;
             tab.text = tabName;
-            tab.order = Float.parseFloat(tabName);
+            tab.order = tabIndex++;
             tab.layoutConstraints = "insets 20 20 20 20, fill";
             // tab.colConstraints = "[left][fill][left][fill]";
 

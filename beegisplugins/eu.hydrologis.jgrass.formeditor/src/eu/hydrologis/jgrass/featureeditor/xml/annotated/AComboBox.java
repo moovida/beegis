@@ -32,8 +32,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.hydrologis.jgrass.formeditor.utils.Constants;
-
 /**
  * Class representing an swt combobox.
  * 
@@ -105,7 +103,4 @@ public class AComboBox extends FormElement {
         return constraints;
     }
     
-    public void closeConstraints() {
-        constraints = constraints + Constants.LINECLOSE;
-    }
 }

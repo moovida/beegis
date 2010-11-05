@@ -91,7 +91,6 @@ public class TextFieldWidget extends AWidget {
         addIntegerPropertyValidator(y);
         addIntegerPropertyValidator(w);
         addIntegerPropertyValidator(h);
-        addIntegerPropertyValidator(tabValue);
     }
 
     public Image getIcon() {

@@ -18,22 +18,16 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.opengis.feature.simple.SimpleFeature;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ACheckBox;
-import eu.hydrologis.jgrass.featureeditor.xml.annotated.ARadioButton;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 
 /**

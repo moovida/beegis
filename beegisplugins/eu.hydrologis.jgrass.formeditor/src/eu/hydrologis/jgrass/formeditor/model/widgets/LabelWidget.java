@@ -64,7 +64,6 @@ public class LabelWidget extends AWidget {
         addIntegerPropertyValidator(y);
         addIntegerPropertyValidator(w);
         addIntegerPropertyValidator(h);
-        addIntegerPropertyValidator(tabValue);
     }
 
     public Image getIcon() {

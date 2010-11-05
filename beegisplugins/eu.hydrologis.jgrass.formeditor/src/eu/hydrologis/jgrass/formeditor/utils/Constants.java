@@ -116,5 +116,5 @@ public class Constants {
     public static final Dimension DEFAULT_DIMENSION = new Dimension(300, 30);
     public static final String[] TEXT_TYPES = {"string", "integer", "double"};
     public static final String[] ORIENTATION_TYPES = {"", "vertical", "horizontal"};
-    public static final String LINECLOSE = ",growx, wrap";
+    public static final String[] CHECKBOX_TYPES = {"true", "false"};
 }
