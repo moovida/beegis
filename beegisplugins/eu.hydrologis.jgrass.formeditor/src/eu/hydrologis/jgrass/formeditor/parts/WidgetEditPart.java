@@ -10,6 +10,13 @@
  *******************************************************************************/
 package eu.hydrologis.jgrass.formeditor.parts;
 
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.FIELDNAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.SOURCE_CONNECTIONS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.TARGET_CONNECTIONS_PROP;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -31,16 +38,14 @@ import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.ReconnectRequest;
 import org.eclipse.swt.graphics.Image;
 
-import eu.hydrologis.jgrass.formeditor.model.Connection;
 import eu.hydrologis.jgrass.formeditor.model.AModelElement;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
+import eu.hydrologis.jgrass.formeditor.model.Connection;
 import eu.hydrologis.jgrass.formeditor.model.commands.ConnectionCreateCommand;
 import eu.hydrologis.jgrass.formeditor.model.commands.ConnectionReconnectCommand;
 import eu.hydrologis.jgrass.formeditor.model.commands.WidgetComponentEditPolicy;
 import eu.hydrologis.jgrass.formeditor.model.widgets.CheckBoxWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.ComboBoxWidget;
-import eu.hydrologis.jgrass.formeditor.model.widgets.DoubleFieldWidget;
-import eu.hydrologis.jgrass.formeditor.model.widgets.IntegerFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.RadioButtonWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
@@ -48,7 +53,6 @@ import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.WidgetTextFigure;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 
 /**
  * EditPart used for Shape instances (more specific for EllipticalShape and
@@ -158,18 +162,15 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
             figure.setOpaque(false);
             figure.setBackgroundColor(ColorConstants.lightGray);
             return figure;
-        } else if (model instanceof IntegerFieldWidget) {
-            Image integerImage = ImageCache.getInstance().getImage(ImageCache.TEXT_INTEGER_ICON_24);
-            return new WidgetTextFigure((AWidget) model, integerImage);
-        } else if (model instanceof DoubleFieldWidget) {
-            Image doubleImage = ImageCache.getInstance().getImage(ImageCache.TEXT_DOUBLE_ICON_24);
-            return new WidgetTextFigure((AWidget) model, doubleImage);
         } else if (model instanceof ComboBoxWidget) {
             Image comboImage = ImageCache.getInstance().getImage(ImageCache.COMBO_ICON_24);
             return new WidgetTextFigure((AWidget) model, comboImage);
         } else if (model instanceof CheckBoxWidget) {
             Image checkImage = ImageCache.getInstance().getImage(ImageCache.CHECK_ICON_24);
-            return new WidgetTextFigure((AWidget) model, checkImage);
+            IFigure figure = new WidgetTextFigure((AWidget) model, checkImage);
+            figure.setOpaque(true);
+            figure.setBackgroundColor(ColorConstants.lightBlue);
+            return figure;
         } else if (model instanceof RadioButtonWidget) {
             Image radioImage = ImageCache.getInstance().getImage(ImageCache.RADIO_ICON_24);
             return new WidgetTextFigure((AWidget) model, radioImage);
@@ -202,10 +203,6 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
             else if (getModel() instanceof LabelWidget)
                 anchor = new ChopboxAnchor(getFigure());
             else if (getModel() instanceof SeparatorWidget)
-                anchor = new ChopboxAnchor(getFigure());
-            else if (getModel() instanceof IntegerFieldWidget)
-                anchor = new ChopboxAnchor(getFigure());
-            else if (getModel() instanceof DoubleFieldWidget)
                 anchor = new ChopboxAnchor(getFigure());
             else if (getModel() instanceof ComboBoxWidget)
                 anchor = new ChopboxAnchor(getFigure());

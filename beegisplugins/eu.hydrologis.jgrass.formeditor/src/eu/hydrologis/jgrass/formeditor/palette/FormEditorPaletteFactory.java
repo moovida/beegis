@@ -31,8 +31,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import eu.hydrologis.jgrass.formeditor.FormEditorPlugin;
 import eu.hydrologis.jgrass.formeditor.model.widgets.CheckBoxWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.ComboBoxWidget;
-import eu.hydrologis.jgrass.formeditor.model.widgets.DoubleFieldWidget;
-import eu.hydrologis.jgrass.formeditor.model.widgets.IntegerFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.RadioButtonWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
@@ -79,24 +77,6 @@ public final class FormEditorPaletteFactory {
 
         component = new CombinedTemplateCreationEntry("Textarea", "Create a textarea", TextAreaWidget.class, new SimpleFactory(
                 TextAreaWidget.class), textAreaId, textAreaId24);
-        componentsDrawer.add(component);
-
-        ImageDescriptor textIntId = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
-                ImageCache.TEXT_INTEGER_ICON_16);
-        ImageDescriptor textIntId24 = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
-                ImageCache.TEXT_INTEGER_ICON_24);
-
-        component = new CombinedTemplateCreationEntry("Integerfield", "Create an integer field", IntegerFieldWidget.class,
-                new SimpleFactory(IntegerFieldWidget.class), textIntId, textIntId24);
-        componentsDrawer.add(component);
-
-        ImageDescriptor textDoubleId = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
-                ImageCache.TEXT_DOUBLE_ICON_16);
-        ImageDescriptor textDoubleId24 = FormEditorPlugin.imageDescriptorFromPlugin(FormEditorPlugin.PLUGIN_ID,
-                ImageCache.TEXT_DOUBLE_ICON_24);
-
-        component = new CombinedTemplateCreationEntry("Doublefield", "Create an double field", DoubleFieldWidget.class,
-                new SimpleFactory(DoubleFieldWidget.class), textDoubleId, textDoubleId24);
         componentsDrawer.add(component);
 
         ImageDescriptor comboId = FormEditorPlugin

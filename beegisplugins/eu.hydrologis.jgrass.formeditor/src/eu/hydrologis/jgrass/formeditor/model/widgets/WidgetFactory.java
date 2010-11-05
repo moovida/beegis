@@ -17,7 +17,7 @@
  */
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.DEFAULT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LIST_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
@@ -66,12 +66,6 @@ public class WidgetFactory {
         } else if (type.equals(SeparatorWidget.TYPE)) {
             widget = new SeparatorWidget();
             addSeparatorAttributes((SeparatorWidget) widget, properties);
-        } else if (type.equals(IntegerFieldWidget.TYPE)) {
-            widget = new IntegerFieldWidget();
-            addIntegerFieldAttributes((IntegerFieldWidget) widget, properties);
-        } else if (type.equals(DoubleFieldWidget.TYPE)) {
-            widget = new DoubleFieldWidget();
-            addDoubleFieldAttributes((DoubleFieldWidget) widget, properties);
         } else if (type.equals(ComboBoxWidget.TYPE)) {
             widget = new ComboBoxWidget();
             addComboBoxAttributes((ComboBoxWidget) widget, properties);
@@ -103,8 +97,12 @@ public class WidgetFactory {
     }
 
     private static void addCheckBoxAttributes( CheckBoxWidget widget, Properties properties ) {
-        String selctionString = properties.getProperty(SELECTION_PROP);
-        widget.setSelected(selctionString);
+        String selectionString = properties.getProperty(SELECTION_PROP);
+        if (selectionString.equals(CHECKBOX_TYPES[0])) {
+            widget.setDefaultValue(0);
+        } else {
+            widget.setDefaultValue(1);
+        }
     }
 
     private static void addComboBoxAttributes( ComboBoxWidget widget, Properties properties ) {
@@ -130,18 +128,6 @@ public class WidgetFactory {
     }
 
     private static void addSeparatorAttributes( SeparatorWidget widget, Properties properties ) {
-        // String textString = properties.getProperty(TEXT_PROP);
-        // widget.setTextValue(textString);
-    }
-
-    private static void addDoubleFieldAttributes( DoubleFieldWidget widget, Properties properties ) {
-        String defaultString = properties.getProperty(DEFAULT_PROP);
-        widget.setDefaultValue(defaultString);
-    }
-
-    private static void addIntegerFieldAttributes( IntegerFieldWidget widget, Properties properties ) {
-        String defaultString = properties.getProperty(DEFAULT_PROP);
-        widget.setDefaultValue(defaultString);
     }
 
 }

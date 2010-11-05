@@ -17,6 +17,7 @@
  */
 package eu.hydrologis.jgrass.formeditor.utils;
 
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.CHECKBOX_TYPES;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.DIMENSION_PIXEL_SNAP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PIXEL_SNAP;
 
@@ -27,6 +28,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 
 import eu.hydrologis.jgrass.featureeditor.utils.Utilities;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ACheckBox;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ALabel;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ASeparator;
@@ -37,6 +39,7 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
+import eu.hydrologis.jgrass.formeditor.model.widgets.CheckBoxWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
@@ -76,22 +79,25 @@ public class FormContentLoadHelper {
         // for every Tab object create a tab
         List<ATab> orderedTabs = form.getOrderedTabs();
         for( ATab orderedTab : orderedTabs ) {
-            int tabNum = Integer.parseInt(orderedTab.text);
+            String tabName = orderedTab.text;
             List< ? extends FormElement> orderedElements = orderedTab.getOrderedElements();
 
             for( FormElement formElement : orderedElements ) {
                 if (formElement instanceof ALabel) {
-                    LabelWidget labelWidget = createLabelWidget(tabNum, formElement);
+                    LabelWidget labelWidget = createLabelWidget(tabName, formElement);
                     diagram.addChild(labelWidget);
                 } else if (formElement instanceof ATextField) {
-                    TextFieldWidget textFieldWidget = createTextFieldWidget(tabNum, formElement);
+                    TextFieldWidget textFieldWidget = createTextFieldWidget(tabName, formElement);
                     diagram.addChild(textFieldWidget);
                 } else if (formElement instanceof ATextArea) {
-                    TextAreaWidget textAreaWidget = createTextAreaWidget(tabNum, formElement);
+                    TextAreaWidget textAreaWidget = createTextAreaWidget(tabName, formElement);
                     diagram.addChild(textAreaWidget);
                 } else if (formElement instanceof ASeparator) {
-                    SeparatorWidget separatorWidget = createSeparatorWidget(tabNum, formElement);
+                    SeparatorWidget separatorWidget = createSeparatorWidget(tabName, formElement);
                     diagram.addChild(separatorWidget);
+                } else if (formElement instanceof ACheckBox) {
+                    CheckBoxWidget checkboxWidget = createCheckBoxWidget(tabName, formElement);
+                    diagram.addChild(checkboxWidget);
                 }
 
             }
@@ -100,11 +106,11 @@ public class FormContentLoadHelper {
 
     }
 
-    private TextFieldWidget createTextFieldWidget( int tabNum, FormElement formElement ) {
+    private TextFieldWidget createTextFieldWidget( String tabName, FormElement formElement ) {
         ATextField textField = (ATextField) formElement;
 
         TextFieldWidget textFieldWidget = new TextFieldWidget();
-        textFieldWidget.setTab(String.valueOf(tabNum));
+        textFieldWidget.setTab(tabName);
         textFieldWidget.setName(textField.name);
         textFieldWidget.setDefaultValue(textField.defaultText);
         textFieldWidget.setFieldnameValue(fieldIndexFromName(textField.fieldName));
@@ -119,11 +125,11 @@ public class FormContentLoadHelper {
         return textFieldWidget;
     }
 
-    private TextAreaWidget createTextAreaWidget( int tabNum, FormElement formElement ) {
+    private TextAreaWidget createTextAreaWidget( String tabName, FormElement formElement ) {
         ATextArea textArea = (ATextArea) formElement;
 
         TextAreaWidget textAreaWidget = new TextAreaWidget();
-        textAreaWidget.setTab(String.valueOf(tabNum));
+        textAreaWidget.setTab(tabName);
         textAreaWidget.setName(textArea.name);
         textAreaWidget.setDefaultValue(textArea.defaultText);
         textAreaWidget.setFieldnameValue(fieldIndexFromName(textArea.fieldName));
@@ -137,11 +143,11 @@ public class FormContentLoadHelper {
         return textAreaWidget;
     }
 
-    private SeparatorWidget createSeparatorWidget( int tabNum, FormElement formElement ) {
+    private SeparatorWidget createSeparatorWidget( String tabName, FormElement formElement ) {
         ASeparator separator = (ASeparator) formElement;
 
         SeparatorWidget separatorWidget = new SeparatorWidget();
-        separatorWidget.setTab(String.valueOf(tabNum));
+        separatorWidget.setTab(tabName);
         separatorWidget.setName(separator.name);
         separatorWidget.setTypeValue(orientationFromName(separator.orientation));
 
@@ -154,11 +160,11 @@ public class FormContentLoadHelper {
         return separatorWidget;
     }
 
-    private LabelWidget createLabelWidget( int tabNum, FormElement formElement ) {
+    private LabelWidget createLabelWidget( String tabName, FormElement formElement ) {
         ALabel label = (ALabel) formElement;
 
         LabelWidget labelWidget = new LabelWidget();
-        labelWidget.setTab(String.valueOf(tabNum));
+        labelWidget.setTab(tabName);
         labelWidget.setName(label.name);
         labelWidget.setTextValue(label.text);
 
@@ -169,6 +175,29 @@ public class FormContentLoadHelper {
         labelWidget.setLocation(newLocation);
         labelWidget.setSize(newSize);
         return labelWidget;
+    }
+    
+
+    private CheckBoxWidget createCheckBoxWidget( String tabName, FormElement formElement ) {
+        ACheckBox checkbox = (ACheckBox) formElement;
+
+        CheckBoxWidget checkBoxWidgetWidget = new CheckBoxWidget();
+        checkBoxWidgetWidget.setTab(tabName);
+        checkBoxWidgetWidget.setName(checkbox.name);
+        if (checkbox.defaultText.equals(CHECKBOX_TYPES[0])) {
+            checkBoxWidgetWidget.setDefaultValue(0);
+        } else {
+            checkBoxWidgetWidget.setDefaultValue(1);
+        }
+        checkBoxWidgetWidget.setFieldnameValue(fieldIndexFromName(checkbox.fieldName));
+
+        int[] xywh = findLocationAndSize(checkbox.constraints);
+        Point newLocation = new Point(xywh[0], xywh[1]);
+        Dimension newSize = new Dimension(xywh[2], xywh[3]);
+
+        checkBoxWidgetWidget.setLocation(newLocation);
+        checkBoxWidgetWidget.setSize(newSize);
+        return checkBoxWidgetWidget;
     }
 
     private int fieldIndexFromName( String name ) {
