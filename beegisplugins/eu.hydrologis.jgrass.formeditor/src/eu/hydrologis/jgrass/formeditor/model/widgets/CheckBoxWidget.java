@@ -17,11 +17,19 @@
  */
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.CHECKBOX_TYPES;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.DEFAULT_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.FIELDNAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_CHECK;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_FIELDNAME;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TAB;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TEXT_TYPE;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.SELECTION_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.TEXT_TYPE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.TYPE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
@@ -30,10 +38,13 @@ import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
+import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
+import eu.hydrologis.jgrass.formeditor.utils.Constants;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 /**
  * A checkbox widget.
@@ -45,12 +56,13 @@ public class CheckBoxWidget extends AWidget {
 
     private static final long serialVersionUID = 1;
 
-    private String selected = "false";
+    private int defaultValue = 0;
+    private int fieldNameValue = 0;
 
     public CheckBoxWidget() {
         super();
         location = new Point(0, 0);
-        size = new Dimension(341, 41);
+        size = Constants.DEFAULT_DIMENSION.getCopy();
         initDescriptors();
     }
 
@@ -58,13 +70,16 @@ public class CheckBoxWidget extends AWidget {
      * Initializes the property descriptors array.
      */
     private void initDescriptors() {
+        ComboBoxPropertyDescriptor fields = new ComboBoxPropertyDescriptor(FIELDNAME_PROP, LABELS_FIELDNAME,
+                FormEditor.getFieldNamesArrays());
         TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, "X");
         TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, "Y");
         TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, "Width");
         TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, "Height");
-        TextPropertyDescriptor fieldName = new TextPropertyDescriptor(FIELDNAME_PROP, "Field Name");
-        TextPropertyDescriptor selected = new TextPropertyDescriptor(SELECTION_PROP, "Default selection");
-        descriptors = new IPropertyDescriptor[]{fieldName, x, y, w, h, selected};
+        ComboBoxPropertyDescriptor defaultValue = new ComboBoxPropertyDescriptor(SELECTION_PROP, LABELS_CHECK, CHECKBOX_TYPES);
+        defaultValue.setLabelProvider(new CustomLabelProviders.CheckboxLabelProvider());
+        TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
+        descriptors = new IPropertyDescriptor[]{fields, x, y, w, h, defaultValue, tabValue};
 
         addIntegerPropertyValidator(x);
         addIntegerPropertyValidator(y);
@@ -80,52 +95,40 @@ public class CheckBoxWidget extends AWidget {
         return "Check " + hashCode();
     }
 
-    public void setSize( Dimension newSize ) {
-        // fixed size widget
-    }
-
-    public String getSelected() {
-        return selected;
-    }
-
-    public void setSelected( String selected ) {
-        this.selected = selected;
-        firePropertyChange(SELECTION_PROP, null, selected);
-    }
-
     public Object getPropertyValue( Object propertyId ) {
         if (SELECTION_PROP.equals(propertyId)) {
-            return getSelected();
+            return getDefaultValue();
+        } else if (FIELDNAME_PROP.equals(propertyId)) {
+            return getFieldnameValue();
         }
         return super.getPropertyValue(propertyId);
     }
 
     public void setPropertyValue( Object propertyId, Object value ) {
         if (SELECTION_PROP.equals(propertyId)) {
-            setSelected((String) value);
+            setDefaultValue((Integer) value);
+        } else if (FIELDNAME_PROP.equals(propertyId)) {
+            setFieldnameValue((Integer) value);
         } else {
             super.setPropertyValue(propertyId, value);
         }
     }
 
-    public String toDumpString() {
-        String tmpName = getName().replaceAll("\\s+", "_");
-        Dimension tmpSize = getSize();
-        Point tmpLocation = getLocation();
-        String tmpSel = getSelected();
+    public int getDefaultValue() {
+        return defaultValue;
+    }
 
-        StringBuilder sB = new StringBuilder();
-        sB.append(tmpName).append(".").append(TYPE_PROP).append("=");
-        sB.append(TYPE).append("\n");
-        sB.append(tmpName).append(".").append(FIELDNAME_PROP).append("=");
-        sB.append(tmpName).append("\n");
-        sB.append(tmpName).append(".").append(SIZE_PROP).append("=");
-        sB.append(tmpSize.width).append(",").append(tmpSize.height).append("\n");
-        sB.append(tmpName).append(".").append(LOCATION_PROP).append("=");
-        sB.append(tmpLocation.x).append(",").append(tmpLocation.y).append("\n");
-        sB.append(tmpName).append(".").append(SELECTION_PROP).append("=");
-        sB.append(tmpSel).append("\n");
+    public void setDefaultValue( int defaultValue ) {
+        this.defaultValue = defaultValue;
+        firePropertyChange(SELECTION_PROP, null, defaultValue);
+    }
 
-        return sB.toString();
+    public int getFieldnameValue() {
+        return fieldNameValue;
+    }
+
+    public void setFieldnameValue( int fieldNameValue ) {
+        this.fieldNameValue = fieldNameValue;
+        firePropertyChange(FIELDNAME_PROP, null, fieldNameValue);
     }
 }

@@ -36,6 +36,7 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextArea;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextField;
 import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
+import eu.hydrologis.jgrass.formeditor.model.widgets.CheckBoxWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
@@ -161,6 +162,16 @@ public class FormContentSaveHelper {
                     separator.constraints = "cell " + widgetStartCol + " " + widgetStartRow + " "
                             + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx";
                     separators.add(separator);
+                } else if (widget instanceof CheckBoxWidget) {
+                    CheckBoxWidget checkboxWidget = (CheckBoxWidget) widget;
+                    ACheckBox checkboxField = new ACheckBox();
+                    checkboxField.name = checkboxWidget.getName();
+                    checkboxField.fieldName = fieldNamesArrays[checkboxWidget.getFieldnameValue()];
+                    checkboxField.defaultText = Constants.CHECKBOX_TYPES[checkboxWidget.getDefaultValue()];
+                    checkboxField.order = widgetIndex++;
+                    checkboxField.constraints = "cell " + widgetStartCol + " " + widgetStartRow + " "
+                            + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx";
+                    checkboxs.add(checkboxField);
                 }
 
             }

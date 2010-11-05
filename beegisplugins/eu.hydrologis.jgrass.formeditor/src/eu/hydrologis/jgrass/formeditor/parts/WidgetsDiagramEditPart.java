@@ -39,8 +39,6 @@ import eu.hydrologis.jgrass.formeditor.model.commands.WidgetCreateCommand;
 import eu.hydrologis.jgrass.formeditor.model.commands.WidgetSetConstraintCommand;
 import eu.hydrologis.jgrass.formeditor.model.widgets.CheckBoxWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.ComboBoxWidget;
-import eu.hydrologis.jgrass.formeditor.model.widgets.DoubleFieldWidget;
-import eu.hydrologis.jgrass.formeditor.model.widgets.IntegerFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.RadioButtonWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
@@ -73,9 +71,6 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
-     */
     protected void createEditPolicies() {
         // disallows the removal of this edit part from its parent
         installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
@@ -85,9 +80,6 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
         installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, null);
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
-     */
     protected IFigure createFigure() {
         GridLayer f = new GridLayer();
         f.setBorder(new MarginBorder(3));
@@ -141,9 +133,6 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
      */
     private static class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy {
 
-        /* (non-Javadoc)
-         * @see ConstrainedLayoutEditPolicy#createChangeConstraintCommand(ChangeBoundsRequest, EditPart, Object)
-         */
         protected Command createChangeConstraintCommand( ChangeBoundsRequest request, EditPart child, Object constraint ) {
             if (child instanceof WidgetEditPart && constraint instanceof Rectangle) {
                 // return a command that can move and/or resize a Shape
@@ -152,22 +141,15 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
             return super.createChangeConstraintCommand(request, child, constraint);
         }
 
-        /* (non-Javadoc)
-         * @see ConstrainedLayoutEditPolicy#createChangeConstraintCommand(EditPart, Object)
-         */
         protected Command createChangeConstraintCommand( EditPart child, Object constraint ) {
             // not used in this example
             return null;
         }
 
-        /* (non-Javadoc)
-         * @see LayoutEditPolicy#getCreateCommand(CreateRequest)
-         */
         protected Command getCreateCommand( CreateRequest request ) {
             Object childClass = request.getNewObjectType();
             if (childClass == TextFieldWidget.class || childClass == TextAreaWidget.class || childClass == LabelWidget.class
-                    || childClass == SeparatorWidget.class || childClass == IntegerFieldWidget.class
-                    || childClass == DoubleFieldWidget.class || childClass == ComboBoxWidget.class
+                    || childClass == SeparatorWidget.class || childClass == ComboBoxWidget.class
                     || childClass == CheckBoxWidget.class || childClass == RadioButtonWidget.class) {
                 // return a command that can add a Shape to a ShapesDiagram
                 AWidget aWidget = (AWidget) request.getNewObject();
