@@ -45,10 +45,9 @@
 			<dependency groupId="eu.hydrologis.jgrass" artifactId="hortonmachine" version="0.1-SNAPSHOT" />
 
 	        <dependency groupId="org.scannotation" artifactId="scannotation" version="1.0.2" />
-	        <dependency groupId="org.geotools" artifactId="gt-imageio-ext-gdal" version="${geotools.version}" />
-	        <dependency groupId="org.geotools" artifactId="gt-grassraster" version="2.7-SNAPSHOT" />
 	        <dependency groupId="com.googlecode.jaitools" artifactId="jiffle" version="1.0.1" />
 	        <dependency groupId="com.googlecode.jaitools" artifactId="zonalstats" version="1.0.1" />
+	        <dependency groupId="com.googlecode.jaitools" artifactId="utils" version="1.0.1" />
 
 			
 			<!-- in the jgrasstools maven repo -->
@@ -161,6 +160,10 @@
 			<rsel:name name="*jfreechart*.jar" />
 			<rsel:name name="*jcommon*.jar" />
 			<rsel:name name="*swtgraphics2d*.jar" />
+			
+			<rsel:name name="*jiffle*.jar" />
+			<rsel:name name="*utils*.jar" />
+			<rsel:name name="*zonalstats*.jar" />
 			
 			<rsel:name name="*sqlite*.jar" />
 
