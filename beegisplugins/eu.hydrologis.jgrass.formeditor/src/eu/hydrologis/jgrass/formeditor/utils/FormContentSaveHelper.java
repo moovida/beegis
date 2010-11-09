@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 import eu.hydrologis.jgrass.featureeditor.utils.Utilities;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ACheckBox;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.AComboBox;
@@ -38,6 +39,7 @@ import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.CheckBoxWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
+import eu.hydrologis.jgrass.formeditor.model.widgets.RadioButtonWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
@@ -172,6 +174,26 @@ public class FormContentSaveHelper {
                     checkboxField.constraints = "cell " + widgetStartCol + " " + widgetStartRow + " "
                             + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx";
                     checkboxs.add(checkboxField);
+                } else if (widget instanceof RadioButtonWidget) {
+                    RadioButtonWidget radioButtonWidget = (RadioButtonWidget) widget;
+                    ARadioButton radioButton = new ARadioButton();
+                    radioButton.name = radioButtonWidget.getName();
+                    // textField.text = textFieldWidget.getTextValue();
+                    radioButton.defaultText = radioButtonWidget.getDefaultValue();
+                    radioButton.fieldName = fieldNamesArrays[radioButtonWidget.getFieldnameValue()];
+                    radioButton.order = widgetIndex++;
+                    radioButton.orientation = Constants.ORIENTATION_TYPES[radioButtonWidget.getTypeValue()];
+                    radioButton.constraints = "cell " + widgetStartCol + " " + widgetStartRow + " "
+                            + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx";
+                    if (radioButton.item==null) {
+                        radioButton.item = new ArrayList<String>();
+                    }
+                    String itemsValue = radioButtonWidget.getItemsValue();
+                    String[] itemsSplit = itemsValue.split(ITEMS_SEPARATOR);
+                    for( String item : itemsSplit ) {
+                        radioButton.item.add(item.trim());
+                    }
+                    radiobuttons.add(radioButton);
                 }
 
             }

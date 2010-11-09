@@ -19,6 +19,7 @@ package eu.hydrologis.jgrass.formeditor.utils;
 
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.CHECKBOX_TYPES;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.DIMENSION_PIXEL_SNAP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ITEMS_SEPARATOR;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PIXEL_SNAP;
 
 import java.io.File;
@@ -31,6 +32,7 @@ import eu.hydrologis.jgrass.featureeditor.utils.Utilities;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ACheckBox;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ALabel;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.ARadioButton;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ASeparator;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATab;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextArea;
@@ -41,6 +43,7 @@ import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
 import eu.hydrologis.jgrass.formeditor.model.widgets.CheckBoxWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
+import eu.hydrologis.jgrass.formeditor.model.widgets.RadioButtonWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
@@ -98,6 +101,9 @@ public class FormContentLoadHelper {
                 } else if (formElement instanceof ACheckBox) {
                     CheckBoxWidget checkboxWidget = createCheckBoxWidget(tabName, formElement);
                     diagram.addChild(checkboxWidget);
+                } else if (formElement instanceof ARadioButton) {
+                    RadioButtonWidget radioButtonWidget = createRadioButtonWidget(tabName, formElement);
+                    diagram.addChild(radioButtonWidget);
                 }
 
             }
@@ -124,6 +130,7 @@ public class FormContentLoadHelper {
         textFieldWidget.setSize(newSize);
         return textFieldWidget;
     }
+
 
     private TextAreaWidget createTextAreaWidget( String tabName, FormElement formElement ) {
         ATextArea textArea = (ATextArea) formElement;
@@ -198,6 +205,33 @@ public class FormContentLoadHelper {
         checkBoxWidgetWidget.setLocation(newLocation);
         checkBoxWidgetWidget.setSize(newSize);
         return checkBoxWidgetWidget;
+    }
+    
+    private RadioButtonWidget createRadioButtonWidget( String tabName, FormElement formElement ) {
+        ARadioButton radioButton = (ARadioButton) formElement;
+        
+        RadioButtonWidget radioButtonWidget = new RadioButtonWidget();
+        radioButtonWidget.setTab(tabName);
+        radioButtonWidget.setName(radioButton.name);
+        radioButtonWidget.setDefaultValue(radioButton.defaultText);
+        radioButtonWidget.setFieldnameValue(fieldIndexFromName(radioButton.fieldName));
+        StringBuilder itemsSb = new StringBuilder();
+        for( String item : radioButton.item ) {
+            itemsSb.append(ITEMS_SEPARATOR).append(item);
+        }
+        String itemsString = itemsSb.toString();
+        itemsString = itemsString.replaceFirst(ITEMS_SEPARATOR, "");
+        radioButtonWidget.setItemsValue(itemsString);
+        
+        radioButtonWidget.setTypeValue(orientationFromName(radioButton.orientation));
+        
+        int[] xywh = findLocationAndSize(radioButton.constraints);
+        Point newLocation = new Point(xywh[0], xywh[1]);
+        Dimension newSize = new Dimension(xywh[2], xywh[3]);
+        
+        radioButtonWidget.setLocation(newLocation);
+        radioButtonWidget.setSize(newSize);
+        return radioButtonWidget;
     }
 
     private int fieldIndexFromName( String name ) {

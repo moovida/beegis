@@ -173,7 +173,10 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
             return figure;
         } else if (model instanceof RadioButtonWidget) {
             Image radioImage = ImageCache.getInstance().getImage(ImageCache.RADIO_ICON_24);
-            return new WidgetTextFigure((AWidget) model, radioImage);
+            IFigure figure = new WidgetTextFigure((AWidget) model, radioImage);
+            figure.setOpaque(true);
+            figure.setBackgroundColor(ColorConstants.orange);
+            return figure;
         } else {
             // if Shapes gets extended the conditions above must be updated
             throw new IllegalArgumentException();

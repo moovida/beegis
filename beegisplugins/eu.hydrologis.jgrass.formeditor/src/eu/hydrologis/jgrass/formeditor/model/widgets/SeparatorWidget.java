@@ -97,7 +97,7 @@ public class SeparatorWidget extends AWidget {
 
     public void setTypeValue( int typeValue ) {
         this.typeValue = typeValue;
-        firePropertyChange(TEXT_TYPE_PROP, null, typeValue);
+        firePropertyChange(ORIENTATION_TYPE_PROP, null, typeValue);
     }
 
     public Object getPropertyValue( Object propertyId ) {

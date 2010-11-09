@@ -17,15 +17,38 @@
  */
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
-import org.eclipse.draw2d.geometry.Dimension;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.DEFAULT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.FIELDNAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ITEMS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_DEFAULT;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_FIELDNAME;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_ITEMS;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_H;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_W;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_X;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_Y;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_NAME;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_ORIENTATION;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TAB;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ORIENTATION_TYPE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.TEXT_TYPE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
+
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
+import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
+import eu.hydrologis.jgrass.formeditor.utils.Constants;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 
 /**
  * A radio widget.
@@ -35,17 +58,19 @@ import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class RadioButtonWidget extends AWidget {
-    public static final String TYPE = "radio";
-    
+    public static final String TYPE = "radio"; //$NON-NLS-1$
+
     private static final long serialVersionUID = 1;
 
-    private String[] list = new String[]{"a", "b", "c"};
-    private String selected = "a";
+    private String defaultValue = ""; //$NON-NLS-1$
+    private String itemsValue = ""; //$NON-NLS-1$
+    private int fieldNameValue = 0;
+    private int typeValue = 0;
 
     public RadioButtonWidget() {
         super();
         location = new Point(0, 0);
-        size = new Dimension(341, 41);
+        size = Constants.DEFAULT_DIMENSION.getCopy();
         initDescriptors();
     }
 
@@ -53,16 +78,21 @@ public class RadioButtonWidget extends AWidget {
      * Initializes the property descriptors array.
      */
     private void initDescriptors() {
-        TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, "X");
-        TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, "Y");
-        TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, "Width");
-        TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, "Height");
-        TextPropertyDescriptor fieldName = new TextPropertyDescriptor(FIELDNAME_PROP, "Field Name");
-        TextPropertyDescriptor list = new TextPropertyDescriptor(LIST_PROP,
-                "List of radio buttons to create");
-        TextPropertyDescriptor selected = new TextPropertyDescriptor(SELECTION_PROP,
-                "Button selected by default");
-        descriptors = new IPropertyDescriptor[]{fieldName, x, y, w, h, list, selected};
+        ComboBoxPropertyDescriptor fields = new ComboBoxPropertyDescriptor(FIELDNAME_PROP, LABELS_FIELDNAME,
+                FormEditor.getFieldNamesArrays());
+        fields.setLabelProvider(new CustomLabelProviders.FieldNamesLabelProvider());
+        TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, LABELS_LAYOUT_X);
+        TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, LABELS_LAYOUT_Y);
+        TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, LABELS_LAYOUT_W);
+        TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, LABELS_LAYOUT_H);
+        TextPropertyDescriptor nameValue = new TextPropertyDescriptor(NAME_PROP, LABELS_NAME);
+        TextPropertyDescriptor defaultValue = new TextPropertyDescriptor(DEFAULT_PROP, LABELS_DEFAULT);
+        TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
+        TextPropertyDescriptor items = new TextPropertyDescriptor(ITEMS_PROP, LABELS_ITEMS);
+        ComboBoxPropertyDescriptor orientationTypes = new ComboBoxPropertyDescriptor(ORIENTATION_TYPE_PROP, LABELS_ORIENTATION,
+                Constants.ORIENTATION_TYPES);
+        orientationTypes.setLabelProvider(new CustomLabelProviders.OrientationTypesLabelProvider());
+        descriptors = new IPropertyDescriptor[]{x, y, w, h, fields, orientationTypes, nameValue, defaultValue, items, tabValue};
 
         addIntegerPropertyValidator(x);
         addIntegerPropertyValidator(y);
@@ -75,78 +105,77 @@ public class RadioButtonWidget extends AWidget {
     }
 
     public String toString() {
-        return "Radio " + hashCode();
-    }
-
-    public void setSize( Dimension newSize ) {
-        // fixed size widget
-    }
-
-    public String getList() {
-        // flatten the list
-        StringBuilder sB = new StringBuilder();
-        for( String item : list ) {
-            sB.append(",").append(item);
-        }
-        String string = sB.toString().substring(1);
-        return string;
-    }
-
-    public void setList( String listString ) {
-        String[] split = listString.split("\\s+,\\s+");
-        this.list = split;
-        firePropertyChange(LIST_PROP, null, list);
-    }
-
-    public String getSelected() {
-        return selected;
-    }
-
-    public void setSelected( String selected ) {
-        this.selected = selected;
-        firePropertyChange(SELECTION_PROP, null, selected);
+        return "Radio " + hashCode(); //$NON-NLS-1$
     }
 
     public Object getPropertyValue( Object propertyId ) {
-        if (LIST_PROP.equals(propertyId)) {
-            return getList();
-        } else if (SELECTION_PROP.equals(propertyId)) {
-            return getSelected();
+        if (DEFAULT_PROP.equals(propertyId)) {
+            return getDefaultValue();
+        } else if (ITEMS_PROP.equals(propertyId)) {
+            return getItemsValue();
+        } else if (FIELDNAME_PROP.equals(propertyId)) {
+            return getFieldnameValue();
+        } else if (ORIENTATION_TYPE_PROP.equals(propertyId)) {
+            return getTypeValue();
         }
         return super.getPropertyValue(propertyId);
     }
 
     public void setPropertyValue( Object propertyId, Object value ) {
-        if (LIST_PROP.equals(propertyId)) {
-            setList((String) value);
-        } else if (SELECTION_PROP.equals(propertyId)) {
-            setSelected((String) value);
+        if (DEFAULT_PROP.equals(propertyId)) {
+            String defValue = (String) value;
+            setDefaultValue(defValue);
+        } else if (ITEMS_PROP.equals(propertyId)) {
+            setItemsValue((String) value);
+        } else if (FIELDNAME_PROP.equals(propertyId)) {
+            setFieldnameValue((Integer) value);
+        } else if (ORIENTATION_TYPE_PROP.equals(propertyId)) {
+            setTypeValue((Integer) value);
         } else {
             super.setPropertyValue(propertyId, value);
         }
     }
 
-    public String toDumpString() {
-        String tmpName = getName().replaceAll("\\s+", "_");
-        Dimension tmpSize = getSize();
-        Point tmpLocation = getLocation();
-        String tmpList = getList();
-        String tmpSel = getSelected();
-
-        StringBuilder sB = new StringBuilder();
-        sB.append(tmpName).append(".").append(TYPE_PROP).append("=");
-        sB.append(TYPE).append("\n");
-        sB.append(tmpName).append(".").append(FIELDNAME_PROP).append("=");
-        sB.append(tmpName).append("\n");
-        sB.append(tmpName).append(".").append(SIZE_PROP).append("=");
-        sB.append(tmpSize.width).append(",").append(tmpSize.height).append("\n");
-        sB.append(tmpName).append(".").append(LOCATION_PROP).append("=");
-        sB.append(tmpLocation.x).append(",").append(tmpLocation.y).append("\n");
-        sB.append(tmpName).append(".").append(LIST_PROP).append("=");
-        sB.append(tmpList).append("\n");
-        sB.append(tmpName).append(".").append(SELECTION_PROP).append("=");
-        sB.append(tmpSel).append("\n");
-
-        return sB.toString();
+    public String getDefaultValue() {
+        return defaultValue;
     }
+
+    public void setDefaultValue( String defaultValue ) {
+        if (defaultValue == null) {
+            throw new IllegalArgumentException();
+        }
+        this.defaultValue = defaultValue;
+        firePropertyChange(DEFAULT_PROP, null, defaultValue);
+    }
+    
+    public int getTypeValue() {
+        return typeValue;
+    }
+
+    public void setTypeValue( int typeValue ) {
+        this.typeValue = typeValue;
+        firePropertyChange(ORIENTATION_TYPE_PROP, null, typeValue);
+    }
+
+    public String getItemsValue() {
+        return itemsValue;
+    }
+
+    public void setItemsValue( String itemsValue ) {
+        if (itemsValue == null) {
+            throw new IllegalArgumentException();
+        }
+        this.itemsValue = itemsValue;
+        firePropertyChange(ITEMS_PROP, null, itemsValue);
+    }
+
+    public int getFieldnameValue() {
+        return fieldNameValue;
+    }
+
+    public void setFieldnameValue( int fieldNameValue ) {
+        this.fieldNameValue = fieldNameValue;
+        firePropertyChange(FIELDNAME_PROP, null, fieldNameValue);
+    }
+
 }

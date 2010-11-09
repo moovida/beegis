@@ -25,6 +25,10 @@
         <separator constraints="cell 6 6 10 1, growx" orientation="" order="31.0" name=" "/>
         <separator constraints="cell 6 8 10 1, growx" orientation="" order="32.0" name=" "/>
         <separator constraints="cell 0 24 5 1, growx" orientation="" order="33.0" name="widget_35"/>
+        <radiobutton constraints="cell 20 1 4 1, growx" order="34.0" orientation="vertical" default="1" name="widget_42" fieldname="collegata">
+            <item>si,1</item>
+            <item>no,2</item>
+        </radiobutton>
         <textfield constraints="cell 4 1 4 1, growx" order="6.0" default="ARPA" name="ente" valuetype="string" fieldname="ente"/>
         <textfield constraints="cell 12 1 4 1, growx" order="8.0" default="E101" name="codice" valuetype="string" fieldname="codscheda"/>
         <textfield constraints="cell 16 1 4 1, growx" order="9.0" default="2010-09-07" name="data" valuetype="string" fieldname="data"/>
