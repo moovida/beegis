@@ -44,12 +44,12 @@ public class WidgetFactory {
         String type = properties.getProperty(TYPE_PROP);
         String fieldName = properties.getProperty(NAME_PROP);
         String sizeString = properties.getProperty(SIZE_PROP);
-        String[] sizeSplit = sizeString.split(",");
+        String[] sizeSplit = sizeString.split(","); //$NON-NLS-1$
         int width = Integer.parseInt(sizeSplit[0].trim());
         int height = Integer.parseInt(sizeSplit[1].trim());
 
         String locationString = properties.getProperty(LOCATION_PROP);
-        String[] locSplit = locationString.split(",");
+        String[] locSplit = locationString.split(","); //$NON-NLS-1$
         int x = Integer.parseInt(locSplit[0].trim());
         int y = Integer.parseInt(locSplit[1].trim());
 
@@ -90,10 +90,10 @@ public class WidgetFactory {
     }
 
     private static void addRadioButtonAttributes( RadioButtonWidget widget, Properties properties ) {
-        String listString = properties.getProperty(LIST_PROP);
-        widget.setList(listString);
-        String selctionString = properties.getProperty(SELECTION_PROP);
-        widget.setSelected(selctionString);
+        String itemsString = properties.getProperty(ITEMS_PROP);
+        widget.setItemsValue(itemsString);
+        String defaultString = properties.getProperty(DEFAULT_PROP);
+        widget.setDefaultValue(defaultString);
     }
 
     private static void addCheckBoxAttributes( CheckBoxWidget widget, Properties properties ) {

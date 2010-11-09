@@ -53,11 +53,11 @@ import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class TextFieldWidget extends AWidget {
-    public static final String TYPE = "text";
+    public static final String TYPE = "text"; //$NON-NLS-1$
 
     private static final long serialVersionUID = 1;
 
-    private String defaultValue = "";
+    private String defaultValue = ""; //$NON-NLS-1$
     private int typeValue = 0;
     private int fieldNameValue = 0;
 
@@ -98,7 +98,7 @@ public class TextFieldWidget extends AWidget {
     }
 
     public String toString() {
-        return "Textfield " + hashCode();
+        return "Textfield " + hashCode(); //$NON-NLS-1$
     }
 
     public Object getPropertyValue( Object propertyId ) {

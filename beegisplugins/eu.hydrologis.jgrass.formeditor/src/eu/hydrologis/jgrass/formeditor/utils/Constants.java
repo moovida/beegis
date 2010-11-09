@@ -82,6 +82,11 @@ public class Constants {
     public static final String SELECTION_PROP = "WidgetSelection";
 
     /** 
+     * Property ID to use for the items, as for example the items of a combo or radio button. 
+     */
+    public static final String ITEMS_PROP = "WidgetItems";
+
+    /** 
      * Property ID to use when the location of this shape is modified. 
      */
     public static final String LOCATION_PROP = "WidgetLocation";
@@ -113,9 +118,11 @@ public class Constants {
     public static final String LABELS_DEFAULT = "default value";
     public static final String LABELS_ORIENTATION = "orientation";
     public static final String LABELS_CHECK = "default selection";
+    public static final String LABELS_ITEMS = "items (pipe separated)";
 
     public static final Dimension DEFAULT_DIMENSION = new Dimension(300, 30);
     public static final String[] TEXT_TYPES = {"string", "integer", "double"};
     public static final String[] ORIENTATION_TYPES = {"", "vertical", "horizontal"};
     public static final String[] CHECKBOX_TYPES = {"true", "false"};
+    public static final String ITEMS_SEPARATOR = ";";
 }
