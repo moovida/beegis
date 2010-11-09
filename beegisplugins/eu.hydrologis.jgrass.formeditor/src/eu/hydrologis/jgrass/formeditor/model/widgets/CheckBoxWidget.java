@@ -18,24 +18,21 @@
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.CHECKBOX_TYPES;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.DEFAULT_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.FIELDNAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_CHECK;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_FIELDNAME;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_H;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_W;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_X;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_Y;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TAB;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TEXT_TYPE;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.SELECTION_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TEXT_TYPE_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TYPE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
 
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
@@ -72,10 +69,10 @@ public class CheckBoxWidget extends AWidget {
     private void initDescriptors() {
         ComboBoxPropertyDescriptor fields = new ComboBoxPropertyDescriptor(FIELDNAME_PROP, LABELS_FIELDNAME,
                 FormEditor.getFieldNamesArrays());
-        TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, "X");
-        TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, "Y");
-        TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, "Width");
-        TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, "Height");
+        TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, LABELS_LAYOUT_X);
+        TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, LABELS_LAYOUT_Y);
+        TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, LABELS_LAYOUT_W);
+        TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, LABELS_LAYOUT_H);
         ComboBoxPropertyDescriptor defaultValue = new ComboBoxPropertyDescriptor(SELECTION_PROP, LABELS_CHECK, CHECKBOX_TYPES);
         defaultValue.setLabelProvider(new CustomLabelProviders.CheckboxLabelProvider());
         TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);

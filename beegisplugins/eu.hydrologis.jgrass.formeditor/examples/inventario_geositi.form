@@ -24,6 +24,7 @@
         <separator constraints="cell 13 9 3 5, growx" orientation="" order="30.0" name="widget_54"/>
         <separator constraints="cell 6 6 10 1, growx" orientation="" order="31.0" name=" "/>
         <separator constraints="cell 6 8 10 1, growx" orientation="" order="32.0" name=" "/>
+        <separator constraints="cell 0 24 5 1, growx" orientation="" order="33.0" name="widget_35"/>
         <textfield constraints="cell 4 1 4 1, growx" order="6.0" default="ARPA" name="ente" valuetype="string" fieldname="ente"/>
         <textfield constraints="cell 12 1 4 1, growx" order="8.0" default="E101" name="codice" valuetype="string" fieldname="codscheda"/>
         <textfield constraints="cell 16 1 4 1, growx" order="9.0" default="2010-09-07" name="data" valuetype="string" fieldname="data"/>
@@ -34,5 +35,12 @@
         <textfield constraints="cell 8 13 5 1, growx" order="24.0" default="Bolzano" name="localita" valuetype="string" fieldname="localita"/>
         <textfield constraints="cell 19 10 5 1, growx" order="27.0" default="" name="lon" valuetype="double" fieldname="lon"/>
         <textfield constraints="cell 19 11 5 1, growx" order="29.0" default="" name="lat" valuetype="string" fieldname="lat"/>
+    </tab>
+    <tab order="1.0" layout="insets 20 20 20 20, fill" text="Interesse Scientifico" name="Interesse Scientifico">
+        <checkbox constraints="cell 5 18 3 1, growx" order="2.0" default="true" name="widget_38" fieldname="soggettivo"/>
+        <label constraints="cell 0 17 5 1, growx" order="0.0" text="C4 - Il giudizio espresso in C e'" name="widget_36"/>
+        <label constraints="cell 1 18 4 1, growx" order="1.0" text="Soggettivo" name="widget_37"/>
+        <label constraints="cell 1 19 4 1, growx" order="3.0" text="Oggettivo (spiegare)" name="widget_39"/>
+        <textarea constraints="cell 5 19 18 6, growx, growy" order="4.0" default="enter description here" lines="3" name="widget_40" fieldname="oggettivo"/>
     </tab>
 </form>
