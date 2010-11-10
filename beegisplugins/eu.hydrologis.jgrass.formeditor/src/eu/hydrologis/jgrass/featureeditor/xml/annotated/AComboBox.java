@@ -44,7 +44,7 @@ public class AComboBox extends FormElement {
      * The attribute's table field name.
      */
     @XmlAttribute(name = FIELDNAME)
-    public final String fieldName = null;
+    public String fieldName = null;
 
     /**
      * Unique name for the object.

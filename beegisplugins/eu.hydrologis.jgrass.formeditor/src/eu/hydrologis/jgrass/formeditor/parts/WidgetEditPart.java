@@ -164,7 +164,10 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
             return figure;
         } else if (model instanceof ComboBoxWidget) {
             Image comboImage = ImageCache.getInstance().getImage(ImageCache.COMBO_ICON_24);
-            return new WidgetTextFigure((AWidget) model, comboImage);
+            IFigure figure = new WidgetTextFigure((AWidget) model, comboImage);
+            figure.setOpaque(true);
+            figure.setBackgroundColor(ColorConstants.cyan);
+            return figure;
         } else if (model instanceof CheckBoxWidget) {
             Image checkImage = ImageCache.getInstance().getImage(ImageCache.CHECK_ICON_24);
             IFigure figure = new WidgetTextFigure((AWidget) model, checkImage);

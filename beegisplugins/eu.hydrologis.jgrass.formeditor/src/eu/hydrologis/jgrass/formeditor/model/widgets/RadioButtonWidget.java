@@ -34,7 +34,6 @@ import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TAB;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.ORIENTATION_TYPE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TEXT_TYPE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
