@@ -87,8 +87,10 @@ public class ComboBoxWidget extends AWidget {
         TextPropertyDescriptor nameValue = new TextPropertyDescriptor(NAME_PROP, LABELS_NAME);
         TextPropertyDescriptor defaultValue = new TextPropertyDescriptor(DEFAULT_PROP, LABELS_DEFAULT);
         TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
-        FilepathPropertyDescriptor items = new FilepathPropertyDescriptor(ITEMS_PROP, LABELS_COMBOITEMS, false, new String[]{
-                "*.properties", "*.dbf"});
+        FilepathPropertyDescriptor items = new FilepathPropertyDescriptor(ITEMS_PROP, LABELS_COMBOITEMS, false,
+                new String[]{"*.properties" //$NON-NLS-1$
+                // ,"*.dbf"
+                });
         descriptors = new IPropertyDescriptor[]{x, y, w, h, fields, nameValue, defaultValue, items, tabValue};
 
         addIntegerPropertyValidator(x);
