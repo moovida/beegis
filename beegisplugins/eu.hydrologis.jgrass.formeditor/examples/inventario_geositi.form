@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <form>
     <tab order="0.0" layout="insets 20 20 20 20, fill" text="Informazioni Geosito" name="Informazioni Geosito">
-        <combobox constraints="cell 8 1 4 1, growx" order="34.0" default="1" name="acquisizione" fieldname="acqdati">
-            <item>test1,1</item>
-            <item>test2,2</item>
+        <combobox constraints="cell 8 1 4 1, growx" order="34.0" default="" name="acqudati" fieldname="acqdati">
+            <item>Rilev.,1</item>
+            <item>Bibliogr.,2</item>
         </combobox>
         <label constraints="cell 0 0 4 1, growx" order="0.0" text="0 - Identificativo scheda" name="widget_19"/>
         <label constraints="cell 4 0 4 1, growx" order="1.0" text="Compilatore/Ente" name="widget_21"/>
@@ -27,7 +27,7 @@
         <separator constraints="cell 13 9 3 5, growx" orientation="" order="29.0" name="filler"/>
         <separator constraints="cell 6 6 10 1, growx" orientation="" order="30.0" name=" "/>
         <separator constraints="cell 6 8 10 1, growx" orientation="" order="31.0" name=" "/>
-        <separator constraints="cell 0 24 5 1, growx" orientation="" order="32.0" name="filler"/>
+        <separator constraints="cell 0 34 5 1, growx" orientation="" order="32.0" name="filler"/>
         <radiobutton constraints="cell 20 1 4 1, growx" order="33.0" orientation="vertical" default="1" name="scheda" fieldname="collegata">
             <item>si,1</item>
             <item>no,2</item>
@@ -44,10 +44,88 @@
         <textfield constraints="cell 19 11 5 1, growx" order="28.0" default="" name="lat" valuetype="string" fieldname="lat"/>
     </tab>
     <tab order="1.0" layout="insets 20 20 20 20, fill" text="Interesse Scientifico" name="Interesse Scientifico">
-        <checkbox constraints="cell 5 18 3 1, growx" order="2.0" default="true" name="widget_38" fieldname="soggettivo"/>
-        <label constraints="cell 0 17 5 1, growx" order="0.0" text="C4 - Il giudizio espresso in C e'" name="widget_36"/>
-        <label constraints="cell 1 18 4 1, growx" order="1.0" text="Soggettivo" name="widget_37"/>
-        <label constraints="cell 1 19 4 1, growx" order="3.0" text="Oggettivo (spiegare)" name="widget_39"/>
-        <textarea constraints="cell 5 19 18 6, growx, growy" order="4.0" default="enter description here" lines="3" name="descrizione oggettivo" fieldname="oggettivo"/>
+        <checkbox constraints="cell 5 32 3 1, growx" order="2.0" default="true" name="widget_38" fieldname="soggettivo"/>
+        <combobox constraints="cell 3 17 4 1, growx" order="7.0" default="1" name="geografico" fieldname="geogr">
+            <item>Primario,1</item>
+            <item>Secondario,2</item>
+        </combobox>
+        <combobox constraints="cell 11 17 4 1, growx" order="9.0" default="1" name="idrogeol" fieldname="idrogeol">
+            <item>Primario,1</item>
+            <item>Secondario,2</item>
+        </combobox>
+        <combobox constraints="cell 19 17 4 1, growx" order="11.0" default="1" name="geolmar" fieldname="geolmar">
+            <item>Primario,1</item>
+            <item>Secondario,2</item>
+        </combobox>
+        <combobox constraints="cell 3 18 4 1, growx" order="15.0" default="1" name="mineral" fieldname="mineral">
+            <item>Primario,1</item>
+            <item>Secondario,2</item>
+        </combobox>
+        <combobox constraints="cell 11 18 4 1, growx" order="16.0" default="1" name="stratig" fieldname="geolstrat">
+            <item>Primario,1</item>
+            <item>Secondario,2</item>
+        </combobox>
+        <combobox constraints="cell 19 18 4 1, growx" order="17.0" default="1" name="natur" fieldname="natural">
+            <item>Primario,1</item>
+            <item>Secondario,2</item>
+        </combobox>
+        <combobox constraints="cell 3 19 4 1, growx" order="19.0" default="1" name="geomin" fieldname="geomin">
+            <item>Primario,1</item>
+            <item>Secondario,2</item>
+        </combobox>
+        <combobox constraints="cell 10 23 6 1, growx" order="24.0" default="1" name="culturale" fieldname="cultural">
+            <item>Primario,1</item>
+            <item>Secondario,2</item>
+        </combobox>
+        <combobox constraints="cell 10 24 6 1, growx" order="26.0" default="1" name="didatt" fieldname="didatt">
+            <item>Primario,1</item>
+            <item>Secondario,2</item>
+        </combobox>
+        <combobox constraints="cell 10 25 6 1, growx" order="28.0" default="2" name="escurs" fieldname="escurs">
+            <item>Primario,1</item>
+            <item>Secondario,2</item>
+        </combobox>
+        <combobox constraints="cell 0 29 10 1, growx" order="34.0" default="3" name="valut" fieldname="intscienp">
+            <item>Raro, 1</item>
+            <item>Rappresentativo, 2</item>
+            <item>Esemplif., 3</item>
+        </combobox>
+        <combobox constraints="cell 13 29 11 1, growx" order="35.0" default="3" name="grado" fieldname="gintscienp">
+            <item>Mondiale, 1</item>
+            <item>Europeo, 2</item>
+            <item>Nazionale, 3</item>
+            <item>Regionale, 4</item>
+            <item>Locale, 5</item>
+        </combobox>
+        <label constraints="cell 0 31 5 1, growx" order="0.0" text="C4 - Il giudizio espresso in C e'" name="widget_36"/>
+        <label constraints="cell 1 32 4 1, growx" order="1.0" text="Soggettivo" name="widget_37"/>
+        <label constraints="cell 1 33 4 1, growx" order="3.0" text="Oggettivo (spiegare)" name="widget_39"/>
+        <label constraints="cell 0 16 10 1, growx" order="5.0" text="C - Interesse Scientifico" name="widget_82"/>
+        <label constraints="cell 0 17 3 1, growx" order="6.0" text="Geografico" name="widget_83"/>
+        <label constraints="cell 8 17 3 1, growx" order="8.0" text="Idrogeologico" name="Idrogeologico"/>
+        <label constraints="cell 16 17 3 1, growx" order="10.0" text="Geologia Marina" name="Geologia marina"/>
+        <label constraints="cell 0 18 3 1, growx" order="12.0" text="Mineralogico" name="widget_89"/>
+        <label constraints="cell 8 18 3 1, growx" order="13.0" text="Geol. stratigrafica" name="widget_90"/>
+        <label constraints="cell 16 18 3 1, growx" order="14.0" text="Naturalistico" name="widget_91"/>
+        <label constraints="cell 0 19 3 1, growx" order="18.0" text="Geominerario" name="widget_95"/>
+        <label constraints="cell 0 22 10 1, growx" order="22.0" text="C1 - Altro tipo di interesse" name="C1 - Altro tipo di interesse"/>
+        <label constraints="cell 3 23 7 1, growx" order="23.0" text="Culturale" name="widget_102"/>
+        <label constraints="cell 3 24 7 1, growx" order="25.0" text="Didattico" name="widget_104"/>
+        <label constraints="cell 3 25 7 1, growx" order="27.0" text="Escursionistico" name="widget_106"/>
+        <label constraints="cell 0 28 10 1, growx" order="31.0" text="C2 - Valutazione interesse scientifico primario" name="widget_110"/>
+        <label constraints="cell 13 28 11 1, growx" order="32.0" text="C3 - Grado di interesse scientifico primario" name="widget_111"/>
+        <separator constraints="cell 0 20 24 1, growx" orientation="" order="20.0" name="filler"/>
+        <separator constraints="cell 0 21 24 1, growx" orientation="" order="21.0" name="filler"/>
+        <separator constraints="cell 0 26 24 1, growx" orientation="" order="29.0" name="filler"/>
+        <separator constraints="cell 0 27 24 1, growx" orientation="" order="30.0" name="filler"/>
+        <separator constraints="cell 10 28 3 1, growx" orientation="" order="33.0" name="filler"/>
+        <separator constraints="cell 0 30 24 1, growx" orientation="" order="36.0" name="filler"/>
+        <separator constraints="cell 0 35 5 1, growx" orientation="" order="37.0" name="filler"/>
+        <separator constraints="cell 0 36 5 1, growx" orientation="" order="38.0" name="filler"/>
+        <separator constraints="cell 0 37 5 1, growx" orientation="" order="39.0" name="filler"/>
+        <separator constraints="cell 0 38 5 1, growx" orientation="" order="40.0" name="filler"/>
+        <separator constraints="cell 7 17 1 2, growx" orientation="" order="41.0" name="widget_121"/>
+        <separator constraints="cell 15 17 1 2, growx" orientation="" order="42.0" name="widget_122"/>
+        <textarea constraints="cell 5 33 19 6, growx, growy" order="4.0" default="enter description here" lines="3" name="descrizione oggettivo" fieldname="oggettivo"/>
     </tab>
 </form>
