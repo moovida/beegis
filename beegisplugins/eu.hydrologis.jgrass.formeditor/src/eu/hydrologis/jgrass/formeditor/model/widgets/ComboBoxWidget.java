@@ -21,9 +21,9 @@ import static eu.hydrologis.jgrass.formeditor.utils.Constants.DEFAULT_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.FIELDNAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.ITEMS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_COMBOITEMS;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_DEFAULT;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_FIELDNAME;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_ITEMS;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_H;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_W;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_X;
@@ -87,7 +87,7 @@ public class ComboBoxWidget extends AWidget {
         TextPropertyDescriptor nameValue = new TextPropertyDescriptor(NAME_PROP, LABELS_NAME);
         TextPropertyDescriptor defaultValue = new TextPropertyDescriptor(DEFAULT_PROP, LABELS_DEFAULT);
         TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
-        FilepathPropertyDescriptor items = new FilepathPropertyDescriptor(ITEMS_PROP, LABELS_ITEMS, false, new String[]{
+        FilepathPropertyDescriptor items = new FilepathPropertyDescriptor(ITEMS_PROP, LABELS_COMBOITEMS, false, new String[]{
                 "*.properties", "*.dbf"});
         descriptors = new IPropertyDescriptor[]{x, y, w, h, fields, nameValue, defaultValue, items, tabValue};
 

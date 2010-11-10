@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <form>
     <tab order="0.0" layout="insets 20 20 20 20, fill" text="Informazioni Geosito" name="Informazioni Geosito">
-        <combobox constraints="cell 8 1 4 1, growx" order="34.0" default="" name="widget_43" fieldname="acqdati">
-            <item>Rilev.,1</item>
-            <item>Bibliogr.,2</item>
+        <combobox constraints="cell 8 1 4 1, growx" order="34.0" default="1" name="acquisizione" fieldname="acqdati">
+            <item>test1,1</item>
+            <item>test2,2</item>
         </combobox>
         <label constraints="cell 0 0 4 1, growx" order="0.0" text="0 - Identificativo scheda" name="widget_19"/>
         <label constraints="cell 4 0 4 1, growx" order="1.0" text="Compilatore/Ente" name="widget_21"/>
@@ -24,11 +24,11 @@
         <separator constraints="cell 0 3 24 1, growx" orientation="horizontal" order="10.0" name="line"/>
         <separator constraints="cell 0 4 24 1, growx" orientation="" order="11.0" name=" "/>
         <separator constraints="cell 6 7 10 1, growx" orientation="horizontal" order="14.0" name="line"/>
-        <separator constraints="cell 13 9 3 5, growx" orientation="" order="29.0" name="widget_54"/>
+        <separator constraints="cell 13 9 3 5, growx" orientation="" order="29.0" name="filler"/>
         <separator constraints="cell 6 6 10 1, growx" orientation="" order="30.0" name=" "/>
         <separator constraints="cell 6 8 10 1, growx" orientation="" order="31.0" name=" "/>
-        <separator constraints="cell 0 24 5 1, growx" orientation="" order="32.0" name="widget_35"/>
-        <radiobutton constraints="cell 20 1 4 1, growx" order="33.0" orientation="vertical" default="1" name="widget_42" fieldname="collegata">
+        <separator constraints="cell 0 24 5 1, growx" orientation="" order="32.0" name="filler"/>
+        <radiobutton constraints="cell 20 1 4 1, growx" order="33.0" orientation="vertical" default="1" name="scheda" fieldname="collegata">
             <item>si,1</item>
             <item>no,2</item>
         </radiobutton>
@@ -48,6 +48,6 @@
         <label constraints="cell 0 17 5 1, growx" order="0.0" text="C4 - Il giudizio espresso in C e'" name="widget_36"/>
         <label constraints="cell 1 18 4 1, growx" order="1.0" text="Soggettivo" name="widget_37"/>
         <label constraints="cell 1 19 4 1, growx" order="3.0" text="Oggettivo (spiegare)" name="widget_39"/>
-        <textarea constraints="cell 5 19 18 6, growx, growy" order="4.0" default="enter description here" lines="3" name="widget_40" fieldname="oggettivo"/>
+        <textarea constraints="cell 5 19 18 6, growx, growy" order="4.0" default="enter description here" lines="3" name="descrizione oggettivo" fieldname="oggettivo"/>
     </tab>
 </form>

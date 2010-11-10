@@ -119,6 +119,7 @@ public class Constants {
     public static final String LABELS_ORIENTATION = "orientation";
     public static final String LABELS_CHECK = "default selection";
     public static final String LABELS_ITEMS = "items (semicolon separated)";
+    public static final String LABELS_COMBOITEMS = "items (semicolon separated or file path)";
 
     public static final Dimension DEFAULT_DIMENSION = new Dimension(300, 30);
     public static final String[] TEXT_TYPES = {"string", "integer", "double"};
