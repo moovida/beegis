@@ -24,6 +24,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.commons.io.FileUtils;
+
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 import eu.hydrologis.jgrass.featureeditor.utils.Utilities;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ACheckBox;
@@ -38,6 +40,7 @@ import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextField;
 import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.CheckBoxWidget;
+import eu.hydrologis.jgrass.formeditor.model.widgets.ComboBoxWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.RadioButtonWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
@@ -178,14 +181,13 @@ public class FormContentSaveHelper {
                     RadioButtonWidget radioButtonWidget = (RadioButtonWidget) widget;
                     ARadioButton radioButton = new ARadioButton();
                     radioButton.name = radioButtonWidget.getName();
-                    // textField.text = textFieldWidget.getTextValue();
                     radioButton.defaultText = radioButtonWidget.getDefaultValue();
                     radioButton.fieldName = fieldNamesArrays[radioButtonWidget.getFieldnameValue()];
                     radioButton.order = widgetIndex++;
                     radioButton.orientation = Constants.ORIENTATION_TYPES[radioButtonWidget.getTypeValue()];
                     radioButton.constraints = "cell " + widgetStartCol + " " + widgetStartRow + " "
                             + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx";
-                    if (radioButton.item==null) {
+                    if (radioButton.item == null) {
                         radioButton.item = new ArrayList<String>();
                     }
                     String itemsValue = radioButtonWidget.getItemsValue();
@@ -194,6 +196,43 @@ public class FormContentSaveHelper {
                         radioButton.item.add(item.trim());
                     }
                     radiobuttons.add(radioButton);
+                } else if (widget instanceof ComboBoxWidget) {
+                    ComboBoxWidget comboBoxWidget = (ComboBoxWidget) widget;
+                    AComboBox comboBox = new AComboBox();
+                    comboBox.name = comboBoxWidget.getName();
+                    comboBox.defaultText = comboBoxWidget.getDefaultValue();
+                    comboBox.fieldName = fieldNamesArrays[comboBoxWidget.getFieldnameValue()];
+                    comboBox.order = widgetIndex++;
+                    comboBox.constraints = "cell " + widgetStartCol + " " + widgetStartRow + " "
+                            + (widgetEndCol - widgetStartCol + 1) + " " + (widgetEndRow - widgetStartRow + 1) + ", growx";
+                    if (comboBox.item == null) {
+                        comboBox.item = new ArrayList<String>();
+                    }
+                    String itemsValue = comboBoxWidget.getItemsValue();
+                    /*
+                     * now this could be a string or a file path where to get the 
+                     * items from
+                     */
+                    File itemsFile = new File(itemsValue);
+                    if (itemsFile.exists()) {
+                        List readLines = FileUtils.readLines(itemsFile);
+                        for( Object line : readLines ) {
+                            if (line instanceof String) {
+                                String lineStr = (String) line;
+                                lineStr = lineStr.trim();
+                                lineStr = lineStr.replaceFirst("=", ",");
+                                comboBox.item.add(lineStr);
+                            }
+                        }
+
+                    } else {
+                        String[] itemsSplit = itemsValue.split(ITEMS_SEPARATOR);
+                        for( String item : itemsSplit ) {
+                            comboBox.item.add(item.trim());
+                        }
+                    }
+
+                    comboboxs.add(comboBox);
                 }
 
             }

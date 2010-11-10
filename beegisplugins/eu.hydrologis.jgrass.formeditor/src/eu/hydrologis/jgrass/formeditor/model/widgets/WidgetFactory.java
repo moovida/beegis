@@ -17,8 +17,9 @@
  */
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LIST_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.CHECKBOX_TYPES;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.DEFAULT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ITEMS_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.SELECTION_PROP;
@@ -106,10 +107,10 @@ public class WidgetFactory {
     }
 
     private static void addComboBoxAttributes( ComboBoxWidget widget, Properties properties ) {
-        String listString = properties.getProperty(LIST_PROP);
-        widget.setList(listString);
-        String selctionString = properties.getProperty(SELECTION_PROP);
-        widget.setSelected(selctionString);
+        String itemsString = properties.getProperty(ITEMS_PROP);
+        widget.setItemsValue(itemsString);
+        String defaultString = properties.getProperty(DEFAULT_PROP);
+        widget.setDefaultValue(defaultString);
     }
 
     private static void addTextFieldAttributes( TextFieldWidget widget, Properties properties ) {

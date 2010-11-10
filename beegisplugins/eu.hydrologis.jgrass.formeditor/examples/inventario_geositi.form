@@ -1,44 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <form>
     <tab order="0.0" layout="insets 20 20 20 20, fill" text="Informazioni Geosito" name="Informazioni Geosito">
+        <combobox constraints="cell 8 1 4 1, growx" order="34.0" default="" name="widget_43" fieldname="acqdati">
+            <item>Rilev.,1</item>
+            <item>Bibliogr.,2</item>
+        </combobox>
         <label constraints="cell 0 0 4 1, growx" order="0.0" text="0 - Identificativo scheda" name="widget_19"/>
         <label constraints="cell 4 0 4 1, growx" order="1.0" text="Compilatore/Ente" name="widget_21"/>
         <label constraints="cell 8 0 4 1, growx" order="2.0" text="Acqusizione Dati" name="widget_23"/>
         <label constraints="cell 12 0 4 1, growx" order="3.0" text="Codice Scheda" name="widget_24"/>
         <label constraints="cell 16 0 4 1, growx" order="4.0" text="Data Scheda" name="widget_25"/>
         <label constraints="cell 20 0 4 1, growx" order="5.0" text="Scheda Collegata" name="widget_26"/>
-        <label constraints="cell 0 5 4 1, growx" order="13.0" text="A - Nome del geosito" name="widget_36"/>
-        <label constraints="cell 0 9 13 1, growx" order="16.0" text="B - Ubicazione" name="widget_39"/>
-        <label constraints="cell 4 10 4 1, growx" order="17.0" text="Regione" name="widget_40"/>
-        <label constraints="cell 4 11 4 1, growx" order="18.0" text="Provincia" name="widget_41"/>
-        <label constraints="cell 4 12 4 1, growx" order="19.0" text="Comune" name="widget_42"/>
-        <label constraints="cell 4 13 4 1, growx" order="20.0" text="Toponimo/Localita'" name="widget_43"/>
-        <label constraints="cell 16 9 8 1, growx" order="25.0" text="Coordinate Geografiche - UTM, Gauss-Boaga" name="widget_49"/>
-        <label constraints="cell 16 10 3 1, growx" order="26.0" text="longitudine" name="widget_50"/>
-        <label constraints="cell 16 11 3 1, growx" order="28.0" text="latitudine" name="widget_52"/>
-        <separator constraints="cell 8 1 4 1, growx" orientation="horizontal" order="7.0" name="  "/>
-        <separator constraints="cell 0 2 24 1, growx" orientation="" order="10.0" name="  "/>
-        <separator constraints="cell 0 3 24 1, growx" orientation="horizontal" order="11.0" name="line"/>
-        <separator constraints="cell 0 4 24 1, growx" orientation="" order="12.0" name=" "/>
-        <separator constraints="cell 6 7 10 1, growx" orientation="horizontal" order="15.0" name="line"/>
-        <separator constraints="cell 13 9 3 5, growx" orientation="" order="30.0" name="widget_54"/>
-        <separator constraints="cell 6 6 10 1, growx" orientation="" order="31.0" name=" "/>
-        <separator constraints="cell 6 8 10 1, growx" orientation="" order="32.0" name=" "/>
-        <separator constraints="cell 0 24 5 1, growx" orientation="" order="33.0" name="widget_35"/>
-        <radiobutton constraints="cell 20 1 4 1, growx" order="34.0" orientation="vertical" default="1" name="widget_42" fieldname="collegata">
+        <label constraints="cell 0 5 4 1, growx" order="12.0" text="A - Nome del geosito" name="widget_36"/>
+        <label constraints="cell 0 9 13 1, growx" order="15.0" text="B - Ubicazione" name="widget_39"/>
+        <label constraints="cell 4 10 4 1, growx" order="16.0" text="Regione" name="widget_40"/>
+        <label constraints="cell 4 11 4 1, growx" order="17.0" text="Provincia" name="widget_41"/>
+        <label constraints="cell 4 12 4 1, growx" order="18.0" text="Comune" name="widget_42"/>
+        <label constraints="cell 4 13 4 1, growx" order="19.0" text="Toponimo/Localita'" name="widget_43"/>
+        <label constraints="cell 16 9 8 1, growx" order="24.0" text="Coordinate Geografiche - UTM, Gauss-Boaga" name="widget_49"/>
+        <label constraints="cell 16 10 3 1, growx" order="25.0" text="longitudine" name="widget_50"/>
+        <label constraints="cell 16 11 3 1, growx" order="27.0" text="latitudine" name="widget_52"/>
+        <separator constraints="cell 0 2 24 1, growx" orientation="" order="9.0" name="  "/>
+        <separator constraints="cell 0 3 24 1, growx" orientation="horizontal" order="10.0" name="line"/>
+        <separator constraints="cell 0 4 24 1, growx" orientation="" order="11.0" name=" "/>
+        <separator constraints="cell 6 7 10 1, growx" orientation="horizontal" order="14.0" name="line"/>
+        <separator constraints="cell 13 9 3 5, growx" orientation="" order="29.0" name="widget_54"/>
+        <separator constraints="cell 6 6 10 1, growx" orientation="" order="30.0" name=" "/>
+        <separator constraints="cell 6 8 10 1, growx" orientation="" order="31.0" name=" "/>
+        <separator constraints="cell 0 24 5 1, growx" orientation="" order="32.0" name="widget_35"/>
+        <radiobutton constraints="cell 20 1 4 1, growx" order="33.0" orientation="vertical" default="1" name="widget_42" fieldname="collegata">
             <item>si,1</item>
             <item>no,2</item>
         </radiobutton>
         <textfield constraints="cell 4 1 4 1, growx" order="6.0" default="ARPA" name="ente" valuetype="string" fieldname="ente"/>
-        <textfield constraints="cell 12 1 4 1, growx" order="8.0" default="E101" name="codice" valuetype="string" fieldname="codscheda"/>
-        <textfield constraints="cell 16 1 4 1, growx" order="9.0" default="2010-09-07" name="data" valuetype="string" fieldname="data"/>
-        <textfield constraints="cell 4 5 20 1, growx" order="14.0" default="il loco" name="nome geosito" valuetype="string" fieldname="nomegeos"/>
-        <textfield constraints="cell 8 10 5 1, growx" order="21.0" default="TAA" name="regione" valuetype="string" fieldname="regione"/>
-        <textfield constraints="cell 8 11 5 1, growx" order="22.0" default="BZ" name="provincia" valuetype="string" fieldname="provincia"/>
-        <textfield constraints="cell 8 12 5 1, growx" order="23.0" default="Bolzano" name="comune" valuetype="string" fieldname="comune"/>
-        <textfield constraints="cell 8 13 5 1, growx" order="24.0" default="Bolzano" name="localita" valuetype="string" fieldname="localita"/>
-        <textfield constraints="cell 19 10 5 1, growx" order="27.0" default="" name="lon" valuetype="double" fieldname="lon"/>
-        <textfield constraints="cell 19 11 5 1, growx" order="29.0" default="" name="lat" valuetype="string" fieldname="lat"/>
+        <textfield constraints="cell 12 1 4 1, growx" order="7.0" default="E101" name="codice" valuetype="string" fieldname="codscheda"/>
+        <textfield constraints="cell 16 1 4 1, growx" order="8.0" default="2010-09-07" name="data" valuetype="string" fieldname="data"/>
+        <textfield constraints="cell 4 5 20 1, growx" order="13.0" default="il loco" name="nome geosito" valuetype="string" fieldname="nomegeos"/>
+        <textfield constraints="cell 8 10 5 1, growx" order="20.0" default="TAA" name="regione" valuetype="string" fieldname="regione"/>
+        <textfield constraints="cell 8 11 5 1, growx" order="21.0" default="BZ" name="provincia" valuetype="string" fieldname="provincia"/>
+        <textfield constraints="cell 8 12 5 1, growx" order="22.0" default="Bolzano" name="comune" valuetype="string" fieldname="comune"/>
+        <textfield constraints="cell 8 13 5 1, growx" order="23.0" default="Bolzano" name="localita" valuetype="string" fieldname="localita"/>
+        <textfield constraints="cell 19 10 5 1, growx" order="26.0" default="" name="lon" valuetype="double" fieldname="lon"/>
+        <textfield constraints="cell 19 11 5 1, growx" order="28.0" default="" name="lat" valuetype="string" fieldname="lat"/>
     </tab>
     <tab order="1.0" layout="insets 20 20 20 20, fill" text="Interesse Scientifico" name="Interesse Scientifico">
         <checkbox constraints="cell 5 18 3 1, growx" order="2.0" default="true" name="widget_38" fieldname="soggettivo"/>
