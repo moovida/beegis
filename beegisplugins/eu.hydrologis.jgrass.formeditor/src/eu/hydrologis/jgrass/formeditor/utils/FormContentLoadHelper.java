@@ -30,6 +30,7 @@ import org.eclipse.draw2d.geometry.Point;
 
 import eu.hydrologis.jgrass.featureeditor.utils.Utilities;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ACheckBox;
+import eu.hydrologis.jgrass.featureeditor.xml.annotated.AComboBox;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.AForm;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ALabel;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ARadioButton;
@@ -42,6 +43,7 @@ import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.model.AWidget;
 import eu.hydrologis.jgrass.formeditor.model.WidgetsDiagram;
 import eu.hydrologis.jgrass.formeditor.model.widgets.CheckBoxWidget;
+import eu.hydrologis.jgrass.formeditor.model.widgets.ComboBoxWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.LabelWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.RadioButtonWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
@@ -104,6 +106,9 @@ public class FormContentLoadHelper {
                 } else if (formElement instanceof ARadioButton) {
                     RadioButtonWidget radioButtonWidget = createRadioButtonWidget(tabName, formElement);
                     diagram.addChild(radioButtonWidget);
+                } else if (formElement instanceof AComboBox) {
+                    ComboBoxWidget comboboxWidget = createComboboxWidget(tabName, formElement);
+                    diagram.addChild(comboboxWidget);
                 }
 
             }
@@ -232,6 +237,31 @@ public class FormContentLoadHelper {
         radioButtonWidget.setLocation(newLocation);
         radioButtonWidget.setSize(newSize);
         return radioButtonWidget;
+    }
+
+    private ComboBoxWidget createComboboxWidget( String tabName, FormElement formElement ) {
+        AComboBox combobox = (AComboBox) formElement;
+        
+        ComboBoxWidget comboboxWidget = new ComboBoxWidget();
+        comboboxWidget.setTab(tabName);
+        comboboxWidget.setName(combobox.name);
+        comboboxWidget.setDefaultValue(combobox.defaultText);
+        comboboxWidget.setFieldnameValue(fieldIndexFromName(combobox.fieldName));
+        StringBuilder itemsSb = new StringBuilder();
+        for( String item : combobox.item ) {
+            itemsSb.append(ITEMS_SEPARATOR).append(item);
+        }
+        String itemsString = itemsSb.toString();
+        itemsString = itemsString.replaceFirst(ITEMS_SEPARATOR, "");
+        comboboxWidget.setItemsValue(itemsString);
+        
+        int[] xywh = findLocationAndSize(combobox.constraints);
+        Point newLocation = new Point(xywh[0], xywh[1]);
+        Dimension newSize = new Dimension(xywh[2], xywh[3]);
+        
+        comboboxWidget.setLocation(newLocation);
+        comboboxWidget.setSize(newSize);
+        return comboboxWidget;
     }
 
     private int fieldIndexFromName( String name ) {
