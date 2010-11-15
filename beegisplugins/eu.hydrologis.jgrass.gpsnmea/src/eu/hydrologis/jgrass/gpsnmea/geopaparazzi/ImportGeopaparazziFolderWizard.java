@@ -155,7 +155,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                                 /*
                                  * import photos to geonotes if there are some
                                  */
-                                picturesToGeonotes(geopapFolderFile, pm);
+                                mediaToGeonotes(geopapFolderFile, pm);
                                 
                             } catch (Exception e) {
                                 String message = "An error occurred while importing from geopaparazzi.";
@@ -491,7 +491,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         }
     }
 
-    private void picturesToGeonotes( File geopapFolderFile, IProgressMonitor pm ) throws Exception {
+    private void mediaToGeonotes( File geopapFolderFile, IProgressMonitor pm ) throws Exception {
         File folder = new File(geopapFolderFile, "pictures");
         if (!folder.exists()) {
             // ignoring non existing things
@@ -502,7 +502,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         List<String> nonTakenFilesList = new ArrayList<String>();
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMddHHmmss"); //$NON-NLS-1$
-        pm.beginTask("Importing pictures...", listFiles.length);
+        pm.beginTask("Importing media...", listFiles.length);
 
         Session session = null;
         Transaction transaction = null;
@@ -513,7 +513,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
             for( File file : listFiles ) {
                 String name = file.getName();
                 if (name.endsWith("jpg") || file.getName().endsWith("JPG") || file.getName().endsWith("png")
-                        || file.getName().endsWith("PNG")) {
+                        || file.getName().endsWith("PNG") || file.getName().endsWith("3gp") ) {
 
                     String[] nameSplit = name.split("[_\\|.]"); //$NON-NLS-1$
                     String dateString = nameSplit[1];
@@ -521,13 +521,13 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                     DateTime dateTime = formatter.parseDateTime(dateString + timeString);
 
                     Properties locationProperties = new Properties();
-                    String picturePath = file.getAbsolutePath();
-                    int lastDot = picturePath.lastIndexOf("."); //$NON-NLS-1$
-                    String nameNoExt = picturePath.substring(0, lastDot);
+                    String mediaPath = file.getAbsolutePath();
+                    int lastDot = mediaPath.lastIndexOf("."); //$NON-NLS-1$
+                    String nameNoExt = mediaPath.substring(0, lastDot);
                     String infoPath = nameNoExt + ".properties"; //$NON-NLS-1$
                     File infoFile = new File(infoPath);
                     if (!infoFile.exists()) {
-                        nonTakenFilesList.add(picturePath);
+                        nonTakenFilesList.add(mediaPath);
                         continue;
                     }
                     locationProperties.load(new FileInputStream(infoFile));
