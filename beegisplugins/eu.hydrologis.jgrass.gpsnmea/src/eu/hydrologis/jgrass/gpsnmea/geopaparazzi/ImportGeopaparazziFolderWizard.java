@@ -156,7 +156,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                                  * import photos to geonotes if there are some
                                  */
                                 mediaToGeonotes(geopapFolderFile, pm);
-                                
+
                             } catch (Exception e) {
                                 String message = "An error occurred while importing from geopaparazzi.";
                                 ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e);
@@ -492,10 +492,14 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
     }
 
     private void mediaToGeonotes( File geopapFolderFile, IProgressMonitor pm ) throws Exception {
-        File folder = new File(geopapFolderFile, "pictures");
+        File folder = new File(geopapFolderFile, "media");
         if (!folder.exists()) {
-            // ignoring non existing things
-            return;
+            // try to see if it is an old version of geopaparazzi
+            folder = new File(geopapFolderFile, "pictures");
+            if (!folder.exists()) {
+                // ignoring non existing things
+                return;
+            }
         }
 
         File[] listFiles = folder.listFiles();
@@ -513,7 +517,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
             for( File file : listFiles ) {
                 String name = file.getName();
                 if (name.endsWith("jpg") || file.getName().endsWith("JPG") || file.getName().endsWith("png")
-                        || file.getName().endsWith("PNG") || file.getName().endsWith("3gp") ) {
+                        || file.getName().endsWith("PNG") || file.getName().endsWith("3gp")) {
 
                     String[] nameSplit = name.split("[_\\|.]"); //$NON-NLS-1$
                     String dateString = nameSplit[1];
@@ -577,7 +581,7 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
 
         if (nonTakenFilesList.size() > 0) {
             final StringBuilder sB = new StringBuilder();
-            sB.append("For the following images no *.info file could be found:\n");
+            sB.append("For the following images no *.properties file could be found:\n");
             for( String p : nonTakenFilesList ) {
                 sB.append(p).append("\n");
             }
