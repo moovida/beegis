@@ -314,6 +314,7 @@ public class SimpleSWTImageEditor {
 
         drawAreaScroller = new ScrolledComposite(mainComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         drawArea = new Canvas(drawAreaScroller, SWT.None);
+        drawArea.setLayout(new FillLayout());
         defaultCursor = drawArea.getCursor();
         drawAreaScroller.setContent(drawArea);
         drawAreaScroller.setExpandHorizontal(true);
@@ -331,6 +332,12 @@ public class SimpleSWTImageEditor {
 
             public void handleEvent( Event event ) {
 
+                if (event.type == SWT.MouseDoubleClick) {
+                    if (isRemoveMode) {
+                        drawArea.setCursor(defaultCursor);
+                        isRemoveMode = false;
+                    }
+                }
                 /*
                  * REMOVE MODE
                  */
@@ -487,6 +494,7 @@ public class SimpleSWTImageEditor {
             }
         });
 
+        drawArea.addListener(SWT.MouseDoubleClick, drawListener);
         drawArea.addListener(SWT.MouseDown, drawListener);
         drawArea.addListener(SWT.MouseMove, drawListener);
         drawArea.addListener(SWT.MouseUp, drawListener);
@@ -707,11 +715,11 @@ public class SimpleSWTImageEditor {
     public static void main( String[] args ) {
 
         Display display = new Display();
-        ImageData imgD = new ImageData("/Users/moovida/Desktop/Picture3.png");
-        Image img = new Image(display, imgD);
+        // ImageData imgD = new ImageData("/Users/moovida/Desktop/Picture3.png");
+        // Image img = new Image(display, imgD);
         Shell shell = new Shell(display);
         shell.setLayout(new FillLayout());
-        new SimpleSWTImageEditor(shell, SWT.None, null, img, new Point(600, 400), true, true);
+        new SimpleSWTImageEditor(shell, SWT.None, null, null, new Point(600, 400), true, true);
         shell.open();
         while( !shell.isDisposed() ) {
             if (!display.readAndDispatch())
