@@ -43,7 +43,7 @@
                  id="eu.hydrologis.jgrass.formeditor.OpenFormViewAction"
                  label="Open Form View"
                  style="push"
-                 toolbarPath="beegisForms"
+                 toolbarPath="eu.udig.jgrass.mainToolbar/formeditor"
                  tooltip="Opens the Form View">
            </action>
            <action
@@ -52,7 +52,7 @@
                  id="eu.hydrologis.jgrass.formeditor.OpenFormAction"
                  label="Open Form Editor"
                  style="push"
-                 toolbarPath="beegisForms"
+                 toolbarPath="eu.udig.jgrass.mainToolbar/formeditor"
                  tooltip="Opens the Form Editor">
            </action>
         </actionSet>
