@@ -115,7 +115,6 @@ public class SimpleSWTImageEditor {
     private final Cursor defaultCursor;
     private final Composite mainComposite;
     private final Composite propsComposite;
-    private final ScrolledComposite drawAreaScroller;
     private double baseScaleFactor = -1;
     private double scaleFactor = -1;
     private boolean doRotate = false;
@@ -267,6 +266,7 @@ public class SimpleSWTImageEditor {
             zoomAllButton.setToolTipText("zoom to the whole extend");
             zoomAllButton.addSelectionListener(new SelectionAdapter(){
                 public void widgetSelected( SelectionEvent e ) {
+                    calculateDrawingFittingScaleFactor();
                     applyScale(baseScaleFactor);
                     drawArea.redraw();
                 }
@@ -280,7 +280,7 @@ public class SimpleSWTImageEditor {
             zoomInButton.setToolTipText("zoom in");
             zoomInButton.addSelectionListener(new SelectionAdapter(){
                 public void widgetSelected( SelectionEvent e ) {
-                    applyScale(scaleFactor * 1.2);
+                    applyScale(scaleFactor * 1.1);
                     drawArea.redraw();
                 }
             });
@@ -292,7 +292,7 @@ public class SimpleSWTImageEditor {
             zoomOutButton.setToolTipText("zoom out");
             zoomOutButton.addSelectionListener(new SelectionAdapter(){
                 public void widgetSelected( SelectionEvent e ) {
-                    applyScale(scaleFactor / 1.2);
+                    applyScale(scaleFactor / 1.1);
                     drawArea.redraw();
                 }
             });
@@ -312,18 +312,10 @@ public class SimpleSWTImageEditor {
             });
         }
 
-        drawAreaScroller = new ScrolledComposite(mainComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-        drawArea = new Canvas(drawAreaScroller, SWT.None);
-        drawArea.setLayout(new FillLayout());
+        drawArea = new Canvas(mainComposite, SWT.None);
+        GridData drawAreaGD = new GridData(SWT.FILL, SWT.FILL, true, true);
+        drawArea.setLayoutData(drawAreaGD);
         defaultCursor = drawArea.getCursor();
-        drawAreaScroller.setContent(drawArea);
-        drawAreaScroller.setExpandHorizontal(true);
-        drawAreaScroller.setExpandVertical(true);
-        if (minScroll != null) {
-            drawAreaScroller.setMinWidth(minScroll.x * 3);
-            drawAreaScroller.setMinHeight(minScroll.y * 3);
-        }
-        drawAreaScroller.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
 
         Listener drawListener = new Listener(){
             int lastX = 0, lastY = 0;
@@ -372,7 +364,8 @@ public class SimpleSWTImageEditor {
                  * DRAWING MODE
                  */
                 if (scaleFactor == -1) {
-                    calculateBaseScaleFactor();
+                    // calculateBaseScaleFactor();
+                    calculateDrawingFittingScaleFactor();
                     applyScale(baseScaleFactor);
                 }
 
@@ -486,13 +479,13 @@ public class SimpleSWTImageEditor {
             }
         };
 
-        mainComposite.addControlListener(new ControlListener(){
-            public void controlResized( ControlEvent e ) {
-                calculateBaseScaleFactor();
-            }
-            public void controlMoved( ControlEvent e ) {
-            }
-        });
+        // mainComposite.addControlListener(new ControlListener(){
+        // public void controlResized( ControlEvent e ) {
+        // calculateBaseScaleFactor();
+        // }
+        // public void controlMoved( ControlEvent e ) {
+        // }
+        // });
 
         drawArea.addListener(SWT.MouseDoubleClick, drawListener);
         drawArea.addListener(SWT.MouseDown, drawListener);
@@ -543,7 +536,6 @@ public class SimpleSWTImageEditor {
     public void setBackgroundColor( Color backgroundColor ) {
         mainComposite.setBackground(backgroundColor);
         propsComposite.setBackground(backgroundColor);
-        drawAreaScroller.setBackground(backgroundColor);
         drawArea.setBackground(backgroundColor);
     }
 
@@ -617,27 +609,55 @@ public class SimpleSWTImageEditor {
     }
 
     private void calculateBaseScaleFactor() {
-        Rectangle imageBound = null;
+        Rectangle allBounds = null;
         for( DressedStroke line : lines ) {
             Rectangle bounds = line.getBounds();
-            if (imageBound == null) {
-                imageBound = bounds;
+            if (allBounds == null) {
+                allBounds = bounds;
             } else {
-                imageBound.add(bounds);
+                allBounds.add(bounds);
             }
         }
         if (backImage != null) {
-            if (imageBound == null) {
-                imageBound = backImage.getBounds();
+            if (allBounds == null) {
+                allBounds = backImage.getBounds();
             } else {
-                imageBound.add(backImage.getBounds());
+                allBounds.add(backImage.getBounds());
             }
         }
-        if (imageBound != null) {
-            Rectangle mainCompositeBound = mainComposite.getBounds();
-            double scaleFactorX = (double) (mainCompositeBound.width - 30) / (double) imageBound.width;
-            double scaleFactorY = (double) (mainCompositeBound.height - 30) / (double) imageBound.height;
-            baseScaleFactor = mainCompositeBound.width < mainCompositeBound.height ? scaleFactorX : scaleFactorY;
+        if (allBounds != null) {
+            Rectangle drawAreaBounds = drawArea.getClientArea();
+            double scaleFactorX = (double) (drawAreaBounds.width) / (double) allBounds.width;
+            double scaleFactorY = (double) (drawAreaBounds.height) / (double) allBounds.height;
+            baseScaleFactor = Math.min(scaleFactorX, scaleFactorY);
+        } else {
+            baseScaleFactor = 1.0;
+        }
+    }
+
+    private void calculateDrawingFittingScaleFactor() {
+        Rectangle allBounds = null;
+        for( DressedStroke line : lines ) {
+            Rectangle bounds = line.getBounds();
+            if (allBounds == null) {
+                allBounds = bounds;
+            } else {
+                allBounds.add(bounds);
+            }
+        }
+        if (backImage != null) {
+            if (allBounds == null) {
+                allBounds = backImage.getBounds();
+            } else {
+                allBounds.add(backImage.getBounds());
+            }
+        }
+        if (allBounds != null) {
+            Rectangle drawAreaBounds = drawArea.getClientArea();
+            double scaleFactorX = (double) (drawAreaBounds.width - 4) / allBounds.width;
+            double scaleFactorY = (double) (drawAreaBounds.height - 4) / allBounds.height;
+
+            baseScaleFactor = Math.min(scaleFactorX, scaleFactorY);
         } else {
             baseScaleFactor = 1.0;
         }
