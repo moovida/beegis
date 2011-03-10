@@ -54,6 +54,7 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
     private Text folderText;
     private int intervalMinutes = 30;
     private boolean doNotImport = false;
+    private boolean createFeatureLayer = true;
     private Text intervalText;
 
     public PhotoImportWizardPage( String pageName, IStructuredSelection selection ) {
@@ -160,6 +161,18 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
             }
         });
 
+        final Button createShapefileButton = new Button(fileSelectionArea, SWT.CHECK);
+        GridData createShapefileButtonGD = new GridData(SWT.BEGINNING, SWT.CENTER, true, false);
+        createShapefileButtonGD.horizontalSpan = 3;
+        createShapefileButton.setLayoutData(createShapefileButtonGD);
+        createShapefileButton.setText("Also create feature layer for the pictures.");
+        createShapefileButton.setSelection(true);
+        createShapefileButton.addSelectionListener(new SelectionAdapter(){
+            public void widgetSelected( SelectionEvent e ) {
+                createFeatureLayer = createShapefileButton.getSelection();
+            }
+        });
+
         setControl(fileSelectionArea);
     }
 
@@ -180,6 +193,10 @@ public class PhotoImportWizardPage extends WizardPage implements KeyListener {
 
     public boolean getDoNotImport() {
         return doNotImport;
+    }
+    
+    public boolean doCreateFeatureLayer() {
+        return createFeatureLayer;
     }
 
     public void keyPressed( KeyEvent e ) {
