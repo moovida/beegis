@@ -37,23 +37,6 @@
 			<remoteRepository refid="hibernatespatial.repository" />
 			-->
 
-			<!-- groovy -->
-			<dependency groupId="org.codehaus.groovy" artifactId="groovy-all" version="1.7.1" />
-
-			<!-- should be local if the jgrasstools project is compiled -->
-			<dependency groupId="eu.hydrologis.jgrass" artifactId="jgrassgears" version="0.1-SNAPSHOT" />
-			<dependency groupId="eu.hydrologis.jgrass" artifactId="hortonmachine" version="0.1-SNAPSHOT" />
-
-	        <dependency groupId="org.scannotation" artifactId="scannotation" version="1.0.2" />
-	        <dependency groupId="com.googlecode.jaitools" artifactId="jiffle" version="1.0.1" />
-	        <dependency groupId="com.googlecode.jaitools" artifactId="zonalstats" version="1.0.1" />
-	        <dependency groupId="com.googlecode.jaitools" artifactId="utils" version="1.0.1" />
-
-			
-			<!-- in the jgrasstools maven repo -->
-			<dependency groupId="oms" artifactId="oms" version="3-SNAPSHOT" />
-			<dependency groupId="jama" artifactId="jama" version="1.0.2" />
-
 			<dependency groupId="org.hibernate" artifactId="ejb3-persistence" version="3.3.2.Beta1" />
 			<dependency groupId="org.hibernate" artifactId="hibernate" version="3.3.2.GA" />
 			<dependency groupId="org.hibernate" artifactId="hibernate-annotations" version="3.4.0.GA" />
@@ -64,7 +47,6 @@
 			<dependency groupId="org.slf4j" artifactId="slf4j-simple" version="1.5.8" />
 			<dependency groupId="org.slf4j" artifactId="slf4j-nop" version="1.5.8" />
 			-->
-			<dependency groupId="antlr" artifactId="antlr" version="2.7.7" />
 			<!-- 
 			<dependency groupId="jfreechart" artifactId="jcommon" version="1.0.16" />
 			<dependency groupId="jfreechart" artifactId="jfreechart-experimental" version="1.0.13" />
@@ -73,10 +55,6 @@
 			<dependency groupId="com.sun.jna" artifactId="jna" version="3.0.9" />
 			<dependency groupId="org.xerial" artifactId="sqlite-jdbc" version="3.6.16" />
 			-->
-
-            <dependency groupId="dom4j" artifactId="dom4j" version="1.6.1" />
-
-
 		</artifact:dependencies>
 
 	</target>

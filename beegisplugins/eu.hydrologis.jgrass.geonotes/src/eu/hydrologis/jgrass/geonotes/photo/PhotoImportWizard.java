@@ -18,7 +18,6 @@
 package eu.hydrologis.jgrass.geonotes.photo;
 
 import static eu.hydrologis.jgrass.geonotes.GeonoteConstants.PHOTO;
-import static org.jgrasstools.gears.libs.modules.JGTConstants.utcDateFormatterYYYYMMDDHHMMSS;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -48,7 +47,6 @@ import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.jgrasstools.gears.utils.time.UtcTimeUtilities;
 import org.joda.time.DateTime;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -58,6 +56,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
 import eu.hydrologis.jgrass.beegisutils.jgrassported.FeatureUtilities;
+import eu.hydrologis.jgrass.beegisutils.jgrassported.UtcTimeUtilities;
+import eu.hydrologis.jgrass.beegisutils.utils.UtcDatetimeFormatter;
 import eu.hydrologis.jgrass.geonotes.GeonoteConstants.NOTIFICATION;
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
@@ -167,7 +167,7 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
                                             Object[] featureObjects = new Object[6];
                                             featureObjects[0] = gf.createPoint(coordinate);
                                             featureObjects[1] = file.getName();
-                                            featureObjects[2] = timestamp.toString(utcDateFormatterYYYYMMDDHHMMSS);
+                                            featureObjects[2] = timestamp.toString(UtcTimeUtilities.utcDateFormatterYYYYMMDDHHMMSS);
                                             featureObjectList.add(featureObjects);
                                         }
                                     }

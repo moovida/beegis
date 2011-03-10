@@ -40,11 +40,11 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
-import org.jgrasstools.gears.utils.CompressionUtilities;
 
 import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.ConnectionManager;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
+import eu.hydrologis.jgrass.database.utils.CompressionUtilities;
 
 /**
  * @author Andrea Antonello (www.hydrologis.com)
