@@ -128,7 +128,7 @@
                id="eu.hydrologis.jgrass.geonotes.openfieldbookaction"
                label="Open Fieldbook"
                style="push"
-               toolbarPath="eu.udig.jgrass.mainToolbar/fieldbook"
+               toolbarPath="eu.hydrologis.jgrass.beegisbar/fieldbook"
                tooltip="Open the Fieldbook">
          </action>
       </actionSet>
