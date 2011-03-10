@@ -292,7 +292,9 @@ public class DatabaseView extends ViewPart {
      */
     public DatabaseConnectionProperties createNewLocalDatabaseDefinition( String databaseFolder, String databaseName ) {
         DatabaseConnectionProperties defaultProperties = new H2ConnectionFactory().createDefaultProperties();
-
+        if (defaultProperties == null) {
+            return null;
+        }
         String projectName = databaseName;
         if (projectName == null) {
             IProject activeProject = ApplicationGIS.getActiveProject();

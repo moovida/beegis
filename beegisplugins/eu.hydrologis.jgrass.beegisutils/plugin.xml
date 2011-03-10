@@ -86,7 +86,7 @@
       <extension
             point="org.eclipse.ui.menus">
          <menuContribution
-               locationURI="toolbar:org.eclipse.ui.main.toolbar?after=add.ext">
+               locationURI="toolbar:org.eclipse.ui.main.toolbar?after=data">
             <toolbar
                   id="eu.hydrologis.jgrass.beegisbar"
                   label="BeeGIS Toolbar">
