@@ -18,9 +18,11 @@
 package eu.hydrologis.jgrass.geonotes.photo;
 
 import static eu.hydrologis.jgrass.geonotes.GeonoteConstants.PHOTO;
+import static org.jgrasstools.gears.libs.modules.JGTConstants.utcDateFormatterYYYYMMDDHHMMSS;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,12 +43,21 @@ import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.IProgressService;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.jgrasstools.gears.utils.time.UtcTimeUtilities;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 
+import eu.hydrologis.jgrass.beegisutils.jgrassported.FeatureUtilities;
 import eu.hydrologis.jgrass.geonotes.GeonoteConstants.NOTIFICATION;
 import eu.hydrologis.jgrass.geonotes.GeonotesHandler;
 import eu.hydrologis.jgrass.geonotes.GeonotesPlugin;
@@ -63,6 +74,8 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
     private float shift = 0;
     private int intervalMinutes;
     private boolean doNotImport;
+    private boolean createFeatureLayer;
+    private GeometryFactory gf = new GeometryFactory();
 
     public PhotoImportWizard() {
         super();
@@ -74,6 +87,7 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
         shift = mainPage.getTime();
         intervalMinutes = mainPage.getIntervalMinutes();
         doNotImport = mainPage.getDoNotImport();
+        createFeatureLayer = mainPage.doCreateFeatureLayer();
 
         Display.getDefault().asyncExec(new Runnable(){
             public void run() {
@@ -82,7 +96,6 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
                     IProgressService ps = wb.getProgressService();
                     ps.busyCursorWhile(new IRunnableWithProgress(){
                         public void run( IProgressMonitor pm ) {
-
                             File f = new File(path);
                             File[] listFiles = f.listFiles(new FilenameFilter(){
                                 public boolean accept( File dir, String name ) {
@@ -125,6 +138,8 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
                             }
                             pm.done();
 
+                            List<Object[]> featureObjectList = new ArrayList<Object[]>();
+
                             Set<Entry<DateTime, List<File>>> timeSet = imageFiles.entrySet();
                             if (!doNotImport) {
                                 pm.beginTask("Adding EXIF tags and importing matching photos...", timeSet.size());
@@ -133,6 +148,7 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
                             }
                             for( Entry<DateTime, List<File>> entry : timeSet ) {
                                 try {
+
                                     DateTime timestamp = entry.getKey();
                                     List<File> fileList = entry.getValue();
 
@@ -145,6 +161,15 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
                                         sB.append(" ");
 
                                         ExifHandler.writeGPSTagsToImage(coordinate.y, coordinate.x, file);
+
+                                        if (createFeatureLayer) {
+                                            // handle feature obj
+                                            Object[] featureObjects = new Object[6];
+                                            featureObjects[0] = gf.createPoint(coordinate);
+                                            featureObjects[1] = file.getName();
+                                            featureObjects[2] = timestamp.toString(utcDateFormatterYYYYMMDDHHMMSS);
+                                            featureObjectList.add(featureObjects);
+                                        }
                                     }
 
                                     if (!doNotImport) {
@@ -171,6 +196,35 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
                             }
                             pm.done();
 
+                            /*
+                             * dump feature layer
+                             */
+                            if (createFeatureLayer) {
+                                SimpleFeatureCollection newCollection = FeatureCollections.newCollection();
+                                SimpleFeatureTypeBuilder ftypeBuilder = new SimpleFeatureTypeBuilder();
+                                ftypeBuilder.setName("pictureslayer");
+                                ftypeBuilder.setCRS(DefaultGeographicCRS.WGS84);
+                                ftypeBuilder.add("the_geom", Point.class);
+                                ftypeBuilder.add("name", String.class);
+                                ftypeBuilder.add("date", String.class);
+                                SimpleFeatureType ftype = ftypeBuilder.buildFeatureType();
+                                int id = 0;
+                                for( Object[] objects : featureObjectList ) {
+                                    SimpleFeatureBuilder builder = new SimpleFeatureBuilder(ftype);
+                                    builder.addAll(objects);
+                                    SimpleFeature feature = builder.buildFeature(ftype.getTypeName() + "." + id++);
+                                    newCollection.add(feature);
+                                }
+                                try {
+                                    FeatureUtilities.featureCollectionToTempLayer(newCollection);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            /*
+                             * handle not matched pics
+                             */
                             if (nonTakenFilesList.size() > 0) {
                                 final StringBuilder sB = new StringBuilder();
                                 sB.append("For the following images no gps point within the threshold could be found:\n");
