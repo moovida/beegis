@@ -156,7 +156,9 @@ public class DatabasePlugin extends AbstractUIPlugin {
     private void createDefaultDatabase() throws Exception {
         // create an embedded database inside the project folder
         DatabaseConnectionProperties defaultProperties = new H2ConnectionFactory().createDefaultProperties();
-
+        if (defaultProperties == null) {
+            throw new IOException(Messages.DatabasePlugin__errmsg_creating_db);
+        }
         File databaseFolder = new File(defaultProperties.getPath());
         boolean madeDirs = databaseFolder.mkdirs();
         if (!madeDirs && databaseFolder.exists()) {

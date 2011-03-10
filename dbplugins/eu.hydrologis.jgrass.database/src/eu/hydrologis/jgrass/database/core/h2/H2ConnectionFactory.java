@@ -69,12 +69,11 @@ public class H2ConnectionFactory implements IConnectionFactory {
      * @throws IOException 
      */
     public DatabaseConnectionProperties createProperties( File dbFile ) throws IOException {
-		if (!dbFile.exists()) {
-			// try to create it
-			if (!dbFile.mkdirs())
-				throw new IOException(
-						Messages.H2ConnectionFactory__db_doesnt_exist);
-		}
+        if (!dbFile.exists()) {
+            // try to create it
+            if (!dbFile.mkdirs())
+                throw new IOException(Messages.H2ConnectionFactory__db_doesnt_exist);
+        }
         if (!dbFile.isDirectory()) {
             return null;
         }
@@ -117,16 +116,22 @@ public class H2ConnectionFactory implements IConnectionFactory {
             String projectPath = id.toFileString();
             projectFile = new File(projectPath);
             if (!projectFile.exists()) {
-                String tempdir = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
-                projectFile = new File(tempdir);
+                String userHomeDir = System.getProperty("user.home"); //$NON-NLS-1$
+                projectFile = new File(userHomeDir);
             } else {
                 projectFile = projectFile.getParentFile().getParentFile();
             }
-        }else{
-            String tempdir = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
-            projectFile = new File(tempdir);
+        } else {
+            String userHomeDir = System.getProperty("user.home"); //$NON-NLS-1$
+            projectFile = new File(userHomeDir);
         }
+
         File databaseFolder = new File(projectFile, "databases/defaultdatabase"); //$NON-NLS-1$
+
+        if (!databaseFolder.exists())
+            if (!databaseFolder.mkdirs()) {
+                return null;
+            }
         DatabaseConnectionProperties props = new DatabaseConnectionProperties();
         props.put(DatabaseConnectionProperties.TYPE, H2DatabaseConnection.TYPE);
         props.put(DatabaseConnectionProperties.ISACTIVE, "false"); //$NON-NLS-1$
