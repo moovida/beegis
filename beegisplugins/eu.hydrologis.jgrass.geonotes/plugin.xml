@@ -68,16 +68,6 @@
                image="icons/select_source.png">
          </cursor>
       </modalTool>
-      <actionTool
-            categoryId="eu.hydrologis.jgrass.geonotes.category"
-            class="eu.hydrologis.jgrass.geonotes.tools.OpenFieldBookActionTool"
-            icon="icons/fieldbookredpin16.png"
-            id="eu.hydrologis.jgrass.geonotes.openfieldbookaction"
-            name="Open Fieldbook"
-            onToolbar="true"
-            tooltip="Open the Fieldbook">
-         <enablement></enablement>
-      </actionTool>
    </extension>
    <extension
          id="geonotesmapgraphicid"
@@ -125,6 +115,23 @@
             Import a file from the local file system into the workspace.
          </description>
       </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="eu.hydrologis.jgrass.geonotes.fieldbookactionset"
+            label="Geonotes"
+            visible="true">
+         <action
+               class="eu.hydrologis.jgrass.geonotes.fieldbook.actions.OpenFieldBookAction"
+               icon="icons/fieldbookredpin16.png"
+               id="eu.hydrologis.jgrass.geonotes.openfieldbookaction"
+               label="Open Fieldbook"
+               style="push"
+               toolbarPath="eu.udig.jgrass.mainToolbar/fieldbook"
+               tooltip="Open the Fieldbook">
+         </action>
+      </actionSet>
    </extension>
 
 </plugin>
