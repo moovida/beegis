@@ -164,7 +164,7 @@ public class PhotoImportWizard extends Wizard implements IImportWizard {
 
                                         if (createFeatureLayer) {
                                             // handle feature obj
-                                            Object[] featureObjects = new Object[6];
+                                            Object[] featureObjects = new Object[3];
                                             featureObjects[0] = gf.createPoint(coordinate);
                                             featureObjects[1] = file.getName();
                                             featureObjects[2] = timestamp.toString(UtcTimeUtilities.utcDateFormatterYYYYMMDDHHMMSS);

@@ -19,7 +19,11 @@ package eu.hydrologis.jgrass.beegisutils;
 
 import java.io.File;
 
+import net.refractions.udig.core.AbstractUdigUIPlugin;
+
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -32,11 +36,12 @@ import eu.hydrologis.jgrass.beegisutils.utils.ImageCache;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class BeegisUtilsPlugin extends AbstractUIPlugin {
+public class BeegisUtilsPlugin extends AbstractUdigUIPlugin {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "eu.hydrologis.jgrass.beegisutils";
 
+    static final String ICONS_PATH = "icons/"; //$NON-NLS-1$
     
     /**
      * Global formatter for joda datetime (yyyy-MM-dd HH:mm:ss).
@@ -136,5 +141,9 @@ public class BeegisUtilsPlugin extends AbstractUIPlugin {
         IPreferenceStore store = getPreferenceStore();
         store.putValue(BEEGIS_LAST_CHOSEN_FOLDER, folderPath);
     }
+
+	public IPath getIconPath() {
+		return new Path(ICONS_PATH);
+	}
     
 }

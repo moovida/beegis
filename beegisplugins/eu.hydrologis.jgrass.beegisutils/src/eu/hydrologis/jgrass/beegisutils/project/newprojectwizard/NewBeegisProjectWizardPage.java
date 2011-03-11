@@ -21,12 +21,9 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import net.refractions.udig.project.ui.internal.ImageConstants;
-import net.refractions.udig.project.ui.internal.Images;
+import net.refractions.udig.project.ui.internal.ISharedImages;
 import net.refractions.udig.project.ui.internal.Messages;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.wizard.WizardPage;
@@ -55,8 +52,8 @@ public class NewBeegisProjectWizardPage extends WizardPage {
      * Construct <code>NewProjectWizardPage</code>.
      */
     public NewBeegisProjectWizardPage() {
-        super(Messages.NewProjectWizardPage_newProject, Messages.NewProjectWizardPage_newProject, Images
-                .getDescriptor(ImageConstants.NEWPROJECT_WIZBAN));
+        super(Messages.NewProjectWizardPage_newProject, Messages.NewProjectWizardPage_newProject, 
+        		BeegisUtilsPlugin.getDefault().getImageDescriptor(ISharedImages.NEWPROJECT_WIZBAN));
         setDescription(Messages.NewProjectWizardPage_newProject_description);
     }
 
