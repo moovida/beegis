@@ -22,6 +22,7 @@ import net.miginfocom.swt.MigLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.type.AttributeDescriptor;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
 
@@ -94,6 +95,23 @@ public abstract class FormGuiElement {
             // ignore, if it can't resolve, return null
         }
         return null;
+    }
+
+    protected String getAttributeString( SimpleFeature feature, String fieldName, String defaultValue ) {
+        Object attribute = feature.getAttribute(fieldName);
+        String attributeString = "";
+        if (attribute != null) {
+            attributeString = attribute.toString();
+        }
+        if (attributeString.equals("")) {
+            if (defaultValue != null) {
+                attributeString = defaultValue;
+            } else {
+                AttributeDescriptor descriptor = feature.getFeatureType().getDescriptor(fieldName);
+                attributeString = descriptor.getDefaultValue().toString();
+            }
+        }
+        return attributeString;
     }
 
 }

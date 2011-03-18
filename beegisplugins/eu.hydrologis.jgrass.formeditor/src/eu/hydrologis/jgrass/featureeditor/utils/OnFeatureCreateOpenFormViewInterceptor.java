@@ -1,19 +1,22 @@
 package eu.hydrologis.jgrass.featureeditor.utils;
 
-import java.io.IOException;
+import java.io.File;
 
-import net.refractions.udig.catalog.ID;
-import net.refractions.udig.catalog.IGeoResource;
 import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.IMap;
 import net.refractions.udig.project.interceptor.FeatureInterceptor;
 import net.refractions.udig.project.ui.ApplicationGIS;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.opengis.feature.Feature;
+
+import eu.hydrologis.jgrass.featureeditor.views.FormView;
+import eu.hydrologis.jgrass.formeditor.FormEditorPlugin;
 
 public class OnFeatureCreateOpenFormViewInterceptor implements FeatureInterceptor {
 
@@ -23,30 +26,35 @@ public class OnFeatureCreateOpenFormViewInterceptor implements FeatureIntercepto
 
     @Override
     public void run( Feature feature ) {
-        // try {
-        // IMap activeMap = ApplicationGIS.getActiveMap();
-        // if (activeMap != null) {
-        // ILayer selectedLayer = activeMap.getEditManager().getSelectedLayer();
-        // if (selectedLayer != null) {
-        // IGeoResource geoResource = selectedLayer.getGeoResource();
-        // ID id = geoResource.getID();
-        //
-        // SimpleFeatureSource featureSource = (SimpleFeatureSource)
-        // selectedLayer.getResource(FeatureSource.class,
-        // new NullProgressMonitor());
-        // if (featureSource == null) {
-        // return;
-        // }
-        // SimpleFeatureCollection featureCollection =
-        // featureSource.getFeatures(selectedLayer.getQuery(true));
-        //
-        //
-        // }
-        // }
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
+        IMap activeMap = ApplicationGIS.getActiveMap();
+        if (activeMap != null) {
+            ILayer selectedLayer = activeMap.getEditManager().getSelectedLayer();
+            File formFile = FormEditorPlugin.getDefault().getFormFile(selectedLayer);
+            if (formFile != null) {
+                // open form view
+                Display.getDefault().asyncExec(new Runnable(){
+                    public void run() {
+                        try {
+                            IWorkbench workbench = PlatformUI.getWorkbench();
+                            IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
+                            IWorkbenchPage activePage = null;
+                            if (activeWorkbenchWindow == null) {
+                                IWorkbenchWindow[] workbenchWindows = workbench.getWorkbenchWindows();
+                                if (workbenchWindows.length > 0) {
+                                    activeWorkbenchWindow = workbenchWindows[0];
+                                }
+                            }
+                            activePage = activeWorkbenchWindow.getActivePage();
+                            activePage.showView(FormView.ID);
+                        } catch (PartInitException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
 
+            }
+
+        }
     }
 
 }

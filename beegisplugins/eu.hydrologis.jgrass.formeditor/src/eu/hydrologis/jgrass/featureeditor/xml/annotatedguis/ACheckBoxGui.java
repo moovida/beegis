@@ -18,7 +18,6 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -74,17 +73,8 @@ public class ACheckBoxGui extends FormGuiElement implements SelectionListener {
         if (feature == null) {
             return;
         }
-        Object attribute = feature.getAttribute(checkBox.fieldName);
-        String attributeString = "";
-        if (attribute != null) {
-            attributeString = attribute.toString();
-        } else {
-            MessageDialog.openError(button.getShell(), "Missing attribute", "Could not find an attribute with name: "
-                    + checkBox.fieldName + " \nCheck your form!");
-        }
-        if (attributeString.equals("") && checkBox.defaultText != null) {
-            attributeString = checkBox.defaultText;
-        }
+        
+        String attributeString = getAttributeString(feature, checkBox.fieldName, checkBox.defaultText);
 
         Boolean select = false;
         if (attributeString.equals("1")) {
