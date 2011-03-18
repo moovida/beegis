@@ -108,7 +108,7 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
     public static String[] getFieldNamesArrays() {
         return fieldNamesArrays;
     }
-    
+
     private static String lastTabNameInserted = "0";
     public static String getLastTabNameInserted() {
         return lastTabNameInserted;
@@ -172,7 +172,7 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
     private TransferDropTargetListener createTransferDropTargetListener() {
         return new TemplateTransferDropTargetListener(getGraphicalViewer()){
             protected CreationFactory getFactory( Object template ) {
-                return new SimpleFactory((Class<?>) template);
+                return new SimpleFactory((Class< ? >) template);
             }
         };
     }
@@ -269,6 +269,9 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
             IMap activeMap = ApplicationGIS.getActiveMap();
             if (activeMap != null) {
                 ILayer selectedLayer = activeMap.getEditManager().getSelectedLayer();
+                if (selectedLayer == null) {
+                    return;
+                }
                 if (selectedLayer.hasResource(FeatureSource.class)) {
                     attributeDescriptors = selectedLayer.getSchema().getAttributeDescriptors();
                     List<String> fieldNamesList = new ArrayList<String>();
