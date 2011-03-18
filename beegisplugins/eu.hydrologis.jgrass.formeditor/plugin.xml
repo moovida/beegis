@@ -88,4 +88,12 @@
               class="eu.hydrologis.jgrass.featureeditor.FormEditorPluginEarlyStartup">
         </startup>
      </extension>
+        <extension
+         point="net.refractions.udig.project.featureInterceptor">
+      <featureCreated
+            class="eu.hydrologis.jgrass.featureeditor.utils.OnFeatureCreateOpenFormViewInterceptor"
+            id="eu.hydrologis.jgrass.featureeditor.utils.OnFeatureCreateOpenFormViewInterceptor"
+            name="OnFeatureCreateOpenFormViewInterceptor">
+      </featureCreated>
+   </extension>
 </plugin>
