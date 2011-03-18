@@ -1,12 +1,15 @@
 package eu.hydrologis.jgrass.formeditor;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.refractions.udig.catalog.ID;
 import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.ILayerListener;
 import net.refractions.udig.project.IMapListener;
+import net.refractions.udig.project.IStyleBlackboard;
 import net.refractions.udig.project.LayerEvent;
 import net.refractions.udig.project.LayerEvent.EventType;
 import net.refractions.udig.project.MapEvent;
@@ -31,6 +34,7 @@ import org.opengis.filter.Filter;
 import org.osgi.framework.BundleContext;
 
 import eu.hydrologis.jgrass.featureeditor.utils.ISelectionObserver;
+import eu.hydrologis.jgrass.featureeditor.utils.Utilities;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 
 /**
@@ -69,7 +73,7 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
         IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (activeWorkbenchWindow == null)
             return;
-        page = activeWorkbenchWindow.getActivePage();   
+        page = activeWorkbenchWindow.getActivePage();
         page.addPartListener(this);
     }
 
@@ -267,6 +271,24 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
         for( ISelectionObserver observer : observers ) {
             observer.selectionChanged(activeMap, selectedLayer, lastSelectedFeature);
         }
+    }
+
+    public File getFormFile( ILayer layer ) {
+        ID id = layer.getGeoResource().getID();
+        File formFile = null;
+        if (id.isFile()) {
+            File file = id.toFile();
+            formFile = Utilities.getFormFile(file);
+        } else {
+            // if it is not a file, it has to have the file
+            // reference in the blackboard
+            IStyleBlackboard blackboard = layer.getStyleBlackboard();
+            String path = blackboard.getString(FormEditor.ID);
+            if (path != null) {
+                formFile = new File(path);
+            }
+        }
+        return formFile;
     }
 
 }
