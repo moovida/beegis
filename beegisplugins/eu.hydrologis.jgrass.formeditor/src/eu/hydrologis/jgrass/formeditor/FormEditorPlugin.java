@@ -58,20 +58,26 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
         super.start(context);
         plugin = this;
 
-        IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        page = activeWorkbenchWindow.getActivePage();
-        page.addPartListener(this);
-
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+    /**
+     * Registers listeners, called from earlystartup, to make sure the workbench is alive.
      */
+    public void registerPartListener() {
+        if (page != null)
+            return;
+        IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (activeWorkbenchWindow == null)
+            return;
+        page = activeWorkbenchWindow.getActivePage();   
+        page.addPartListener(this);
+    }
+
     public void stop( BundleContext context ) throws Exception {
         plugin = null;
-        page.removePartListener(this);
-        
+        if (page != null)
+            page.removePartListener(this);
+
         ImageCache.getInstance().dispose();
         super.stop(context);
     }
@@ -178,7 +184,7 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
             }
             selectedLayer = tmpSelectedLayer;
             selectedLayer.addListener(this);
-            
+
             Filter filter = selectedLayer.getFilter();
             LayerImpl layerImpl = (LayerImpl) selectedLayer;
 

@@ -18,13 +18,16 @@
 package eu.hydrologis.jgrass.featureeditor.views;
 
 import java.io.File;
+import java.io.IOException;
 
 import net.refractions.udig.catalog.ID;
 import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.IMap;
 import net.refractions.udig.project.internal.Map;
+import net.refractions.udig.project.ui.internal.ApplicationGISInternal;
 import net.refractions.udig.project.ui.internal.tool.impl.ToolContextImpl;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -35,6 +38,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
+import org.geotools.data.FeatureSource;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.opengis.feature.simple.SimpleFeature;
 
 import eu.hydrologis.jgrass.featureeditor.utils.ISelectionObserver;
@@ -47,7 +54,7 @@ import eu.hydrologis.jgrass.formeditor.FormEditorPlugin;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class FormView extends ViewPart implements ISelectionObserver {
-    
+
     public static final String ID = "eu.hydrologis.jgrass.featureeditor.views.FormView"; //$NON-NLS-1$
 
     private ILayer selectedLayer;
@@ -68,12 +75,36 @@ public class FormView extends ViewPart implements ISelectionObserver {
         startSelectionLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
         startSelectionLabel.setText("Select a feature to start.");
         currentControl = startSelectionLabel;
+
+        // if one selected, load it already
+        try {
+            Map activeMap = ApplicationGISInternal.getActiveMap();
+            if (activeMap != null) {
+                ILayer selectedLayer = activeMap.getEditManager().getSelectedLayer();
+                if (selectedLayer != null) {
+                    SimpleFeatureSource featureSource = (SimpleFeatureSource) selectedLayer.getResource(FeatureSource.class,
+                            new NullProgressMonitor());
+                    if (featureSource == null) {
+                        return;
+                    }
+                    SimpleFeatureCollection featureCollection = featureSource.getFeatures(selectedLayer.getQuery(true));
+                    SimpleFeatureIterator features = featureCollection.features();
+                    if (features.hasNext()) {
+                        selectionChanged(activeMap, selectedLayer, features.next());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public void init( IViewSite site ) throws PartInitException {
         super.init(site);
 
+        FormEditorPlugin.getDefault().registerPartListener();
         FormEditorPlugin.getDefault().addSelectionListener(this);
     }
 
@@ -161,7 +192,7 @@ public class FormView extends ViewPart implements ISelectionObserver {
         } else {
             throw new IllegalArgumentException();
         }
-        
+
         parentComposite.layout();
         parentComposite.redraw();
     }
