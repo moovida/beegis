@@ -60,6 +60,9 @@ public class AForm extends FormElement {
         return null;
     }
     
+    public void setConstraints( String constraints ) {
+    }
+    
     public void closeConstraints() {
     }
 }
