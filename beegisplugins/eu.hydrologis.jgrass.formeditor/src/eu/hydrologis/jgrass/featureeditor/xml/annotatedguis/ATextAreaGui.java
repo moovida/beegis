@@ -18,7 +18,6 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -63,17 +62,7 @@ public class ATextAreaGui extends FormGuiElement implements KeyListener {
         if (feature == null) {
             return;
         }
-        Object attribute = feature.getAttribute(aTextArea.fieldName);
-        String attributeString = "";
-        if (attribute != null) {
-            attributeString = attribute.toString();
-        } else {
-            MessageDialog.openError(text.getShell(), "Missing attribute", "Could not find an attribute with name: "
-                    + aTextArea.fieldName + " \nCheck your form!");
-        }
-        if (attributeString.equals("") && aTextArea.defaultText != null) {
-            attributeString = aTextArea.defaultText;
-        }
+        String attributeString = getAttributeString(feature, aTextArea.fieldName, aTextArea.defaultText);
         text.setText(attributeString);
         keyReleased(null);
     }

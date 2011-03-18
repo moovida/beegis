@@ -20,10 +20,8 @@ package eu.hydrologis.jgrass.featureeditor.views;
 import java.io.File;
 import java.io.IOException;
 
-import net.refractions.udig.catalog.ID;
 import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.IMap;
-import net.refractions.udig.project.IStyleBlackboard;
 import net.refractions.udig.project.internal.Map;
 import net.refractions.udig.project.ui.internal.ApplicationGISInternal;
 import net.refractions.udig.project.ui.internal.tool.impl.ToolContextImpl;
@@ -47,7 +45,6 @@ import org.opengis.feature.simple.SimpleFeature;
 
 import eu.hydrologis.jgrass.featureeditor.utils.ISelectionObserver;
 import eu.hydrologis.jgrass.featureeditor.utils.Utilities;
-import eu.hydrologis.jgrass.formeditor.FormEditor;
 import eu.hydrologis.jgrass.formeditor.FormEditorPlugin;
 
 /**
