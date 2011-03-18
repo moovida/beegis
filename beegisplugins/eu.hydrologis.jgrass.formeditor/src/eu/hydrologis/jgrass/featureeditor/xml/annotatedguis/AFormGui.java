@@ -30,6 +30,8 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.opengis.feature.simple.SimpleFeature;
@@ -77,6 +79,10 @@ public class AFormGui {
             // we want the content to scroll
             final ScrolledComposite scroller = new ScrolledComposite(folder, SWT.V_SCROLL | SWT.H_SCROLL);
             scroller.setLayout(new FillLayout());
+            GridData scrollerGD = new GridData(SWT.FILL, SWT.FILL, true, false);
+            scrollerGD.widthHint = SWT.DEFAULT;
+            scrollerGD.heightHint = SWT.DEFAULT;
+            scroller.setLayoutData(scrollerGD);
 
             // the actual content of the tab
             Composite tabComposite = new Composite(scroller, SWT.NONE);
@@ -99,7 +105,7 @@ public class AFormGui {
                 formGui.makeGui(tabComposite);
             }
 
-            Point size = folder.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+            Point size = tabComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT);
             scroller.setMinHeight(size.y);
             scroller.setMinWidth(size.x);
         }
@@ -152,6 +158,25 @@ public class AFormGui {
                     formElement.setConstraints(newConstraints);
                 } else {
                     // shift any other
+                    FormElement formElement = orderedElements.get(i);
+                    String constraints = formElement.getConstraints();
+                    String[] constraintsSplit = constraints.split(",");
+                    for( int j = 0; j < constraintsSplit.length; j++ ) {
+                        String candidate = constraintsSplit[j].trim();
+                        if (candidate.startsWith("cell")) {
+                            String[] cellSplit = candidate.split("\\s+");
+                            int tmpxShift = Integer.parseInt(cellSplit[1]);
+                            int tmpyShift = Integer.parseInt(cellSplit[2]);
+                            tmpxShift = tmpxShift - xShift;
+                            tmpyShift = tmpyShift - yShift;
+                            cellSplit[1] = "" + tmpxShift;
+                            cellSplit[2] = "" + tmpyShift;
+                            String newCandidate = arrayToString(cellSplit, " ");
+                            constraintsSplit[j] = newCandidate;
+                        }
+                    }
+                    String newConstraints = arrayToString(constraintsSplit, ",");
+                    formElement.setConstraints(newConstraints);
                 }
             }
         }
