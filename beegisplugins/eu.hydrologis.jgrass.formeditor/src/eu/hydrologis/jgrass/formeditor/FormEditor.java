@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
@@ -85,13 +86,8 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
     /** This is the root of the editor's model. */
     private WidgetsDiagram diagram;
 
-    /**
-     * The formEditor is a singleton, this var is set when it is opened and made accessible.
-     * 
-     * <p>This is a hack, should be designed better.
-     */
     private static List<AttributeDescriptor> attributeDescriptors = new ArrayList<AttributeDescriptor>();
-    private static String[] fieldNamesArrays;
+    private static String[] fieldNamesArrays = new String[0];
 
     /** Palette component, holding the tools and shapes. */
     private static PaletteRoot paletteModel;
@@ -269,10 +265,7 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
             IMap activeMap = ApplicationGIS.getActiveMap();
             if (activeMap != null) {
                 ILayer selectedLayer = activeMap.getEditManager().getSelectedLayer();
-                if (selectedLayer == null) {
-                    return;
-                }
-                if (selectedLayer.hasResource(FeatureSource.class)) {
+                if (selectedLayer != null && selectedLayer.hasResource(FeatureSource.class)) {
                     attributeDescriptors = selectedLayer.getSchema().getAttributeDescriptors();
                     List<String> fieldNamesList = new ArrayList<String>();
                     for( int i = 0; i < attributeDescriptors.size(); i++ ) {
@@ -295,7 +288,13 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
     }
 
     private void loadFromProperties( IEditorInput input ) throws Exception {
-        File file = new File(((FileStoreEditorInput) input).getURI());
+        URI uri = ((FileStoreEditorInput) input).getURI();
+        File file = null;
+        if (uri != null) {
+            file = new File(uri);
+        } else {
+            file = new File(System.getProperty("user.home"), "default.form");
+        }
 
         diagram = new WidgetsDiagram();
 
