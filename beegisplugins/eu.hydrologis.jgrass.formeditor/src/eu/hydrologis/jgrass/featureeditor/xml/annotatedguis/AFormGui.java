@@ -92,6 +92,8 @@ public class AFormGui {
 
             // add things to the tab composite
             List< ? extends FormElement> orderedElements = orderedTab.getOrderedElements();
+            fixEmptyShifts(orderedElements);
+
             for( FormElement orderedGuiElement : orderedElements ) {
                 FormGuiElement formGui = formGuiFactory.createFormGui(orderedGuiElement);
                 formGui.makeGui(tabComposite);
@@ -116,5 +118,55 @@ public class AFormGui {
 
     public FormElement getFormElement() {
         return form;
+    }
+
+    private void fixEmptyShifts( List< ? extends FormElement> orderedElements ) {
+        /*
+         * cut off the empty cells before, based on the fact that
+         * the positional factor has cell x y xspan, yspan in it.
+         * If it doesn't, the form is supposed to have been created 
+         * manually and is ok like that.
+         */
+        if (orderedElements.size() > 0) {
+            int xShift = 0;
+            int yShift = 0;
+            for( int i = 0; i < orderedElements.size(); i++ ) {
+                if (i == 0) {
+                    // get the shift
+                    FormElement formElement = orderedElements.get(i);
+                    String constraints = formElement.getConstraints();
+                    String[] constraintsSplit = constraints.split(",");
+                    for( int j = 0; j < constraintsSplit.length; j++ ) {
+                        String candidate = constraintsSplit[j].trim();
+                        if (candidate.startsWith("cell")) {
+                            String[] cellSplit = candidate.split("\\s+");
+                            xShift = Integer.parseInt(cellSplit[1]);
+                            yShift = Integer.parseInt(cellSplit[2]);
+                            cellSplit[1] = "0";
+                            cellSplit[2] = "0";
+                            String newCandidate = arrayToString(cellSplit, " ");
+                            constraintsSplit[j] = newCandidate;
+                        }
+                    }
+                    String newConstraints = arrayToString(constraintsSplit, ",");
+                    formElement.setConstraints(newConstraints);
+                } else {
+                    // shift any other
+                }
+            }
+        }
+    }
+
+    public static String arrayToString( String[] strs, String delimiter ) {
+        if (strs.length == 0) {
+            return "";
+        }
+        StringBuffer sbuf = new StringBuffer();
+        sbuf.append(strs[0]);
+        for( int idx = 1; idx < strs.length; idx++ ) {
+            sbuf.append(delimiter);
+            sbuf.append(strs[idx]);
+        }
+        return sbuf.toString();
     }
 }

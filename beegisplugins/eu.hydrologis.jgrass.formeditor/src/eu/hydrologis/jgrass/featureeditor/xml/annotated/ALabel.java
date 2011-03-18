@@ -80,4 +80,8 @@ public class ALabel extends FormElement {
         return constraints;
     }
     
+    public void setConstraints( String constraints ) {
+        this.constraints = constraints;
+    }
+    
 }

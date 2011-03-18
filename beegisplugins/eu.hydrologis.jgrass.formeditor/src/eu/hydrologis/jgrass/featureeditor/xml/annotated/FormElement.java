@@ -56,6 +56,13 @@ public abstract class FormElement implements Comparable<FormElement> {
      */
     public abstract String getConstraints();
 
+    /**
+     * Setter for the constraint of the element.
+     * 
+     * @param newConstraint the new constraint for the element.
+     */
+    public abstract void setConstraints(String newConstraint);
+
     @Override
     public int compareTo( FormElement o ) {
         // this ordering is not consistent with equals.
