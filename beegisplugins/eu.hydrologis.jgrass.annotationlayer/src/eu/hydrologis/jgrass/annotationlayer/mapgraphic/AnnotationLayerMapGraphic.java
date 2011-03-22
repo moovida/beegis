@@ -45,11 +45,7 @@ import eu.hydrologis.jgrass.beegisutils.jgrassported.DressedWorldStroke;
  */
 public class AnnotationLayerMapGraphic implements MapGraphic {
 
-    private boolean doReporject = true;
     private Display display = Display.getDefault();
-    private int priorW2PX = -1;
-    private int priorW2PY = -1;
-    private int jumped = 0;
 
     public void draw( MapGraphicContext context ) {
         try {
@@ -60,9 +56,8 @@ public class AnnotationLayerMapGraphic implements MapGraphic {
                 return;
             }
 
-            priorW2PX = -1;
-            priorW2PY = -1;
-            jumped = 0;
+            int priorW2PX = -1;
+            int priorW2PY = -1;
 
             ViewportGraphics g = context.getGraphics();
             CoordinateReferenceSystem mapCrs = viewportModel.getCRS();
@@ -72,22 +67,20 @@ public class AnnotationLayerMapGraphic implements MapGraphic {
                     // at least 2 coords for a line
                     continue;
                 }
-                Path p = new Path(display);
-                int screenNodeNum = 0;
+                Path p = null;
                 CoordinateReferenceSystem annotationCrs = CRS.parseWKT(d.crsWKT);
                 /*
                  * if the crs was different, we need to transform it
                  */
                 // if (!mapCrs.equals(annotationCrs, false)) {
-                if (!mapCrs.getName().equals(annotationCrs.getName())) {
+                if (!CRS.equalsIgnoreMetadata(mapCrs, annotationCrs)) {
 
                     // transform coordinates before check
                     MathTransform transform = CRS.findMathTransform(annotationCrs, mapCrs, true);
                     // first check if the stroke is inside the window
                     if (d.bounds != null) {
                         Envelope screenBounds = viewportModel.getBounds();
-                        ReferencedEnvelope strokeEnvelopeTransformed = d.bounds.transform(mapCrs,
-                                true);
+                        ReferencedEnvelope strokeEnvelopeTransformed = d.bounds.transform(mapCrs, true);
                         if (!screenBounds.intersects(strokeEnvelopeTransformed)) {
                             continue;
                         }
@@ -104,12 +97,12 @@ public class AnnotationLayerMapGraphic implements MapGraphic {
                         }
                         priorW2PX = worldToPixel.x;
                         priorW2PY = worldToPixel.y;
-                        if (i == 0) {
+                        if (p == null) {
+                            p = new Path(display);
                             p.moveTo(priorW2PX, priorW2PY);
                         } else {
                             p.lineTo(priorW2PX, priorW2PY);
                         }
-                        screenNodeNum++;
                     }
                 } else {
                     // no need to transform
@@ -122,24 +115,21 @@ public class AnnotationLayerMapGraphic implements MapGraphic {
                     for( int i = 0; i < nodes.length; i = i + 2 ) {
                         Double x = nodes[i];
                         Double y = nodes[i + 1];
-                        java.awt.Point worldToPixel = viewportModel.worldToPixel(new Coordinate(x,
-                                y));
-                        if (worldToPixel.x == priorW2PX && worldToPixel.y == priorW2PY) {
-                            // System.out.println(jumped++);
-                            continue;
+                        java.awt.Point worldToPixel = viewportModel.worldToPixel(new Coordinate(x, y));
+                        if (worldToPixel.x != priorW2PX || worldToPixel.y != priorW2PY) {
+                            priorW2PX = worldToPixel.x;
+                            priorW2PY = worldToPixel.y;
+                            if (p == null) {
+                                p = new Path(display);
+                                p.moveTo(priorW2PX, priorW2PY);
+                            } else {
+                                p.lineTo(priorW2PX, priorW2PY);
+                            }
                         }
-                        priorW2PX = worldToPixel.x;
-                        priorW2PY = worldToPixel.y;
-                        if (i == 0) {
-                            p.moveTo(priorW2PX, priorW2PY);
-                        } else {
-                            p.lineTo(priorW2PX, priorW2PY);
-                        }
-                        screenNodeNum++;
                     }
                 }
 
-                if (screenNodeNum > 1) {
+                if (p != null && p.getPathData().points.length > 3) {
                     int width = d.strokeWidth[0];
                     double mapScale = viewportModel.getScaleDenominator();
                     double lineScale = d.scale;
@@ -148,12 +138,12 @@ public class AnnotationLayerMapGraphic implements MapGraphic {
                     int[] rgb = d.rgb;
                     g.setColor(new Color(rgb[0], rgb[1], rgb[2], rgb[3]));
                     g.drawPath(p);
+                    p.dispose();
                 }
             }
         } catch (Exception e) {
             AnnotationPlugin
-                    .log(
-                            "AnnotationPlugin problem: eu.hydrologis.jgrass.annotationlayer.mapgraphic#AnnotationLayerMapGraphic#draw", e); //$NON-NLS-1$
+                    .log("AnnotationPlugin problem: eu.hydrologis.jgrass.annotationlayer.mapgraphic#AnnotationLayerMapGraphic#draw", e); //$NON-NLS-1$
             e.printStackTrace();
         }
     }
