@@ -1,6 +1,22 @@
+/*
+ * JGrass - Free Open Source Java GIS http://www.jgrass.org 
+ * (C) HydroloGIS - www.hydrologis.com 
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package eu.hydrologis.jgrass.annotationlayer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +49,11 @@ import com.vividsolutions.jts.geom.Envelope;
 import eu.hydrologis.jgrass.annotationlayer.mapgraphic.AnnotationLayerMapGraphic;
 import eu.hydrologis.jgrass.beegisutils.jgrassported.DressedWorldStroke;
 
+/**
+ * The annotation tool.
+ * 
+ * @author Andrea Antonello (www.hydrologis.com)
+ */
 public class AnnotationTool extends AbstractModalTool implements ModalTool {
 
     /**
@@ -83,8 +104,8 @@ public class AnnotationTool extends AbstractModalTool implements ModalTool {
         draw.setValid(true); // make sure context.getViewportPane().repaint()
 
         draw.setPaint(AnnotationPlugin.getDefault().getCurrentStrokeColor());
-        draw.setStroke(AnnotationPlugin.getDefault().getCurrentStrokeStyle(), AnnotationPlugin
-                .getDefault().getCurrentStrokeWidth());
+        draw.setStroke(AnnotationPlugin.getDefault().getCurrentStrokeStyle(), AnnotationPlugin.getDefault()
+                .getCurrentStrokeWidth());
         // knows about us
         context.sendASyncCommand(draw); // should of isValided us
 
@@ -154,15 +175,14 @@ public class AnnotationTool extends AbstractModalTool implements ModalTool {
     }
 
     public void setActive( boolean active ) {
-        IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                .getActivePage();
+        IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         if (active) {
             try {
                 /*
                  * load the right mapgraphic layer
                  */
-                List<IResolve> mapgraphics = CatalogPlugin.getDefault().getLocalCatalog().find(
-                        MapGraphicService.SERVICE_URL, null);
+                List<IResolve> mapgraphics = CatalogPlugin.getDefault().getLocalCatalog()
+                        .find(MapGraphicService.SERVICE_URL, null);
                 List<IResolve> members = mapgraphics.get(0).members(null);
                 for( IResolve resolve : members ) {
                     if (resolve.canResolve(AnnotationLayerMapGraphic.class)) {
@@ -177,9 +197,8 @@ public class AnnotationTool extends AbstractModalTool implements ModalTool {
                         }
 
                         if (!isAlreadyLoaded) {
-                            List< ? extends ILayer> addedLayersToMap = ApplicationGIS
-                                    .addLayersToMap(activeMap, Collections.singletonList(resolve
-                                            .resolve(IGeoResource.class, null)), layers.size());
+                            List< ? extends ILayer> addedLayersToMap = ApplicationGIS.addLayersToMap(activeMap,
+                                    Collections.singletonList(resolve.resolve(IGeoResource.class, null)), layers.size());
                             for( ILayer l : addedLayersToMap ) {
                                 IGeoResource geoResource = l.getGeoResource();
                                 if (geoResource.canResolve(AnnotationLayerMapGraphic.class)) {
@@ -194,8 +213,7 @@ public class AnnotationTool extends AbstractModalTool implements ModalTool {
             } catch (Exception e) {
                 e.printStackTrace();
                 String message = "An error occurred while loading the annotation graphics.";
-                ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                        AnnotationPlugin.PLUGIN_ID, e);
+                ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, AnnotationPlugin.PLUGIN_ID, e);
             }
         } else {
             new Thread(){
@@ -204,8 +222,7 @@ public class AnnotationTool extends AbstractModalTool implements ModalTool {
                         AnnotationPlugin.getDefault().saveAnnotations();
                     } catch (Exception e) {
                         String message = "An error occurred while saving the annotations.";
-                        ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                                AnnotationPlugin.PLUGIN_ID, e);
+                        ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, AnnotationPlugin.PLUGIN_ID, e);
                     }
                 };
             }.start();
