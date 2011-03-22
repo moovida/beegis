@@ -21,7 +21,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
 import java.util.List;
 
 import net.refractions.udig.mapgraphic.MapGraphic;
@@ -30,8 +29,6 @@ import net.refractions.udig.project.render.IViewportModel;
 import net.refractions.udig.project.ui.ApplicationGIS;
 import net.refractions.udig.ui.graphics.ViewportGraphics;
 
-import org.eclipse.swt.graphics.Path;
-import org.eclipse.swt.widgets.Display;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -45,11 +42,11 @@ import eu.hydrologis.jgrass.annotationlayer.AnnotationPlugin;
 import eu.hydrologis.jgrass.beegisutils.jgrassported.DressedWorldStroke;
 
 /**
+ * The annotation layer graphic.
+ * 
  * @author Andrea Antonello - www.hydrologis.com
  */
 public class AnnotationLayerMapGraphic implements MapGraphic {
-
-    private Display display = Display.getDefault();
 
     public void draw( MapGraphicContext context ) {
         try {
