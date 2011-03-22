@@ -18,6 +18,10 @@
 package eu.hydrologis.jgrass.annotationlayer.mapgraphic;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 import net.refractions.udig.mapgraphic.MapGraphic;
@@ -50,7 +54,12 @@ public class AnnotationLayerMapGraphic implements MapGraphic {
     public void draw( MapGraphicContext context ) {
         try {
             IViewportModel viewportModel = ApplicationGIS.getActiveMap().getViewportModel();
-
+            ViewportGraphics g = context.getGraphics();
+            Graphics2D graphics = g.getGraphics(Graphics2D.class);
+            if (graphics != null) {
+                graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            }
+            
             List<DressedWorldStroke> strokes = AnnotationPlugin.getDefault().getStrokes();
             if (strokes == null || strokes.size() == 0) {
                 return;
@@ -59,7 +68,7 @@ public class AnnotationLayerMapGraphic implements MapGraphic {
             int priorW2PX = -1;
             int priorW2PY = -1;
 
-            ViewportGraphics g = context.getGraphics();
+            
             CoordinateReferenceSystem mapCrs = viewportModel.getCRS();
             for( DressedWorldStroke d : strokes ) {
                 Double[] nodes = d.nodes;
@@ -67,7 +76,7 @@ public class AnnotationLayerMapGraphic implements MapGraphic {
                     // at least 2 coords for a line
                     continue;
                 }
-                Path p = null;
+                GeneralPath p = null;
                 CoordinateReferenceSystem annotationCrs = CRS.parseWKT(d.crsWKT);
                 /*
                  * if the crs was different, we need to transform it
@@ -98,7 +107,7 @@ public class AnnotationLayerMapGraphic implements MapGraphic {
                         priorW2PX = worldToPixel.x;
                         priorW2PY = worldToPixel.y;
                         if (p == null) {
-                            p = new Path(display);
+                            p = new GeneralPath();
                             p.moveTo(priorW2PX, priorW2PY);
                         } else {
                             p.lineTo(priorW2PX, priorW2PY);
@@ -120,7 +129,7 @@ public class AnnotationLayerMapGraphic implements MapGraphic {
                             priorW2PX = worldToPixel.x;
                             priorW2PY = worldToPixel.y;
                             if (p == null) {
-                                p = new Path(display);
+                                p = new GeneralPath();
                                 p.moveTo(priorW2PX, priorW2PY);
                             } else {
                                 p.lineTo(priorW2PX, priorW2PY);
@@ -129,7 +138,7 @@ public class AnnotationLayerMapGraphic implements MapGraphic {
                     }
                 }
 
-                if (p != null && p.getPathData().points.length > 3) {
+                if (p != null) {
                     int width = d.strokeWidth[0];
                     double mapScale = viewportModel.getScaleDenominator();
                     double lineScale = d.scale;
@@ -137,8 +146,7 @@ public class AnnotationLayerMapGraphic implements MapGraphic {
                     g.setStroke(d.lineStyle[0], width);
                     int[] rgb = d.rgb;
                     g.setColor(new Color(rgb[0], rgb[1], rgb[2], rgb[3]));
-                    g.drawPath(p);
-                    p.dispose();
+                    g.draw(p);
                 }
             }
         } catch (Exception e) {
