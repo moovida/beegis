@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.refractions.udig.project.ui.ApplicationGIS;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -34,13 +36,15 @@ import eu.hydrologis.jgrass.beegisutils.database.BeegisTablesUpdater;
 import eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.AnnotationsTable;
 import eu.hydrologis.jgrass.beegisutils.jgrassported.DressedWorldStroke;
 import eu.hydrologis.jgrass.database.DatabasePlugin;
+import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 import eu.hydrologis.jgrass.database.earlystartup.AnnotatedClassesCollector;
 import eu.hydrologis.jgrass.database.interfaces.IDatabaseConnection;
+import eu.hydrologis.jgrass.database.interfaces.IDatabaseEventListener;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class AnnotationPlugin extends AbstractUIPlugin {
+public class AnnotationPlugin extends AbstractUIPlugin implements IDatabaseEventListener {
 
     private static final long ANNOTATIONSID = 1l;
 
@@ -78,6 +82,19 @@ public class AnnotationPlugin extends AbstractUIPlugin {
         // make sure the classes were already mapped
         AnnotatedClassesCollector.getAnnotatedClassesList();
         BeegisTablesUpdater.checkSchema();
+        resetStrokes();
+        
+        DatabasePlugin.getDefault().addDatabaseEventListener(plugin);
+    }
+
+    /**
+     * Reads the strokes from the database from scratch.
+     * 
+     *  <p>Is needed for example on database change.
+     * 
+     * @throws Exception
+     */
+    public void resetStrokes() throws Exception {
         List<DressedWorldStroke> drawLines = getDrawLines();
         if (drawLines != null && drawLines.size() > 0) {
             setStrokes(drawLines);
@@ -211,6 +228,22 @@ public class AnnotationPlugin extends AbstractUIPlugin {
             session.close();
         }
         return lines;
+    }
+
+    @Override
+    public void onDatabaseOpened( DatabaseConnectionProperties connectionProperties ) {
+        // need to reread the strokes
+        try {
+            resetStrokes();
+            ApplicationGIS.getActiveMap().getRenderManager().refresh(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDatabaseClosed( DatabaseConnectionProperties connectionProperties ) {
+        
     }
 
 }
