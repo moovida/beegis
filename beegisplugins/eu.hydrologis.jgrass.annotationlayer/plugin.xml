@@ -75,5 +75,14 @@
             name="%annotations.view.name">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.exportWizards">
+      <wizard
+            class="eu.hydrologis.jgrass.annotationlayer.export.ExportAnnotationsWizard"
+            icon="icons/highlight.gif"
+            id="eu.hydrologis.jgrass.annotationlayer.export.ExportAnnotationsWizard"
+            name="Export Annotations Layer">
+      </wizard>
+   </extension>
 
 </plugin>
