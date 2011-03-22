@@ -20,6 +20,7 @@ package eu.hydrologis.jgrass.beegisutils.jgrassported;
 import java.io.Serializable;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * This class represents a dressed stroke, i.e. coordinates in world position of
@@ -29,16 +30,28 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * @author Andrea Antonello - www.hydrologis.com
  */
 public class DressedWorldStroke implements Serializable {
+    /**
+     * The coordinates as x1, y1, x2, y2...
+     */
     public Double[] nodes = { 0.0 };
     
     public ReferencedEnvelope bounds = null;
 
+    /**
+     * The stroke width.
+     */
     public int[] strokeWidth = { 1 };
 
+    /**
+     * The color as r,g,b,alpha.
+     */
     public int[] rgb = { 0, 0, 0, 128 };
 
     public int[] lineStyle = { 6 };
 
+    /**
+     * The well known text of the {@link CoordinateReferenceSystem}.
+     */
     public String crsWKT = null;
 
     public double scale = -1.0;
