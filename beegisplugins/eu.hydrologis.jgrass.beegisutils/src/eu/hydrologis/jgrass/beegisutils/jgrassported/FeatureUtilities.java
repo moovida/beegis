@@ -426,6 +426,7 @@ public class FeatureUtilities {
      * @throws IOException 
      */
     public static void featureCollectionToTempLayer( SimpleFeatureCollection featureCollection ) throws IOException {
+       
         IGeoResource resource = CatalogPlugin.getDefault().getLocalCatalog()
                 .createTemporaryResource(featureCollection.getSchema());
 
