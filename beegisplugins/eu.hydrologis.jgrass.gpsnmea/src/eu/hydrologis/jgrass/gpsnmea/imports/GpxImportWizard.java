@@ -152,6 +152,9 @@ public class GpxImportWizard extends Wizard implements INewWizard {
                                 BigDecimal lat = wptType.getLat();
                                 BigDecimal lon = wptType.getLon();
                                 BigDecimal ele = wptType.getEle();
+                                if (ele == null) {
+                                    ele = new BigDecimal(-1.0);
+                                }
                                 XMLGregorianCalendar time = wptType.getTime();
                                 String timeStr = "";
                                 if (time != null) {
@@ -205,6 +208,9 @@ public class GpxImportWizard extends Wizard implements INewWizard {
                         BigDecimal lat = wptType.getLat();
                         BigDecimal lon = wptType.getLon();
                         BigDecimal ele = wptType.getEle();
+                        if (ele == null) {
+                            ele = new BigDecimal(-1.0);
+                        }
                         XMLGregorianCalendar time = wptType.getTime();
                         String timeStr = "";
                         if (time != null) {
