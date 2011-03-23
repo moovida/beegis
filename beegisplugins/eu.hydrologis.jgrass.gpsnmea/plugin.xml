@@ -165,6 +165,11 @@
             id="eu.hydrologis.jgrass.gpsnmea.exportlogwizard"
             name="Export Gps Log">
       </wizard>
+      <wizard
+            class="eu.hydrologis.jgrass.gpsnmea.export.ExportGpxWizard"
+            id="eu.hydrologis.jgrass.gpsnmea.export.exportgpxwizard"
+            name="Export feature layer to Gpx">
+      </wizard>
    </extension>
    <extension
          point="org.eclipse.ui.importWizards">
