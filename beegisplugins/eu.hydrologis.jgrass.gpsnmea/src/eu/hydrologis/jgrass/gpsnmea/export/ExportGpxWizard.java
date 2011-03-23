@@ -3,8 +3,6 @@ package eu.hydrologis.jgrass.gpsnmea.export;
 import java.io.FileOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -37,7 +35,6 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.joda.time.DateTime;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -53,18 +50,14 @@ import schema.gpx_1_1.WptType;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 
-import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
 import eu.hydrologis.jgrass.beegisutils.jgrassported.GeometryUtilities;
 import eu.hydrologis.jgrass.beegisutils.jgrassported.GeometryUtilities.GEOMETRYTYPE;
-import eu.hydrologis.jgrass.gpsnmea.gps.GpsPoint;
 
 public class ExportGpxWizard extends Wizard implements IExportWizard {
 
     private static final DefaultGeographicCRS GPXCRS = DefaultGeographicCRS.WGS84;
     private ExportGpxWizardPage mainPage;
-    private static GeometryFactory gF = new GeometryFactory();
     private CoordinateReferenceSystem mapCrs;
 
     public ExportGpxWizard() {
@@ -111,8 +104,8 @@ public class ExportGpxWizard extends Wizard implements IExportWizard {
                                 case MULTIPOINT:
                                     exportToGpxPoint(featureCollection, filePath, pm);
                                     break;
-
                                 default:
+                                    exportLineOrPolygonToGpx(featureCollection, filePath, pm);
                                     break;
                                 }
 
@@ -149,7 +142,6 @@ public class ExportGpxWizard extends Wizard implements IExportWizard {
         try {
             ReferencedEnvelope bounds = featureCollection.getBounds();
             bounds = bounds.transform(GPXCRS, true);
-
             MathTransform transform = CRS.findMathTransform(mapCrs, GPXCRS);
 
             ObjectFactory factory = new ObjectFactory();
@@ -214,118 +206,84 @@ public class ExportGpxWizard extends Wizard implements IExportWizard {
         }
     }
 
-    private void exportToGpxLine( List<GpsPoint> gpsPointBetweenTimeStamp, int splitIntervalMinutes, String filePath,
-            IProgressMonitor pm ) throws Exception {
+    private void exportLineOrPolygonToGpx( SimpleFeatureCollection featureCollection, String filePath, IProgressMonitor pm )
+            throws Exception {
+        pm.beginTask("Exporting to gpx...", IProgressMonitor.UNKNOWN);
+        try {
+            ReferencedEnvelope bounds = featureCollection.getBounds();
+            bounds = bounds.transform(GPXCRS, true);
+            MathTransform transform = CRS.findMathTransform(mapCrs, GPXCRS);
 
-        ObjectFactory factory = new ObjectFactory();
+            ObjectFactory factory = new ObjectFactory();
+            GpxType gpxType = factory.createGpxType();
+            gpxType.setCreator("BeeGIS");
+            gpxType.setVersion("1.1");
+            List<TrkType> trkList = gpxType.getTrk();
 
-        List<TrksegType> segments = new ArrayList<TrksegType>();
+            SimpleFeatureIterator featureIterator = featureCollection.features();
+            while( featureIterator.hasNext() ) {
+                SimpleFeature feature = featureIterator.next();
 
-        double minLat = Double.POSITIVE_INFINITY;
-        double minLon = Double.POSITIVE_INFINITY;
-        double maxLat = Double.NEGATIVE_INFINITY;
-        double maxLon = Double.NEGATIVE_INFINITY;
-        DateTime first = null;
-        DateTime last = null;
-        List<GpsPoint> pointsList = new ArrayList<GpsPoint>();
-        for( int i = 0; i < gpsPointBetweenTimeStamp.size() - 1; i++ ) {
-            GpsPoint p1 = gpsPointBetweenTimeStamp.get(i);
-            DateTime t1 = p1.utcDateTime;
+                TrkType trkType = factory.createTrkType();
+                trkType.setName(feature.getID());
+                trkType.setType("Gps tracklog");
+                trkList.add(trkType);
+                List<TrksegType> trksegList = trkType.getTrkseg();
 
-            pointsList.add(p1);
+                Geometry geom = (Geometry) feature.getDefaultGeometry();
+                int numGeometries = geom.getNumGeometries();
+                for( int i = 0; i < numGeometries; i++ ) {
+                    Geometry geometryN = geom.getGeometryN(i);
+                    geometryN = JTS.transform(geometryN, transform);
 
-            GpsPoint p2 = gpsPointBetweenTimeStamp.get(i + 1);
-            DateTime t2 = p2.utcDateTime;
+                    Coordinate[] coordinates = geometryN.getCoordinates();
 
-            long dt = (t2.getMillis() - t1.getMillis()) / 1000l / 60l;
-            if (dt < 0 || dt > splitIntervalMinutes || i == gpsPointBetweenTimeStamp.size() - 2) {
-                // dump line and start new
-                if (pointsList.size() < 2) {
-                    continue;
-                }
-
-                // create gpx track
-                TrksegType trksegType = factory.createTrksegType();
-                List<WptType> trkptList = trksegType.getTrkpt();
-
-                for( GpsPoint gpsPoint : pointsList ) {
-                    double altitude = gpsPoint.altitude;
-                    double lat = gpsPoint.latitude;
-                    double lon = gpsPoint.longitude;
-                    double sat = gpsPoint.sat;
-                    double hdop = gpsPoint.hdop;
-
-                    if (lat < minLat)
-                        minLat = lat;
-                    if (lat > maxLat)
-                        maxLat = lat;
-                    if (lon < minLon)
-                        minLon = lon;
-                    if (lon > maxLon)
-                        maxLon = lon;
-
-                    DateTime utc = gpsPoint.utcDateTime;
-                    if (first == null || utc.isBefore(first)) {
-                        first = utc;
+                    // create gpx track
+                    TrksegType trksegType = factory.createTrksegType();
+                    List<WptType> trkptList = trksegType.getTrkpt();
+                    for( Coordinate coordinate : coordinates ) {
+                        GregorianCalendar gCalendar = (GregorianCalendar) GregorianCalendar.getInstance();
+                        XMLGregorianCalendar xmlCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gCalendar);
+                        WptType wptType = factory.createWptType();
+                        if (!Double.isNaN(coordinate.z)) {
+                            wptType.setEle(BigDecimal.valueOf(coordinate.z));
+                        }
+                        wptType.setLat(BigDecimal.valueOf(coordinate.y));
+                        wptType.setLon(BigDecimal.valueOf(coordinate.x));
+                        // wptType.setHdop(BigDecimal.valueOf(hdop));
+                        // wptType.setSat(BigInteger.valueOf((long) sat));
+                        wptType.setTime(xmlCalendar);
+                        trkptList.add(wptType);
                     }
-                    if (last == null || utc.isAfter(last)) {
-                        last = utc;
-                    }
+                    trksegList.add(trksegType);
 
-                    GregorianCalendar gCalendar = (GregorianCalendar) GregorianCalendar.getInstance();
-                    gCalendar.setTimeInMillis(utc.getMillis());
-                    XMLGregorianCalendar xmlCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gCalendar);
-
-                    WptType wptType = factory.createWptType();
-                    wptType.setEle(BigDecimal.valueOf(altitude));
-                    wptType.setLat(BigDecimal.valueOf(lat));
-                    wptType.setLon(BigDecimal.valueOf(lon));
-                    wptType.setHdop(BigDecimal.valueOf(hdop));
-                    wptType.setSat(BigInteger.valueOf((long) sat));
-                    wptType.setTime(xmlCalendar);
-                    trkptList.add(wptType);
                 }
-
-                segments.add(trksegType);
-
-                // reset
-                pointsList.clear();
             }
+            featureIterator.close();
+
+            MetadataType metaType = factory.createMetadataType();
+            BoundsType boundsType = factory.createBoundsType();
+            boundsType.setMaxlat(new BigDecimal(bounds.getMaxY()));
+            boundsType.setMinlat(new BigDecimal(bounds.getMinY()));
+            boundsType.setMaxlon(new BigDecimal(bounds.getMaxX()));
+            boundsType.setMinlon(new BigDecimal(bounds.getMinX()));
+            metaType.setBounds(boundsType);
+
+            GregorianCalendar gCalendar = (GregorianCalendar) GregorianCalendar.getInstance();
+            XMLGregorianCalendar xmlCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gCalendar);
+            metaType.setTime(xmlCalendar);
+
+            gpxType.setMetadata(metaType);
+
+            JAXBElement<GpxType> jaxbElement = factory.createGpx(gpxType);
+            JAXBContext jaxbContext = JAXBContext.newInstance("schema.gpx_1_1");
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
+            marshaller.marshal(jaxbElement, new FileOutputStream(filePath));
+
+        } finally {
+            pm.done();
         }
-        GpxType gpxType = factory.createGpxType();
-        gpxType.setCreator("BeeGIS");
-        gpxType.setVersion("1.1");
-
-        MetadataType metaType = factory.createMetadataType();
-        BoundsType boundsType = factory.createBoundsType();
-        boundsType.setMaxlat(new BigDecimal(maxLat));
-        boundsType.setMinlat(new BigDecimal(minLat));
-        boundsType.setMaxlon(new BigDecimal(maxLon));
-        boundsType.setMinlon(new BigDecimal(minLon));
-        metaType.setBounds(boundsType);
-
-        GregorianCalendar gCalendar = (GregorianCalendar) GregorianCalendar.getInstance();
-        XMLGregorianCalendar xmlCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gCalendar);
-        metaType.setTime(xmlCalendar);
-
-        gpxType.setMetadata(metaType);
-
-        TrkType trkType = factory.createTrkType();
-        trkType.setName(first.toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM) + " - "
-                + last.toString(BeegisUtilsPlugin.dateTimeFormatterYYYYMMDDHHMM));
-        trkType.setType("Gps tracklog");
-
-        List<TrkType> trkList = gpxType.getTrk();
-        trkList.add(trkType);
-
-        List<TrksegType> trksegList = trkType.getTrkseg();
-        trksegList.addAll(segments);
-
-        JAXBElement<GpxType> jaxbElement = factory.createGpx(gpxType);
-        JAXBContext jaxbContext = JAXBContext.newInstance("schema.gpx_1_1");
-        Marshaller marshaller = jaxbContext.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-        marshaller.marshal(jaxbElement, new FileOutputStream(filePath));
     }
 
 }
