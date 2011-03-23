@@ -181,6 +181,12 @@
             id="eu.hydrologis.jgrass.gpsnmea.arcpadimportwizard"
             name="Import Arcpad Gpslog Dbf">
       </wizard>
+      <wizard
+            category="eu.hydrologis.jgrass.ui.featureimportcategory"
+            class="eu.hydrologis.jgrass.gpsnmea.imports.GpxImportWizard"
+            id="eu.hydrologis.jgrass.gpsnmea.imports.gpximportwizard"
+            name="Import GPX file">
+      </wizard>
    </extension>
 
 </plugin>
