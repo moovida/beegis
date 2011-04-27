@@ -25,10 +25,11 @@ import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_Y;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_NAME;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_ORIENTATION;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TAB;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TYPE;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.ORIENTATION_TYPE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TEXT_TYPE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.TYPE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
@@ -66,6 +67,7 @@ public class SeparatorWidget extends AWidget {
      * Initializes the property descriptors array.
      */
     private void initDescriptors() {
+        TextPropertyDescriptor type = new TextPropertyDescriptor(TYPE_PROP, LABELS_TYPE);
         TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, LABELS_LAYOUT_X);
         TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, LABELS_LAYOUT_Y);
         TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, LABELS_LAYOUT_W);
@@ -75,7 +77,7 @@ public class SeparatorWidget extends AWidget {
         ComboBoxPropertyDescriptor orientationTypes = new ComboBoxPropertyDescriptor(ORIENTATION_TYPE_PROP, LABELS_ORIENTATION,
                 Constants.ORIENTATION_TYPES);
         orientationTypes.setLabelProvider(new CustomLabelProviders.OrientationTypesLabelProvider());
-        descriptors = new IPropertyDescriptor[]{x, y, w, h, orientationTypes, nameValue, tabValue};
+        descriptors = new IPropertyDescriptor[]{type, x, y, w, h, orientationTypes, nameValue, tabValue};
 
         addIntegerPropertyValidator(x);
         addIntegerPropertyValidator(y);
@@ -120,4 +122,7 @@ public class SeparatorWidget extends AWidget {
         }
     }
 
+    public String getWidgetType() {
+        return TYPE;
+    }
 }
