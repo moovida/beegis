@@ -106,6 +106,9 @@ public final class FormEditorPaletteFactory {
                 new SimpleFactory(RadioButtonWidget.class), radioId, radioId24);
         componentsDrawer.add(component);
 
+        // palette open by default at the begin
+        componentsDrawer.setInitialState(PaletteDrawer.INITIAL_STATE_OPEN);
+        
         return componentsDrawer;
     }
 
