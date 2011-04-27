@@ -18,18 +18,18 @@
 package eu.hydrologis.jgrass.formeditor.model;
 
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.DIMENSION_PIXEL_SNAP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_HEIGHT_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PIXEL_SNAP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.SOURCE_CONNECTIONS_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TARGET_CONNECTIONS_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TYPE_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_LOCATION_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_NAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_SIZE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_SOURCE_CONNECTIONS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_TAB_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_TARGET_CONNECTIONS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_TYPE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_WIDTH_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_XPOS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_YPOS_PROP;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,10 +106,10 @@ public abstract class AWidget extends AModelElement {
         }
         if (conn.getSource() == this) {
             sourceConnections.add(conn);
-            firePropertyChange(SOURCE_CONNECTIONS_PROP, null, conn);
+            firePropertyChange(ID_SOURCE_CONNECTIONS_PROP, null, conn);
         } else if (conn.getTarget() == this) {
             targetConnections.add(conn);
-            firePropertyChange(TARGET_CONNECTIONS_PROP, null, conn);
+            firePropertyChange(ID_TARGET_CONNECTIONS_PROP, null, conn);
         }
     }
 
@@ -124,10 +124,10 @@ public abstract class AWidget extends AModelElement {
         }
         if (conn.getSource() == this) {
             sourceConnections.remove(conn);
-            firePropertyChange(SOURCE_CONNECTIONS_PROP, null, conn);
+            firePropertyChange(ID_SOURCE_CONNECTIONS_PROP, null, conn);
         } else if (conn.getTarget() == this) {
             targetConnections.remove(conn);
-            firePropertyChange(TARGET_CONNECTIONS_PROP, null, conn);
+            firePropertyChange(ID_TARGET_CONNECTIONS_PROP, null, conn);
         }
     }
 
@@ -158,19 +158,19 @@ public abstract class AWidget extends AModelElement {
      * @see #getPropertyDescriptors()
      */
     public Object getPropertyValue( Object propertyId ) {
-        if (XPOS_PROP.equals(propertyId)) {
+        if (ID_XPOS_PROP.equals(propertyId)) {
             return Integer.toString(location.x);
-        } else if (YPOS_PROP.equals(propertyId)) {
+        } else if (ID_YPOS_PROP.equals(propertyId)) {
             return Integer.toString(location.y);
-        } else if (HEIGHT_PROP.equals(propertyId)) {
+        } else if (ID_HEIGHT_PROP.equals(propertyId)) {
             return Integer.toString(size.height);
-        } else if (WIDTH_PROP.equals(propertyId)) {
+        } else if (ID_WIDTH_PROP.equals(propertyId)) {
             return Integer.toString(size.width);
-        } else if (NAME_PROP.equals(propertyId)) {
+        } else if (ID_NAME_PROP.equals(propertyId)) {
             return getName();
-        } else if (TAB_PROP.equals(propertyId)) {
+        } else if (ID_TAB_PROP.equals(propertyId)) {
             return getTab();
-        } else if (TYPE_PROP.equals(propertyId)) {
+        } else if (ID_TYPE_PROP.equals(propertyId)) {
             return getWidgetType();
         }
         return super.getPropertyValue(propertyId);
@@ -185,21 +185,21 @@ public abstract class AWidget extends AModelElement {
      * @see #getPropertyDescriptors()
      */
     public void setPropertyValue( Object propertyId, Object value ) {
-        if (XPOS_PROP.equals(propertyId)) {
+        if (ID_XPOS_PROP.equals(propertyId)) {
             int x = Integer.parseInt((String) value);
             setLocation(new Point(x, location.y));
-        } else if (YPOS_PROP.equals(propertyId)) {
+        } else if (ID_YPOS_PROP.equals(propertyId)) {
             int y = Integer.parseInt((String) value);
             setLocation(new Point(location.x, y));
-        } else if (HEIGHT_PROP.equals(propertyId)) {
+        } else if (ID_HEIGHT_PROP.equals(propertyId)) {
             int height = Integer.parseInt((String) value);
             setSize(new Dimension(size.width, height));
-        } else if (WIDTH_PROP.equals(propertyId)) {
+        } else if (ID_WIDTH_PROP.equals(propertyId)) {
             int width = Integer.parseInt((String) value);
             setSize(new Dimension(width, size.height));
-        } else if (NAME_PROP.equals(propertyId)) {
+        } else if (ID_NAME_PROP.equals(propertyId)) {
             setName((String) value);
-        } else if (TAB_PROP.equals(propertyId)) {
+        } else if (ID_TAB_PROP.equals(propertyId)) {
             setTab((String) value);
         } else {
             super.setPropertyValue(propertyId, value);
@@ -239,7 +239,7 @@ public abstract class AWidget extends AModelElement {
         }
         snapLocation(newLocation);
         location.setLocation(newLocation);
-        firePropertyChange(LOCATION_PROP, null, location);
+        firePropertyChange(ID_LOCATION_PROP, null, location);
     }
 
     private void snapLocation( Point newLocation ) {
@@ -269,7 +269,7 @@ public abstract class AWidget extends AModelElement {
         if (newSize != null) {
             snapSize(newSize);
             size.setSize(newSize);
-            firePropertyChange(SIZE_PROP, null, size);
+            firePropertyChange(ID_SIZE_PROP, null, size);
         }
     }
 
@@ -292,7 +292,7 @@ public abstract class AWidget extends AModelElement {
             throw new IllegalArgumentException();
         }
         widgetName = newName;
-        firePropertyChange(NAME_PROP, null, widgetName);
+        firePropertyChange(ID_NAME_PROP, null, widgetName);
     }
 
     public String getTab() {
@@ -308,7 +308,7 @@ public abstract class AWidget extends AModelElement {
 
     public void setTab( String widgetTab ) {
         this.widgetTab = widgetTab;
-        firePropertyChange(TAB_PROP, null, widgetTab);
+        firePropertyChange(ID_TAB_PROP, null, widgetTab);
         FormEditor.setLastTabNameInserted(widgetTab);
     }
 

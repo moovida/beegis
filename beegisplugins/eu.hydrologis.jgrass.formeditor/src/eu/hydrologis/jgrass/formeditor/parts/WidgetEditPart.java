@@ -10,12 +10,12 @@
  *******************************************************************************/
 package eu.hydrologis.jgrass.formeditor.parts;
 
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.FIELDNAME_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.SOURCE_CONNECTIONS_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TARGET_CONNECTIONS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_FIELDNAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_LOCATION_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_NAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_SIZE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_SOURCE_CONNECTIONS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_TARGET_CONNECTIONS_PROP;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -276,11 +276,11 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
      */
     public void propertyChange( PropertyChangeEvent evt ) {
         String prop = evt.getPropertyName();
-        if (SIZE_PROP.equals(prop) || LOCATION_PROP.equals(prop) || FIELDNAME_PROP.equals(prop) || NAME_PROP.equals(prop)) {
+        if (ID_SIZE_PROP.equals(prop) || ID_LOCATION_PROP.equals(prop) || ID_FIELDNAME_PROP.equals(prop) || ID_NAME_PROP.equals(prop)) {
             refreshVisuals();
-        } else if (SOURCE_CONNECTIONS_PROP.equals(prop)) {
+        } else if (ID_SOURCE_CONNECTIONS_PROP.equals(prop)) {
             refreshSourceConnections();
-        } else if (TARGET_CONNECTIONS_PROP.equals(prop)) {
+        } else if (ID_TARGET_CONNECTIONS_PROP.equals(prop)) {
             refreshTargetConnections();
         }
     }
