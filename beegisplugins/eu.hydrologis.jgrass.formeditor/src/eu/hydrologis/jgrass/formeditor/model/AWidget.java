@@ -26,6 +26,7 @@ import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.SOURCE_CONNECTIONS_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.TARGET_CONNECTIONS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.TYPE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
@@ -169,6 +170,8 @@ public abstract class AWidget extends AModelElement {
             return getName();
         } else if (TAB_PROP.equals(propertyId)) {
             return getTab();
+        } else if (TYPE_PROP.equals(propertyId)) {
+            return getWidgetType();
         }
         return super.getPropertyValue(propertyId);
     }
@@ -300,7 +303,7 @@ public abstract class AWidget extends AModelElement {
     }
 
     public String getText() {
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
     public void setTab( String widgetTab ) {
@@ -343,6 +346,14 @@ public abstract class AWidget extends AModelElement {
         return isMarked;
     }
 
+    /**
+     * Get the widget type.
+     * 
+     * @return the string describing the widget type.
+     */
+    protected abstract String getWidgetType();
+
+    @SuppressWarnings("nls")
     protected static synchronized void addIntegerPropertyValidator( PropertyDescriptor descriptor ) {
         descriptor.setValidator(new ICellEditorValidator(){
             public String isValid( Object value ) {
@@ -357,6 +368,7 @@ public abstract class AWidget extends AModelElement {
         });
     }
 
+    @SuppressWarnings("nls")
     protected static synchronized void addDoublePropertyValidator( PropertyDescriptor descriptor ) {
         descriptor.setValidator(new ICellEditorValidator(){
             public String isValid( Object value ) {

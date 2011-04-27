@@ -28,8 +28,10 @@ import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_X;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_Y;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_NAME;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TAB;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TYPE;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.TYPE_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
@@ -72,6 +74,7 @@ public class TextAreaWidget extends AWidget {
      * Initializes the property descriptors array.
      */
     private void initDescriptors() {
+        TextPropertyDescriptor type = new TextPropertyDescriptor(TYPE_PROP, LABELS_TYPE);
         ComboBoxPropertyDescriptor fields = new ComboBoxPropertyDescriptor(FIELDNAME_PROP, LABELS_FIELDNAME,
                 FormEditor.getFieldNamesArrays());
         fields.setLabelProvider(new CustomLabelProviders.FieldNamesLabelProvider());
@@ -82,7 +85,7 @@ public class TextAreaWidget extends AWidget {
         TextPropertyDescriptor nameValue = new TextPropertyDescriptor(NAME_PROP, LABELS_NAME);
         TextPropertyDescriptor defaultValue = new TextPropertyDescriptor(DEFAULT_PROP, LABELS_DEFAULT);
         TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
-        descriptors = new IPropertyDescriptor[]{x, y, w, h, fields, nameValue, defaultValue, tabValue};
+        descriptors = new IPropertyDescriptor[]{type, x, y, w, h, fields, nameValue, defaultValue, tabValue};
 
         addIntegerPropertyValidator(x);
         addIntegerPropertyValidator(y);
@@ -139,4 +142,7 @@ public class TextAreaWidget extends AWidget {
         firePropertyChange(FIELDNAME_PROP, null, fieldNameValue);
     }
 
+    public String getWidgetType() {
+        return TYPE;
+    }
 }

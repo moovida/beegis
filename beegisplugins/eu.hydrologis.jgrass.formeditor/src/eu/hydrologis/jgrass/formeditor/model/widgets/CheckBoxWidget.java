@@ -17,7 +17,7 @@
  */
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.CHECKBOX_TYPES;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.FIELDNAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_CHECK;
@@ -49,7 +49,7 @@ import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class CheckBoxWidget extends AWidget {
-    public static final String TYPE = "check";
+    public static final String TYPE = "check"; //$NON-NLS-1$
 
     private static final long serialVersionUID = 1;
 
@@ -67,6 +67,7 @@ public class CheckBoxWidget extends AWidget {
      * Initializes the property descriptors array.
      */
     private void initDescriptors() {
+        TextPropertyDescriptor type = new TextPropertyDescriptor(TYPE_PROP, LABELS_TYPE);
         ComboBoxPropertyDescriptor fields = new ComboBoxPropertyDescriptor(FIELDNAME_PROP, LABELS_FIELDNAME,
                 FormEditor.getFieldNamesArrays());
         TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, LABELS_LAYOUT_X);
@@ -76,7 +77,7 @@ public class CheckBoxWidget extends AWidget {
         ComboBoxPropertyDescriptor defaultValue = new ComboBoxPropertyDescriptor(SELECTION_PROP, LABELS_CHECK, CHECKBOX_TYPES);
         defaultValue.setLabelProvider(new CustomLabelProviders.CheckboxLabelProvider());
         TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
-        descriptors = new IPropertyDescriptor[]{fields, x, y, w, h, defaultValue, tabValue};
+        descriptors = new IPropertyDescriptor[]{type, fields, x, y, w, h, defaultValue, tabValue};
 
         addIntegerPropertyValidator(x);
         addIntegerPropertyValidator(y);
@@ -89,7 +90,7 @@ public class CheckBoxWidget extends AWidget {
     }
 
     public String toString() {
-        return "Check " + hashCode();
+        return "Check " + hashCode(); //$NON-NLS-1$
     }
 
     public Object getPropertyValue( Object propertyId ) {
@@ -127,5 +128,9 @@ public class CheckBoxWidget extends AWidget {
     public void setFieldnameValue( int fieldNameValue ) {
         this.fieldNameValue = fieldNameValue;
         firePropertyChange(FIELDNAME_PROP, null, fieldNameValue);
+    }
+
+    public String getWidgetType() {
+        return TYPE;
     }
 }

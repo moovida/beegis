@@ -51,6 +51,7 @@ public class LabelWidget extends AWidget {
      * Initializes the property descriptors array.
      */
     private void initDescriptors() {
+        TextPropertyDescriptor type = new TextPropertyDescriptor(TYPE_PROP, LABELS_TYPE);
         TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, LABELS_LAYOUT_X);
         TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, LABELS_LAYOUT_Y);
         TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, LABELS_LAYOUT_W);
@@ -58,7 +59,7 @@ public class LabelWidget extends AWidget {
         TextPropertyDescriptor textValue = new TextPropertyDescriptor(TEXT_PROP, LABELS_TEXT);
         TextPropertyDescriptor nameValue = new TextPropertyDescriptor(NAME_PROP, LABELS_NAME);
         TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
-        descriptors = new IPropertyDescriptor[]{x, y, w, h, textValue, nameValue, tabValue};
+        descriptors = new IPropertyDescriptor[]{type, x, y, w, h, textValue, nameValue, tabValue};
 
         addIntegerPropertyValidator(x);
         addIntegerPropertyValidator(y);
@@ -128,4 +129,7 @@ public class LabelWidget extends AWidget {
         return sB.toString();
     }
 
+    public String getWidgetType() {
+        return TYPE;
+    }
 }

@@ -20,34 +20,21 @@ package eu.hydrologis.jgrass.formeditor.model.widgets;
 import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.DialogCellEditor;
-import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.jface.viewers.CellEditor.LayoutData;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -55,8 +42,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Layout;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -86,12 +71,12 @@ public class FilepathCellEditor extends CellEditor {
 
     private String[] extentions;
 
-    /**
-     * Default TextCellEditor style
-     * specify no borders on text widget as cell outline in table already
-     * provides the look of a border.
-     */
-    private static final int defaultStyle = SWT.SINGLE;
+    // /**
+    // * Default TextCellEditor style
+    // * specify no borders on text widget as cell outline in table already
+    // * provides the look of a border.
+    // */
+    // private static final int defaultStyle = SWT.SINGLE;
 
     private FocusAdapter textFocusAdapter;
 
@@ -236,7 +221,7 @@ public class FilepathCellEditor extends CellEditor {
                 }
             }
         });
-        
+
         browseButton.addMouseTrackListener(new MouseTrackAdapter(){
             @Override
             public void mouseEnter( MouseEvent e ) {
@@ -244,7 +229,7 @@ public class FilepathCellEditor extends CellEditor {
                 text.removeModifyListener(getModifyListener());
                 text.removeFocusListener(textFocusAdapter);
             }
-            
+
             @Override
             public void mouseExit( MouseEvent e ) {
                 super.mouseExit(e);
