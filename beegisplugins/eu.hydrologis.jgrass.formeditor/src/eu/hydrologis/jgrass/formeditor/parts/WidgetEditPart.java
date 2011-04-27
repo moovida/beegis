@@ -138,52 +138,54 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
      */
     private IFigure createFigureForModel() {
         Object model = getModel();
+        IFigure theFigure;
         if (model instanceof TextFieldWidget) {
             Image textImage = ImageCache.getInstance().getImage(ImageCache.TEXT_ICON_24);
-            IFigure figure = new WidgetTextFigure((AWidget) model, textImage);
+            WidgetTextFigure figure = new WidgetTextFigure((AWidget) model, textImage);
             figure.setOpaque(true);
             figure.setBackgroundColor(ColorConstants.lightGreen);
-            return figure;
+            theFigure = figure;
         } else if (model instanceof TextAreaWidget) {
             Image textAreaImage = ImageCache.getInstance().getImage(ImageCache.TEXTAREA_ICON_24);
             WidgetTextFigure figure = new WidgetTextFigure((AWidget) model, textAreaImage);
             figure.setOpaque(true);
             figure.setBackgroundColor(ColorConstants.green);
-            return figure;
+            theFigure = figure;
         } else if (model instanceof LabelWidget) {
             Image labelImage = ImageCache.getInstance().getImage(ImageCache.LABEL_ICON_24);
             IFigure figure = new WidgetTextFigure((AWidget) model, labelImage);
             figure.setOpaque(true);
             figure.setBackgroundColor(ColorConstants.yellow);
-            return figure;
+            theFigure = figure;
         } else if (model instanceof SeparatorWidget) {
             Image separatorImage = ImageCache.getInstance().getImage(ImageCache.SEPARATOR_ICON_24);
             IFigure figure = new WidgetTextFigure((AWidget) model, separatorImage);
             figure.setOpaque(false);
             figure.setBackgroundColor(ColorConstants.lightGray);
-            return figure;
+            theFigure = figure;
         } else if (model instanceof ComboBoxWidget) {
             Image comboImage = ImageCache.getInstance().getImage(ImageCache.COMBO_ICON_24);
             IFigure figure = new WidgetTextFigure((AWidget) model, comboImage);
             figure.setOpaque(true);
             figure.setBackgroundColor(ColorConstants.cyan);
-            return figure;
+            theFigure = figure;
         } else if (model instanceof CheckBoxWidget) {
             Image checkImage = ImageCache.getInstance().getImage(ImageCache.CHECK_ICON_24);
             IFigure figure = new WidgetTextFigure((AWidget) model, checkImage);
             figure.setOpaque(true);
             figure.setBackgroundColor(ColorConstants.lightBlue);
-            return figure;
+            theFigure = figure;
         } else if (model instanceof RadioButtonWidget) {
             Image radioImage = ImageCache.getInstance().getImage(ImageCache.RADIO_ICON_24);
             IFigure figure = new WidgetTextFigure((AWidget) model, radioImage);
             figure.setOpaque(true);
             figure.setBackgroundColor(ColorConstants.orange);
-            return figure;
+            theFigure = figure;
         } else {
             // if Shapes gets extended the conditions above must be updated
             throw new IllegalArgumentException();
         }
+        return theFigure;
     }
 
     /**
@@ -276,7 +278,8 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
      */
     public void propertyChange( PropertyChangeEvent evt ) {
         String prop = evt.getPropertyName();
-        if (ID_SIZE_PROP.equals(prop) || ID_LOCATION_PROP.equals(prop) || ID_FIELDNAME_PROP.equals(prop) || ID_NAME_PROP.equals(prop)) {
+        if (ID_SIZE_PROP.equals(prop) || ID_LOCATION_PROP.equals(prop) || ID_FIELDNAME_PROP.equals(prop)
+                || ID_NAME_PROP.equals(prop)) {
             refreshVisuals();
         } else if (ID_SOURCE_CONNECTIONS_PROP.equals(prop)) {
             refreshSourceConnections();
