@@ -18,20 +18,20 @@
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.FIELDNAME_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_CHECK;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_FIELDNAME;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_H;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_W;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_X;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_Y;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TAB;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.SELECTION_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_FIELDNAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_HEIGHT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_CHECK;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_FIELDNAME;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_LAYOUT_H;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_LAYOUT_W;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_LAYOUT_X;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_LAYOUT_Y;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_TAB;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_SELECTION_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_TAB_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_WIDTH_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_XPOS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_YPOS_PROP;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.graphics.Image;
@@ -67,16 +67,16 @@ public class CheckBoxWidget extends AWidget {
      * Initializes the property descriptors array.
      */
     private void initDescriptors() {
-        TextPropertyDescriptor type = new TextPropertyDescriptor(TYPE_PROP, LABELS_TYPE);
-        ComboBoxPropertyDescriptor fields = new ComboBoxPropertyDescriptor(FIELDNAME_PROP, LABELS_FIELDNAME,
+        TextPropertyDescriptor type = new TextPropertyDescriptor(ID_TYPE_PROP, WIDGET_TYPE);
+        ComboBoxPropertyDescriptor fields = new ComboBoxPropertyDescriptor(ID_FIELDNAME_PROP, WIDGET_FIELDNAME,
                 FormEditor.getFieldNamesArrays());
-        TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, LABELS_LAYOUT_X);
-        TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, LABELS_LAYOUT_Y);
-        TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, LABELS_LAYOUT_W);
-        TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, LABELS_LAYOUT_H);
-        ComboBoxPropertyDescriptor defaultValue = new ComboBoxPropertyDescriptor(SELECTION_PROP, LABELS_CHECK, CHECKBOX_TYPES);
+        TextPropertyDescriptor x = new TextPropertyDescriptor(ID_XPOS_PROP, WIDGET_LAYOUT_X);
+        TextPropertyDescriptor y = new TextPropertyDescriptor(ID_YPOS_PROP, WIDGET_LAYOUT_Y);
+        TextPropertyDescriptor w = new TextPropertyDescriptor(ID_WIDTH_PROP, WIDGET_LAYOUT_W);
+        TextPropertyDescriptor h = new TextPropertyDescriptor(ID_HEIGHT_PROP, WIDGET_LAYOUT_H);
+        ComboBoxPropertyDescriptor defaultValue = new ComboBoxPropertyDescriptor(ID_SELECTION_PROP, WIDGET_CHECK, CHECKBOX_TYPES);
         defaultValue.setLabelProvider(new CustomLabelProviders.CheckboxLabelProvider());
-        TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
+        TextPropertyDescriptor tabValue = new TextPropertyDescriptor(ID_TAB_PROP, WIDGET_TAB);
         descriptors = new IPropertyDescriptor[]{type, fields, x, y, w, h, defaultValue, tabValue};
 
         addIntegerPropertyValidator(x);
@@ -94,18 +94,18 @@ public class CheckBoxWidget extends AWidget {
     }
 
     public Object getPropertyValue( Object propertyId ) {
-        if (SELECTION_PROP.equals(propertyId)) {
+        if (ID_SELECTION_PROP.equals(propertyId)) {
             return getDefaultValue();
-        } else if (FIELDNAME_PROP.equals(propertyId)) {
+        } else if (ID_FIELDNAME_PROP.equals(propertyId)) {
             return getFieldnameValue();
         }
         return super.getPropertyValue(propertyId);
     }
 
     public void setPropertyValue( Object propertyId, Object value ) {
-        if (SELECTION_PROP.equals(propertyId)) {
+        if (ID_SELECTION_PROP.equals(propertyId)) {
             setDefaultValue((Integer) value);
-        } else if (FIELDNAME_PROP.equals(propertyId)) {
+        } else if (ID_FIELDNAME_PROP.equals(propertyId)) {
             setFieldnameValue((Integer) value);
         } else {
             super.setPropertyValue(propertyId, value);
@@ -118,7 +118,7 @@ public class CheckBoxWidget extends AWidget {
 
     public void setDefaultValue( int defaultValue ) {
         this.defaultValue = defaultValue;
-        firePropertyChange(SELECTION_PROP, null, defaultValue);
+        firePropertyChange(ID_SELECTION_PROP, null, defaultValue);
     }
 
     public int getFieldnameValue() {
@@ -127,7 +127,7 @@ public class CheckBoxWidget extends AWidget {
 
     public void setFieldnameValue( int fieldNameValue ) {
         this.fieldNameValue = fieldNameValue;
-        firePropertyChange(FIELDNAME_PROP, null, fieldNameValue);
+        firePropertyChange(ID_FIELDNAME_PROP, null, fieldNameValue);
     }
 
     public String getWidgetType() {

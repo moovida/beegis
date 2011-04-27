@@ -18,14 +18,14 @@
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.CHECKBOX_TYPES;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.DEFAULT_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.ITEMS_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LOCATION_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.SELECTION_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.SIZE_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TEXT_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TYPE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_DEFAULT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_ITEMS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_LOCATION_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_NAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_SELECTION_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_SIZE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_TEXT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_TYPE_PROP;
 
 import java.util.Properties;
 
@@ -42,14 +42,14 @@ import eu.hydrologis.jgrass.formeditor.model.AWidget;
 public class WidgetFactory {
 
     public static AWidget createWidget( Properties properties ) {
-        String type = properties.getProperty(TYPE_PROP);
-        String fieldName = properties.getProperty(NAME_PROP);
-        String sizeString = properties.getProperty(SIZE_PROP);
+        String type = properties.getProperty(ID_TYPE_PROP);
+        String fieldName = properties.getProperty(ID_NAME_PROP);
+        String sizeString = properties.getProperty(ID_SIZE_PROP);
         String[] sizeSplit = sizeString.split(","); //$NON-NLS-1$
         int width = Integer.parseInt(sizeSplit[0].trim());
         int height = Integer.parseInt(sizeSplit[1].trim());
 
-        String locationString = properties.getProperty(LOCATION_PROP);
+        String locationString = properties.getProperty(ID_LOCATION_PROP);
         String[] locSplit = locationString.split(","); //$NON-NLS-1$
         int x = Integer.parseInt(locSplit[0].trim());
         int y = Integer.parseInt(locSplit[1].trim());
@@ -91,14 +91,14 @@ public class WidgetFactory {
     }
 
     private static void addRadioButtonAttributes( RadioButtonWidget widget, Properties properties ) {
-        String itemsString = properties.getProperty(ITEMS_PROP);
+        String itemsString = properties.getProperty(ID_ITEMS_PROP);
         widget.setItemsValue(itemsString);
-        String defaultString = properties.getProperty(DEFAULT_PROP);
+        String defaultString = properties.getProperty(ID_DEFAULT_PROP);
         widget.setDefaultValue(defaultString);
     }
 
     private static void addCheckBoxAttributes( CheckBoxWidget widget, Properties properties ) {
-        String selectionString = properties.getProperty(SELECTION_PROP);
+        String selectionString = properties.getProperty(ID_SELECTION_PROP);
         if (selectionString.equals(CHECKBOX_TYPES[0])) {
             widget.setDefaultValue(0);
         } else {
@@ -107,24 +107,24 @@ public class WidgetFactory {
     }
 
     private static void addComboBoxAttributes( ComboBoxWidget widget, Properties properties ) {
-        String itemsString = properties.getProperty(ITEMS_PROP);
+        String itemsString = properties.getProperty(ID_ITEMS_PROP);
         widget.setItemsValue(itemsString);
-        String defaultString = properties.getProperty(DEFAULT_PROP);
+        String defaultString = properties.getProperty(ID_DEFAULT_PROP);
         widget.setDefaultValue(defaultString);
     }
 
     private static void addTextFieldAttributes( TextFieldWidget widget, Properties properties ) {
-        String defaultString = properties.getProperty(DEFAULT_PROP);
+        String defaultString = properties.getProperty(ID_DEFAULT_PROP);
         widget.setDefaultValue(defaultString);
     }
 
     private static void addTextAreaAttributes( TextAreaWidget widget, Properties properties ) {
-        String defaultString = properties.getProperty(DEFAULT_PROP);
+        String defaultString = properties.getProperty(ID_DEFAULT_PROP);
         widget.setDefaultValue(defaultString);
     }
 
     private static void addLabelAttributes( LabelWidget widget, Properties properties ) {
-        String textString = properties.getProperty(TEXT_PROP);
+        String textString = properties.getProperty(ID_TEXT_PROP);
         widget.setText(textString);
     }
 

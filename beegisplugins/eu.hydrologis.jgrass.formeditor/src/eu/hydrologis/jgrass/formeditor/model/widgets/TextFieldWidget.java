@@ -17,26 +17,26 @@
  */
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.DEFAULT_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.FIELDNAME_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_DEFAULT;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_FIELDNAME;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_H;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_W;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_X;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_Y;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_NAME;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TAB;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TEXT_TYPE;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TYPE;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TEXT_TYPE_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TYPE_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_DEFAULT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_FIELDNAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_HEIGHT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_DEFAULT;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_FIELDNAME;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_LAYOUT_H;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_LAYOUT_W;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_LAYOUT_X;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_LAYOUT_Y;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_NAME;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_TAB;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_TEXT_TYPE;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_TYPE;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_NAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_TAB_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_TEXT_TYPE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_TYPE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_WIDTH_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_XPOS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_YPOS_PROP;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.graphics.Image;
@@ -75,19 +75,19 @@ public class TextFieldWidget extends AWidget {
      * Initializes the property descriptors array.
      */
     private void initDescriptors() {
-        TextPropertyDescriptor type = new TextPropertyDescriptor(TYPE_PROP, LABELS_TYPE);
-        ComboBoxPropertyDescriptor fields = new ComboBoxPropertyDescriptor(FIELDNAME_PROP, LABELS_FIELDNAME,
+        TextPropertyDescriptor type = new TextPropertyDescriptor(ID_TYPE_PROP, WIDGET_TYPE);
+        ComboBoxPropertyDescriptor fields = new ComboBoxPropertyDescriptor(ID_FIELDNAME_PROP, WIDGET_FIELDNAME,
                 FormEditor.getFieldNamesArrays());
         fields.setLabelProvider(new CustomLabelProviders.FieldNamesLabelProvider());
-        TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, LABELS_LAYOUT_X);
-        TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, LABELS_LAYOUT_Y);
-        TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, LABELS_LAYOUT_W);
-        TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, LABELS_LAYOUT_H);
-        TextPropertyDescriptor nameValue = new TextPropertyDescriptor(NAME_PROP, LABELS_NAME);
-        TextPropertyDescriptor defaultValue = new TextPropertyDescriptor(DEFAULT_PROP, LABELS_DEFAULT);
-        ComboBoxPropertyDescriptor types = new ComboBoxPropertyDescriptor(TEXT_TYPE_PROP, LABELS_TEXT_TYPE, Constants.TEXT_TYPES);
+        TextPropertyDescriptor x = new TextPropertyDescriptor(ID_XPOS_PROP, WIDGET_LAYOUT_X);
+        TextPropertyDescriptor y = new TextPropertyDescriptor(ID_YPOS_PROP, WIDGET_LAYOUT_Y);
+        TextPropertyDescriptor w = new TextPropertyDescriptor(ID_WIDTH_PROP, WIDGET_LAYOUT_W);
+        TextPropertyDescriptor h = new TextPropertyDescriptor(ID_HEIGHT_PROP, WIDGET_LAYOUT_H);
+        TextPropertyDescriptor nameValue = new TextPropertyDescriptor(ID_NAME_PROP, WIDGET_NAME);
+        TextPropertyDescriptor defaultValue = new TextPropertyDescriptor(ID_DEFAULT_PROP, WIDGET_DEFAULT);
+        ComboBoxPropertyDescriptor types = new ComboBoxPropertyDescriptor(ID_TEXT_TYPE_PROP, WIDGET_TEXT_TYPE, Constants.TEXT_TYPES);
         types.setLabelProvider(new CustomLabelProviders.TypesLabelProvider());
-        TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
+        TextPropertyDescriptor tabValue = new TextPropertyDescriptor(ID_TAB_PROP, WIDGET_TAB);
         descriptors = new IPropertyDescriptor[]{type, x, y, w, h, fields, nameValue, defaultValue, types, tabValue};
 
         addIntegerPropertyValidator(x);
@@ -105,23 +105,23 @@ public class TextFieldWidget extends AWidget {
     }
 
     public Object getPropertyValue( Object propertyId ) {
-        if (DEFAULT_PROP.equals(propertyId)) {
+        if (ID_DEFAULT_PROP.equals(propertyId)) {
             return getDefaultValue();
-        } else if (TEXT_TYPE_PROP.equals(propertyId)) {
+        } else if (ID_TEXT_TYPE_PROP.equals(propertyId)) {
             return getTypeValue();
-        } else if (FIELDNAME_PROP.equals(propertyId)) {
+        } else if (ID_FIELDNAME_PROP.equals(propertyId)) {
             return getFieldnameValue();
         }
         return super.getPropertyValue(propertyId);
     }
 
     public void setPropertyValue( Object propertyId, Object value ) {
-        if (DEFAULT_PROP.equals(propertyId)) {
+        if (ID_DEFAULT_PROP.equals(propertyId)) {
             String defValue = (String) value;
             setDefaultValue(defValue);
-        } else if (TEXT_TYPE_PROP.equals(propertyId)) {
+        } else if (ID_TEXT_TYPE_PROP.equals(propertyId)) {
             setTypeValue((Integer) value);
-        } else if (FIELDNAME_PROP.equals(propertyId)) {
+        } else if (ID_FIELDNAME_PROP.equals(propertyId)) {
             setFieldnameValue((Integer) value);
         } else {
             super.setPropertyValue(propertyId, value);
@@ -137,7 +137,7 @@ public class TextFieldWidget extends AWidget {
             throw new IllegalArgumentException();
         }
         this.defaultValue = defaultValue;
-        firePropertyChange(DEFAULT_PROP, null, defaultValue);
+        firePropertyChange(ID_DEFAULT_PROP, null, defaultValue);
     }
 
     public int getTypeValue() {
@@ -146,7 +146,7 @@ public class TextFieldWidget extends AWidget {
 
     public void setTypeValue( int typeValue ) {
         this.typeValue = typeValue;
-        firePropertyChange(TEXT_TYPE_PROP, null, typeValue);
+        firePropertyChange(ID_TEXT_TYPE_PROP, null, typeValue);
     }
 
     public int getFieldnameValue() {
@@ -155,7 +155,7 @@ public class TextFieldWidget extends AWidget {
 
     public void setFieldnameValue( int fieldNameValue ) {
         this.fieldNameValue = fieldNameValue;
-        firePropertyChange(FIELDNAME_PROP, null, fieldNameValue);
+        firePropertyChange(ID_FIELDNAME_PROP, null, fieldNameValue);
     }
 
     public String getWidgetType() {

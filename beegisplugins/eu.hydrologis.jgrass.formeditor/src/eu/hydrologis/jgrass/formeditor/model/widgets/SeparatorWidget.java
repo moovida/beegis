@@ -17,22 +17,22 @@
  */
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.HEIGHT_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_H;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_W;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_X;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_LAYOUT_Y;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_NAME;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_ORIENTATION;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TAB;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.LABELS_TYPE;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.NAME_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.ORIENTATION_TYPE_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TAB_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.TYPE_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDTH_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.XPOS_PROP;
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.YPOS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_HEIGHT_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_LAYOUT_H;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_LAYOUT_W;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_LAYOUT_X;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_LAYOUT_Y;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_NAME;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_ORIENTATION;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_TAB;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.WIDGET_TYPE;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_NAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_ORIENTATION_TYPE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_TAB_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_TYPE_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_WIDTH_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_XPOS_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_YPOS_PROP;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.graphics.Image;
@@ -67,14 +67,14 @@ public class SeparatorWidget extends AWidget {
      * Initializes the property descriptors array.
      */
     private void initDescriptors() {
-        TextPropertyDescriptor type = new TextPropertyDescriptor(TYPE_PROP, LABELS_TYPE);
-        TextPropertyDescriptor x = new TextPropertyDescriptor(XPOS_PROP, LABELS_LAYOUT_X);
-        TextPropertyDescriptor y = new TextPropertyDescriptor(YPOS_PROP, LABELS_LAYOUT_Y);
-        TextPropertyDescriptor w = new TextPropertyDescriptor(WIDTH_PROP, LABELS_LAYOUT_W);
-        TextPropertyDescriptor h = new TextPropertyDescriptor(HEIGHT_PROP, LABELS_LAYOUT_H);
-        TextPropertyDescriptor nameValue = new TextPropertyDescriptor(NAME_PROP, LABELS_NAME);
-        TextPropertyDescriptor tabValue = new TextPropertyDescriptor(TAB_PROP, LABELS_TAB);
-        ComboBoxPropertyDescriptor orientationTypes = new ComboBoxPropertyDescriptor(ORIENTATION_TYPE_PROP, LABELS_ORIENTATION,
+        TextPropertyDescriptor type = new TextPropertyDescriptor(ID_TYPE_PROP, WIDGET_TYPE);
+        TextPropertyDescriptor x = new TextPropertyDescriptor(ID_XPOS_PROP, WIDGET_LAYOUT_X);
+        TextPropertyDescriptor y = new TextPropertyDescriptor(ID_YPOS_PROP, WIDGET_LAYOUT_Y);
+        TextPropertyDescriptor w = new TextPropertyDescriptor(ID_WIDTH_PROP, WIDGET_LAYOUT_W);
+        TextPropertyDescriptor h = new TextPropertyDescriptor(ID_HEIGHT_PROP, WIDGET_LAYOUT_H);
+        TextPropertyDescriptor nameValue = new TextPropertyDescriptor(ID_NAME_PROP, WIDGET_NAME);
+        TextPropertyDescriptor tabValue = new TextPropertyDescriptor(ID_TAB_PROP, WIDGET_TAB);
+        ComboBoxPropertyDescriptor orientationTypes = new ComboBoxPropertyDescriptor(ID_ORIENTATION_TYPE_PROP, WIDGET_ORIENTATION,
                 Constants.ORIENTATION_TYPES);
         orientationTypes.setLabelProvider(new CustomLabelProviders.OrientationTypesLabelProvider());
         descriptors = new IPropertyDescriptor[]{type, x, y, w, h, orientationTypes, nameValue, tabValue};
@@ -99,22 +99,22 @@ public class SeparatorWidget extends AWidget {
 
     public void setTypeValue( int typeValue ) {
         this.typeValue = typeValue;
-        firePropertyChange(ORIENTATION_TYPE_PROP, null, typeValue);
+        firePropertyChange(ID_ORIENTATION_TYPE_PROP, null, typeValue);
     }
 
     public Object getPropertyValue( Object propertyId ) {
-        if (ORIENTATION_TYPE_PROP.equals(propertyId)) {
+        if (ID_ORIENTATION_TYPE_PROP.equals(propertyId)) {
             return getTypeValue();
-        } else if (NAME_PROP.equals(propertyId)) {
+        } else if (ID_NAME_PROP.equals(propertyId)) {
             return getName();
         }
         return super.getPropertyValue(propertyId);
     }
 
     public void setPropertyValue( Object propertyId, Object value ) {
-        if (ORIENTATION_TYPE_PROP.equals(propertyId)) {
+        if (ID_ORIENTATION_TYPE_PROP.equals(propertyId)) {
             setTypeValue((Integer) value);
-        } else if (NAME_PROP.equals(propertyId)) {
+        } else if (ID_NAME_PROP.equals(propertyId)) {
             String defValue = (String) value;
             setName(defValue);
         } else {
