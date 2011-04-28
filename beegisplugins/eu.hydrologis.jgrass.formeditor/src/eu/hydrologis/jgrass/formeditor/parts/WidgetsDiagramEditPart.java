@@ -20,6 +20,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ShortestPathConnectionRouter;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
@@ -76,7 +77,7 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
         installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
         // handles constraint changes (e.g. moving and/or resizing) of model elements
         // and creation of new model elements
-        installEditPolicy(EditPolicy.LAYOUT_ROLE, new ShapesXYLayoutEditPolicy());
+        installEditPolicy(EditPolicy.LAYOUT_ROLE, new ShapesXYLayoutEditPolicy(this));
         installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, null);
     }
 
@@ -133,10 +134,31 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
      */
     private static class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy {
 
+        private final WidgetsDiagramEditPart widgetsDiagramEditPart;
+
+        public ShapesXYLayoutEditPolicy( WidgetsDiagramEditPart widgetsDiagramEditPart ) {
+            this.widgetsDiagramEditPart = widgetsDiagramEditPart;
+        }
+
         protected Command createChangeConstraintCommand( ChangeBoundsRequest request, EditPart child, Object constraint ) {
             if (child instanceof WidgetEditPart && constraint instanceof Rectangle) {
+                // check overlap
+                Rectangle r = (Rectangle) constraint;
+                AWidget currentWidget = (AWidget) child.getModel();
+                r = currentWidget.snapToBounds(r);
+                List<AWidget> otherWidgets = widgetsDiagramEditPart.getModelChildren();
+                for( AWidget aWidget : otherWidgets ) {
+                    if (currentWidget.equals(aWidget)) {
+                        continue;
+                    }
+                    Rectangle bounds = aWidget.getBounds();
+                    if (bounds.intersects(r)) {
+                        return null;
+                    }
+                }
+
                 // return a command that can move and/or resize a Shape
-                return new WidgetSetConstraintCommand((AWidget) child.getModel(), request, (Rectangle) constraint);
+                return new WidgetSetConstraintCommand(currentWidget, request, r);
             }
             return super.createChangeConstraintCommand(request, child, constraint);
         }
@@ -148,13 +170,28 @@ class WidgetsDiagramEditPart extends AbstractGraphicalEditPart implements Proper
 
         protected Command getCreateCommand( CreateRequest request ) {
             Object childClass = request.getNewObjectType();
+
+            Point location = request.getLocation();
+            Dimension size = Constants.DEFAULT_DIMENSION;
+            Rectangle r = new Rectangle(location, size);
+            AWidget currentWidget = (AWidget) request.getNewObject();
+            r = currentWidget.snapToBounds(r);
+
             if (childClass == TextFieldWidget.class || childClass == TextAreaWidget.class || childClass == LabelWidget.class
                     || childClass == SeparatorWidget.class || childClass == ComboBoxWidget.class
                     || childClass == CheckBoxWidget.class || childClass == RadioButtonWidget.class) {
-                // return a command that can add a Shape to a ShapesDiagram
-                AWidget aWidget = (AWidget) request.getNewObject();
+                List<AWidget> otherWidgets = widgetsDiagramEditPart.getModelChildren();
+                // check overlap
+                for( AWidget aWidget : otherWidgets ) {
+                    Rectangle bounds = aWidget.getBounds();
+                    if (bounds.intersects(r)) {
+                        return null;
+                    }
+                }
+
                 WidgetsDiagram widgetsDiagram = (WidgetsDiagram) getHost().getModel();
-                return new WidgetCreateCommand(aWidget, widgetsDiagram, (Rectangle) getConstraintFor(request));
+                // return a command that can add a Shape to a ShapesDiagram
+                return new WidgetCreateCommand(currentWidget, widgetsDiagram, (Rectangle) getConstraintFor(request));
             }
             return null;
         }
