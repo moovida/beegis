@@ -24,6 +24,7 @@ import java.util.List;
 
 import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.IMap;
+import net.refractions.udig.project.internal.SetDefaultStyleProcessor;
 import net.refractions.udig.project.ui.ApplicationGIS;
 
 import org.eclipse.core.resources.IFile;
@@ -178,6 +179,8 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
             File file = new File(((FileStoreEditorInput) getEditorInput()).getURI());
             FormContentSaveHelper saveHelper = new FormContentSaveHelper(file, diagram.getChildren());
             saveHelper.save();
+
+            getCommandStack().markSaveLocation();
         } catch (Exception e) {
             e.printStackTrace();
         }
