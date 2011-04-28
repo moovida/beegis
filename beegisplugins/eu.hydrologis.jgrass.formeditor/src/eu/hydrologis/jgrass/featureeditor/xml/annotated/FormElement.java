@@ -17,6 +17,7 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotated;
 
+import eu.hydrologis.jgrass.formeditor.utils.CellConstraint;
 
 /**
  * An ordered form element.
@@ -61,19 +62,43 @@ public abstract class FormElement implements Comparable<FormElement> {
      * 
      * @param newConstraint the new constraint for the element.
      */
-    public abstract void setConstraints(String newConstraint);
+    public abstract void setConstraints( String newConstraint );
 
     @Override
     public int compareTo( FormElement o ) {
         // this ordering is not consistent with equals.
-        float thisOrder = this.getOrder();
-        float thatOrder = o.getOrder();
+        String constraints = getConstraints();
+        String othersConstraints = o.getConstraints();
 
-        if (thisOrder < thatOrder) {
-            return -1;
-        } else if (thisOrder > thatOrder) {
-            return 1;
-        } else
-            return 0;
+        if (constraints != null && othersConstraints != null) {
+            CellConstraint cc = new CellConstraint(constraints);
+            CellConstraint othersCc = new CellConstraint(othersConstraints);
+
+            if (cc.getY() < othersCc.getY()) {
+                return -1;
+            } else if (cc.getY() > othersCc.getY()) {
+                return 1;
+            } else {
+                // same row, check the columns
+                if (cc.getX() < othersCc.getX()) {
+                    return -1;
+                } else if (cc.getX() > othersCc.getX()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        } else {
+            float thisOrder = this.getOrder();
+            float thatOrder = o.getOrder();
+
+            if (thisOrder < thatOrder) {
+                return -1;
+            } else if (thisOrder > thatOrder) {
+                return 1;
+            } else
+                return 0;
+        }
+
     }
 }
