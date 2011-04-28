@@ -36,12 +36,14 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 import eu.hydrologis.jgrass.formeditor.FormEditor;
+import eu.hydrologis.jgrass.formeditor.utils.Constants;
 
 /**
  * Abstract prototype of a widget representer.
@@ -221,6 +223,33 @@ public abstract class AWidget extends AModelElement {
     }
 
     /**
+     * Get the bounds minus a couple of units at the lower and right edges. 
+     * 
+     * @return the bounds.
+     */
+    public Rectangle getBounds() {
+//        Dimension newSize = size;// new Dimension(size.width - Constants.DIMENSION_PIXEL_SNAP/2,
+//                                 // size.height - Constants.DIMENSION_PIXEL_SNAP/2);
+//        Point newLocation = new Point(location.x, location.y + Constants.DIMENSION_PIXEL_SNAP / 4);
+
+        Rectangle r = new Rectangle(location, size);
+        return r;
+    }
+
+    public Rectangle snapToBounds( Rectangle oldRect ) {
+        Point rLoc = oldRect.getLocation();
+        Dimension rSize = oldRect.getSize();
+
+        Point copy = rLoc.getCopy();
+        snapLocation(copy);
+        Dimension copy2 = rSize.getCopy();
+        snapSize(copy2);
+
+        Rectangle r = new Rectangle(copy, copy2);
+        return r;
+    }
+
+    /**
      * Return the Location of this shape.
      * @return a non-null location instance
      */
@@ -381,6 +410,37 @@ public abstract class AWidget extends AModelElement {
                 return String.valueOf(doubleValue);
             }
         });
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((widgetName == null) ? 0 : widgetName.hashCode());
+        result = prime * result + ((widgetTab == null) ? 0 : widgetTab.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        AWidget other = (AWidget) obj;
+        if (widgetName == null) {
+            if (other.widgetName != null)
+                return false;
+        } else if (!widgetName.equals(other.widgetName))
+            return false;
+        if (widgetTab == null) {
+            if (other.widgetTab != null)
+                return false;
+        } else if (!widgetTab.equals(other.widgetTab))
+            return false;
+        return true;
     }
 
 }
