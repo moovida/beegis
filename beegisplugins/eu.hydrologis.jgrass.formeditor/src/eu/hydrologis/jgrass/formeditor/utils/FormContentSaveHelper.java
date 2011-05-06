@@ -19,6 +19,9 @@ package eu.hydrologis.jgrass.formeditor.utils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -76,7 +79,11 @@ public class FormContentSaveHelper {
      */
     public void save() throws Exception {
         // divide by tab
-        TreeMap<String, List<AWidget>> widgets4Tab = new TreeMap<String, List<AWidget>>();
+        LinkedHashMap<String, List<AWidget>> widgets4Tab = new LinkedHashMap<String, List<AWidget>>();
+
+        List<String> orderedNamesList = new ArrayList<String>();
+        List<Integer> yPositionsList = new ArrayList<Integer>();
+
         for( AWidget widget : widgets ) {
             String tab = widget.getTab();
 
@@ -84,6 +91,21 @@ public class FormContentSaveHelper {
             if (list == null) {
                 list = new ArrayList<AWidget>();
                 widgets4Tab.put(tab, list);
+
+                int y = widget.getLocation().y;
+
+                if (orderedNamesList.size() == 0) {
+                    orderedNamesList.add(tab);
+                    yPositionsList.add(y);
+                } else {
+                    int index = 0;
+                    while( index < orderedNamesList.size() && y > yPositionsList.get(index) ) {
+                        index++;
+                    }
+                    orderedNamesList.add(index, tab);
+                    yPositionsList.add(index, y);
+                }
+
             }
 
             list.add(widget);
@@ -96,10 +118,8 @@ public class FormContentSaveHelper {
         AForm form = new AForm();
 
         float tabIndex = 0;
-        Set<Entry<String, List<AWidget>>> entrySet = widgets4Tab.entrySet();
-        for( Entry<String, List<AWidget>> tabEntry : entrySet ) {
-            String tabName = tabEntry.getKey();
-            List<AWidget> widgetList = tabEntry.getValue();
+        for( String tabName : orderedNamesList ) {
+            List<AWidget> widgetList = widgets4Tab.get(tabName);
 
             ATab tab = new ATab();
             tab.name = tabName;
