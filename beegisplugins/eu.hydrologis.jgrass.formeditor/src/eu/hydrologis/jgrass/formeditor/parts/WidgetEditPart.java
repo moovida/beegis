@@ -10,7 +10,7 @@
  *******************************************************************************/
 package eu.hydrologis.jgrass.formeditor.parts;
 
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_FIELDNAME_PROP;
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_LOCATION_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_NAME_PROP;
 import static eu.hydrologis.jgrass.formeditor.utils.Constants.ID_SIZE_PROP;
@@ -25,6 +25,7 @@ import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
@@ -36,6 +37,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;
 import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.ReconnectRequest;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
 import eu.hydrologis.jgrass.formeditor.model.AModelElement;
@@ -52,6 +54,7 @@ import eu.hydrologis.jgrass.formeditor.model.widgets.SeparatorWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextAreaWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.TextFieldWidget;
 import eu.hydrologis.jgrass.formeditor.model.widgets.WidgetTextFigure;
+import eu.hydrologis.jgrass.formeditor.utils.ColorCache;
 import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 
 /**
@@ -66,6 +69,7 @@ import eu.hydrologis.jgrass.formeditor.utils.ImageCache;
 class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChangeListener, NodeEditPart {
 
     private ConnectionAnchor anchor;
+    private IFigure currentFigure;
 
     /**
      * Upon activation, attach to the model element as a property change listener.
@@ -128,8 +132,8 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
      * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
      */
     protected IFigure createFigure() {
-        IFigure f = createFigureForModel();
-        return f;
+        currentFigure = createFigureForModel();
+        return currentFigure;
     }
 
     /**
@@ -281,11 +285,19 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
         if (ID_SIZE_PROP.equals(prop) || ID_LOCATION_PROP.equals(prop) || ID_FIELDNAME_PROP.equals(prop)
                 || ID_NAME_PROP.equals(prop)) {
             refreshVisuals();
+        } else if (ID_TAB_PROP.equals(prop)) {
+            refreshBorder((String) evt.getNewValue());
         } else if (ID_SOURCE_CONNECTIONS_PROP.equals(prop)) {
             refreshSourceConnections();
         } else if (ID_TARGET_CONNECTIONS_PROP.equals(prop)) {
             refreshTargetConnections();
         }
+    }
+
+    private void refreshBorder( String prop ) {
+        Color color = ColorCache.getInstance().getColor(prop);
+        currentFigure.setBorder(new LineBorder(color, 2));
+        // setForegroundColor(ColorConstants.black);
     }
 
     protected void refreshVisuals() {
@@ -296,4 +308,5 @@ class WidgetEditPart extends AbstractGraphicalEditPart implements PropertyChange
         Rectangle bounds = new Rectangle(getCastedModel().getLocation(), getCastedModel().getSize());
         ((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), bounds);
     }
+
 }
