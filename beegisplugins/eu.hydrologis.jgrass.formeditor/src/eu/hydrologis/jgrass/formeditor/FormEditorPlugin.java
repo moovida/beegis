@@ -18,7 +18,11 @@ import net.refractions.udig.project.internal.impl.LayerImpl;
 import net.refractions.udig.project.ui.internal.MapPart;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IPartListener2;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
@@ -70,19 +74,41 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
     public void registerPartListener() {
         if (page != null)
             return;
-        IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        IWorkbench workbench = PlatformUI.getWorkbench();
+        IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
         if (activeWorkbenchWindow == null)
             return;
         page = activeWorkbenchWindow.getActivePage();
-        page.addPartListener(this);
-    }
+        if (page != null) {
+            page.addPartListener(this);
 
+            // add close listener for the form editor
+            workbench.addWorkbenchListener(new IWorkbenchListener(){
+                public boolean preShutdown( IWorkbench workbench, boolean forced ) {
+                    IEditorReference[] editorArray = page.getEditorReferences();
+                    for( IEditorReference editorReference : editorArray ) {
+                        IEditorPart editor = editorReference.getEditor(false);
+                        if (editor instanceof FormEditor) {
+                            page.closeEditor(editor, false);
+                        }
+                    }
+                    return true;
+                }
+
+                public void postShutdown( IWorkbench workbench ) {
+                }
+            });
+
+        }
+    }
     public void stop( BundleContext context ) throws Exception {
         plugin = null;
-        if (page != null)
+        if (page != null) {
             page.removePartListener(this);
+        }
 
         ImageCache.getInstance().dispose();
+
         super.stop(context);
     }
 
@@ -133,6 +159,7 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
     }
 
     public void partActivated( IWorkbenchPartReference partRef ) {
+        registerPartListener();
         // make this the active map(if it is a MapPart)
         IWorkbenchPart part = partRef.getPart(false);
         if (part instanceof MapPart) {
@@ -149,6 +176,7 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
     }
 
     public void partVisible( IWorkbenchPartReference partRef ) {
+        registerPartListener();
         // if no active map then make this the active map (if it is a MapPart)
         IWorkbenchPart part = partRef.getPart(false);
         if (part instanceof MapPart) {
@@ -160,6 +188,7 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
     }
 
     public void partOpened( IWorkbenchPartReference partRef ) {
+        registerPartListener();
         IWorkbenchPart part = partRef.getPart(false);
         if (part instanceof MapPart) {
             setActiveMap(((MapPart) part).getMap());
@@ -180,6 +209,7 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
      * @see net.refractions.udig.project.IMapListener#changed(net.refractions.udig.project.MapEvent)
      */
     public void changed( MapEvent event ) {
+        registerPartListener();
         ILayer tmpSelectedLayer = activeMap.getEditManager().getSelectedLayer();
         if (tmpSelectedLayer != selectedLayer || lastSelectedFeature == null) {
             // layer has changed, reset listeners

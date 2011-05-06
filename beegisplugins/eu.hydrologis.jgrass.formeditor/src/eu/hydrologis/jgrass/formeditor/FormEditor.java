@@ -27,11 +27,14 @@ import net.refractions.udig.project.IMap;
 import net.refractions.udig.project.internal.SetDefaultStyleProcessor;
 import net.refractions.udig.project.ui.ApplicationGIS;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPartViewer;
@@ -49,6 +52,7 @@ import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.TreeViewer;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.swt.widgets.Composite;
@@ -263,7 +267,6 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
     }
 
     protected void setInput( IEditorInput input ) {
-        super.setInput(input);
         try {
             IMap activeMap = ApplicationGIS.getActiveMap();
             if (activeMap != null) {
@@ -282,12 +285,22 @@ public class FormEditor extends GraphicalEditorWithFlyoutPalette {
                     }
                     fieldNamesArrays = (String[]) fieldNamesList.toArray(new String[fieldNamesList.size()]);
                 }
+            } else {
+                File tmpFile = File.createTempFile("beegis", "_tmp.form");
+                final IPath ipath = new Path(tmpFile.getAbsolutePath());
+                IFileStore fileLocation = EFS.getLocalFileSystem().getStore(ipath);
+                input = new FileStoreEditorInput(fileLocation);
+
+                // MessageDialog.openWarning(getSite().getShell(), "Warning",
+                // "The editor was opened with no layer selected. This could happen when the editor is left open when shutting ");
             }
 
             loadFromProperties(input);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        super.setInput(input);
+        FormEditorPlugin.getDefault().registerPartListener();
     }
 
     private void loadFromProperties( IEditorInput input ) throws Exception {
