@@ -105,6 +105,12 @@ public class Constants {
      * Property ID to use when the list of incoming connections is modified. 
      */
     public static final String ID_TARGET_CONNECTIONS_PROP = "WidgetTargetConn";
+    
+    /** 
+     * Property ID to use when the tab name of this shape is modified. 
+     */
+    public static final String ID_TABNAME_PROP = "TabNamePropertyChanged";
+
 
     public static final String WIDGET_TAB = "tab";
     public static final String WIDGET_TYPE = "widget type";
