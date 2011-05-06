@@ -34,6 +34,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.hydrologis.jgrass.formeditor.utils.CellConstraint;
+
 /**
  * A class representing the main tabbed component.
  * 
@@ -110,18 +112,30 @@ public class ATab extends FormElement {
     public String getName() {
         return name;
     }
-    
+
     public String getFieldName() {
         return null;
     }
-    
+
     public String getConstraints() {
         return null;
     }
-    
+
     public void setConstraints( String constraints ) {
     }
-    
+
     public void closeConstraints() {
+    }
+
+    public int compareTo( FormElement o ) {
+        float thisOrder = this.getOrder();
+        float thatOrder = o.getOrder();
+
+        if (thisOrder < thatOrder) {
+            return -1;
+        } else if (thisOrder > thatOrder) {
+            return 1;
+        } else
+            return 0;
     }
 }
