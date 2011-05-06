@@ -123,7 +123,7 @@ public class ExportAnnotationsWizard extends Wizard implements IExportWizard {
                 int[] rgb = dressedWorldStroke.rgb;
                 double alpha = rgb[3] / 255d;
                 Color c = new Color(rgb[0], rgb[1], rgb[2]);
-                String hexString = Integer.toHexString(c.getRGB() & 0x00ffffff);
+                String hexString = "#" + Integer.toHexString(c.getRGB() & 0x00ffffff);
 
                 Coordinate[] coords = new Coordinate[nodes.length / 2];
                 int index = 0;
