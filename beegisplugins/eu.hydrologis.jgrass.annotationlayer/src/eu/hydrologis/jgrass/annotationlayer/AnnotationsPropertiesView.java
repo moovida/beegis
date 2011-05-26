@@ -22,6 +22,7 @@ import java.util.List;
 
 import net.refractions.udig.project.ui.ApplicationGIS;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
@@ -70,20 +71,19 @@ public class AnnotationsPropertiesView extends ViewPart {
 
         Composite propsComposite = new Composite(parent, SWT.None);
         propsComposite.setLayout(new RowLayout());
-        propsComposite.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL
-                | GridData.GRAB_VERTICAL));
+        propsComposite.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
 
         // stroke width
-        Image img1 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID,
-                "/icons/strokewidth_1.png").createImage();
-        Image img2 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID,
-                "/icons/strokewidth_2.png").createImage();
-        Image img3 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID,
-                "/icons/strokewidth_3.png").createImage();
-        Image img4 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID,
-                "/icons/strokewidth_4.png").createImage();
-        Image img5 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID,
-                "/icons/strokewidth_5.png").createImage();
+        Image img1 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID, "/icons/strokewidth_1.png")
+                .createImage();
+        Image img2 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID, "/icons/strokewidth_2.png")
+                .createImage();
+        Image img3 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID, "/icons/strokewidth_3.png")
+                .createImage();
+        Image img4 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID, "/icons/strokewidth_4.png")
+                .createImage();
+        Image img5 = AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID, "/icons/strokewidth_5.png")
+                .createImage();
 
         Composite strokeComposite = new Composite(propsComposite, SWT.None);
         strokeComposite.setLayout(new GridLayout(2, false));
@@ -104,8 +104,7 @@ public class AnnotationsPropertiesView extends ViewPart {
                 int strokeWidth = STROKES[selectedIndex];
 
                 AnnotationPlugin.getDefault().setCurrentStrokeWidth(strokeWidth);
-                double scale = ApplicationGIS.getActiveMap().getViewportModel()
-                        .getScaleDenominator();
+                double scale = ApplicationGIS.getActiveMap().getViewportModel().getScaleDenominator();
                 AnnotationPlugin.getDefault().setCurrentScale(scale);
             }
         });
@@ -128,8 +127,8 @@ public class AnnotationsPropertiesView extends ViewPart {
                 int strokeAlpha = 255 * alphaInPercent / 100;
 
                 Color c = AnnotationPlugin.getDefault().getCurrentStrokeColor();
-                AnnotationPlugin.getDefault().setCurrentStrokeColor(
-                        new Color(c.getRed(), c.getGreen(), c.getBlue(), strokeAlpha));
+                AnnotationPlugin.getDefault()
+                        .setCurrentStrokeColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), strokeAlpha));
             }
         });
 
@@ -149,15 +148,13 @@ public class AnnotationsPropertiesView extends ViewPart {
             public void widgetSelected( SelectionEvent e ) {
                 RGB rgb = cs.getColorValue();
                 int alpha = AnnotationPlugin.getDefault().getCurrentStrokeColorInt()[3];
-                AnnotationPlugin.getDefault().setCurrentStrokeColor(
-                        new Color(rgb.red, rgb.green, rgb.blue, alpha));
+                AnnotationPlugin.getDefault().setCurrentStrokeColor(new Color(rgb.red, rgb.green, rgb.blue, alpha));
             }
         });
 
         // clear all
-        ImageDescriptor clearID = AbstractUIPlugin.imageDescriptorFromPlugin(
-                AnnotationPlugin.PLUGIN_ID, "icons/trash.gif"); //$NON-NLS-1$
-        Button clearButton = new Button(propsComposite, SWT.PUSH);
+        ImageDescriptor clearID = AbstractUIPlugin.imageDescriptorFromPlugin(AnnotationPlugin.PLUGIN_ID, "icons/trash.gif"); //$NON-NLS-1$
+        final Button clearButton = new Button(propsComposite, SWT.PUSH);
         // GridData gd1 = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
         // clearButton.setLayoutData(gd1);
         RowData rd2 = new RowData();
@@ -168,15 +165,19 @@ public class AnnotationsPropertiesView extends ViewPart {
         clearButton.setToolTipText("clear the area from all drawings");
         clearButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
+                boolean answer = MessageDialog.openQuestion(clearButton.getShell(), "Removal warning",
+                        "Do you really want to remove all annotations?");
+                if (!answer) {
+                    return;
+                }
+
                 AnnotationPlugin.getDefault().getStrokes().clear();
-                JGrassCatalogUtilities.getMapgraphicLayerByClass(AnnotationLayerMapGraphic.class)
-                        .refresh(null);
+                JGrassCatalogUtilities.getMapgraphicLayerByClass(AnnotationLayerMapGraphic.class).refresh(null);
             }
         });
 
         // clear last
-        ImageDescriptor clearLast = AbstractUIPlugin.imageDescriptorFromPlugin(
-                AnnotationPlugin.PLUGIN_ID, "icons/trashlast.gif"); //$NON-NLS-1$
+        ImageDescriptor clearLast = AbstractUIPlugin.imageDescriptorFromPlugin(AnnotationPlugin.PLUGIN_ID, "icons/trashlast.gif"); //$NON-NLS-1$
         Button clearLastButton = new Button(propsComposite, SWT.PUSH);
         RowData rd3 = new RowData();
         rd3.height = 30;
@@ -193,8 +194,7 @@ public class AnnotationsPropertiesView extends ViewPart {
                 if (size < 1)
                     return;
                 strokes.remove(size - 1);
-                JGrassCatalogUtilities.getMapgraphicLayerByClass(AnnotationLayerMapGraphic.class)
-                        .refresh(null);
+                JGrassCatalogUtilities.getMapgraphicLayerByClass(AnnotationLayerMapGraphic.class).refresh(null);
             }
         });
 
