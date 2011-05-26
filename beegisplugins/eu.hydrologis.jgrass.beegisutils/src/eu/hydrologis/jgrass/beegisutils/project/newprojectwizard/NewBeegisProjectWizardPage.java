@@ -43,6 +43,7 @@ import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
  */
 public class NewBeegisProjectWizardPage extends WizardPage {
 
+    private static final String DATABASE = "-database";
     DirectoryFieldEditor projectDirectoryEditor;
     DirectoryFieldEditor databaseDirectoryEditor;
 
@@ -52,8 +53,8 @@ public class NewBeegisProjectWizardPage extends WizardPage {
      * Construct <code>NewProjectWizardPage</code>.
      */
     public NewBeegisProjectWizardPage() {
-        super(Messages.NewProjectWizardPage_newProject, Messages.NewProjectWizardPage_newProject, 
-        		BeegisUtilsPlugin.getDefault().getImageDescriptor(ISharedImages.NEWPROJECT_WIZBAN));
+        super(Messages.NewProjectWizardPage_newProject, Messages.NewProjectWizardPage_newProject, BeegisUtilsPlugin.getDefault()
+                .getImageDescriptor(ISharedImages.NEWPROJECT_WIZBAN));
         setDescription(Messages.NewProjectWizardPage_newProject_description);
     }
 
@@ -86,6 +87,9 @@ public class NewBeegisProjectWizardPage extends WizardPage {
         projectDirectoryEditor = new DirectoryFieldEditor(
                 "newproject.directory", Messages.NewProjectWizardPage_label_projectDir, composite){ //$NON-NLS-1$
             protected boolean doCheckState() {
+                String projectPath = getProjectPath();
+                String dpPath = projectPath + DATABASE;
+                databaseDirectoryEditor.setStringValue(dpPath);
                 return validate();
             }
         };
@@ -107,11 +111,11 @@ public class NewBeegisProjectWizardPage extends WizardPage {
         databaseDirectoryEditor.fillIntoGrid(composite, 3);
 
         String defaultProjectName = Messages.NewProjectWizardPage_default_name;
-        
+
         String projectPath = BeegisUtilsPlugin.getDefault().getLastFolderChosen();
         projectNameEditor.setStringValue(defaultProjectName);
         projectDirectoryEditor.setStringValue(projectPath);
-        String dpPath = projectPath + "-database";
+        String dpPath = projectPath + DATABASE;
         databaseDirectoryEditor.setStringValue(dpPath);
 
         composite.pack();
@@ -219,7 +223,7 @@ public class NewBeegisProjectWizardPage extends WizardPage {
                 return false;
             }
         }
-        
+
         BeegisUtilsPlugin.getDefault().setLastFolderChosen(projectPath);
 
         setPageComplete(true);
