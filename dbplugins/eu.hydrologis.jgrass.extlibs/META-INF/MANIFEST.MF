@@ -4,7 +4,8 @@ Bundle-Name: External Libraries Plugin
 Bundle-SymbolicName: eu.hydrologis.jgrass.extlibs
 Bundle-Version: 1.0.0
 Bundle-Vendor: HydroloGIS s.r.l. for the libraries Authors
-Bundle-ClassPath: .,
+Bundle-ClassPath: libs/antlr-2.7.6.jar,
+ .,
  libs/jansi-1.1.jar,
  libs/jline-0.9.94.jar,
  libs/ejb3-persistence-3.3.2.Beta1.jar,
@@ -38,6 +39,20 @@ Export-Package: javassist,
  javax.transaction,
  javax.transaction.xa,
  jline,
+ org.dom4j,
+ org.dom4j.bean,
+ org.dom4j.datatype,
+ org.dom4j.dom,
+ org.dom4j.dtd,
+ org.dom4j.io,
+ org.dom4j.jaxb,
+ org.dom4j.rule,
+ org.dom4j.rule.pattern,
+ org.dom4j.swing,
+ org.dom4j.tree,
+ org.dom4j.util,
+ org.dom4j.xpath,
+ org.dom4j.xpp,
  org.fusesource.jansi,
  org.fusesource.jansi.internal,
  org.hibernate,
@@ -144,4 +159,3 @@ Export-Package: javassist,
  org.hibernate.util,
  org.joda.time.contrib.hibernate
 Eclipse-BuddyPolicy: global
-Require-Bundle: net.refractions.udig.libs;visibility:=reexport
