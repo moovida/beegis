@@ -114,7 +114,6 @@ public class GeonotesListViewer extends TableViewer implements ISelectionChanged
             return;
         }
         StructuredSelection sel = (StructuredSelection) event.getSelection();
-
         Iterator< ? > geonotesIterator = sel.iterator();
         if (!geonotesIterator.hasNext()) {
             return;

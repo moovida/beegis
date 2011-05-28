@@ -47,10 +47,7 @@ import eu.hydrologis.jgrass.gpsnmea.preferences.pages.PreferenceConstants;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class AutomaticAddPoint extends Action
-        implements
-            IWorkbenchWindowActionDelegate,
-            IActionDelegate2 {
+public class AutomaticAddPoint extends Action implements IWorkbenchWindowActionDelegate, IActionDelegate2 {
 
     public static final String ID = "automatic.add.id"; //$NON-NLS-1$
 
@@ -62,10 +59,9 @@ public class AutomaticAddPoint extends Action
     private IAction action;
 
     public AutomaticAddPoint() {
-        setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(GpsActivator.PLUGIN_ID,
-                "icons/automatic_continue16.png")); //$NON-NLS-1$
-        setDisabledImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
-                GpsActivator.PLUGIN_ID, "icons/automatic_continue16_disabled.png")); //$NON-NLS-1$
+        setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(GpsActivator.PLUGIN_ID, "icons/automatic_continue16.png")); //$NON-NLS-1$
+        setDisabledImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(GpsActivator.PLUGIN_ID,
+                "icons/automatic_continue16_disabled.png")); //$NON-NLS-1$
         setText("Automatic point add");
         setToolTipText("Automatic addition of a point from the gps");
         setId(ID);
@@ -94,8 +90,7 @@ public class AutomaticAddPoint extends Action
     }
 
     private void runThread() {
-        final ILayer selectedLayer = ApplicationGIS.getActiveMap().getEditManager()
-                .getSelectedLayer();
+        final ILayer selectedLayer = ApplicationGIS.getActiveMap().getEditManager().getSelectedLayer();
 
         Thread t = new Thread(){
             public void run() {
@@ -103,21 +98,32 @@ public class AutomaticAddPoint extends Action
                     GpsActivator.getDefault().setInAutomaticMode(false);
                     Display.getDefault().asyncExec(new Runnable(){
                         public void run() {
-                            MessageBox msgBox = new MessageBox(window.getShell(), SWT.ICON_QUESTION
-                                    | SWT.OK);
-                            msgBox
-                                    .setMessage("The gps is currently not logging. You have to first enable logging and then restart the automatic acquisition.");
+                            MessageBox msgBox = new MessageBox(window.getShell(), SWT.ICON_QUESTION | SWT.OK);
+                            msgBox.setMessage("The gps is currently not logging. You have to first enable logging and then restart the automatic acquisition.");
                             msgBox.open();
                         }
                     });
                     return;
                 }
 
+                Display.getDefault().syncExec(new Runnable(){
+                    public void run() {
+                        LayerHandler layerHandler = LayerHandler.getInstance();
+                        MessageBox msgBox = new MessageBox(window.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+                        msgBox.setMessage("Do you want to continue with the last feature created on the selected layer?");
+                        int rc = msgBox.open();
+                        if (rc == SWT.YES) {
+                            layerHandler.setContinueFromLast(true);
+                        } else {
+                            layerHandler.setContinueFromLast(false);
+                        }
+                    }
+                });
+
                 runIsActive = true;
                 GpsActivator.getDefault().setInAutomaticMode(true);
                 try {
-                    while( isOn && GpsActivator.getDefault().isGpsLogging()
-                            && GpsActivator.getDefault().isGpsConnected() ) {
+                    while( isOn && GpsActivator.getDefault().isGpsLogging() && GpsActivator.getDefault().isGpsConnected() ) {
                         final int milliSeconds = prefs.getInt(PreferenceConstants.INTERVAL_SECONDS) * 1000;
                         final double distanceUnits = prefs.getDouble(PreferenceConstants.DISTANCE_THRESHOLD);
 
@@ -125,12 +131,15 @@ public class AutomaticAddPoint extends Action
                             GpsPoint nextGpsPoint = GpsActivator.getDefault().getNextGpsPoint();
                             if (nextGpsPoint == null)
                                 continue;
-                            if (priorGpsPoint == null
-                                    || nextGpsPoint.isAtLeastAtDistanceOf(priorGpsPoint, distanceUnits)) {
-                                LayerHandler.getInstance().addGpsPointToLayer(selectedLayer,
-                                        nextGpsPoint);
+                            if (priorGpsPoint == null || nextGpsPoint.isAtLeastAtDistanceOf(priorGpsPoint, distanceUnits)) {
+                                LayerHandler.getInstance().addGpsPointToLayer(selectedLayer, nextGpsPoint);
                                 priorGpsPoint = nextGpsPoint;
                             }
+                        } else {
+                            // switch off again
+                            action.setChecked(false);
+                            isOn = false;
+                            break;
                         }
 
                         Thread.sleep(milliSeconds);
@@ -146,8 +155,7 @@ public class AutomaticAddPoint extends Action
                     }
                     GpsActivator.getDefault().setInAutomaticMode(false);
                     String message = "An error occurred while adding points from gps in automatic mode.";
-                    ExceptionDetailsDialog.openError(null, message, IStatus.ERROR,
-                            GpsActivator.PLUGIN_ID, e);
+                    ExceptionDetailsDialog.openError(null, message, IStatus.ERROR, GpsActivator.PLUGIN_ID, e);
                     e.printStackTrace();
                 } finally {
                     runIsActive = false;

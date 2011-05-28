@@ -29,7 +29,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionDelegate2;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -78,16 +77,6 @@ public class ToggleLoggingGps extends Action
                 openGpsPreferences();
             }
 
-            MessageBox msgBox = new MessageBox(window.getShell(), SWT.ICON_QUESTION | SWT.YES
-                    | SWT.NO);
-            msgBox
-                    .setMessage("Do you want to continue with the last feature created on the selected layer?");
-            int rc = msgBox.open();
-            if (rc == SWT.YES) {
-                layerHandler.setContinueFromLast(true);
-            } else {
-                layerHandler.setContinueFromLast(false);
-            }
             startLog(action);
         } else {
             stopLog(action);
