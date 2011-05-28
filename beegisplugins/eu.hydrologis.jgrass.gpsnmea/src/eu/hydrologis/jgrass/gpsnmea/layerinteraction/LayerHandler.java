@@ -32,6 +32,12 @@ import net.refractions.udig.project.ui.commands.DrawCommandFactory;
 import net.refractions.udig.tools.edit.animation.AddVertexAnimation;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.feature.FeatureCollection;
@@ -116,7 +122,15 @@ public class LayerHandler {
             FeatureSource<SimpleFeatureType, SimpleFeature> source = layer.getResource(FeatureSource.class,
                     new NullProgressMonitor());
             if (source == null) {
-                throw new IllegalArgumentException("This layer is not supported, only feature layers are supported.");
+                Runnable msg = new Runnable(){
+                    public void run() {
+                        Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+                        MessageDialog.openWarning(shell, "Unsupported layer",
+                                "This layer is not supported, only feature layers are supported.");
+                    }
+                };
+                Display.getDefault().asyncExec(msg);
+                return false;
             }
             // get the featurecollection from the layer, even if empty
             FeatureCollection<SimpleFeatureType, SimpleFeature> selectedFeatureCollection = source.getFeatures();
@@ -318,7 +332,7 @@ public class LayerHandler {
          * geometry, we start from scratch and the geometry has to be replaced.
          */
         IMap map = layer.getMap();
-        if (continueFromLast  && feature.getDefaultGeometry() != null) {
+        if (continueFromLast && feature.getDefaultGeometry() != null) {
             Geometry geometry = addPointToPolygonFeature(gpsPoint, feature, geometryType);
 
             UndoableMapCommand cmd1 = EditCommandFactory.getInstance().createSetEditFeatureCommand(feature, layer);
