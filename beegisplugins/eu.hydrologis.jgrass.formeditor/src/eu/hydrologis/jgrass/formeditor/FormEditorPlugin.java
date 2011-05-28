@@ -268,6 +268,9 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
         try {
             FeatureSource<SimpleFeatureType, SimpleFeature> resource = layerImpl.getResource(FeatureSource.class,
                     new NullProgressMonitor());
+            if (resource == null) {
+                return null;
+            }
             FeatureCollection<SimpleFeatureType, SimpleFeature> features = resource.getFeatures(filter);
             if (!features.isEmpty()) {
                 FeatureIterator<SimpleFeature> featureIterator = null;
