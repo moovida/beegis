@@ -129,7 +129,13 @@ public class FormView extends ViewPart implements ISelectionObserver {
     private void updateGui( Map newMap, final ILayer newLayer, SimpleFeature newFeature ) {
         selectedMap = newMap;
 
-        if (newFeature != null && featurePropertiesPanel != null && newLayer.equals(selectedLayer)) {
+        Map activeMap = ApplicationGISInternal.getActiveMap();
+        int layerNum = 0;
+        if (activeMap != null) {
+            layerNum = activeMap.getLayersInternal().size();
+        }
+        if (layerNum > 0 && newFeature != null && featurePropertiesPanel != null && newLayer != null
+                && newLayer.equals(selectedLayer)) {
             // layer the same, feature changed
             ToolContextImpl newcontext = new ToolContextImpl();
             newcontext.setMapInternal((Map) selectedMap);
@@ -142,7 +148,13 @@ public class FormView extends ViewPart implements ISelectionObserver {
             currentControl.dispose();
         }
 
-        if (newFeature == null) {
+        if ((activeMap != null && activeMap.getEditManager().getSelectedLayer() == null) || newLayer == null) {
+            Label noLayerSelectedLabel = new Label(parentComposite, SWT.NONE);
+            noLayerSelectedLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+            noLayerSelectedLabel.setText("No layer selected.");
+            currentControl = noLayerSelectedLabel;
+            featurePropertiesPanel = null;
+        } else if (newFeature == null) {
             selectedLayer = newLayer;
             Label noFeatureSelectedLabel = new Label(parentComposite, SWT.NONE);
             noFeatureSelectedLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
