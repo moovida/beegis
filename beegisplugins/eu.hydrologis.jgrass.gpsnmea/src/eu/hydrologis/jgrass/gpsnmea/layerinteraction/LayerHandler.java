@@ -156,7 +156,7 @@ public class LayerHandler {
                 while( featureIterator.hasNext() ) {
                     featureToUse = featureIterator.next();
                 }
-                selectedFeatureCollection.close(featureIterator);
+                featureIterator.close();
             }
             // the following can happen in both the cases that the collection is
             // empty or a new feature is requested
