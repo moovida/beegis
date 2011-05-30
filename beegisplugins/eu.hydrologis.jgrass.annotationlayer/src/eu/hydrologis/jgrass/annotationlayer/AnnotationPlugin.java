@@ -83,7 +83,7 @@ public class AnnotationPlugin extends AbstractUIPlugin implements IDatabaseEvent
         AnnotatedClassesCollector.getAnnotatedClassesList();
         BeegisTablesUpdater.checkSchema();
         resetStrokes();
-        
+
         DatabasePlugin.getDefault().addDatabaseEventListener(plugin);
     }
 
@@ -96,7 +96,7 @@ public class AnnotationPlugin extends AbstractUIPlugin implements IDatabaseEvent
      */
     public void resetStrokes() throws Exception {
         List<DressedWorldStroke> drawLines = getDrawLines();
-        if (drawLines != null && drawLines.size() > 0) {
+        if (drawLines != null) {
             setStrokes(drawLines);
         }
     }
@@ -153,7 +153,8 @@ public class AnnotationPlugin extends AbstractUIPlugin implements IDatabaseEvent
     }
 
     public void setStrokes( List<DressedWorldStroke> strokes ) {
-        this.strokes = strokes;
+        this.strokes.clear();
+        this.strokes.addAll(strokes);
     }
 
     public static void log( String message2, Throwable t ) {
@@ -243,7 +244,7 @@ public class AnnotationPlugin extends AbstractUIPlugin implements IDatabaseEvent
 
     @Override
     public void onDatabaseClosed( DatabaseConnectionProperties connectionProperties ) {
-        
+
     }
 
 }
