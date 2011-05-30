@@ -84,6 +84,7 @@ public class AutomaticAddPoint extends Action implements IWorkbenchWindowActionD
             runThread();
         } else {
             isOn = !isOn;
+            LayerHandler.getInstance().cleanLayerMap();
             GpsActivator.getDefault().setInAutomaticMode(false);
         }
 
@@ -94,6 +95,8 @@ public class AutomaticAddPoint extends Action implements IWorkbenchWindowActionD
 
         Thread t = new Thread(){
             public void run() {
+                LayerHandler layerHandler = LayerHandler.getInstance();
+                
                 if (!GpsActivator.getDefault().isGpsLogging()) {
                     GpsActivator.getDefault().setInAutomaticMode(false);
                     Display.getDefault().asyncExec(new Runnable(){
@@ -106,20 +109,20 @@ public class AutomaticAddPoint extends Action implements IWorkbenchWindowActionD
                     return;
                 }
 
+                final boolean[] doContinueFromLast = new boolean[]{false};
                 Display.getDefault().syncExec(new Runnable(){
                     public void run() {
-                        LayerHandler layerHandler = LayerHandler.getInstance();
                         MessageBox msgBox = new MessageBox(window.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
                         msgBox.setMessage("Do you want to continue with the last feature created on the selected layer?");
                         int rc = msgBox.open();
                         if (rc == SWT.YES) {
-                            layerHandler.setContinueFromLast(true);
+                            doContinueFromLast[0] = true;
                         } else {
-                            layerHandler.setContinueFromLast(false);
+                            doContinueFromLast[0] = false;
                         }
                     }
                 });
-
+                
                 runIsActive = true;
                 GpsActivator.getDefault().setInAutomaticMode(true);
                 try {
@@ -127,7 +130,9 @@ public class AutomaticAddPoint extends Action implements IWorkbenchWindowActionD
                         final int milliSeconds = prefs.getInt(PreferenceConstants.INTERVAL_SECONDS) * 1000;
                         final double distanceUnits = prefs.getDouble(PreferenceConstants.DISTANCE_THRESHOLD);
 
-                        if (LayerHandler.getInstance().initLayer(selectedLayer)) {
+                        
+                        layerHandler.setContinueFromLast(doContinueFromLast[0]);
+                        if (layerHandler.initLayer(selectedLayer)) {
                             GpsPoint nextGpsPoint = GpsActivator.getDefault().getNextGpsPoint();
                             if (nextGpsPoint == null)
                                 continue;
