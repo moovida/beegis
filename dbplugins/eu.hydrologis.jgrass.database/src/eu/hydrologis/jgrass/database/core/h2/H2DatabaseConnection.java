@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.geotools.data.DataStore;
 import org.h2.tools.Server;
 import org.hibernate.SQLQuery;
@@ -90,11 +91,11 @@ public class H2DatabaseConnection implements IDatabaseConnection {
             int timeout = 0;
             while( !dbIsAlive ) {
                 try {
-                    Thread.sleep(300);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if (timeout++ > 50) {
+                if (timeout++ > 300) {
                     throw new RuntimeException("An error occurred while starting the embedded database."); //$NON-NLS-1$
                 }
             }
