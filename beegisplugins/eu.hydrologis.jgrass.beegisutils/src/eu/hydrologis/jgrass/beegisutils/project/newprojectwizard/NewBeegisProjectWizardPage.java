@@ -21,7 +21,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import net.refractions.udig.project.ui.internal.ISharedImages;
 import net.refractions.udig.project.ui.internal.Messages;
 
 import org.eclipse.jface.preference.DirectoryFieldEditor;
@@ -29,32 +28,48 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
 
 /**
- * A wizard page to create a new project.
+ * A wizard page to create a new BeeGIS project.
  * 
- * @author vitalus
- * 
- * @since 0.3
+ * @author Andrea Antonello (www.hydrologis.com)
  */
 public class NewBeegisProjectWizardPage extends WizardPage {
+    public static final String ID = "NewBeegisProjectWizardPage"; //$NON-NLS-1$
 
-    private static final String DATABASE = "-database";
+    private static final String BASE_PREFIX = "Overall project folder: ";
+    private static final String UDIGPROJECTNAME_SUFFIX = ".udig";
+    private static final String UDIGPROJECTNAME_PREFIX = "Folder of the uDig/BeeGIS project: ";
+    private static final String DATABASE_SUFFIX = "-database";
+    private static final String DATABASE_PREFIX = "Folder of the project's database: ";
+
+    private String overallProjectPath = null;
+    private String udigProjectPath = null;
+    private String projectDatabasePath = null;
+
     DirectoryFieldEditor projectDirectoryEditor;
-    DirectoryFieldEditor databaseDirectoryEditor;
 
     StringFieldEditor projectNameEditor;
+
+    private Label overallProjectFolderlabel;
+
+    private Label udigProjectFolderlabel;
+
+    private Label projectDatabaseFolderlabel;
 
     /**
      * Construct <code>NewProjectWizardPage</code>.
      */
     public NewBeegisProjectWizardPage() {
-        super(Messages.NewProjectWizardPage_newProject, Messages.NewProjectWizardPage_newProject, BeegisUtilsPlugin.getDefault()
-                .getImageDescriptor(ISharedImages.NEWPROJECT_WIZBAN));
+        super(ID);
+        setTitle(Messages.NewProjectWizardPage_newProject);
         setDescription(Messages.NewProjectWizardPage_newProject_description);
     }
 
@@ -69,7 +84,7 @@ public class NewBeegisProjectWizardPage extends WizardPage {
         Composite composite = new Composite(parent, SWT.NONE);
 
         // PROJECT NAME
-        projectNameEditor = new StringFieldEditor("newproject.name", Messages.NewProjectWizardPage_label_projectName, composite){
+        projectNameEditor = new StringFieldEditor("newproject.name", "Name of the new project", composite){
             protected boolean doCheckState() {
                 return validate();
             }
@@ -84,12 +99,9 @@ public class NewBeegisProjectWizardPage extends WizardPage {
         textControl.setLayoutData(gd);
 
         // PROJECT PARENT FOLDER
-        projectDirectoryEditor = new DirectoryFieldEditor(
-                "newproject.directory", Messages.NewProjectWizardPage_label_projectDir, composite){ //$NON-NLS-1$
+        projectDirectoryEditor = new DirectoryFieldEditor("newproject.directory", "Base folder for the new project", composite){ //$NON-NLS-1$
             protected boolean doCheckState() {
-                String projectPath = getProjectPath();
-                String dpPath = projectPath + DATABASE;
-                databaseDirectoryEditor.setStringValue(dpPath);
+                updatePathsAndLabels();
                 return validate();
             }
         };
@@ -98,25 +110,28 @@ public class NewBeegisProjectWizardPage extends WizardPage {
         projectDirectoryEditor.setValidateStrategy(StringFieldEditor.VALIDATE_ON_FOCUS_LOST);
         projectDirectoryEditor.fillIntoGrid(composite, 3);
 
-        // PROJECT'S DATABASE FOLDER
-        databaseDirectoryEditor = new DirectoryFieldEditor(
-                "newproject.databasedirectory", i18n.beegisutils.Messages.NewProjectWizardPage_label_databaseDir, composite){ //$NON-NLS-1$
-            protected boolean doCheckState() {
-                return validate();
-            }
-        };
-        databaseDirectoryEditor.setPage(this);
-        databaseDirectoryEditor.setValidateStrategy(StringFieldEditor.VALIDATE_ON_KEY_STROKE);
-        databaseDirectoryEditor.setValidateStrategy(StringFieldEditor.VALIDATE_ON_FOCUS_LOST);
-        databaseDirectoryEditor.fillIntoGrid(composite, 3);
+        Group resultGroup = new Group(composite, SWT.NONE);
+        GridData resultGroupGD = new GridData(SWT.FILL, SWT.FILL, true, false);
+        resultGroupGD.horizontalSpan = 3;
+        resultGroup.setLayoutData(resultGroupGD);
+        resultGroup.setLayout(new GridLayout(1, false));
+        resultGroup.setText("Resulting folders summary");
+
+        overallProjectFolderlabel = new Label(resultGroup, SWT.NONE);
+        overallProjectFolderlabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        udigProjectFolderlabel = new Label(resultGroup, SWT.NONE);
+        udigProjectFolderlabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        projectDatabaseFolderlabel = new Label(resultGroup, SWT.NONE);
+        projectDatabaseFolderlabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
         String defaultProjectName = Messages.NewProjectWizardPage_default_name;
-
         String projectPath = BeegisUtilsPlugin.getDefault().getLastFolderChosen();
         projectNameEditor.setStringValue(defaultProjectName);
         projectDirectoryEditor.setStringValue(projectPath);
-        String dpPath = projectPath + DATABASE;
-        databaseDirectoryEditor.setStringValue(dpPath);
+
+        updatePathsAndLabels();
 
         composite.pack();
 
@@ -124,11 +139,19 @@ public class NewBeegisProjectWizardPage extends WizardPage {
         setPageComplete(true);
     }
 
-    /**
-     * Returns specified project name.
-     * 
-     * @return
-     */
+    private void updatePathsAndLabels() {
+        String baseFolder = projectDirectoryEditor.getStringValue();
+        String projectName = projectNameEditor.getStringValue();
+
+        overallProjectPath = baseFolder + File.separator + projectName;
+        udigProjectPath = overallProjectPath + File.separator + projectName + UDIGPROJECTNAME_SUFFIX;
+        projectDatabasePath = overallProjectPath + File.separator + projectName + DATABASE_SUFFIX;
+
+        overallProjectFolderlabel.setText(BASE_PREFIX + overallProjectPath);
+        udigProjectFolderlabel.setText(UDIGPROJECTNAME_PREFIX + udigProjectPath);
+        projectDatabaseFolderlabel.setText(DATABASE_PREFIX + projectDatabasePath);
+    }
+
     public String getProjectName() {
         return projectNameEditor.getStringValue();
     }
@@ -139,7 +162,7 @@ public class NewBeegisProjectWizardPage extends WizardPage {
      * @return
      */
     public String getProjectPath() {
-        return projectDirectoryEditor.getStringValue();
+        return udigProjectPath;
     }
 
     /**
@@ -148,9 +171,8 @@ public class NewBeegisProjectWizardPage extends WizardPage {
      * @return
      */
     public String getDatabasePath() {
-        return databaseDirectoryEditor.getStringValue();
+        return projectDatabasePath;
     }
-
     /**
      * Validates the form with project name and path.
      * 
@@ -161,7 +183,6 @@ public class NewBeegisProjectWizardPage extends WizardPage {
 
         final String projectPath = getProjectPath();
         final String databasePath = getDatabasePath();
-        final String projectName = getProjectName();
 
         if (projectPath == null || projectPath.length() == 0) {
             setErrorMessage(Messages.NewProjectWizardPage_err_project_dir_valid);
@@ -169,7 +190,7 @@ public class NewBeegisProjectWizardPage extends WizardPage {
             return false;
         }
 
-        File f = new File(projectPath + File.separator + projectName + ".udig");
+        File f = new File(projectPath);
         if (f.exists()) {
             setErrorMessage(Messages.NewProjectWizardPage_err_project_exists);
             setPageComplete(false);
@@ -187,14 +208,15 @@ public class NewBeegisProjectWizardPage extends WizardPage {
                 setPageComplete(false);
                 return false;
             }
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
             setPageComplete(false);
             return false;
         }
 
-        if (projectPathFolder.exists()) {
+        File overallFolder = new File(overallProjectPath);
+        File parentFile = overallFolder.getParentFile();
+        if (parentFile.exists()) {
             String projectFileAbsolutePath = projectPathFolder.getAbsolutePath() + File.separatorChar + "project.uprj"; //$NON-NLS-1$;
             File projectFile = new File(projectFileAbsolutePath);
             if (projectFile.exists()) {
@@ -208,16 +230,10 @@ public class NewBeegisProjectWizardPage extends WizardPage {
             return false;
         }
 
-        if (projectName == null || projectName.length() == 0) {
-            setErrorMessage(Messages.NewProjectWizardPage_err_project_name);
-            setPageComplete(false);
-            return false;
-        }
-
         if (databasePath != null && databasePath.length() > 0) {
             // database folder may not exist, but it must be possible to create it
             File parent = new File(databasePath).getParentFile();
-            if (!parent.canWrite()) {
+            if (!parent.getParentFile().canWrite()) {
                 setErrorMessage(Messages.NewProjectWizardPage_err_project_name);
                 setPageComplete(false);
                 return false;

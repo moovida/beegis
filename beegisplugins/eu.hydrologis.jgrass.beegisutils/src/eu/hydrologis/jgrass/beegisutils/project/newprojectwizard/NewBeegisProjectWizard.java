@@ -32,7 +32,10 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
+import eu.hydrologis.jgrass.beegisutils.jgrassported.FileUtilities;
 import eu.hydrologis.jgrass.database.DatabasePlugin;
 import eu.hydrologis.jgrass.database.core.DatabaseConnectionProperties;
 import eu.hydrologis.jgrass.database.view.DatabaseView;
@@ -55,6 +58,8 @@ public class NewBeegisProjectWizard extends Wizard implements INewWizard {
     public void setPage( NewBeegisProjectWizardPage page ) {
         this.page = page;
         setWindowTitle(page.getTitle());
+        setDefaultPageImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(BeegisUtilsPlugin.PLUGIN_ID,
+                "icons/simulwizard.png"));
     }
 
     public void addPages() {
@@ -71,15 +76,11 @@ public class NewBeegisProjectWizard extends Wizard implements INewWizard {
 
         String projectPath = page.getProjectPath();
         String databasePath = page.getDatabasePath();
-        final String projectName = page.getProjectName();
+        String projectName = page.getProjectName();
         projectPath = projectPath.replaceAll("\\\\", "/"); //$NON-NLS-1$//$NON-NLS-2$
         databasePath = databasePath.replaceAll("\\\\", "/"); //$NON-NLS-1$//$NON-NLS-2$
 
-        while( projectPath.endsWith("/") ) { //$NON-NLS-1$
-            projectPath = projectPath.substring(0, projectPath.length() - 2);
-        }
-        Project project = ProjectPlugin.getPlugin().getProjectRegistry()
-                .getProject(projectPath + File.separator + projectName + ".udig"); //$NON-NLS-1$ //$NON-NLS-2$
+        Project project = ProjectPlugin.getPlugin().getProjectRegistry().getProject(projectPath); //$NON-NLS-1$ //$NON-NLS-2$
         project.setName(projectName);
         Resource projectResource = project.eResource();
         try {
@@ -87,23 +88,35 @@ public class NewBeegisProjectWizard extends Wizard implements INewWizard {
         } catch (IOException e) {
             ProjectUIPlugin.log("Error during saving the project file of an new created project", e); //$NON-NLS-1$
         }
-        
+
         /*
          * create also the database entry
          */
-        
-        File dbFolder = new File (databasePath);
+
+        File dbFolder = new File(databasePath);
         if (!dbFolder.exists()) {
             boolean mkdirs = dbFolder.mkdirs();
             if (!mkdirs) {
                 // error in creating database
             }
         }
-        
+
         try {
             DatabaseView dbView = (DatabaseView) workbench.getActiveWorkbenchWindow().getActivePage().showView(DatabaseView.ID);
             String projectNameNoSpace = projectName.replaceAll("\\s+", "_");
-            DatabaseConnectionProperties newLocalDatabaseDefinition = dbView.createNewLocalDatabaseDefinition(databasePath, projectNameNoSpace);
+            DatabaseConnectionProperties newLocalDatabaseDefinition = dbView.createNewLocalDatabaseDefinition(databasePath,
+                    projectNameNoSpace);
+
+            /*
+             * FIXME this has to be done right now due to a 
+             * stupid "bug" in the database plugin. 
+             */
+            File checkDummy = new File(dbFolder.getParentFile(), "databases/defaultdatabase");
+            if (checkDummy.exists()) {
+                File removeDummy = new File(dbFolder.getParentFile(), "databases");
+                FileUtilities.deleteFileOrDir(removeDummy);
+            }
+
             DatabasePlugin.getDefault().activateDatabaseConnection(newLocalDatabaseDefinition);
             dbView.relayout();
         } catch (Exception e) {
