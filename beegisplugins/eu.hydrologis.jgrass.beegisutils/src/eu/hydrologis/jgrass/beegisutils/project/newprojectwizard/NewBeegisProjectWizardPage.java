@@ -58,11 +58,17 @@ public class NewBeegisProjectWizardPage extends WizardPage {
 
     StringFieldEditor projectNameEditor;
 
-    private Label overallProjectFolderlabel;
+    private Group overallProjectFolderGroup;
 
-    private Label udigProjectFolderlabel;
+    private Group udigProjectFolderGroup;
 
-    private Label projectDatabaseFolderlabel;
+    private Group projectDatabaseFolderGroup;
+
+    private Label overallProjectFolderLabel;
+
+    private Label udigProjectFolderLabel;
+
+    private Label projectDatabaseFolderLabel;
 
     /**
      * Construct <code>NewProjectWizardPage</code>.
@@ -110,6 +116,12 @@ public class NewBeegisProjectWizardPage extends WizardPage {
         projectDirectoryEditor.setValidateStrategy(StringFieldEditor.VALIDATE_ON_FOCUS_LOST);
         projectDirectoryEditor.fillIntoGrid(composite, 3);
 
+        Label dummyLabel = new Label(composite, SWT.NONE);
+        GridData dummyGD = new GridData(SWT.BEGINNING, SWT.FILL, false, true);
+        dummyGD.horizontalSpan = 3;
+        dummyLabel.setLayoutData(dummyGD);
+        dummyLabel.setText("");
+
         Group resultGroup = new Group(composite, SWT.NONE);
         GridData resultGroupGD = new GridData(SWT.FILL, SWT.FILL, true, false);
         resultGroupGD.horizontalSpan = 3;
@@ -117,14 +129,29 @@ public class NewBeegisProjectWizardPage extends WizardPage {
         resultGroup.setLayout(new GridLayout(1, false));
         resultGroup.setText("Resulting folders summary");
 
-        overallProjectFolderlabel = new Label(resultGroup, SWT.NONE);
-        overallProjectFolderlabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        overallProjectFolderGroup = new Group(resultGroup, SWT.SHADOW_ETCHED_IN);
+        overallProjectFolderGroup.setLayout(new GridLayout(1, false));
+        overallProjectFolderGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-        udigProjectFolderlabel = new Label(resultGroup, SWT.NONE);
-        udigProjectFolderlabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        overallProjectFolderLabel = new Label(overallProjectFolderGroup, SWT.NONE);
+        overallProjectFolderLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        overallProjectFolderLabel.setText("");
 
-        projectDatabaseFolderlabel = new Label(resultGroup, SWT.NONE);
-        projectDatabaseFolderlabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        udigProjectFolderGroup = new Group(resultGroup, SWT.SHADOW_ETCHED_IN);
+        udigProjectFolderGroup.setLayout(new GridLayout(1, false));
+        udigProjectFolderGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+        udigProjectFolderLabel = new Label(udigProjectFolderGroup, SWT.NONE);
+        udigProjectFolderLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        udigProjectFolderLabel.setText("");
+
+        projectDatabaseFolderGroup = new Group(resultGroup, SWT.SHADOW_ETCHED_IN);
+        projectDatabaseFolderGroup.setLayout(new GridLayout(1, false));
+        projectDatabaseFolderGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+        projectDatabaseFolderLabel = new Label(projectDatabaseFolderGroup, SWT.NONE);
+        projectDatabaseFolderLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        projectDatabaseFolderLabel.setText("");
 
         String defaultProjectName = Messages.NewProjectWizardPage_default_name;
         String projectPath = BeegisUtilsPlugin.getDefault().getLastFolderChosen();
@@ -143,13 +170,16 @@ public class NewBeegisProjectWizardPage extends WizardPage {
         String baseFolder = projectDirectoryEditor.getStringValue();
         String projectName = projectNameEditor.getStringValue();
 
-        overallProjectPath = baseFolder + File.separator + projectName;
-        udigProjectPath = overallProjectPath + File.separator + projectName + UDIGPROJECTNAME_SUFFIX;
-        projectDatabasePath = overallProjectPath + File.separator + projectName + DATABASE_SUFFIX;
+        overallProjectPath = new File(baseFolder + File.separator + projectName).getAbsolutePath();
+        udigProjectPath = new File(overallProjectPath + File.separator + projectName + UDIGPROJECTNAME_SUFFIX).getAbsolutePath();
+        projectDatabasePath = new File(overallProjectPath + File.separator + projectName + DATABASE_SUFFIX).getAbsolutePath();
 
-        overallProjectFolderlabel.setText(BASE_PREFIX + overallProjectPath);
-        udigProjectFolderlabel.setText(UDIGPROJECTNAME_PREFIX + udigProjectPath);
-        projectDatabaseFolderlabel.setText(DATABASE_PREFIX + projectDatabasePath);
+        overallProjectFolderGroup.setText(BASE_PREFIX);
+        overallProjectFolderLabel.setText(overallProjectPath);
+        udigProjectFolderGroup.setText(UDIGPROJECTNAME_PREFIX);
+        udigProjectFolderLabel.setText(udigProjectPath);
+        projectDatabaseFolderGroup.setText(DATABASE_PREFIX);
+        projectDatabaseFolderLabel.setText(projectDatabasePath);
     }
 
     public String getProjectName() {
@@ -180,9 +210,12 @@ public class NewBeegisProjectWizardPage extends WizardPage {
      * 		<code>true</code> if valid
      */
     public boolean validate() {
+        String baseFolder = projectDirectoryEditor.getStringValue();
+        String projectName = projectNameEditor.getStringValue();
 
-        final String projectPath = getProjectPath();
-        final String databasePath = getDatabasePath();
+        String tmpPath = baseFolder + File.separator + projectName;
+        final String projectPath = new File(tmpPath + File.separator + projectName + UDIGPROJECTNAME_SUFFIX).getAbsolutePath();
+        final String databasePath = tmpPath + File.separator + projectName + DATABASE_SUFFIX;
 
         if (projectPath == null || projectPath.length() == 0) {
             setErrorMessage(Messages.NewProjectWizardPage_err_project_dir_valid);
@@ -214,7 +247,7 @@ public class NewBeegisProjectWizardPage extends WizardPage {
             return false;
         }
 
-        File overallFolder = new File(overallProjectPath);
+        File overallFolder = new File(tmpPath);
         File parentFile = overallFolder.getParentFile();
         if (parentFile.exists()) {
             String projectFileAbsolutePath = projectPathFolder.getAbsolutePath() + File.separatorChar + "project.uprj"; //$NON-NLS-1$;
