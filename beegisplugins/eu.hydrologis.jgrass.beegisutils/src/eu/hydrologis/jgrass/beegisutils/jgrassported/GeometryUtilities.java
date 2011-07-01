@@ -24,12 +24,6 @@ import static java.lang.Math.acos;
 import static java.lang.Math.atan;
 import static java.lang.Math.toDegrees;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import jaitools.numeric.ArrayUtils;
-
 import org.opengis.feature.type.GeometryType;
 
 import com.vividsolutions.jts.geom.Coordinate;
