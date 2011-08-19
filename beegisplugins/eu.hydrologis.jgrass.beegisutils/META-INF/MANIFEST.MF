@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Beegisutils
 Bundle-SymbolicName: eu.hydrologis.jgrass.beegisutils;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.7
 Bundle-Localization: plugin
 Bundle-Activator: eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin
 Bundle-Vendor: HydroloGIS s.r.l.
