@@ -28,6 +28,7 @@ import org.opengis.feature.simple.SimpleFeature;
 
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ATextArea;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.FormElement;
+import eu.hydrologis.jgrass.formeditor.FormEditorPlugin;
 
 /**
  * Class representing an swt textarea gui.
@@ -73,6 +74,13 @@ public class ATextAreaGui extends FormGuiElement implements KeyListener {
 
     public void keyReleased( KeyEvent e ) {
         String textStr = text.getText();
+        int textLimit = FormEditorPlugin.getDefault().getTextLimit();
+        if (textLimit < textStr.length()) {
+            textStr = textStr.substring(0, textLimit);
+            text.setText(textStr);
+            text.setSelection(textStr.length() + 1);
+        }
+
         Class< ? > binding = feature.getProperty(aTextArea.fieldName).getType().getBinding();
 
         Object adapted = adapt(textStr, binding);

@@ -63,6 +63,15 @@
               id="eu.hydrologis.jgrass.featureeditor.views.FormView.Contribution"
               targetID="eu.hydrologis.jgrass.featureeditor.views.FormView">
            <action
+                 class="eu.hydrologis.jgrass.featureeditor.views.actions.TextLimitAction"
+                 icon="icons/textlimit.gif"
+                 id="eu.hydrologis.jgrass.featureeditor.views.FormView.textlimitaction"
+                 label="Text limit"
+                 style="push"
+                 toolbarPath="formtoolbar"
+                 tooltip="Set a text size limit for textfields">
+           </action>
+           <action
                  class="eu.hydrologis.jgrass.featureeditor.views.actions.ResetAction"
                  icon="icons/undo_edit.gif"
                  id="eu.hydrologis.jgrass.featureeditor.views.FormView.resetaction"

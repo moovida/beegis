@@ -327,4 +327,24 @@ public class FormEditorPlugin extends AbstractUIPlugin implements IPartListener2
         return formFile;
     }
 
+    /**
+     * The permitted text length in textfields.
+     */
+    private int textLimit = 254;
+    private String PREF_KEY_TEXTLIMIT = PLUGIN_ID + ".textlimit";
+
+    public int getTextLimit() {
+        int tmp = getPreferenceStore().getInt(PREF_KEY_TEXTLIMIT);
+        if (tmp != 0) {
+            textLimit = tmp;
+        } else {
+            textLimit = 254;
+        }
+        return textLimit;
+    }
+
+    public void setTextLimit( int textLimit ) {
+        getPreferenceStore().setValue(PREF_KEY_TEXTLIMIT, textLimit);
+        this.textLimit = textLimit;
+    }
 }
