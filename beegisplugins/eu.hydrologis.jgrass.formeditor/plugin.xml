@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+     <extension point="org.eclipse.ui.editors">
+      <editor name="Form Editor"
+              extensions="form"
+              icon="icons/form_editor.png"
+              default="true"
+              class="eu.hydrologis.jgrass.formeditor.FormEditor"
+              contributorClass="eu.hydrologis.jgrass.formeditor.FormEditorActionBarContributor"
+              id="eu.hydrologis.jgrass.formeditor.FormEditor">
+      </editor>
+   </extension>
+      <extension
+         id="eu.hydrologis.jgrass.featureeditor.views"
+         name="Form Views"
+         point="org.eclipse.ui.views">
+      <view
+            class="eu.hydrologis.jgrass.featureeditor.views.FormView"
+            icon="icons/form_view.png"
+            id="eu.hydrologis.jgrass.featureeditor.views.FormView"
+            name="Form View"
+            restorable="false">
+      </view>
+   </extension>
+      <extension
+         point="net.refractions.udig.project.ui.featureEditor">
+      <editor
+            id="eu.hydrologis.jgrass.featureeditor.views.FormView.editor"
+            name="Feature Editor"
+            viewId="eu.hydrologis.jgrass.featureeditor.views.FormView">
+      </editor>
+   </extension>
+     <extension
+           point="org.eclipse.ui.actionSets">
+        <actionSet
+              id="eu.hydrologis.jgrass.formeditor.actionSet"
+              label="Forms"
+              visible="true">
+           <action
+                 class="eu.hydrologis.jgrass.formeditor.OpenFormViewAction"
+                 icon="icons/form_view.png"
+                 id="eu.hydrologis.jgrass.formeditor.OpenFormViewAction"
+                 label="Open Form View"
+                 style="push"
+                 toolbarPath="eu.hydrologis.jgrass.beegisbar/formeditor"
+                 tooltip="Opens the Form View">
+           </action>
+           <action
+                 class="eu.hydrologis.jgrass.formeditor.OpenFormEditorAction"
+                 icon="icons/form_editor.png"
+                 id="eu.hydrologis.jgrass.formeditor.OpenFormAction"
+                 label="Open Form Editor"
+                 style="push"
+                 toolbarPath="eu.hydrologis.jgrass.beegisbar/formeditor"
+                 tooltip="Opens the Form Editor">
+           </action>
+        </actionSet>
+     </extension>
+     <extension
+           point="org.eclipse.ui.viewActions">
+        <viewContribution
+              id="eu.hydrologis.jgrass.featureeditor.views.FormView.Contribution"
+              targetID="eu.hydrologis.jgrass.featureeditor.views.FormView">
+           <action
+                 class="eu.hydrologis.jgrass.featureeditor.views.actions.TextLimitAction"
+                 icon="icons/textlimit.gif"
+                 id="eu.hydrologis.jgrass.featureeditor.views.FormView.textlimitaction"
+                 label="Text limit"
+                 style="push"
+                 toolbarPath="formtoolbar"
+                 tooltip="Set a text size limit for textfields">
+           </action>
+           <action
+                 class="eu.hydrologis.jgrass.featureeditor.views.actions.ResetAction"
+                 icon="icons/undo_edit.gif"
+                 id="eu.hydrologis.jgrass.featureeditor.views.FormView.resetaction"
+                 label="Reset"
+                 style="push"
+                 toolbarPath="formtoolbar"
+                 tooltip="Reset the form to the original values">
+           </action>
+           <action
+                 class="eu.hydrologis.jgrass.featureeditor.views.actions.SaveAction"
+                 icon="icons/save_edit.gif"
+                 id="eu.hydrologis.jgrass.featureeditor.views.FormView.saveaction"
+                 label="Save"
+                 style="push"
+                 toolbarPath="formtoolbar"
+                 tooltip="Save the changes to the feature">
+           </action>
+        </viewContribution>
+     </extension>
+     <extension
+           point="org.eclipse.ui.startup">
+        <startup
+              class="eu.hydrologis.jgrass.featureeditor.FormEditorPluginEarlyStartup">
+        </startup>
+     </extension>
+        <extension
+         point="net.refractions.udig.project.featureInterceptor">
+      <featureCreated
+            class="eu.hydrologis.jgrass.featureeditor.utils.OnFeatureCreateOpenFormViewInterceptor"
+            id="eu.hydrologis.jgrass.featureeditor.utils.OnFeatureCreateOpenFormViewInterceptor"
+            name="OnFeatureCreateOpenFormViewInterceptor">
+      </featureCreated>
+   </extension>
+</plugin>

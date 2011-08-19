@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="eu.hydrologis.jgrass.database.annotatedclasses">
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.AnnotationsTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesDrawareaTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesTextareaTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesMediaboxTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GeonotesMediaboxBlobsTable">
+      </annotatedclass>
+      <annotatedclass
+            annotatedclass="eu.hydrologis.jgrass.beegisutils.database.annotatedclasses.GpsLogTable">
+      </annotatedclass>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="eu.hydrologis.jgrass.beegisutils.database.BeegisTablesUpdater">
+      </startup>
+   </extension>
+      <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="eu.hydrologis.jgrass.database.mainviewcontribution"
+            targetID="eu.hydrologis.jgrass.database.catalogview">
+         <action
+               class="eu.hydrologis.jgrass.beegisutils.actions.StatsAction"
+               icon="icons/stats_db.gif"
+               id="eu.hydrologis.jgrass.database.stats_action"
+               label="%database.view.action.stats"
+               style="push"
+               toolbarPath="dbtoolbar"
+               tooltip="%database.view.action.stats">
+         </action>
+      </viewContribution>
+   </extension>
+      <extension
+         id="eu.hydrologis.jgrass.beegis.ui.new"
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            name="%NewBeegisProjectWizard.name"
+            id="eu.hydrologis.jgrass.beegis.project.ui.wizards.newProject"
+            category="net.refractions.udig.project.ui.new"
+            class="eu.hydrologis.jgrass.beegisutils.project.newprojectwizard.NewBeegisProjectWizard"
+            icon="icons/newprj_wiz.gif"
+            finalPerspective="net.refractions.udig.ui.mapPerspective"
+            project="true"
+            helpHref="New Project wizard.html"
+            preferredPerspectives="net.refractions.udig.ui.mapPerspective">
+         <description>
+            %NewBeegisProjectWizard.description
+         </description>
+      </wizard>
+      <primaryWizard
+            id="eu.hydrologis.jgrass.beegis.project.ui.wizards.newProject">
+      </primaryWizard>
+   </extension>
+      <extension
+            point="org.eclipse.ui.popupMenus">
+         <objectContribution
+               adaptable="false"
+               id="eu.hydrologis.jgrass.beegisutils.triggerenter"
+               objectClass="net.refractions.udig.project.internal.Map">
+            <action
+                  class="eu.hydrologis.jgrass.beegisutils.actions.IssueEnterAction"
+                  id="eu.hydrologis.jgrass.beegisutils.actions.IssueEnterAction"
+                  label="Issue Enter"
+                  style="push"
+                  tooltip="Triggers an Enter button event">
+            </action>
+         </objectContribution>
+      </extension>
+      <extension
+            point="org.eclipse.ui.menus">
+         <menuContribution
+               locationURI="toolbar:org.eclipse.ui.main.toolbar?after=data">
+            <toolbar
+                  id="eu.hydrologis.jgrass.beegisbar"
+                  label="BeeGIS Toolbar">
+            </toolbar>
+         </menuContribution>
+      </extension>
+
+</plugin>
