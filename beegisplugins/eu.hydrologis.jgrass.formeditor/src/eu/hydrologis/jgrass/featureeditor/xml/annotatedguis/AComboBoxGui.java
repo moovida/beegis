@@ -50,7 +50,7 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener {
     private List<String> labelList;
     private List<String> valuesList;
 
-    private LinkedHashMap<String, String[][]> cacheMap = new LinkedHashMap<String, String[][]>();
+    static private LinkedHashMap<String, String[][]> cacheMap = new LinkedHashMap<String, String[][]>();
 
     public AComboBoxGui( AComboBox comboBox ) {
         this.aComboBox = comboBox;
@@ -119,6 +119,7 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener {
                         String svC = lineSplit[attributeValueColumn].trim();
                         lines[index][1] = svC;
                         valuesList.add(svC);
+                        index++;
                     }
                 }
                 cacheMap.put(fileDef, lines);
