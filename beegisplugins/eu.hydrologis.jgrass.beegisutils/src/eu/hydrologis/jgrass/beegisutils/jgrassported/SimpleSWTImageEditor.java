@@ -392,6 +392,7 @@ public class SimpleSWTImageEditor {
                                 (int) Math.round(imgBounds.height * scaleFactor));
                         Image newImage = new Image(drawArea.getDisplay(), newImageData);
                         gcImage.drawImage(newImage, 0, 0);
+                        newImage.dispose();
                     }
                     // draw the lines
                     for( int i = 0; i < lines.size(); i = i + 1 ) {
@@ -747,5 +748,13 @@ public class SimpleSWTImageEditor {
         }
         display.dispose();
 
+    }
+    public void dispose() {
+        if (backImage != null && !backImage.isDisposed()) {
+            backImage.dispose();
+        }
+        if (drawnImage != null && !drawnImage.isDisposed()) {
+            drawnImage.dispose();
+        }
     }
 }
