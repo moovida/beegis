@@ -146,6 +146,7 @@ public class OpenSelectedEntryAction implements IDoubleClickListener {
                     ArrayList<DressedStroke> drawing = (ArrayList<DressedStroke>) simpleSWTImageEditor.getDrawing();
                     geonotesHandler.setMediaDrawings(drawing, name);
 
+                    simpleSWTImageEditor.dispose();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -156,6 +157,7 @@ public class OpenSelectedEntryAction implements IDoubleClickListener {
         cancelButton.setText("Cancel");
         cancelButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
+                simpleSWTImageEditor.dispose();
                 shell.dispose();
             }
         });

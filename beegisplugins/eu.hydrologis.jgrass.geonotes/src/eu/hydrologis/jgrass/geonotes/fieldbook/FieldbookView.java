@@ -550,12 +550,14 @@ public class FieldbookView extends ViewPart implements GeonotesObserver, IDataba
                     toAdd.add(geonote);
                 }
             }
-            if (toAdd.size() > 0) {
-                geonotesViewer.setInput(toAdd);
-            } else {
-                geonotesViewer.setInput(geonotesList);
+            if (!geonotesViewer.getControl().isDisposed()) {
+                if (toAdd.size() > 0) {
+                    geonotesViewer.setInput(toAdd);
+                } else {
+                    geonotesViewer.setInput(geonotesList);
+                }
+                geonotesViewer.setRelatedToNeutral();
             }
-            geonotesViewer.setRelatedToNeutral();
 
         } catch (Exception e) {
             String message = "An error occurred while refreshing the entries.";
