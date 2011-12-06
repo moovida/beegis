@@ -280,8 +280,6 @@ public class FormComboCellEditor extends CellEditor {
      * The valuestring is of type: <b>file:/path/to/file;guiNameColumn;attributeValueColumn;separator;link</b>
      * </p>
      *  
-     *  
-     *  
      */
     private void setValuesFromValueString() {
         boolean link = false;
@@ -290,8 +288,8 @@ public class FormComboCellEditor extends CellEditor {
             if (valueString.startsWith("file")) {
                 String[] split = valueString.split(";");
                 String pathString = split[0];
-                String attributeValueString = split[1];
-                String guiNameString = split[2];
+                String guiNameString = split[1];
+                String attributeValueString = split[2];
                 String sepString = split[3];
                 link = split[4].equals("y") ? true : false;
 
