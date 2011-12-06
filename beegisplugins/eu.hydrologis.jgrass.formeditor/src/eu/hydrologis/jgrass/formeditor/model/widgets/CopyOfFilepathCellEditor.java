@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class FilepathCellEditor extends CellEditor {
+public class CopyOfFilepathCellEditor extends CellEditor {
 
     /**
      * The text control; initially <code>null</code>.
@@ -87,7 +87,7 @@ public class FilepathCellEditor extends CellEditor {
      * @param doFolder open a folder browser instead of file browser.
      * @param extentions the extentions that the dialog should consider.
      */
-    public FilepathCellEditor( Composite parent, boolean doFolder, String[] extentions ) {
+    public CopyOfFilepathCellEditor( Composite parent, boolean doFolder, String[] extentions ) {
         super(parent, SWT.NONE);
         this.doFolder = doFolder;
         this.extentions = extentions;
@@ -136,7 +136,24 @@ public class FilepathCellEditor extends CellEditor {
      * Method declared on CellEditor.
      */
     protected Control createControl( Composite parent ) {
-        Composite composite = new Composite(parent, SWT.NONE);
+        
+        Composite mainComposite = new Composite(parent, SWT.NONE);
+        mainComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        mainComposite.setLayout(new GridLayout(2, false));
+        
+        Button manualButton = new Button(mainComposite, SWT.RADIO);
+        manualButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+        manualButton.setText("Manual");
+        
+        Text manualText = new Text(mainComposite, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+        manualText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        manualText.setText("");
+        
+        Button fileButton = new Button(mainComposite, SWT.RADIO);
+        fileButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+        fileButton.setText("File");
+        
+        Composite composite = new Composite(mainComposite, SWT.NONE);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         composite.setBackground(parent.getBackground());
         GridLayout layout = new GridLayout(2, false);
@@ -185,7 +202,7 @@ public class FilepathCellEditor extends CellEditor {
         });
         textFocusAdapter = new FocusAdapter(){
             public void focusLost( FocusEvent e ) {
-                FilepathCellEditor.this.focusLost();
+                CopyOfFilepathCellEditor.this.focusLost();
             }
         };
         text.addFocusListener(textFocusAdapter);
@@ -238,7 +255,7 @@ public class FilepathCellEditor extends CellEditor {
             }
         });
 
-        return composite;
+        return mainComposite;
     }
 
     /**
@@ -530,6 +547,6 @@ public class FilepathCellEditor extends CellEditor {
      * @since 3.4
      */
     protected boolean dependsOnExternalFocusListener() {
-        return getClass() != FilepathCellEditor.class;
+        return getClass() != CopyOfFilepathCellEditor.class;
     }
 }

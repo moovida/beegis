@@ -26,26 +26,20 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class FilepathPropertyDescriptor extends PropertyDescriptor {
-    private final boolean doFolder;
-    private final String[] extentions;
+public class FormComboPropertyDescriptor extends PropertyDescriptor {
 
     /**
      * Creates an property descriptor with the given id and display name.
      * 
      * @param id the id of the property.
      * @param displayName the name to display for the property.
-     * @param doFolder open a folder browser instead of file browser.
-     * @param extentions the extentions that the dialog should consider.
      */
-    public FilepathPropertyDescriptor( Object id, String displayName, boolean doFolder, String[] extentions ) {
+    public FormComboPropertyDescriptor( Object id, String displayName ) {
         super(id, displayName);
-        this.doFolder = doFolder;
-        this.extentions = extentions;
     }
 
     public CellEditor createPropertyEditor( Composite parent ) {
-        CellEditor editor = new FilepathCellEditor(parent, doFolder, extentions);
+        CellEditor editor = new FormComboCellEditor(parent);
         if (getValidator() != null) {
             editor.setValidator(getValidator());
         }

@@ -24,7 +24,6 @@ import java.util.List;
 
 import net.refractions.udig.project.ILayer;
 import net.refractions.udig.project.IMap;
-import net.refractions.udig.project.internal.SetDefaultStyleProcessor;
 import net.refractions.udig.project.ui.ApplicationGIS;
 
 import org.eclipse.core.filesystem.EFS;
@@ -52,7 +51,6 @@ import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.TreeViewer;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.swt.widgets.Composite;

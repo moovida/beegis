@@ -17,19 +17,15 @@
  */
 package eu.hydrologis.jgrass.formeditor.utils;
 
+import static eu.hydrologis.jgrass.formeditor.utils.Constants.ITEMS_SEPARATOR;
+
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
 
 import org.apache.commons.io.FileUtils;
 
-import static eu.hydrologis.jgrass.formeditor.utils.Constants.*;
 import eu.hydrologis.jgrass.featureeditor.utils.Utilities;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.ACheckBox;
 import eu.hydrologis.jgrass.featureeditor.xml.annotated.AComboBox;
@@ -233,15 +229,38 @@ public class FormContentSaveHelper {
                      * now this could be a string or a file path where to get the 
                      * items from
                      */
-                    File itemsFile = new File(itemsValue);
-                    if (itemsFile.exists()) {
-                        List readLines = FileUtils.readLines(itemsFile);
-                        for( Object line : readLines ) {
-                            if (line instanceof String) {
-                                String lineStr = (String) line;
-                                lineStr = lineStr.trim();
-                                lineStr = lineStr.replaceFirst("=", ",");
-                                comboBox.item.add(lineStr);
+                    if (itemsValue.startsWith("file:")) {
+                        if (itemsValue.endsWith(";y")) {
+                            comboBox.item.add(itemsValue);
+                        } else {
+                            String[] split = itemsValue.split(";");
+                            String path = split[0].replaceFirst("file:", "");
+                            int guiNameColumn = -1;
+                            try {
+                                guiNameColumn = Integer.parseInt(split[1]);
+                            } catch (Exception e) {
+                            }
+                            int attributeValueColumn = -1;
+                            try {
+                                attributeValueColumn = Integer.parseInt(split[2]);
+                            } catch (Exception e) {
+                            }
+                            String sep = split[3];
+
+                            File itemsFile = new File(path);
+                            List readLines = FileUtils.readLines(itemsFile);
+                            for( Object line : readLines ) {
+                                if (line instanceof String) {
+                                    String lineStr = (String) line;
+                                    String[] lineSplit = lineStr.split(sep);
+
+                                    String finalString = "";
+                                    if (guiNameColumn >= 0) {
+                                        finalString = finalString + lineSplit[guiNameColumn].trim() + ",";
+                                    }
+                                    finalString = finalString + lineSplit[attributeValueColumn].trim();
+                                    comboBox.item.add(finalString);
+                                }
                             }
                         }
 

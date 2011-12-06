@@ -18,9 +18,15 @@
  */
 package eu.hydrologis.jgrass.featureeditor.xml.annotatedguis;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -44,6 +50,8 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener {
     private List<String> labelList;
     private List<String> valuesList;
 
+    private LinkedHashMap<String, String[][]> cacheMap = new LinkedHashMap<String, String[][]>();
+
     public AComboBoxGui( AComboBox comboBox ) {
         this.aComboBox = comboBox;
     }
@@ -52,18 +60,94 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener {
         combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
         combo.setLayoutData(aComboBox.constraints);
 
+        if (cacheMap.size() > 10) {
+            // remove first
+            Set<String> keySet = cacheMap.keySet();
+            Iterator<String> iterator = keySet.iterator();
+            String key = iterator.next();
+            cacheMap.remove(key);
+        }
+
         labelList = new ArrayList<String>();
         valuesList = new ArrayList<String>();
 
         List<String> itemList = aComboBox.item;
-        for( String item : itemList ) {
-            if (item.indexOf(',') != -1) {
-                String[] split = item.split(","); //$NON-NLS-1$
-                labelList.add(split[0].trim());
-                valuesList.add(split[1].trim());
+        if (itemList.size() == 1 && itemList.get(0).startsWith("file:")) {
+            /*
+             * case in which a file was linked in the form.
+             */
+            // need to read file
+            String fileDef = itemList.get(0);
+            String[][] lines = cacheMap.get(fileDef);
+            if (lines == null) {
+                /*
+                 * if we didn't cache the read formdata already
+                 */
+                String[] split = fileDef.split(";");
+                String path = split[0].replaceFirst("file:", "");
+                int guiNameColumn = -1;
+                try {
+                    guiNameColumn = Integer.parseInt(split[1]);
+                } catch (Exception e) {
+                }
+                int attributeValueColumn = -1;
+                try {
+                    attributeValueColumn = Integer.parseInt(split[2]);
+                } catch (Exception e) {
+                }
+                String sep = split[3];
+
+                File itemsFile = new File(path);
+                List readLines = new ArrayList();
+                try {
+                    readLines = FileUtils.readLines(itemsFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                lines = new String[readLines.size()][2];
+                int index = 0;
+                for( Object line : readLines ) {
+                    if (line instanceof String) {
+                        String lineStr = (String) line;
+                        String[] lineSplit = lineStr.split(sep);
+
+                        if (guiNameColumn >= 0) {
+                            String gnC = lineSplit[guiNameColumn].trim();
+                            lines[index][0] = gnC;
+                            labelList.add(gnC);
+                        }
+                        String svC = lineSplit[attributeValueColumn].trim();
+                        lines[index][1] = svC;
+                        valuesList.add(svC);
+                    }
+                }
+                cacheMap.put(fileDef, lines);
             } else {
-                labelList.add(item);
-                valuesList.add(item);
+                /*
+                 * use cached formdata
+                 */
+                for( String[] items : lines ) {
+                    if (items[0] != null) {
+                        labelList.add(items[0]);
+                    } else {
+                        labelList.add(items[1]);
+                    }
+                    valuesList.add(items[1]);
+                }
+            }
+        } else {
+            /*
+             * the formdata are not filebound
+             */
+            for( String item : itemList ) {
+                if (item.indexOf(',') != -1) {
+                    String[] split = item.split(","); //$NON-NLS-1$
+                    labelList.add(split[0].trim());
+                    valuesList.add(split[1].trim());
+                } else {
+                    labelList.add(item);
+                    valuesList.add(item);
+                }
             }
         }
 
