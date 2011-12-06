@@ -19,8 +19,6 @@ package eu.hydrologis.jgrass.formeditor.model.widgets;
 
 import java.text.MessageFormat;
 
-import javax.swing.text.DefaultEditorKit.BeepAction;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.SWT;
@@ -69,8 +67,8 @@ public class FormComboCellEditor extends CellEditor {
     private Button linkButton;
 
     private String valueString;
-    private Text codeText;
-    private Text valueText;
+    private Text attributeValueText;
+    private Text guiNameText;
 
     /**
      * Creates a new file cell editor parented under the given control.
@@ -200,25 +198,25 @@ public class FormComboCellEditor extends CellEditor {
                 linkButton.setLayoutData(linkButtonGD);
                 linkButton.setText("link file");
 
-                Label codeLabel = new Label(fileGroup, SWT.NONE);
-                codeLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-                codeLabel.setText("Code Field number");
+                Label attributeValueLabel = new Label(fileGroup, SWT.NONE);
+                attributeValueLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+                attributeValueLabel.setText("Attribute value column");
 
-                codeText = new Text(fileGroup, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
-                GridData codeTextGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
-                codeTextGD.horizontalSpan = 2;
-                codeText.setLayoutData(codeTextGD);
-                codeText.setText("1");
+                attributeValueText = new Text(fileGroup, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+                GridData attributeValueGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+                attributeValueGD.horizontalSpan = 2;
+                attributeValueText.setLayoutData(attributeValueGD);
+                attributeValueText.setText("1");
 
-                Label valueLabel = new Label(fileGroup, SWT.NONE);
-                valueLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-                valueLabel.setText("Value Field number");
+                Label guiNameLabel = new Label(fileGroup, SWT.NONE);
+                guiNameLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+                guiNameLabel.setText("Interface name column");
 
-                valueText = new Text(fileGroup, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
-                GridData valueTextGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
-                valueTextGD.horizontalSpan = 2;
-                valueText.setLayoutData(valueTextGD);
-                valueText.setText("2");
+                guiNameText = new Text(fileGroup, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+                GridData guiNameTextGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+                guiNameTextGD.horizontalSpan = 2;
+                guiNameText.setLayoutData(guiNameTextGD);
+                guiNameText.setText("2");
 
                 setValuesFromValueString();
 
@@ -254,42 +252,52 @@ public class FormComboCellEditor extends CellEditor {
         browseButton.setEnabled(!selection);
         separatorText.setEnabled(!selection);
         linkButton.setEnabled(!selection);
-        codeText.setEnabled(!selection);
-        valueText.setEnabled(!selection);
+        attributeValueText.setEnabled(!selection);
+        guiNameText.setEnabled(!selection);
     }
 
     private void setValueStringFromFileType() {
         String path = pathText.getText();
-        String codeN = codeText.getText();
-        String valueN = valueText.getText();
+        String attributeValueString = attributeValueText.getText();
+        String guiNameString = guiNameText.getText();
         try {
-            Integer.parseInt(codeN);
-            Integer.parseInt(valueN);
+            Integer.parseInt(attributeValueString);
+            Integer.parseInt(guiNameString);
         } catch (Exception e) {
-            codeN = "1";
-            valueN = "2";
+            attributeValueString = "0";
+            guiNameString = "1";
         }
         String sep = separatorText.getText();
         String link = linkButton.getSelection() ? "y" : "n";
 
-        valueString = path + ";" + codeN + ";" + valueN + ";" + sep + ";" + link;
+        valueString = "file:" + path + ";" + guiNameString + ";" + attributeValueString + ";" + sep + ";" + link;
     }
 
+    /**
+     * Sets the gui values from the data string.
+     * 
+     * <p>
+     * The valuestring is of type: <b>file:/path/to/file;guiNameColumn;attributeValueColumn;separator;link</b>
+     * </p>
+     *  
+     *  
+     *  
+     */
     private void setValuesFromValueString() {
         boolean link = false;
         if (valueString != null && valueString.length() > 0) {
             valueString = valueString.trim();
-            if (valueString.endsWith(";y") || valueString.endsWith(";n")) {
+            if (valueString.startsWith("file")) {
                 String[] split = valueString.split(";");
                 String pathString = split[0];
-                String codeString = split[1];
-                String vString = split[2];
+                String attributeValueString = split[1];
+                String guiNameString = split[2];
                 String sepString = split[3];
                 link = split[4].equals("y") ? true : false;
 
-                pathText.setText(pathString);
-                codeText.setText(codeString);
-                valueText.setText(vString);
+                pathText.setText(pathString.replaceFirst("file:", ""));
+                attributeValueText.setText(attributeValueString);
+                guiNameText.setText(guiNameString);
                 separatorText.setText(sepString);
                 linkButton.setSelection(link);
 
