@@ -26,7 +26,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.osgi.framework.BundleContext;
@@ -42,7 +41,7 @@ public class BeegisUtilsPlugin extends AbstractUdigUIPlugin {
     public static final String PLUGIN_ID = "eu.hydrologis.jgrass.beegisutils";
 
     static final String ICONS_PATH = "icons/"; //$NON-NLS-1$
-    
+
     /**
      * Global formatter for joda datetime (yyyy-MM-dd HH:mm:ss).
      */
@@ -135,15 +134,19 @@ public class BeegisUtilsPlugin extends AbstractUdigUIPlugin {
     /**
      * Utility method for file dialogs to set the last folder.
      * 
-     * @param folderPath
+     * @param folderPath the folder path. If the path is a file path, the parent folder is saved.
      */
     public void setLastFolderChosen( String folderPath ) {
+        File fiel = new File(folderPath);
+        if (!fiel.isDirectory()) {
+            folderPath = fiel.getParent();
+        }
         IPreferenceStore store = getPreferenceStore();
         store.putValue(BEEGIS_LAST_CHOSEN_FOLDER, folderPath);
     }
 
-	public IPath getIconPath() {
-		return new Path(ICONS_PATH);
-	}
-    
+    public IPath getIconPath() {
+        return new Path(ICONS_PATH);
+    }
+
 }
