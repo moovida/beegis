@@ -26,6 +26,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
+import net.refractions.udig.catalog.ID;
+import net.refractions.udig.project.ILayer;
+import net.refractions.udig.project.IMap;
+import net.refractions.udig.project.ui.ApplicationGIS;
+
 import org.apache.commons.io.FileUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -84,7 +89,16 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener {
                  * if we didn't cache the read formdata already
                  */
                 String[] split = fileDef.split(";");
-                String path = split[0].replaceFirst("file:", "");
+
+                IMap activeMap = ApplicationGIS.getActiveMap();
+                ILayer selectedLayer = activeMap.getEditManager().getSelectedLayer();
+                ID id = selectedLayer.getGeoResource().getID();
+                File parentFolder = new File(".");
+                if (id.isFile()) {
+                    File tmpParent = id.toFile().getParentFile();
+                    parentFolder = tmpParent;
+                }
+                String fileName = split[0].replaceFirst("file:", "");
                 int guiNameColumn = -1;
                 try {
                     guiNameColumn = Integer.parseInt(split[1]);
@@ -97,32 +111,34 @@ public class AComboBoxGui extends FormGuiElement implements SelectionListener {
                 }
                 String sep = split[3];
 
-                File itemsFile = new File(path);
-                List readLines = new ArrayList();
-                try {
-                    readLines = FileUtils.readLines(itemsFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                lines = new String[readLines.size()][2];
-                int index = 0;
-                for( Object line : readLines ) {
-                    if (line instanceof String) {
-                        String lineStr = (String) line;
-                        String[] lineSplit = lineStr.split(sep);
-
-                        if (guiNameColumn >= 0) {
-                            String gnC = lineSplit[guiNameColumn].trim();
-                            lines[index][0] = gnC;
-                            labelList.add(gnC);
-                        }
-                        String svC = lineSplit[attributeValueColumn].trim();
-                        lines[index][1] = svC;
-                        valuesList.add(svC);
-                        index++;
+                File itemsFile = new File(parentFolder, fileName);
+                if (itemsFile.exists()) {
+                    List readLines = new ArrayList();
+                    try {
+                        readLines = FileUtils.readLines(itemsFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                    lines = new String[readLines.size()][2];
+                    int index = 0;
+                    for( Object line : readLines ) {
+                        if (line instanceof String) {
+                            String lineStr = (String) line;
+                            String[] lineSplit = lineStr.split(sep);
+
+                            if (guiNameColumn >= 0) {
+                                String gnC = lineSplit[guiNameColumn].trim();
+                                lines[index][0] = gnC;
+                                labelList.add(gnC);
+                            }
+                            String svC = lineSplit[attributeValueColumn].trim();
+                            lines[index][1] = svC;
+                            valuesList.add(svC);
+                            index++;
+                        }
+                    }
+                    cacheMap.put(fileDef, lines);
                 }
-                cacheMap.put(fileDef, lines);
             } else {
                 /*
                  * use cached formdata

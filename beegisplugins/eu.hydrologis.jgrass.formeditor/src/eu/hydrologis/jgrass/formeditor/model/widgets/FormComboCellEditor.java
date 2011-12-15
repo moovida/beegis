@@ -17,9 +17,16 @@
  */
 package eu.hydrologis.jgrass.formeditor.model.widgets;
 
+import java.io.File;
 import java.text.MessageFormat;
 
+import net.refractions.udig.catalog.ID;
+import net.refractions.udig.project.ILayer;
+import net.refractions.udig.project.IMap;
+import net.refractions.udig.project.ui.ApplicationGIS;
+
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -37,8 +44,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
-import eu.hydrologis.jgrass.beegisutils.BeegisUtilsPlugin;
 
 /**
  * A cell editor that manages file path and the button to browse for it.
@@ -170,14 +175,32 @@ public class FormComboCellEditor extends CellEditor {
                 browseButton.setText("..."); //$NON-NLS-1$
                 browseButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter(){
                     public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
-                        String lastFolderChosen = BeegisUtilsPlugin.getDefault().getLastFolderChosen();
-                        FileDialog fileDialog = new FileDialog(pathText.getShell(), SWT.OPEN);
-                        // fileDialog.setFilterExtensions(extentions);
-                        fileDialog.setFilterPath(lastFolderChosen);
-                        String path = fileDialog.open();
-                        if (path != null && path.length() >= 1) {
-                            BeegisUtilsPlugin.getDefault().setLastFolderChosen(path);
-                            pathText.setText(path);
+                        IMap activeMap = ApplicationGIS.getActiveMap();
+                        ILayer selectedLayer = activeMap.getEditManager().getSelectedLayer();
+                        ID id = selectedLayer.getGeoResource().getID();
+                        if (id.isFile()) {
+                            File layerFile = id.toFile();
+
+                            FileDialog fileDialog = new FileDialog(pathText.getShell(), SWT.OPEN);
+                            // fileDialog.setFilterExtensions(extentions);
+                            fileDialog.setFilterPath(layerFile.getParent());
+
+                            String path = fileDialog.open();
+                            if (path != null && path.length() >= 1) {
+                                File tableFile = new File(path);
+                                String tableParentName = tableFile.getParentFile().getName().trim();
+                                String layerParentName = layerFile.getParentFile().getName().trim();
+                                if (tableParentName.equals(layerParentName)) {
+                                    pathText.setText(tableFile.getName());
+                                } else {
+                                    MessageDialog.openWarning(browseButton.getShell(), "WARNING",
+                                            "The linked table needs to be inside of the same folder as the resource file.");
+                                }
+                            }
+                        } else {
+                            MessageDialog.openWarning(browseButton.getShell(), "WARNING",
+                                    "Currently linking of files is supported only for file based resources.");
+                            handleEnablements(true);
                         }
                     }
                 });
@@ -277,7 +300,7 @@ public class FormComboCellEditor extends CellEditor {
      * Sets the gui values from the data string.
      * 
      * <p>
-     * The valuestring is of type: <b>file:/path/to/file;guiNameColumn;attributeValueColumn;separator;link</b>
+     * The valuestring is of type: <b>file:filename;guiNameColumn;attributeValueColumn;separator;link</b>
      * </p>
      *  
      */
