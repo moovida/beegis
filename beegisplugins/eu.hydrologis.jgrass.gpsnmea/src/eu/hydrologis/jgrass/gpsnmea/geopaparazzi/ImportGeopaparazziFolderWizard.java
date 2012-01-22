@@ -543,8 +543,16 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
                     Double azimuth = null;
                     if (azimuthString != null)
                         azimuth = Double.parseDouble(azimuthString);
-                    double lat = Double.parseDouble(latString);
-                    double lon = Double.parseDouble(lonString);
+                    double lat = 0.0;
+                    double lon = 0.0;
+                    if (latString.contains("/")) {
+                        // this is an exif string
+                        lat = exifFormat2degreeDecimal(latString);
+                        lon = exifFormat2degreeDecimal(lonString);
+                    } else {
+                        lat = Double.parseDouble(latString);
+                        lon = Double.parseDouble(lonString);
+                    }
                     double altim = Double.parseDouble(altimString);
 
                     // save those points also in the database log
@@ -616,6 +624,57 @@ public class ImportGeopaparazziFolderWizard extends Wizard implements IImportWiz
         public String text;
         public List<GpsPoint> points = new ArrayList<GpsPoint>();
 
+    }
+
+    /**
+     * Convert decimal degrees to exif format.
+     * 
+     * @param decimalDegree the angle in decimal format.
+     * @return the exif format string.
+     */
+    @SuppressWarnings("nls")
+    public static String degreeDecimal2ExifFormat( double decimalDegree ) {
+        StringBuilder sb = new StringBuilder();
+        sb.append((int) decimalDegree);
+        sb.append("/1,");
+        decimalDegree = (decimalDegree - (int) decimalDegree) * 60;
+        sb.append((int) decimalDegree);
+        sb.append("/1,");
+        decimalDegree = (decimalDegree - (int) decimalDegree) * 60000;
+        sb.append((int) decimalDegree);
+        sb.append("/1000");
+        return sb.toString();
+    }
+
+    /**
+     * Convert exif format to decimal degree.
+     * 
+     * @param exifFormat the exif string of the gps position.
+     * @return the decimal degree.
+     */
+    @SuppressWarnings("nls")
+    public static double exifFormat2degreeDecimal( String exifFormat ) {
+        // latitude=44/1,10/1,28110/1000
+        String[] exifSplit = exifFormat.trim().split(",");
+
+        String[] value = exifSplit[0].split("/");
+
+        double tmp1 = Double.parseDouble(value[0]);
+        double tmp2 = Double.parseDouble(value[1]);
+        double degree = tmp1 / tmp2;
+
+        value = exifSplit[1].split("/");
+        tmp1 = Double.parseDouble(value[0]);
+        tmp2 = Double.parseDouble(value[1]);
+        double minutes = tmp1 / tmp2;
+
+        value = exifSplit[2].split("/");
+        tmp1 = Double.parseDouble(value[0]);
+        tmp2 = Double.parseDouble(value[1]);
+        double seconds = tmp1 / tmp2;
+
+        double result = degree + (minutes / 60.0) + (seconds / 3600.0);
+        return result;
     }
 
 }
