@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import net.refractions.udig.project.ui.ApplicationGIS;
 import net.refractions.udig.ui.ExceptionDetailsDialog;
 
 import org.eclipse.core.runtime.IStatus;
@@ -73,6 +74,15 @@ public class DatabasePlugin extends AbstractUIPlugin {
     private static final String DATABASES_XML = "databases.xml"; //$NON-NLS-1$
 
     /**
+     * Flag that defines if the plugin is run with uDig GIS support.
+     */
+    private boolean hasGis = true;
+
+    public boolean weHaveGis() {
+        return hasGis;
+    }
+
+    /**
      * The constructor
      */
     public DatabasePlugin() {
@@ -81,6 +91,13 @@ public class DatabasePlugin extends AbstractUIPlugin {
     public void start( BundleContext context ) throws Exception {
         super.start(context);
         plugin = this;
+
+        try {
+            ApplicationGIS.getActiveMap();
+            hasGis = true;
+        } catch (NullPointerException e) {
+            hasGis = false;
+        }
 
         startWebserver();
     }

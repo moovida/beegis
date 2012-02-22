@@ -275,11 +275,15 @@ public class DatabaseView extends ViewPart {
     private static class ProjectMatchFilter extends ViewerFilter {
         public boolean select( Viewer arg0, Object arg1, Object arg2 ) {
             String name = ((DatabaseConnectionProperties) arg2).getTitle();
-            String projectName = ApplicationGIS.getActiveProject().getName();
-            if (name.matches("(?i).*" + projectName + ".*")) { //$NON-NLS-1$ //$NON-NLS-2$
+            if (DatabasePlugin.getDefault().weHaveGis()) {
+                String projectName = ApplicationGIS.getActiveProject().getName();
+                if (name.matches("(?i).*" + projectName + ".*")) { //$NON-NLS-1$ //$NON-NLS-2$
+                    return true;
+                }
+                return false;
+            } else {
                 return true;
             }
-            return false;
         }
     }
 
@@ -297,9 +301,11 @@ public class DatabaseView extends ViewPart {
         }
         String projectName = databaseName;
         if (projectName == null) {
-            IProject activeProject = ApplicationGIS.getActiveProject();
-            if (activeProject != null) {
-                projectName = activeProject.getName();
+            if (DatabasePlugin.getDefault().weHaveGis()) {
+                IProject activeProject = ApplicationGIS.getActiveProject();
+                if (activeProject != null) {
+                    projectName = activeProject.getName();
+                }
             }
         }
         if (projectName == null) {
@@ -338,11 +344,15 @@ public class DatabaseView extends ViewPart {
      */
     public void createNewRemoteDatabaseDefinition() {
         DatabaseConnectionProperties defaultProperties = new PostgresConnectionFactory().createDefaultProperties();
-        String projectName = ApplicationGIS.getActiveProject().getName();
-        if (projectName != null && projectName.length() != 0) {
-            defaultProperties.put(DatabaseConnectionProperties.TITLE, projectName);
-            defaultProperties.put(DatabaseConnectionProperties.DESCRIPTION, projectName);
+        String projectName = null;
+        if (DatabasePlugin.getDefault().weHaveGis()) {
+            projectName = ApplicationGIS.getActiveProject().getName();
+            if (projectName != null && projectName.length() != 0) {
+                defaultProperties.put(DatabaseConnectionProperties.TITLE, projectName);
+                defaultProperties.put(DatabaseConnectionProperties.DESCRIPTION, projectName);
+            }
         }
+        // TODO check this when without GIS
 
         DatabasePlugin.getDefault().checkSameNameDbconnection(defaultProperties);
 
@@ -395,14 +405,16 @@ public class DatabaseView extends ViewPart {
     }
 
     public void refreshMap() {
-        IMap activeMap = ApplicationGIS.getActiveMap();
-        RenderedImage image = activeMap.getRenderManager().getImage();
-        if (image == null) {
-            return;
-        }
-        List<ILayer> mapLayers = activeMap.getMapLayers();
-        for( ILayer iLayer : mapLayers ) {
-            iLayer.refresh(null);
+        if (DatabasePlugin.getDefault().weHaveGis()) {
+            IMap activeMap = ApplicationGIS.getActiveMap();
+            RenderedImage image = activeMap.getRenderManager().getImage();
+            if (image == null) {
+                return;
+            }
+            List<ILayer> mapLayers = activeMap.getMapLayers();
+            for( ILayer iLayer : mapLayers ) {
+                iLayer.refresh(null);
+            }
         }
     }
 
