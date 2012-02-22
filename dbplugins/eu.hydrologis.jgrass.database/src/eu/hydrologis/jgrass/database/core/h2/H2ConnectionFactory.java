@@ -109,7 +109,10 @@ public class H2ConnectionFactory implements IConnectionFactory {
     }
 
     public DatabaseConnectionProperties createDefaultProperties() {
-        IProject activeProject = ApplicationGIS.getActiveProject();
+        IProject activeProject = null;
+        if (DatabasePlugin.getDefault().weHaveGis()) {
+            activeProject = ApplicationGIS.getActiveProject();
+        }
         File projectFile = null;
         if (activeProject != null) {
             URI id = activeProject.getID();
